@@ -9,7 +9,7 @@ Ce Readme est modifiable à votre guise. Nous vous demandons simplement de compl
 |------------|-------------------|
 | jbarber07  | Barber Jeremy     |
 | akinsoen   | Kinsoen Alexandre |
-|            |                   |
+|  aiabdoul  | Abdoul Aziz Aîssa |
 |            |                   |
 |            |                   |
 |            |                   |
