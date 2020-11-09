@@ -7,7 +7,7 @@ Ce Readme est modifiable à votre guise. Nous vous demandons simplement de compl
 
 | GitHub ids | Nom & Prénom |
 |------------|--------------|
-|            |              |
+| jbarber07  | Barber Jeremy|
 |            |              |
 |            |              |
 |            |              |
