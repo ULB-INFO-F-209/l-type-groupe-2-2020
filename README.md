@@ -11,7 +11,7 @@ Ce Readme est modifiable à votre guise. Nous vous demandons simplement de compl
 | akinsoen   | Kinsoen Alexandre |
 |  aiabdoul  | Abdoul Aziz Aîssa |
 | hdemirel01 | Demirel Helin     |
-|            |                   |
+|   mvneste  | Vanneste Martin   |
 |            |                   |
 |            |                   |
 |            |                   |
