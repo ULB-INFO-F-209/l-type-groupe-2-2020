@@ -12,7 +12,7 @@ Ce Readme est modifiable à votre guise. Nous vous demandons simplement de compl
 |  aiabdoul  | Abdoul Aziz Aîssa |
 | hdemirel01 | Demirel Helin     |
 |   mvneste  | Vanneste Martin   |
-|            |                   |
+| koadegno   | Adegnon Kokou     |
 |            |                   |
 |            |                   |
 |            |                   |
