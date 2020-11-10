@@ -14,5 +14,5 @@ Ce Readme est modifiable à votre guise. Nous vous demandons simplement de compl
 | mvneste    | Vanneste Martin   |
 | koadegno   | Adegnon Kokou     |
 | slatoundj  | Latoundji Salim   |
-|            |                   |
+| mmassime   | Massimetti Mario  |
 |            |                   |
