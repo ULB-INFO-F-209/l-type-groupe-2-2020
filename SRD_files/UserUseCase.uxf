@@ -3,35 +3,13 @@
   <element>
     <id>UMLActor</id>
     <coordinates>
-      <x>80</x>
-      <y>160</y>
+      <x>210</x>
+      <y>200</y>
       <w>60</w>
       <h>100</h>
     </coordinates>
     <panel_attributes>User </panel_attributes>
     <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLUseCase</id>
-    <coordinates>
-      <x>240</x>
-      <y>180</y>
-      <w>120</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>Start Program</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>140</x>
-      <y>180</y>
-      <w>120</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes/>
-    <additional_attributes>10.0;20.0;100.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLUseCase</id>
@@ -80,13 +58,13 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>350</x>
+      <x>260</x>
       <y>160</y>
-      <w>100</w>
-      <h>60</h>
+      <w>190</w>
+      <h>100</h>
     </coordinates>
     <panel_attributes/>
-    <additional_attributes>10.0;40.0;80.0;10.0</additional_attributes>
+    <additional_attributes>10.0;80.0;170.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLUseCase</id>
@@ -99,18 +77,6 @@
     <panel_attributes> check leaderboard
 </panel_attributes>
     <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>350</x>
-      <y>90</y>
-      <w>130</w>
-      <h>130</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;.
-&lt;&lt;include&gt;&gt;</panel_attributes>
-    <additional_attributes>80.0;10.0;10.0;110.0</additional_attributes>
   </element>
   <element>
     <id>UMLUseCase</id>
@@ -126,13 +92,13 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>350</x>
-      <y>190</y>
-      <w>100</w>
+      <x>260</x>
+      <y>210</y>
+      <w>190</w>
       <h>50</h>
     </coordinates>
     <panel_attributes/>
-    <additional_attributes>10.0;10.0;80.0;30.0</additional_attributes>
+    <additional_attributes>10.0;30.0;170.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLUseCase</id>
@@ -148,13 +114,13 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>350</x>
-      <y>190</y>
-      <w>100</w>
-      <h>150</h>
+      <x>260</x>
+      <y>230</y>
+      <w>190</w>
+      <h>110</h>
     </coordinates>
     <panel_attributes/>
-    <additional_attributes>10.0;10.0;80.0;130.0</additional_attributes>
+    <additional_attributes>10.0;10.0;170.0;90.0</additional_attributes>
   </element>
   <element>
     <id>UMLUseCase</id>
@@ -192,17 +158,6 @@
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>1110</x>
-      <y>310</y>
-      <w>120</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>Game Over</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLUseCase</id>
-    <coordinates>
       <x>430</x>
       <y>520</y>
       <w>120</w>
@@ -215,25 +170,13 @@ bg=blue</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>350</x>
-      <y>190</y>
-      <w>100</w>
-      <h>370</h>
+      <x>260</x>
+      <y>230</y>
+      <w>190</w>
+      <h>330</h>
     </coordinates>
     <panel_attributes/>
-    <additional_attributes>10.0;10.0;80.0;350.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1050</x>
-      <y>310</y>
-      <w>90</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>lt=.&gt;
-&lt;&lt;extends&gt;&gt;</panel_attributes>
-    <additional_attributes>20.0;20.0;60.0;20.0</additional_attributes>
+    <additional_attributes>10.0;10.0;170.0;310.0</additional_attributes>
   </element>
   <element>
     <id>UMLUseCase</id>
@@ -443,13 +386,25 @@ bg=blue</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>350</x>
-      <y>190</y>
-      <w>130</w>
-      <h>320</h>
+      <x>260</x>
+      <y>230</y>
+      <w>190</w>
+      <h>280</h>
     </coordinates>
     <panel_attributes>lt=.&gt;
 &lt;&lt;extends&gt;&gt;</panel_attributes>
-    <additional_attributes>10.0;10.0;80.0;300.0</additional_attributes>
+    <additional_attributes>10.0;10.0;170.0;260.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>260</x>
+      <y>90</y>
+      <w>190</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;150.0;170.0;10.0</additional_attributes>
   </element>
 </diagram>
