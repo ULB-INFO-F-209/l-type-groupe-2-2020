@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>6</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>372</x>
+      <y>456</y>
+      <w>132</w>
+      <h>156</h>
+    </coordinates>
+    <panel_attributes>User
+--
+-Player:Player
+-my_account= Account
+--
+createAccount()
+login()
+
+join_lobby()
+invite_lobby()
+start_game()
+send_m(Account,string)
+addFriend(string)
+delFriend(string)
+inviteFriend(string)
+joinFriend(string)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>294</x>
+      <y>246</y>
+      <w>132</w>
+      <h>114</h>
+    </coordinates>
+    <panel_attributes>currentGame
+--
+-nPlayers={1, 2}
+-state:bool
+-levels:list
+-dropRate:float
+--
+pause()
+end_game()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>402</x>
+      <y>354</y>
+      <w>42</w>
+      <h>114</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=0..1
+start ^</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>474</x>
+      <y>108</y>
+      <w>18</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>414</x>
+      <y>0</y>
+      <w>132</w>
+      <h>114</h>
+    </coordinates>
+    <panel_attributes>Server
+--
+addrese:string
+--
+start_server()
+create_lobby()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>114</x>
+      <y>456</y>
+      <w>114</w>
+      <h>156</h>
+    </coordinates>
+    <panel_attributes>Account
+--
+-name:string
+-pseudo:string
+-password:string
+-friends:list
+-currentScore:list
+-previousScore:list
+-rankingScore:list
+--
+get_data(string)
+get_data()
+verifyLogin()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>126</x>
+      <y>246</y>
+      <w>126</w>
+      <h>114</h>
+    </coordinates>
+    <panel_attributes>DataBase
+--
+list_account:Account list
+leaderboard:Player list
+file:File
+--
+dsp_player(string)
+db_save(DataBase)
+db_load(File)
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>222</x>
+      <y>510</y>
+      <w>162</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=0..*
+m2=1
+&lt; own </panel_attributes>
+    <additional_attributes>10.0;20.0;250.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>174</x>
+      <y>354</y>
+      <w>18</w>
+      <h>114</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>552</x>
+      <y>246</y>
+      <w>132</w>
+      <h>114</h>
+    </coordinates>
+    <panel_attributes>Lobby
+--
+
+--
+send_m(Account,string)
+get_in()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>342</x>
+      <y>174</y>
+      <w>198</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;310.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>162</x>
+      <y>174</y>
+      <w>198</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;310.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>162</x>
+      <y>180</y>
+      <w>18</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>342</x>
+      <y>180</y>
+      <w>18</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>606</x>
+      <y>180</y>
+      <w>18</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>792</x>
+      <y>252</y>
+      <w>132</w>
+      <h>114</h>
+    </coordinates>
+    <panel_attributes>Chat
+--
+
+--
+get_m(Account)
+dsp_m(Screen)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>540</x>
+      <y>510</y>
+      <w>84</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>send_m() ne peut etre 
+executer que si on 
+est connecté</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>522</x>
+      <y>174</y>
+      <w>324</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;520.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>828</x>
+      <y>180</y>
+      <w>18</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>678</x>
+      <y>288</y>
+      <w>126</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=
+m2=
+own &gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;190.0;20.0</additional_attributes>
+  </element>
+</diagram>
