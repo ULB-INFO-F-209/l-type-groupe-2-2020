@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.3.0">
-  <zoom_level>8</zoom_level>
+  <zoom_level>5</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>520</x>
-      <y>104</y>
-      <w>176</w>
-      <h>152</h>
+      <x>335</x>
+      <y>70</y>
+      <w>110</w>
+      <h>95</h>
     </coordinates>
     <panel_attributes>currentGame
 --
 -nPlayers={1, 2}
--Player:Player
 -state:bool
 -levels:list
 --
@@ -22,10 +21,10 @@ pause()</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>296</x>
-      <y>320</y>
-      <w>152</w>
-      <h>104</h>
+      <x>195</x>
+      <y>205</y>
+      <w>95</w>
+      <h>65</h>
     </coordinates>
     <panel_attributes>Level
 --
@@ -39,10 +38,10 @@ generateLevel()</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>488</x>
-      <y>480</y>
-      <w>152</w>
-      <h>208</h>
+      <x>65</x>
+      <y>265</y>
+      <w>95</w>
+      <h>130</h>
     </coordinates>
     <panel_attributes>Account
 --
@@ -63,10 +62,10 @@ joinFriend(string)</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>752</x>
-      <y>312</y>
-      <w>152</w>
-      <h>104</h>
+      <x>480</x>
+      <y>200</y>
+      <w>95</w>
+      <h>65</h>
     </coordinates>
     <panel_attributes>Player
 --
@@ -74,8 +73,7 @@ joinFriend(string)</panel_attributes>
 -Ship:PlayerShip
 -account:Account
 --
-createAccount()
-login()
+
 
 </panel_attributes>
     <additional_attributes/>
@@ -83,10 +81,10 @@ login()
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>992</x>
-      <y>600</y>
-      <w>152</w>
-      <h>104</h>
+      <x>630</x>
+      <y>380</y>
+      <w>95</w>
+      <h>65</h>
     </coordinates>
     <panel_attributes>projectile
 --
@@ -101,10 +99,10 @@ damage:int
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>752</x>
-      <y>576</y>
-      <w>152</w>
-      <h>144</h>
+      <x>480</x>
+      <y>365</y>
+      <w>95</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>Ship
 --
@@ -123,10 +121,10 @@ damage:int
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>656</x>
-      <y>832</y>
-      <w>152</w>
-      <h>104</h>
+      <x>420</x>
+      <y>525</y>
+      <w>95</w>
+      <h>65</h>
     </coordinates>
     <panel_attributes>PlayerShip
 --
@@ -138,10 +136,10 @@ damage:int
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>856</x>
-      <y>832</y>
-      <w>152</w>
-      <h>104</h>
+      <x>545</x>
+      <y>525</y>
+      <w>95</w>
+      <h>65</h>
     </coordinates>
     <panel_attributes>GameShip
 --
@@ -153,10 +151,10 @@ damage:int
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>992</x>
-      <y>376</y>
-      <w>152</w>
-      <h>168</h>
+      <x>630</x>
+      <y>240</y>
+      <w>95</w>
+      <h>105</h>
     </coordinates>
     <panel_attributes>Bonus
 --
@@ -179,10 +177,10 @@ damage:int
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>1240</x>
-      <y>368</y>
-      <w>112</w>
-      <h>72</h>
+      <x>785</x>
+      <y>235</y>
+      <w>70</w>
+      <h>45</h>
     </coordinates>
     <panel_attributes>1 = doubleshot
 2 = moreDamage
@@ -195,10 +193,10 @@ damage:int
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>824</x>
-      <y>712</y>
-      <w>24</w>
-      <h>80</h>
+      <x>525</x>
+      <y>450</y>
+      <w>15</w>
+      <h>50</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
@@ -206,10 +204,10 @@ damage:int
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>728</x>
-      <y>760</y>
-      <w>120</w>
-      <h>32</h>
+      <x>465</x>
+      <y>480</y>
+      <w>75</w>
+      <h>20</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes>10.0;20.0;130.0;20.0;120.0;20.0</additional_attributes>
@@ -217,10 +215,10 @@ damage:int
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>720</x>
-      <y>768</y>
-      <w>32</w>
-      <h>80</h>
+      <x>460</x>
+      <y>485</y>
+      <w>20</w>
+      <h>50</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes>10.0;80.0;10.0;10.0;20.0;10.0</additional_attributes>
@@ -228,10 +226,10 @@ damage:int
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>920</x>
-      <y>768</y>
-      <w>32</w>
-      <h>80</h>
+      <x>585</x>
+      <y>485</y>
+      <w>20</w>
+      <h>50</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes>20.0;80.0;20.0;10.0;10.0;10.0</additional_attributes>
@@ -239,10 +237,10 @@ damage:int
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>824</x>
-      <y>760</y>
-      <w>120</w>
-      <h>32</h>
+      <x>525</x>
+      <y>480</y>
+      <w>75</w>
+      <h>20</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes>10.0;20.0;130.0;20.0;120.0;20.0</additional_attributes>
@@ -250,10 +248,10 @@ damage:int
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>688</x>
-      <y>376</y>
-      <w>80</w>
-      <h>24</h>
+      <x>440</x>
+      <y>240</y>
+      <w>50</w>
+      <h>15</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>80.0;10.0;10.0;10.0</additional_attributes>
@@ -261,10 +259,10 @@ damage:int
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>688</x>
-      <y>376</y>
-      <w>32</w>
-      <h>472</h>
+      <x>440</x>
+      <y>240</y>
+      <w>20</w>
+      <h>295</h>
     </coordinates>
     <panel_attributes>
 
@@ -305,42 +303,10 @@ damage:int
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>568</x>
-      <y>328</y>
-      <w>200</w>
-      <h>24</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>230.0;10.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>568</x>
-      <y>328</y>
-      <w>32</w>
-      <h>168</h>
-    </coordinates>
-    <panel_attributes>
-
-
-
-
-
-
-
-
-
-1</panel_attributes>
-    <additional_attributes>10.0;190.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>688</x>
-      <y>184</y>
-      <w>128</w>
-      <h>24</h>
+      <x>440</x>
+      <y>120</y>
+      <w>80</w>
+      <h>15</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;140.0;10.0</additional_attributes>
@@ -348,10 +314,10 @@ damage:int
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>792</x>
-      <y>184</y>
-      <w>40</w>
-      <h>144</h>
+      <x>505</x>
+      <y>120</y>
+      <w>25</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>
 
@@ -368,10 +334,10 @@ damage:int
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>896</x>
-      <y>624</y>
-      <w>112</w>
-      <h>48</h>
+      <x>570</x>
+      <y>395</y>
+      <w>70</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-
 
@@ -382,10 +348,10 @@ damage:int
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>816</x>
-      <y>464</y>
-      <w>24</w>
-      <h>128</h>
+      <x>520</x>
+      <y>295</y>
+      <w>15</w>
+      <h>80</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;140.0;10.0;10.0</additional_attributes>
@@ -393,10 +359,10 @@ damage:int
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>816</x>
-      <y>440</y>
-      <w>192</w>
-      <h>48</h>
+      <x>520</x>
+      <y>280</y>
+      <w>120</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes>220.0;20.0;10.0;20.0;10.0;40.0</additional_attributes>
@@ -404,10 +370,10 @@ damage:int
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>368</x>
-      <y>184</y>
-      <w>168</w>
-      <h>24</h>
+      <x>240</x>
+      <y>120</y>
+      <w>105</w>
+      <h>15</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>190.0;10.0;10.0;10.0</additional_attributes>
@@ -415,10 +381,10 @@ damage:int
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>368</x>
-      <y>184</y>
-      <w>40</w>
-      <h>152</h>
+      <x>240</x>
+      <y>120</y>
+      <w>25</w>
+      <h>95</h>
     </coordinates>
     <panel_attributes>
 
@@ -435,12 +401,107 @@ damage:int
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1136</x>
-      <y>368</y>
-      <w>120</w>
-      <h>32</h>
+      <x>720</x>
+      <y>235</y>
+      <w>75</w>
+      <h>20</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes>10.0;20.0;130.0;20.0;120.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>65</x>
+      <y>35</y>
+      <w>110</w>
+      <h>95</h>
+    </coordinates>
+    <panel_attributes>User
+--
+-Player:Player
+--
+start_game()
+createAccount()
+login()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>170</x>
+      <y>85</y>
+      <w>175</w>
+      <h>25</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=0..1
+start &gt;</panel_attributes>
+    <additional_attributes>330.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>95</x>
+      <y>125</y>
+      <w>40</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=0..*
+m2=1
+ own v</panel_attributes>
+    <additional_attributes>10.0;280.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>60</x>
+      <y>480</y>
+      <w>105</w>
+      <h>95</h>
+    </coordinates>
+    <panel_attributes>Data Base
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>110</x>
+      <y>390</y>
+      <w>15</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;180.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>615</x>
+      <y>35</y>
+      <w>110</w>
+      <h>95</h>
+    </coordinates>
+    <panel_attributes>Server
+--
+
+--
+start_server()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>440</x>
+      <y>80</y>
+      <w>185</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>350.0;10.0;10.0;10.0</additional_attributes>
   </element>
 </diagram>
