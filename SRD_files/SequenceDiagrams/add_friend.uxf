@@ -5,7 +5,7 @@
     <id>UMLGeneric</id>
     <coordinates>
       <x>224</x>
-      <y>96</y>
+      <y>48</y>
       <w>80</w>
       <h>24</h>
     </coordinates>
@@ -16,7 +16,7 @@
     <id>Relation</id>
     <coordinates>
       <x>256</x>
-      <y>112</y>
+      <y>64</y>
       <w>24</w>
       <h>520</h>
     </coordinates>
@@ -28,7 +28,7 @@
     <id>UMLGeneric</id>
     <coordinates>
       <x>416</x>
-      <y>96</y>
+      <y>48</y>
       <w>80</w>
       <h>24</h>
     </coordinates>
@@ -39,7 +39,7 @@
     <id>Relation</id>
     <coordinates>
       <x>448</x>
-      <y>112</y>
+      <y>64</y>
       <w>24</w>
       <h>520</h>
     </coordinates>
@@ -50,7 +50,7 @@
     <id>UMLGeneric</id>
     <coordinates>
       <x>728</x>
-      <y>96</y>
+      <y>48</y>
       <w>80</w>
       <h>24</h>
     </coordinates>
@@ -61,7 +61,7 @@
     <id>Relation</id>
     <coordinates>
       <x>760</x>
-      <y>112</y>
+      <y>64</y>
       <w>24</w>
       <h>520</h>
     </coordinates>
@@ -72,7 +72,7 @@
     <id>Relation</id>
     <coordinates>
       <x>256</x>
-      <y>136</y>
+      <y>88</y>
       <w>208</w>
       <h>32</h>
     </coordinates>
@@ -84,7 +84,7 @@ addFriend()</panel_attributes>
     <id>UMLGeneric</id>
     <coordinates>
       <x>448</x>
-      <y>152</y>
+      <y>104</y>
       <w>16</w>
       <h>408</h>
     </coordinates>
@@ -95,7 +95,7 @@ addFriend()</panel_attributes>
     <id>UMLGeneric</id>
     <coordinates>
       <x>576</x>
-      <y>96</y>
+      <y>48</y>
       <w>80</w>
       <h>24</h>
     </coordinates>
@@ -106,7 +106,7 @@ addFriend()</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>608</x>
-      <y>112</y>
+      <y>64</y>
       <w>24</w>
       <h>520</h>
     </coordinates>
@@ -117,7 +117,7 @@ addFriend()</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>456</x>
-      <y>160</y>
+      <y>112</y>
       <w>168</w>
       <h>32</h>
     </coordinates>
@@ -129,7 +129,7 @@ verifyPseudo()</panel_attributes>
     <id>UMLGeneric</id>
     <coordinates>
       <x>608</x>
-      <y>176</y>
+      <y>128</y>
       <w>16</w>
       <h>128</h>
     </coordinates>
@@ -140,7 +140,7 @@ verifyPseudo()</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>456</x>
-      <y>200</y>
+      <y>152</y>
       <w>168</w>
       <h>40</h>
     </coordinates>
@@ -153,7 +153,7 @@ verifyPseudo()</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>256</x>
-      <y>208</y>
+      <y>160</y>
       <w>208</w>
       <h>48</h>
     </coordinates>
@@ -167,7 +167,7 @@ verifyPseudo()</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>456</x>
-      <y>256</y>
+      <y>208</y>
       <w>168</w>
       <h>32</h>
     </coordinates>
@@ -179,7 +179,7 @@ verifyFfriendsList()</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>456</x>
-      <y>288</y>
+      <y>240</y>
       <w>168</w>
       <h>40</h>
     </coordinates>
@@ -192,7 +192,7 @@ verifyFfriendsList()</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>256</x>
-      <y>304</y>
+      <y>256</y>
       <w>208</w>
       <h>40</h>
     </coordinates>
@@ -205,7 +205,7 @@ verifyFfriendsList()</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>456</x>
-      <y>344</y>
+      <y>296</y>
       <w>320</w>
       <h>40</h>
     </coordinates>
@@ -218,7 +218,7 @@ sendFriendRequest()
     <id>UMLGeneric</id>
     <coordinates>
       <x>760</x>
-      <y>360</y>
+      <y>312</y>
       <w>16</w>
       <h>48</h>
     </coordinates>
@@ -229,7 +229,7 @@ sendFriendRequest()
     <id>Relation</id>
     <coordinates>
       <x>456</x>
-      <y>392</y>
+      <y>344</y>
       <w>320</w>
       <h>48</h>
     </coordinates>
@@ -243,7 +243,7 @@ response
     <id>Relation</id>
     <coordinates>
       <x>456</x>
-      <y>448</y>
+      <y>400</y>
       <w>168</w>
       <h>40</h>
     </coordinates>
@@ -256,7 +256,7 @@ updateFriendsList()
     <id>UMLGeneric</id>
     <coordinates>
       <x>608</x>
-      <y>464</y>
+      <y>416</y>
       <w>16</w>
       <h>56</h>
     </coordinates>
@@ -267,7 +267,7 @@ updateFriendsList()
     <id>Relation</id>
     <coordinates>
       <x>256</x>
-      <y>544</y>
+      <y>496</y>
       <w>208</w>
       <h>40</h>
     </coordinates>
@@ -280,11 +280,22 @@ response</panel_attributes>
     <id>UMLFrame</id>
     <coordinates>
       <x>112</x>
-      <y>72</y>
+      <y>24</y>
       <w>752</w>
       <h>584</h>
     </coordinates>
     <panel_attributes>Add Friend</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>256</x>
+      <y>96</y>
+      <w>16</w>
+      <h>464</h>
+    </coordinates>
+    <panel_attributes/>
     <additional_attributes/>
   </element>
 </diagram>
