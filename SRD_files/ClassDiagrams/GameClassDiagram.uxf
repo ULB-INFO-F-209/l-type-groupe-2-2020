@@ -1,0 +1,691 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>8</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>504</x>
+      <y>1416</y>
+      <w>168</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>PlayerShip
+--
+-bonusStatut:Bonus
+
+--
++shoot(direction):void
++shooted(by_what, type):void
+-catchBonus(Bonus)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1184</x>
+      <y>1248</y>
+      <w>168</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>Projectile
+--
+-damage:int
+-shipType:int
+--
++shooted(by_what, type):void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>912</x>
+      <y>1248</y>
+      <w>168</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>Ship (abstract)
+--
+#HP:int
+#fireRate:(int)
+#dimensions:(int, int)
+
+--
++shoot(direction):void
++shooted(by_what, type):void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>512</x>
+      <y>1640</y>
+      <w>168</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>EnnemyShip
+--
+-dropRate:int
+
+--
++shoot(direction):void
++shooted(by_what, type):void
+-dropBonus()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1448</x>
+      <y>1248</y>
+      <w>168</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>Bonus
+--
+-bonusType:int
+
+--
++shooted(by_what, type):void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>512</x>
+      <y>544</y>
+      <w>168</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>Player
+--
+-nLives:int
+-score:int
+-ship:PlayerShip
+-account:Account
+--
++takeLife()
++newShip(*Ship)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>672</x>
+      <y>1392</y>
+      <w>344</w>
+      <h>328</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>410.0;10.0;410.0;390.0;10.0;390.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>664</x>
+      <y>1480</y>
+      <w>352</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=-</panel_attributes>
+    <additional_attributes>10.0;10.0;420.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1072</x>
+      <y>1304</y>
+      <w>128</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m2=1..*
+owns &gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;140.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>400</x>
+      <y>2000</y>
+      <w>152</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>GameShip 2
+--
+--
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>592</x>
+      <y>2000</y>
+      <w>152</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>GameShip 3
+--
+--
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>792</x>
+      <y>2000</y>
+      <w>152</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>BossShip
+--
+--
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>536</x>
+      <y>1936</y>
+      <w>368</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;440.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>232</x>
+      <y>1936</y>
+      <w>328</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;390.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>232</x>
+      <y>1944</y>
+      <w>24</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>464</x>
+      <y>1944</y>
+      <w>24</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>664</x>
+      <y>1944</y>
+      <w>24</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>880</x>
+      <y>1944</y>
+      <w>24</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>200</x>
+      <y>2000</y>
+      <w>152</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>GameShip 1 
+--
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>584</x>
+      <y>1776</y>
+      <w>24</w>
+      <h>192</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;220.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1136</x>
+      <y>512</y>
+      <w>264</w>
+      <h>208</h>
+    </coordinates>
+    <panel_attributes>CurrentGame
+--
+-nPlayers={1, 2}
+-levels:list
+-dropRate:int
+-listPlayers[nPlayers]:Player
+-positionsBoard[ ]:
+
+
+--
++start_game()
++end_game()
++create_ship(int)
++game_loop()
++updatePositions()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>672</x>
+      <y>600</y>
+      <w>176</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m2=1</panel_attributes>
+    <additional_attributes>200.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1192</x>
+      <y>784</y>
+      <w>152</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>Level
+--
+-difficulty:int
+-nEnnemies:int
+-listEnnemies[ ]:EnnemyShip
+--
++generateLevel()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1256</x>
+      <y>712</y>
+      <w>40</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+
+m2=2..*
+</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>832</x>
+      <y>520</y>
+      <w>176</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>User
+--
+-account=Account
+
+--
++joinLobby()
++inviteLobby()
++openChat(pseudo)
++inviteFriend(pseudo)
++createGame()
+
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>456</x>
+      <y>248</y>
+      <w>192</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>DataBase
+--
+-nbAccount:int
+-accountList[nbAccount]:Account
+
+--
++dspPlayer(string)
++dbSave(DataBase)
++dbLoad(File)
++createAccount(name, pseudo, pswd)
++find(pseudo):int
++verifyLogin(pseudo, pswd)
+
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>640</x>
+      <y>312</y>
+      <w>208</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=0..n
+
+stores &gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;240.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1000</x>
+      <y>600</y>
+      <w>152</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m2=0..1
+
+plays &gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;170.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1192</x>
+      <y>976</y>
+      <w>168</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>Entity (abstract)
+--
+#coordonates:(int, int)
+#vitesse:int
+
+
+--
++move(direction):void
++updateState():
++shooted(by_what, type):void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1264</x>
+      <y>1120</y>
+      <w>272</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0;320.0;90.0;320.0;160.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>984</x>
+      <y>1184</y>
+      <w>304</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=-</panel_attributes>
+    <additional_attributes>360.0;10.0;10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1264</x>
+      <y>1184</y>
+      <w>24</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>672</x>
+      <y>1328</y>
+      <w>936</w>
+      <h>424</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m2=0..1
+drops &gt;</panel_attributes>
+    <additional_attributes>10.0;510.0;1130.0;510.0;1130.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>664</x>
+      <y>1328</y>
+      <w>864</w>
+      <h>216</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m2=0..1
+catches &gt;</panel_attributes>
+    <additional_attributes>10.0;250.0;1040.0;250.0;1040.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>584</x>
+      <y>656</y>
+      <w>32</w>
+      <h>776</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;950.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1352</x>
+      <y>616</y>
+      <w>168</w>
+      <h>464</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+
+m2=2..*</panel_attributes>
+    <additional_attributes>60.0;10.0;190.0;10.0;190.0;550.0;10.0;550.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>1240</x>
+      <y>1408</y>
+      <w>72</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>_shipType_
+1 = Ennemy
+2 = Friend
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1264</x>
+      <y>1328</y>
+      <w>24</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>lt=-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>1712</x>
+      <y>1256</y>
+      <w>112</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>_bonusType_
+1 = doubleshot
+2 = moreDamage
+3 = minigun
+4 = rocket
+5 = bombe ..
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1608</x>
+      <y>1280</y>
+      <w>120</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=-</panel_attributes>
+    <additional_attributes>10.0;10.0;130.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>912</x>
+      <y>400</y>
+      <w>64</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>lt=-
+owns ^</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1168</x>
+      <y>272</y>
+      <w>176</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>Chat
+--
+-user1:Account
+-user2:Account
+-messages[ ]: String
+--
++addMsg(mypseudo,msg)
++printChat()
+
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>1352</x>
+      <y>200</y>
+      <w>112</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>Note..
+Possible ajout de 
+structure(conteneur)
+pour les msg
+
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1000</x>
+      <y>312</y>
+      <w>184</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=2
+m2=0..*
+
+owns &gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;210.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>832</x>
+      <y>208</y>
+      <w>176</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>Account
+--
+-name:string
+-pseudo:string
+-password:string
+-friends:list
+-currentScore:list
+-previousScore:list
+-rankingScore:list
+-chatList[]:Chat
+--
++getData()
++addFriend(pseudo):
++delFriend(pseudo)
++removeFriend(pseudo)
++find_chat(pseudo)
+
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>0</x>
+      <y>1960</y>
+      <w>120</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Note..
+Spécialisations selon
+le niveau</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
