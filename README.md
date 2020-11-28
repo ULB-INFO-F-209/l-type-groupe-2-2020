@@ -9,7 +9,7 @@ Ce Readme est modifiable à votre guise. Nous vous demandons simplement de compl
 |------------|-------------------|
 | jbarber07  | Barber Jeremy     |
 | akinsoen   | Kinsoen Alexandre |
-| aiabdoul   | Abdoul Aziz Aîssa |
+| aiabdoul   | Abdoul Aziz Aïssa |
 | hdemirel01 | Demirel Helin     |
 | mvneste    | Vanneste Martin   |
 | koadegno   | Adegnon Kokou     |
