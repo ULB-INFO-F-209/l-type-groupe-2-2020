@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.3.0">
+  <help_text/>
   <zoom_level>8</zoom_level>
   <element>
     <id>UMLGeneric</id>
@@ -245,7 +246,7 @@ assign_user(User)
     <coordinates>
       <x>544</x>
       <y>248</y>
-      <w>136</w>
+      <w>128</w>
       <h>48</h>
     </coordinates>
     <panel_attributes>lt=-
@@ -420,7 +421,7 @@ settings
     <coordinates>
       <x>840</x>
       <y>640</y>
-      <w>64</w>
+      <w>56</w>
       <h>48</h>
     </coordinates>
     <panel_attributes>lt=-

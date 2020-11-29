@@ -4,8 +4,8 @@
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>378</x>
-      <y>72</y>
+      <x>765</x>
+      <y>180</y>
       <w>90</w>
       <h>27</h>
     </coordinates>
@@ -15,8 +15,8 @@
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>603</x>
-      <y>72</y>
+      <x>990</x>
+      <y>180</y>
       <w>90</w>
       <h>27</h>
     </coordinates>
@@ -26,8 +26,8 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>414</x>
-      <y>90</y>
+      <x>801</x>
+      <y>198</y>
       <w>27</w>
       <h>693</h>
     </coordinates>
@@ -37,8 +37,8 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>639</x>
-      <y>90</y>
+      <x>1026</x>
+      <y>198</y>
       <w>27</w>
       <h>351</h>
     </coordinates>
@@ -48,8 +48,8 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>423</x>
-      <y>144</y>
+      <x>810</x>
+      <y>252</y>
       <w>234</w>
       <h>36</h>
     </coordinates>
@@ -60,8 +60,8 @@ shoot(Enemy)</panel_attributes>
   <element>
     <id>UMLFrame</id>
     <coordinates>
-      <x>108</x>
-      <y>180</y>
+      <x>495</x>
+      <y>288</y>
       <w>819</w>
       <h>324</h>
     </coordinates>
@@ -82,8 +82,8 @@ halign=left
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>639</x>
-      <y>162</y>
+      <x>1026</x>
+      <y>270</y>
       <w>18</w>
       <h>261</h>
     </coordinates>
@@ -93,8 +93,8 @@ halign=left
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>423</x>
-      <y>207</y>
+      <x>810</x>
+      <y>315</y>
       <w>234</w>
       <h>36</h>
     </coordinates>
@@ -105,8 +105,8 @@ bool : False</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>198</x>
-      <y>72</y>
+      <x>585</x>
+      <y>180</y>
       <w>90</w>
       <h>27</h>
     </coordinates>
@@ -116,8 +116,8 @@ bool : False</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>234</x>
-      <y>90</y>
+      <x>621</x>
+      <y>198</y>
       <w>27</w>
       <h>693</h>
     </coordinates>
@@ -127,8 +127,8 @@ bool : False</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>414</x>
-      <y>162</y>
+      <x>801</x>
+      <y>270</y>
       <w>18</w>
       <h>567</h>
     </coordinates>
@@ -138,8 +138,8 @@ bool : False</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>783</x>
-      <y>405</y>
+      <x>1170</x>
+      <y>513</y>
       <w>90</w>
       <h>27</h>
     </coordinates>
@@ -149,8 +149,8 @@ bool : False</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>819</x>
-      <y>423</y>
+      <x>1206</x>
+      <y>531</y>
       <w>27</w>
       <h>261</h>
     </coordinates>
@@ -160,8 +160,8 @@ bool : False</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>819</x>
-      <y>432</y>
+      <x>1206</x>
+      <y>540</y>
       <w>18</w>
       <h>234</h>
     </coordinates>
@@ -171,8 +171,8 @@ bool : False</panel_attributes>
   <element>
     <id>UMLFrame</id>
     <coordinates>
-      <x>522</x>
-      <y>378</y>
+      <x>909</x>
+      <y>486</y>
       <w>387</w>
       <h>90</h>
     </coordinates>
@@ -182,8 +182,8 @@ bool : False</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>423</x>
-      <y>585</y>
+      <x>810</x>
+      <y>693</y>
       <w>414</w>
       <h>36</h>
     </coordinates>
@@ -194,8 +194,8 @@ Bonus</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>243</x>
-      <y>306</y>
+      <x>630</x>
+      <y>414</y>
       <w>189</w>
       <h>36</h>
     </coordinates>
@@ -206,8 +206,8 @@ updateScore()</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>234</x>
-      <y>126</y>
+      <x>621</x>
+      <y>234</y>
       <w>18</w>
       <h>603</h>
     </coordinates>
@@ -217,8 +217,8 @@ updateScore()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>648</x>
-      <y>297</y>
+      <x>1035</x>
+      <y>405</y>
       <w>63</w>
       <h>36</h>
     </coordinates>
@@ -229,9 +229,9 @@ updateScore()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>684</x>
-      <y>306</y>
-      <w>171</w>
+      <x>1071</x>
+      <y>414</y>
+      <w>162</w>
       <h>54</h>
     </coordinates>
     <panel_attributes>lt=-
@@ -241,8 +241,8 @@ shooted(Projectile, bool)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>648</x>
-      <y>333</y>
+      <x>1035</x>
+      <y>441</y>
       <w>63</w>
       <h>27</h>
     </coordinates>
@@ -252,8 +252,8 @@ shooted(Projectile, bool)</panel_attributes>
   <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>630</x>
-      <y>414</y>
+      <x>1017</x>
+      <y>522</y>
       <w>27</w>
       <h>27</h>
     </coordinates>
@@ -263,8 +263,8 @@ shooted(Projectile, bool)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>423</x>
-      <y>549</y>
+      <x>810</x>
+      <y>657</y>
       <w>414</w>
       <h>36</h>
     </coordinates>
@@ -273,21 +273,10 @@ catchBonus(Bonus)</panel_attributes>
     <additional_attributes>440.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
-    <id>UMLGeneric</id>
-    <coordinates>
-      <x>1089</x>
-      <y>81</y>
-      <w>18</w>
-      <h>54</h>
-    </coordinates>
-    <panel_attributes/>
-    <additional_attributes/>
-  </element>
-  <element>
     <id>UMLFrame</id>
     <coordinates>
-      <x>333</x>
-      <y>522</y>
+      <x>720</x>
+      <y>630</y>
       <w>558</w>
       <h>180</h>
     </coordinates>
@@ -310,8 +299,8 @@ halign=left
   <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>810</x>
-      <y>648</y>
+      <x>1197</x>
+      <y>756</y>
       <w>27</w>
       <h>27</h>
     </coordinates>
@@ -321,8 +310,8 @@ halign=left
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>648</x>
-      <y>405</y>
+      <x>1035</x>
+      <y>513</y>
       <w>153</w>
       <h>36</h>
     </coordinates>
@@ -333,8 +322,8 @@ dropBonus()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>423</x>
-      <y>279</y>
+      <x>810</x>
+      <y>387</y>
       <w>234</w>
       <h>36</h>
     </coordinates>
