@@ -55,7 +55,7 @@
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
-delFriend()</panel_attributes>
+delFriend(pseudo)</panel_attributes>
     <additional_attributes>240.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
@@ -77,7 +77,7 @@ delFriend()</panel_attributes>
       <w>100</w>
       <h>30</h>
     </coordinates>
-    <panel_attributes>_:DataBase_</panel_attributes>
+    <panel_attributes>_:Account_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -111,7 +111,7 @@ delFriend()</panel_attributes>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
-verifyFfriendsList()</panel_attributes>
+verifyFriendsList(pseudo)</panel_attributes>
     <additional_attributes>190.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
@@ -124,21 +124,8 @@ verifyFfriendsList()</panel_attributes>
     </coordinates>
     <panel_attributes>lt=&lt;.
 
-[already exists]</panel_attributes>
+exist:bool</panel_attributes>
     <additional_attributes>10.0;20.0;190.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>290</x>
-      <y>310</y>
-      <w>260</w>
-      <h>50</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;.
-
-[already exists]</panel_attributes>
-    <additional_attributes>10.0;20.0;240.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -170,10 +157,11 @@ response</panel_attributes>
       <x>540</x>
       <y>360</y>
       <w>210</w>
-      <h>40</h>
+      <h>50</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
-removeFriend(User1, User2)</panel_attributes>
+removeFriend(pseudo)
+[exist]</panel_attributes>
     <additional_attributes>190.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
