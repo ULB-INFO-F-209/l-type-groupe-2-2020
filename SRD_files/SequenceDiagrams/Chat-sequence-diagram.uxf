@@ -5,8 +5,8 @@
   <element>
     <id>UMLActor</id>
     <coordinates>
-      <x>216</x>
-      <y>24</y>
+      <x>256</x>
+      <y>16</y>
       <w>48</w>
       <h>88</h>
     </coordinates>
@@ -16,8 +16,8 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>232</x>
-      <y>96</y>
+      <x>272</x>
+      <y>88</y>
       <w>24</w>
       <h>512</h>
     </coordinates>
@@ -27,8 +27,8 @@
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>232</x>
-      <y>112</y>
+      <x>272</x>
+      <y>104</y>
       <w>16</w>
       <h>472</h>
     </coordinates>
@@ -38,8 +38,8 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>360</x>
-      <y>56</y>
+      <x>400</x>
+      <y>48</y>
       <w>24</w>
       <h>552</h>
     </coordinates>
@@ -49,8 +49,8 @@
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>328</x>
-      <y>48</y>
+      <x>368</x>
+      <y>40</y>
       <w>80</w>
       <h>16</h>
     </coordinates>
@@ -60,10 +60,10 @@
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>360</x>
-      <y>112</y>
+      <x>400</x>
+      <y>104</y>
       <w>16</w>
-      <h>352</h>
+      <h>472</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes/>
@@ -71,8 +71,8 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>240</x>
-      <y>120</y>
+      <x>280</x>
+      <y>112</y>
       <w>136</w>
       <h>32</h>
     </coordinates>
@@ -83,8 +83,8 @@ openChat(pseudo)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>544</x>
-      <y>56</y>
+      <x>584</x>
+      <y>48</y>
       <w>24</w>
       <h>552</h>
     </coordinates>
@@ -94,8 +94,8 @@ openChat(pseudo)</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>512</x>
-      <y>48</y>
+      <x>552</x>
+      <y>40</y>
       <w>80</w>
       <h>16</h>
     </coordinates>
@@ -105,8 +105,8 @@ openChat(pseudo)</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>544</x>
-      <y>112</y>
+      <x>584</x>
+      <y>104</y>
       <w>16</w>
       <h>208</h>
     </coordinates>
@@ -116,8 +116,8 @@ openChat(pseudo)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>368</x>
-      <y>208</y>
+      <x>408</x>
+      <y>200</y>
       <w>192</w>
       <h>32</h>
     </coordinates>
@@ -128,8 +128,8 @@ find_chat(pseudo)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>368</x>
-      <y>256</y>
+      <x>408</x>
+      <y>248</y>
       <w>192</w>
       <h>32</h>
     </coordinates>
@@ -140,8 +140,8 @@ found_chat: Chat</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>368</x>
-      <y>400</y>
+      <x>408</x>
+      <y>392</y>
       <w>384</w>
       <h>32</h>
     </coordinates>
@@ -152,8 +152,8 @@ addMsg(mypseudo,msg)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>552</x>
-      <y>440</y>
+      <x>592</x>
+      <y>432</y>
       <w>200</w>
       <h>32</h>
     </coordinates>
@@ -164,8 +164,8 @@ incMsgUnread(otherPseudo)</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>704</x>
-      <y>48</y>
+      <x>744</x>
+      <y>40</y>
       <w>80</w>
       <h>16</h>
     </coordinates>
@@ -175,10 +175,10 @@ incMsgUnread(otherPseudo)</panel_attributes>
   <element>
     <id>UMLFrame</id>
     <coordinates>
-      <x>104</x>
-      <y>184</y>
-      <w>536</w>
-      <h>304</h>
+      <x>144</x>
+      <y>176</y>
+      <w>712</w>
+      <h>344</h>
     </coordinates>
     <panel_attributes>if find(pseudo) == true
 </panel_attributes>
@@ -187,8 +187,8 @@ incMsgUnread(otherPseudo)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>368</x>
-      <y>320</y>
+      <x>408</x>
+      <y>312</y>
       <w>384</w>
       <h>32</h>
     </coordinates>
@@ -199,8 +199,8 @@ incMsgUnread(otherPseudo)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>736</x>
-      <y>56</y>
+      <x>776</x>
+      <y>48</y>
       <w>24</w>
       <h>544</h>
     </coordinates>
@@ -210,8 +210,8 @@ incMsgUnread(otherPseudo)</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>736</x>
-      <y>264</y>
+      <x>776</x>
+      <y>256</y>
       <w>16</w>
       <h>240</h>
     </coordinates>
@@ -221,8 +221,8 @@ incMsgUnread(otherPseudo)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>240</x>
-      <y>344</y>
+      <x>280</x>
+      <y>336</y>
       <w>136</w>
       <h>32</h>
     </coordinates>
@@ -233,8 +233,8 @@ enterMsg()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>240</x>
-      <y>376</y>
+      <x>280</x>
+      <y>368</y>
       <w>136</w>
       <h>32</h>
     </coordinates>
@@ -245,8 +245,8 @@ msg</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>544</x>
-      <y>440</y>
+      <x>584</x>
+      <y>432</y>
       <w>16</w>
       <h>40</h>
     </coordinates>
