@@ -127,11 +127,12 @@
 --
 -nLives:int
 -score:int
--ship:PlayerShip
 -account:Account
+-ship: *PlayerShip
 --
 +takeLife()
-+newShip():*PlayerShip</panel_attributes>
++newShip():*PlayerShip
++updateScore()</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -319,7 +320,6 @@ owns &gt;</panel_attributes>
 -levels:list
 -dropRate:int
 -listPlayers[nPlayers]:Player
--positionsBoard[ ]:
 
 
 --
@@ -327,8 +327,7 @@ owns &gt;</panel_attributes>
 +end_game()
 +create_ship(int)
 +game_loop()
-+updatePositions()
-+checkCollisions()</panel_attributes>
++updatePositions()</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -448,13 +447,13 @@ stores &gt;</panel_attributes>
 --
 #coordonates:(int, int)
 #vitesse:int
-
+#(static)positionsBoard[ ]:
 
 --
 +move(direction):void
 +updateState():
 +touched(by_what, type):void
-</panel_attributes>
++checkCollisions()</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
