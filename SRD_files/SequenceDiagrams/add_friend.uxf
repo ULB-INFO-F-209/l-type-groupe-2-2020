@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.3.0">
-  <zoom_level>9</zoom_level>
+  <zoom_level>11</zoom_level>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>234</x>
-      <y>81</y>
-      <w>90</w>
-      <h>27</h>
+      <x>715</x>
+      <y>253</y>
+      <w>110</w>
+      <h>33</h>
     </coordinates>
     <panel_attributes>_:User1_</panel_attributes>
     <additional_attributes/>
@@ -15,10 +15,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>270</x>
-      <y>99</y>
-      <w>27</w>
-      <h>585</h>
+      <x>759</x>
+      <y>275</y>
+      <w>33</w>
+      <h>715</h>
     </coordinates>
     <panel_attributes>lt=.
 </panel_attributes>
@@ -27,10 +27,10 @@
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>450</x>
-      <y>81</y>
-      <w>90</w>
-      <h>27</h>
+      <x>979</x>
+      <y>253</y>
+      <w>110</w>
+      <h>33</h>
     </coordinates>
     <panel_attributes>_:server_</panel_attributes>
     <additional_attributes/>
@@ -38,10 +38,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>486</x>
-      <y>99</y>
-      <w>27</w>
-      <h>585</h>
+      <x>1023</x>
+      <y>275</y>
+      <w>33</w>
+      <h>715</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;630.0</additional_attributes>
@@ -49,10 +49,10 @@
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>801</x>
-      <y>81</y>
-      <w>90</w>
-      <h>27</h>
+      <x>1408</x>
+      <y>253</y>
+      <w>110</w>
+      <h>33</h>
     </coordinates>
     <panel_attributes>_:User2_</panel_attributes>
     <additional_attributes/>
@@ -60,10 +60,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>837</x>
-      <y>99</y>
-      <w>27</w>
-      <h>585</h>
+      <x>1452</x>
+      <y>275</y>
+      <w>33</w>
+      <h>715</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;630.0</additional_attributes>
@@ -71,10 +71,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>270</x>
-      <y>126</y>
-      <w>234</w>
-      <h>36</h>
+      <x>759</x>
+      <y>308</y>
+      <w>286</w>
+      <h>44</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
 addFriend(pseudo)</panel_attributes>
@@ -83,10 +83,10 @@ addFriend(pseudo)</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>486</x>
-      <y>144</y>
-      <w>18</w>
-      <h>459</h>
+      <x>1023</x>
+      <y>330</y>
+      <w>22</w>
+      <h>561</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes/>
@@ -94,10 +94,10 @@ addFriend(pseudo)</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>630</x>
-      <y>81</y>
-      <w>90</w>
-      <h>27</h>
+      <x>1199</x>
+      <y>253</y>
+      <w>110</w>
+      <h>33</h>
     </coordinates>
     <panel_attributes>_:DataBase_</panel_attributes>
     <additional_attributes/>
@@ -105,10 +105,10 @@ addFriend(pseudo)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>666</x>
-      <y>99</y>
-      <w>27</w>
-      <h>585</h>
+      <x>1243</x>
+      <y>275</y>
+      <w>33</w>
+      <h>715</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;630.0</additional_attributes>
@@ -116,10 +116,10 @@ addFriend(pseudo)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>495</x>
-      <y>153</y>
-      <w>189</w>
-      <h>36</h>
+      <x>1034</x>
+      <y>341</y>
+      <w>231</w>
+      <h>44</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
 verifyPseudo(pseudo)</panel_attributes>
@@ -128,10 +128,10 @@ verifyPseudo(pseudo)</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>666</x>
-      <y>171</y>
-      <w>18</w>
-      <h>144</h>
+      <x>1243</x>
+      <y>363</y>
+      <w>22</w>
+      <h>176</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes/>
@@ -139,23 +139,23 @@ verifyPseudo(pseudo)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>495</x>
-      <y>198</y>
-      <w>189</w>
-      <h>45</h>
+      <x>1034</x>
+      <y>396</y>
+      <w>231</w>
+      <h>55</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 
-[not found]</panel_attributes>
+found:Bool</panel_attributes>
     <additional_attributes>10.0;20.0;190.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>270</x>
-      <y>207</y>
-      <w>234</w>
-      <h>54</h>
+      <x>759</x>
+      <y>407</y>
+      <w>286</w>
+      <h>66</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 
@@ -166,61 +166,63 @@ verifyPseudo(pseudo)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>495</x>
-      <y>261</y>
-      <w>189</w>
-      <h>36</h>
+      <x>1034</x>
+      <y>473</y>
+      <w>231</w>
+      <h>66</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
-verifyFfriendsList(pseudo)</panel_attributes>
+verifyFfriendsList(pseudo)
+[found]
+</panel_attributes>
     <additional_attributes>190.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>495</x>
-      <y>297</y>
-      <w>189</w>
-      <h>45</h>
+      <x>1034</x>
+      <y>517</y>
+      <w>231</w>
+      <h>55</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 
-[already exists]</panel_attributes>
+FriendExists:Bool</panel_attributes>
     <additional_attributes>10.0;20.0;190.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>270</x>
-      <y>315</y>
-      <w>234</w>
-      <h>45</h>
+      <x>759</x>
+      <y>539</y>
+      <w>286</w>
+      <h>55</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 
-[already exists]</panel_attributes>
+[FriendExists]</panel_attributes>
     <additional_attributes>10.0;20.0;240.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>495</x>
-      <y>360</y>
-      <w>360</w>
-      <h>45</h>
+      <x>1034</x>
+      <y>594</y>
+      <w>440</w>
+      <h>55</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
 sendFriendRequest()
-[username found and not friend]</panel_attributes>
+[not FriendExists]</panel_attributes>
     <additional_attributes>380.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>837</x>
-      <y>378</y>
-      <w>18</w>
-      <h>54</h>
+      <x>1452</x>
+      <y>616</y>
+      <w>22</w>
+      <h>66</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes/>
@@ -228,10 +230,10 @@ sendFriendRequest()
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>495</x>
-      <y>414</y>
-      <w>360</w>
-      <h>54</h>
+      <x>1034</x>
+      <y>660</y>
+      <w>440</w>
+      <h>66</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 
@@ -242,12 +244,12 @@ response
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>495</x>
-      <y>477</y>
-      <w>189</w>
-      <h>45</h>
+      <x>1034</x>
+      <y>737</y>
+      <w>231</w>
+      <h>55</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;-
+    <panel_attributes>lt=&lt;-
 updateFriendsList()
 [accepted]</panel_attributes>
     <additional_attributes>190.0;20.0;10.0;20.0</additional_attributes>
@@ -255,10 +257,10 @@ updateFriendsList()
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>666</x>
-      <y>495</y>
-      <w>18</w>
-      <h>63</h>
+      <x>1243</x>
+      <y>759</y>
+      <w>22</w>
+      <h>77</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes/>
@@ -266,10 +268,10 @@ updateFriendsList()
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>270</x>
-      <y>585</y>
-      <w>234</w>
-      <h>45</h>
+      <x>759</x>
+      <y>869</y>
+      <w>286</w>
+      <h>55</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 
@@ -277,23 +279,12 @@ response</panel_attributes>
     <additional_attributes>10.0;20.0;240.0;20.0</additional_attributes>
   </element>
   <element>
-    <id>UMLFrame</id>
-    <coordinates>
-      <x>108</x>
-      <y>54</y>
-      <w>846</w>
-      <h>657</h>
-    </coordinates>
-    <panel_attributes>Add Friend</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>270</x>
-      <y>135</y>
-      <w>18</w>
-      <h>522</h>
+      <x>759</x>
+      <y>319</y>
+      <w>22</w>
+      <h>638</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes/>
