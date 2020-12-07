@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>8</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>368</x>
+      <y>368</y>
+      <w>176</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>Client
+--
+
+--
++joinLobby()
++inviteLobby(pseudo)
++openChat(pseudo)
++inviteFriend(pseudo)
++createGame()
++delFriend(pseudo)
++signIn()
++signUp()
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>664</y>
+      <w>192</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>DataBase
+--
+-nbAccount:int
+-accountList[nbAccount]:Account
+-chatList[]:Chat
+--
++dspPlayer(string)
++dbSave(DataBase)
++dbLoad(File)
++createAccount(name, pseudo, pswd)
++find(pseudo):int
++verifyLogin(pseudo, pswd)
+
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>184</x>
+      <y>728</y>
+      <w>208</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=0..*
+
+stores &gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;240.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>712</x>
+      <y>688</y>
+      <w>176</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>Chat
+--
+-user1:Account
+-user2:Account
+-messages[ ]: String
+--
++addMsg(mypseudo,msg)
++printChat()
+
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>992</x>
+      <y>568</y>
+      <w>112</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>Note..
+Possible ajout de 
+structure(conteneur)
+pour les msg
+
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>544</x>
+      <y>728</y>
+      <w>184</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=2
+m2=0..*
+
+owns &gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;210.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>376</x>
+      <y>624</y>
+      <w>176</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>Account
+--
+-name:string
+-pseudo:string
+-password:string
+-friends:list
+-currentScore:list
+-previousScore:list
+-rankingScore:list
+-chatList[]:*Chat
+--
++getData()
++removeFriend(pseudo)
++find_chat(pseudo)
++verifyFriendsList(pseudo)
++addFriend(pseudo)
+
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>968</x>
+      <y>872</y>
+      <w>184</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>Est il necessaire de rajouter 
+une classe Lobby
+
+bg=red</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>368</y>
+      <w>192</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>Server
+--
+-dataBase:*DataBase
+-fileName:string
+-connectedClients[]:ConnectedClient
+--
++signIn()
++signUp()
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>80</x>
+      <y>512</y>
+      <w>64</w>
+      <h>168</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=
+m2=
+
+owns v</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;190.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>184</x>
+      <y>432</y>
+      <w>200</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=0..*
+&lt; use</panel_attributes>
+    <additional_attributes>10.0;20.0;230.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>192</y>
+      <w>192</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>ConnectedClient
+--
+-client:pidt
+-account:Account
+--
+
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>80</x>
+      <y>248</y>
+      <w>64</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=0..*
+
+owns ^</panel_attributes>
+    <additional_attributes>10.0;150.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1496</x>
+      <y>192</y>
+      <w>192</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>Menu
+--
+
+
+
+
+--
+
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>376</x>
+      <y>128</y>
+      <w>192</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>Lobby
+--
+
+
+
+
+--
+
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1224</x>
+      <y>432</y>
+      <w>152</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>StartMenu
+--
+
+
+
+
+--
+
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1424</x>
+      <y>432</y>
+      <w>152</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>MainMenu
+--
+
+
+
+
+--
+
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1616</x>
+      <y>432</y>
+      <w>152</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>LobbyMenu
+--
+
+
+
+
+--
+
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1808</x>
+      <y>432</y>
+      <w>160</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>FriendsMenu
+--
+
+
+
+
+--
+
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
