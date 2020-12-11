@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.3.0">
-  <zoom_level>13</zoom_level>
+  <zoom_level>11</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>754</x>
-      <y>390</y>
-      <w>286</w>
-      <h>260</h>
+      <x>1419</x>
+      <y>594</y>
+      <w>242</w>
+      <h>220</h>
     </coordinates>
     <panel_attributes>Client
 --
@@ -27,10 +27,10 @@ bg=green</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>156</x>
-      <y>871</y>
-      <w>312</w>
-      <h>247</h>
+      <x>913</x>
+      <y>1001</y>
+      <w>264</w>
+      <h>209</h>
     </coordinates>
     <panel_attributes>DataBase
 --
@@ -51,10 +51,10 @@ bg=green</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>455</x>
-      <y>975</y>
-      <w>338</w>
-      <h>65</h>
+      <x>1166</x>
+      <y>1089</y>
+      <w>286</w>
+      <h>55</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -66,10 +66,10 @@ stores &gt;</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1313</x>
-      <y>910</y>
-      <w>286</w>
-      <h>182</h>
+      <x>374</x>
+      <y>594</y>
+      <w>242</w>
+      <h>154</h>
     </coordinates>
     <panel_attributes>Chat
 --
@@ -84,43 +84,27 @@ bg=green</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLNote</id>
-    <coordinates>
-      <x>1768</x>
-      <y>715</y>
-      <w>182</w>
-      <h>104</h>
-    </coordinates>
-    <panel_attributes>Note..
-Possible ajout de 
-structure(conteneur)
-pour les msg
-
-bg=green</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
     <id>Relation</id>
     <coordinates>
-      <x>1040</x>
-      <y>975</y>
-      <w>299</w>
-      <h>65</h>
+      <x>605</x>
+      <y>660</y>
+      <w>330</w>
+      <h>55</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=2
 m2=0..*
 
 owns &gt;</panel_attributes>
-    <additional_attributes>10.0;20.0;210.0;20.0</additional_attributes>
+    <additional_attributes>280.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>767</x>
-      <y>806</y>
-      <w>286</w>
-      <h>325</h>
+      <x>1430</x>
+      <y>946</y>
+      <w>242</w>
+      <h>275</h>
     </coordinates>
     <panel_attributes>Account
 --
@@ -143,26 +127,12 @@ bg=green</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLNote</id>
-    <coordinates>
-      <x>1729</x>
-      <y>1209</y>
-      <w>299</w>
-      <h>130</h>
-    </coordinates>
-    <panel_attributes>Est il necessaire de rajouter 
-une classe Lobby
-
-bg=red</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>156</x>
-      <y>390</y>
-      <w>312</w>
-      <h>247</h>
+      <x>913</x>
+      <y>594</y>
+      <w>264</w>
+      <h>209</h>
     </coordinates>
     <panel_attributes>Server
 --
@@ -177,10 +147,10 @@ bg=green</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>286</x>
-      <y>624</y>
-      <w>104</w>
-      <h>273</h>
+      <x>1023</x>
+      <y>792</y>
+      <w>88</w>
+      <h>231</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=
@@ -192,10 +162,10 @@ owns v</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>455</x>
-      <y>494</y>
-      <w>325</w>
-      <h>65</h>
+      <x>1166</x>
+      <y>682</y>
+      <w>275</w>
+      <h>55</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -206,10 +176,10 @@ m2=0..*
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>156</x>
-      <y>104</y>
-      <w>312</w>
-      <h>104</h>
+      <x>913</x>
+      <y>352</y>
+      <w>264</w>
+      <h>88</h>
     </coordinates>
     <panel_attributes>ConnectedClient
 --
@@ -223,10 +193,10 @@ bg=green</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>286</x>
-      <y>195</y>
-      <w>104</w>
-      <h>221</h>
+      <x>1023</x>
+      <y>429</y>
+      <w>88</w>
+      <h>187</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -238,29 +208,10 @@ owns ^</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>2587</x>
-      <y>104</y>
-      <w>312</w>
-      <h>260</h>
-    </coordinates>
-    <panel_attributes>Menu
---
-
-
-
-
---
-
-bg=green</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>767</x>
-      <y>0</y>
-      <w>312</w>
-      <h>247</h>
+      <x>1430</x>
+      <y>264</y>
+      <w>264</w>
+      <h>209</h>
     </coordinates>
     <panel_attributes>Lobby
 --
@@ -276,18 +227,44 @@ bg=green</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>2145</x>
-      <y>494</y>
-      <w>247</w>
-      <h>221</h>
+      <x>242</x>
+      <y>0</y>
+      <w>242</w>
+      <h>176</h>
     </coordinates>
-    <panel_attributes>StartMenu
+    <panel_attributes>Chat
 --
-
-
-
+-pseudo
+-chatFiles[ ]:string
 
 --
+FileExist(filename)
+ReadChat()
+AddMessage(message)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>363</x>
+      <y>242</y>
+      <w>264</w>
+      <h>231</h>
+    </coordinates>
+    <panel_attributes>DataBase
+--
+-nbAccount:int
+-accountList[nbAccount]:Account
+-chatFiles[ ]:string
+--
++dspPlayer(string)
++dbSave(DataBase)
++dbLoad(File)
++createAccount(name, pseudo, pswd)
++find(pseudo):int
++verifyLogin(pseudo, pswd)
++getChatNames(pseudo, list)
++createChatFile(chatName)
 
 bg=green</panel_attributes>
     <additional_attributes/>
@@ -295,57 +272,20 @@ bg=green</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>2470</x>
-      <y>494</y>
-      <w>247</w>
-      <h>221</h>
+      <x>77</x>
+      <y>242</y>
+      <w>264</w>
+      <h>231</h>
     </coordinates>
-    <panel_attributes>MainMenu
+    <panel_attributes>Server
 --
-
-
-
-
+-dataBase:*DataBase
+-fileName:string
+-connectedClients[]:ConnectedClient
+-connectedChats[ ]:Chat
 --
-
-bg=green</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>2782</x>
-      <y>494</y>
-      <w>247</w>
-      <h>221</h>
-    </coordinates>
-    <panel_attributes>LobbyMenu
---
-
-
-
-
---
-
-bg=green</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>3094</x>
-      <y>494</y>
-      <w>260</w>
-      <h>221</h>
-    </coordinates>
-    <panel_attributes>FriendsMenu
---
-
-
-
-
---
-
++signIn()
++signUp()
 bg=green</panel_attributes>
     <additional_attributes/>
   </element>
