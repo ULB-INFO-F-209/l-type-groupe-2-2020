@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.3.0">
-  <zoom_level>8</zoom_level>
+  <zoom_level>12</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>664</x>
-      <y>560</y>
-      <w>232</w>
-      <h>272</h>
+      <x>864</x>
+      <y>360</y>
+      <w>348</w>
+      <h>432</h>
     </coordinates>
     <panel_attributes>_Client_
 --
 -positionsBoard[MapObjects]: MapObject
--currentgameID:int
--playerID:int
+-currentGameID:int
+-firstPlayer:bool
 -inGame:bool
 
 --
@@ -30,17 +30,18 @@
 +signIn()
 +signUp()
 +setSettings()
-+checkleaderboard()
-</panel_attributes>
++checkLeaderboard()
++dspUnreadMessages()
+group=1</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>360</x>
-      <y>344</y>
-      <w>184</w>
-      <h>40</h>
+      <x>408</x>
+      <y>48</y>
+      <w>276</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>Voir plus de 
 méthode en fonction de l'affichage 
@@ -50,14 +51,14 @@ bg=blue</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1248</x>
-      <y>392</y>
-      <w>216</w>
-      <h>168</h>
+      <x>1740</x>
+      <y>120</y>
+      <w>324</w>
+      <h>252</h>
     </coordinates>
     <panel_attributes>_Input_
 --
--real_input:str
+-realInput:str
 
 --
 +checkValidMenuInput(real_input)
@@ -67,23 +68,23 @@ bg=blue</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>760</x>
-      <y>440</y>
-      <w>504</w>
-      <h>136</h>
+      <x>1008</x>
+      <y>192</y>
+      <w>756</w>
+      <h>192</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-
 m1=1
 m2=1</panel_attributes>
-    <additional_attributes>10.0;150.0;10.0;10.0;610.0;10.0</additional_attributes>
+    <additional_attributes>10.0;140.0;10.0;10.0;610.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>216</x>
-      <y>400</y>
-      <w>256</w>
-      <h>80</h>
+      <x>192</x>
+      <y>132</y>
+      <w>384</w>
+      <h>120</h>
     </coordinates>
     <panel_attributes>_Display_
 --
@@ -93,32 +94,32 @@ m2=1</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1304</x>
-      <y>776</y>
-      <w>168</w>
-      <h>136</h>
+      <x>1824</x>
+      <y>696</y>
+      <w>252</w>
+      <h>204</h>
     </coordinates>
-    <panel_attributes>Menu (abstract)
+    <panel_attributes>_Menu (abstract)_
 --
 #currentMenu(static):StartMenu
-#real_input:str
-#listvalidinputs[]:str
+#realInput:str
+#listValidInputs[]:str
 --
 +checkValidInput()
-+getcurrentMenu()</panel_attributes>
++getCurrentMenu()</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1000</x>
-      <y>1008</y>
-      <w>152</w>
-      <h>56</h>
+      <x>1368</x>
+      <y>1044</y>
+      <w>228</w>
+      <h>84</h>
     </coordinates>
-    <panel_attributes>StartMenu
+    <panel_attributes>_StartMenu_
 --
--listvalidinputs[]:str
+-listValidInputs[]:str
 --
 +checkValidInput()
 </panel_attributes>
@@ -127,14 +128,14 @@ m2=1</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1200</x>
-      <y>1008</y>
-      <w>152</w>
-      <h>56</h>
+      <x>1668</x>
+      <y>1044</y>
+      <w>228</w>
+      <h>84</h>
     </coordinates>
-    <panel_attributes>MainMenu
+    <panel_attributes>_MainMenu_
 --
--listvalidinputs[]:str
+-listValidInputs[]:str
 --
 +checkValidInput()</panel_attributes>
     <additional_attributes/>
@@ -142,14 +143,14 @@ m2=1</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1392</x>
-      <y>1008</y>
-      <w>152</w>
-      <h>56</h>
+      <x>1956</x>
+      <y>1044</y>
+      <w>228</w>
+      <h>84</h>
     </coordinates>
-    <panel_attributes>LobbyMenu
+    <panel_attributes>_LobbyMenu_
 --
--listvalidinputs[]:str
+-listValidInputs[]:str
 --
 +checkValidInput()
 </panel_attributes>
@@ -158,14 +159,14 @@ m2=1</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1584</x>
-      <y>1008</y>
-      <w>160</w>
-      <h>56</h>
+      <x>2244</x>
+      <y>1044</y>
+      <w>240</w>
+      <h>84</h>
     </coordinates>
-    <panel_attributes>FriendsMenu
+    <panel_attributes>_FriendsMenu_
 --
--listvalidinputs[]:str
+-listValidInputs[]:str
 --
 +checkValidInput()
 </panel_attributes>
@@ -174,10 +175,10 @@ m2=1</panel_attributes>
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>1488</x>
-      <y>808</y>
-      <w>112</w>
-      <h>56</h>
+      <x>2100</x>
+      <y>744</y>
+      <w>168</w>
+      <h>84</h>
     </coordinates>
     <panel_attributes>Prédiction de menu
 bg=blue</panel_attributes>
@@ -186,10 +187,10 @@ bg=blue</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1384</x>
-      <y>904</y>
-      <w>272</w>
-      <h>120</h>
+      <x>1944</x>
+      <y>888</y>
+      <w>408</w>
+      <h>180</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;80.0;320.0;80.0;320.0;130.0</additional_attributes>
@@ -197,10 +198,10 @@ bg=blue</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1264</x>
-      <y>960</y>
-      <w>144</w>
-      <h>64</h>
+      <x>1764</x>
+      <y>972</y>
+      <w>216</w>
+      <h>96</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes>10.0;60.0;10.0;10.0;160.0;10.0</additional_attributes>
@@ -208,10 +209,10 @@ bg=blue</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1056</x>
-      <y>960</y>
-      <w>232</w>
-      <h>64</h>
+      <x>1452</x>
+      <y>972</y>
+      <w>348</w>
+      <h>96</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes>10.0;60.0;10.0;10.0;270.0;10.0</additional_attributes>
@@ -219,10 +220,10 @@ bg=blue</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1448</x>
-      <y>960</y>
-      <w>24</w>
-      <h>64</h>
+      <x>2040</x>
+      <y>972</y>
+      <w>36</w>
+      <h>96</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
@@ -230,10 +231,10 @@ bg=blue</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1376</x>
-      <y>552</y>
-      <w>56</w>
-      <h>240</h>
+      <x>1932</x>
+      <y>360</y>
+      <w>84</w>
+      <h>360</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -244,24 +245,24 @@ uses ^</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>744</x>
-      <y>824</y>
-      <w>576</w>
-      <h>104</h>
+      <x>984</x>
+      <y>780</y>
+      <w>864</w>
+      <h>144</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
 m2=1
 &lt; uses</panel_attributes>
-    <additional_attributes>700.0;100.0;10.0;100.0;10.0;10.0</additional_attributes>
+    <additional_attributes>700.0;90.0;10.0;90.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>344</x>
-      <y>472</y>
-      <w>336</w>
-      <h>232</h>
+      <x>384</x>
+      <y>240</y>
+      <w>504</w>
+      <h>348</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -272,10 +273,10 @@ uses &gt;</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>184</x>
-      <y>720</y>
-      <w>168</w>
-      <h>56</h>
+      <x>144</x>
+      <y>612</y>
+      <w>252</w>
+      <h>84</h>
     </coordinates>
     <panel_attributes>_Server_
 --</panel_attributes>
@@ -284,10 +285,10 @@ uses &gt;</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>344</x>
-      <y>712</y>
-      <w>336</w>
-      <h>40</h>
+      <x>384</x>
+      <y>600</y>
+      <w>504</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -299,10 +300,10 @@ send Informations &gt;
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>344</x>
-      <y>752</y>
-      <w>336</w>
-      <h>40</h>
+      <x>384</x>
+      <y>660</y>
+      <w>504</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
