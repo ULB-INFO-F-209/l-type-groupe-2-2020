@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.3.0">
   <help_text/>
-  <zoom_level>17</zoom_level>
+  <zoom_level>7</zoom_level>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>323</x>
-      <y>85</y>
-      <w>51</w>
-      <h>1156</h>
+      <x>259</x>
+      <y>42</y>
+      <w>21</w>
+      <h>476</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;660.0</additional_attributes>
@@ -16,10 +16,10 @@
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>323</x>
-      <y>187</y>
-      <w>34</w>
-      <h>969</h>
+      <x>259</x>
+      <y>84</y>
+      <w>14</w>
+      <h>399</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes/>
@@ -27,10 +27,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>595</x>
-      <y>102</y>
-      <w>51</w>
-      <h>1139</h>
+      <x>385</x>
+      <y>49</y>
+      <w>21</w>
+      <h>469</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;650.0</additional_attributes>
@@ -38,10 +38,10 @@
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>884</x>
-      <y>68</y>
-      <w>170</w>
-      <h>51</h>
+      <x>616</x>
+      <y>35</y>
+      <w>70</w>
+      <h>21</h>
     </coordinates>
     <panel_attributes>_:DataBase_</panel_attributes>
     <additional_attributes/>
@@ -49,10 +49,10 @@
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>595</x>
-      <y>187</y>
-      <w>34</w>
-      <h>969</h>
+      <x>385</x>
+      <y>84</y>
+      <w>14</w>
+      <h>399</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes/>
@@ -60,161 +60,83 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>340</x>
-      <y>204</y>
-      <w>289</w>
-      <h>68</h>
+      <x>266</x>
+      <y>91</y>
+      <w>133</w>
+      <h>28</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
 openChat(pseudo)</panel_attributes>
-    <additional_attributes>150.0;20.0;10.0;20.0</additional_attributes>
+    <additional_attributes>170.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1207</x>
-      <y>102</y>
-      <w>51</w>
-      <h>1122</h>
-    </coordinates>
-    <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;640.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLGeneric</id>
-    <coordinates>
-      <x>1139</x>
-      <y>68</y>
-      <w>170</w>
-      <h>51</h>
-    </coordinates>
-    <panel_attributes>_:Account_</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>612</x>
-      <y>357</y>
-      <w>374</w>
-      <h>85</h>
+      <x>392</x>
+      <y>154</y>
+      <w>266</w>
+      <h>28</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
-findChat(pseudo)
+findChatFile(filename)
 [found]</panel_attributes>
-    <additional_attributes>200.0;20.0;10.0;20.0</additional_attributes>
+    <additional_attributes>360.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>612</x>
-      <y>799</y>
-      <w>969</w>
-      <h>68</h>
+      <x>392</x>
+      <y>336</y>
+      <w>266</w>
+      <h>28</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
-addMsg(mypseudo,msg)</panel_attributes>
-    <additional_attributes>550.0;20.0;10.0;20.0</additional_attributes>
+addMessage(message,filename,myPseudo)</panel_attributes>
+    <additional_attributes>360.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1224</x>
-      <y>918</y>
-      <w>357</w>
-      <h>68</h>
+      <x>392</x>
+      <y>280</y>
+      <w>266</w>
+      <h>28</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
- incMsgUnread(otherPseudo)</panel_attributes>
-    <additional_attributes>10.0;20.0;190.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLGeneric</id>
-    <coordinates>
-      <x>1496</x>
-      <y>425</y>
-      <w>136</w>
-      <h>51</h>
-    </coordinates>
-    <panel_attributes>_:Chat_</panel_attributes>
-    <additional_attributes/>
+printChat(filename)</panel_attributes>
+    <additional_attributes>360.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>612</x>
-      <y>663</y>
-      <w>969</w>
-      <h>68</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-
-printChat(Chat)</panel_attributes>
-    <additional_attributes>550.0;20.0;10.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1547</x>
-      <y>459</y>
-      <w>51</w>
-      <h>731</h>
-    </coordinates>
-    <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;410.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLGeneric</id>
-    <coordinates>
-      <x>1547</x>
-      <y>476</y>
-      <w>34</w>
-      <h>663</h>
-    </coordinates>
-    <panel_attributes/>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>340</x>
-      <y>714</y>
-      <w>289</w>
-      <h>68</h>
+      <x>266</x>
+      <y>301</y>
+      <w>133</w>
+      <h>28</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
-sendMsg()</panel_attributes>
-    <additional_attributes>150.0;20.0;10.0;20.0</additional_attributes>
+sendMessage(message)</panel_attributes>
+    <additional_attributes>170.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>340</x>
-      <y>816</y>
-      <w>289</w>
-      <h>68</h>
+      <x>266</x>
+      <y>350</y>
+      <w>133</w>
+      <h>28</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 send_status</panel_attributes>
-    <additional_attributes>10.0;20.0;150.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;170.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>1207</x>
-      <y>935</y>
-      <w>34</w>
-      <h>85</h>
-    </coordinates>
-    <panel_attributes/>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLGeneric</id>
-    <coordinates>
-      <x>544</x>
-      <y>68</y>
-      <w>153</w>
-      <h>51</h>
+      <x>364</x>
+      <y>35</y>
+      <w>63</w>
+      <h>21</h>
     </coordinates>
     <panel_attributes>_:Server_</panel_attributes>
     <additional_attributes/>
@@ -222,10 +144,10 @@ send_status</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>952</x>
-      <y>102</y>
-      <w>51</w>
-      <h>1122</h>
+      <x>644</x>
+      <y>49</y>
+      <w>21</w>
+      <h>462</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;640.0</additional_attributes>
@@ -233,10 +155,10 @@ send_status</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>952</x>
-      <y>187</y>
-      <w>34</w>
-      <h>969</h>
+      <x>644</x>
+      <y>84</y>
+      <w>14</w>
+      <h>399</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes/>
@@ -244,48 +166,49 @@ send_status</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>612</x>
-      <y>255</y>
-      <w>374</w>
-      <h>68</h>
+      <x>392</x>
+      <y>112</y>
+      <w>266</w>
+      <h>28</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
 find(pseudo)</panel_attributes>
-    <additional_attributes>200.0;20.0;10.0;20.0</additional_attributes>
+    <additional_attributes>360.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>612</x>
-      <y>289</y>
-      <w>374</w>
-      <h>68</h>
+      <x>392</x>
+      <y>126</y>
+      <w>266</w>
+      <h>28</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 found:Bool</panel_attributes>
-    <additional_attributes>10.0;20.0;200.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;360.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>612</x>
-      <y>425</y>
-      <w>374</w>
-      <h>68</h>
+      <x>392</x>
+      <y>189</y>
+      <w>266</w>
+      <h>28</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
-createChat(Account)</panel_attributes>
-    <additional_attributes>200.0;20.0;10.0;20.0</additional_attributes>
+createChatFile()</panel_attributes>
+    <additional_attributes>360.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLFrame</id>
     <coordinates>
-      <x>102</x>
-      <y>425</y>
-      <w>1632</w>
-      <h>136</h>
+      <x>91</x>
+      <y>182</y>
+      <w>602</w>
+      <h>56</h>
     </coordinates>
-    <panel_attributes>[not findChat(pseudo)]
+    <panel_attributes>[not
+ findChatFile (filename)]
 --
 
 halign=left
@@ -298,10 +221,10 @@ halign=left
   <element>
     <id>UMLFrame</id>
     <coordinates>
-      <x>102</x>
-      <y>663</y>
-      <w>1632</w>
-      <h>425</h>
+      <x>91</x>
+      <y>280</y>
+      <w>749</w>
+      <h>175</h>
     </coordinates>
     <panel_attributes>while Chat open</panel_attributes>
     <additional_attributes/>
@@ -309,10 +232,10 @@ halign=left
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>255</x>
-      <y>68</y>
-      <w>170</w>
-      <h>51</h>
+      <x>231</x>
+      <y>35</y>
+      <w>70</w>
+      <h>21</h>
     </coordinates>
     <panel_attributes>_:Client_</panel_attributes>
     <additional_attributes/>
@@ -320,60 +243,82 @@ halign=left
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>969</x>
-      <y>1088</y>
-      <w>612</w>
-      <h>68</h>
+      <x>651</x>
+      <y>357</y>
+      <w>154</w>
+      <h>28</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;-
-saveChat(Chat)</panel_attributes>
-    <additional_attributes>10.0;20.0;340.0;20.0</additional_attributes>
+    <panel_attributes>lt=&lt;-
+addUnreadMessages(pseudo)</panel_attributes>
+    <additional_attributes>200.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
-    <id>UMLSpecialState</id>
+    <id>Relation</id>
     <coordinates>
-      <x>1547</x>
-      <y>1156</y>
-      <w>34</w>
-      <h>34</h>
+      <x>392</x>
+      <y>210</y>
+      <w>266</w>
+      <h>28</h>
     </coordinates>
-    <panel_attributes>type=termination</panel_attributes>
+    <panel_attributes>lt=&lt;.
+chatFile</panel_attributes>
+    <additional_attributes>10.0;20.0;360.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>392</x>
+      <y>399</y>
+      <w>266</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+addMessage(message,filename,myPseudo)</panel_attributes>
+    <additional_attributes>360.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>763</x>
+      <y>35</y>
+      <w>70</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>_:Account_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>612</x>
-      <y>561</y>
-      <w>374</w>
-      <h>68</h>
+      <x>791</x>
+      <y>49</y>
+      <w>21</w>
+      <h>462</h>
     </coordinates>
-    <panel_attributes>lt=&lt;.
-chat</panel_attributes>
-    <additional_attributes>10.0;20.0;200.0;20.0</additional_attributes>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;640.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>791</x>
+      <y>364</y>
+      <w>14</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>969</x>
-      <y>425</y>
-      <w>561</w>
-      <h>68</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;-
-createChat(Account)</panel_attributes>
-    <additional_attributes>310.0;20.0;10.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>612</x>
-      <y>850</y>
-      <w>969</w>
-      <h>68</h>
+      <x>392</x>
+      <y>455</y>
+      <w>266</w>
+      <h>28</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
-printChat(Chat)</panel_attributes>
-    <additional_attributes>550.0;20.0;10.0;20.0</additional_attributes>
+saveChatFile(filename)</panel_attributes>
+    <additional_attributes>360.0;20.0;10.0;20.0</additional_attributes>
   </element>
 </diagram>
