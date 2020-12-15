@@ -162,41 +162,21 @@ Une fois les paramètres validés, si une demande de jeu à un autre joueur a é
 
 \section{Besoins système}
 \subsection{Besoins fonctionnels}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=16cm]{NEWSystemUseCase.jpg}
+\caption{Diagramme de cas d'utilisation du système}
+\label{fig:UerUseCase}
+\end{figure}
+
 \begin{figure}[h!]
 \centering
 \includegraphics[width=16cm]{newSystemClassDiagram.jpg}
 \caption{Diagramme de classe du système}
 \label{fig:UerUseCase}
 \end{figure}
-\subsubsection{Server}
-Le Server est notre classe principale du système. C'est la classe qui va gérer la majorité des interactions du programme. Il va servir d'intermédiaire entre le client et toutes les fonctionnalités du jeu. Pour le bon fonctionnement du jeu, cette classe devra toujours être active.\\
-Parmi les fonctionnalités principales du server, on peut trouver:\\
-- la connexion entre client et server
-- l'interaction entre les utilisateurs\\
-- la gestion des données personnelles\\
-- la gestion de toutes les parties en cours
-\subsubsection{Database}
-La classe Database porte bien son nom puisqu'elle sauvegardera toutes les informations persistantes et nécessaires au bon fonctionnement du jeu.\\
-Elle se chargera de:\\
-- préserver et manipuler les informations personnelles relatives à chaque joueur\\
-- conserver les historiques de discussions de tous les joueurs\\
-- la vérification de l'existence des données
-\subsubsection{Lobby}
-Le Lobby va servir de salle d'attente pour un ou deux joueurs avant de lancer une partie commune. L'hôte d'un lobby va pouvoir décider de son accessibilité (privé/publique).
 
-\subsubsection{Gestion des comptes}
-Un objet Account contiendra toutes les informations relatives à un utilisateur (nom, pseudo,...). Ces informations modulables seront stockées sur la database.
- Les différentes demandes d'accès à la base de données sont traitées par le serveur. En effet, celui-ci permet la liaison entre le compte et l'utilisateur.
-
-- Accès:
-
-Lors de la création d'un compte, la disponibilité du pseudo est vérifiée par le serveur. Si celui-ci n'est pas trouvé, un nouveau compte est bien créé et ajouté dans la base de données.
-
-Lors de la connexion, c'est encore le serveur qui vérifie que le pseudo et le mot de passe saisis correspondent à un compte existant.
-
-- Contenu d'un compte:
-
-Chaque compte possède des informations sur l'utilisateur auquel il appartient, notamment ses identifiants(pseudo, mot de passe). Son score est aussi présent pour qu'il apparaisse dans le classement général des joueurs. Il a aussi une liste d'amis qu'il peut consulter à tout moment.
 
 \subsubsection{Création de partie}
 
@@ -214,6 +194,58 @@ Chaque compte possède des informations sur l'utilisateur auquel il appartient, 
 \subsubsection{Classement}
 
 Après chaque partie, le serveur met à jour le score des joueurs si ils ont battu leur record de meilleur score.
+
+
+\subsubsection{Server}
+Le Server est notre classe principale du système. C'est la classe qui va gérer la majorité des interactions du programme. Il va servir d'intermédiaire entre le client et toutes les fonctionnalités du jeu. Pour le bon fonctionnement du jeu, cette classe devra toujours être active.\\
+Parmi les fonctionnalités principales du server, on peut trouver:\\
+- la connexion entre client et server
+- l'interaction entre les utilisateurs\\
+- la gestion des données personnelles\\
+- la gestion de toutes les parties en cours
+\subsubsection{Database}
+La classe Database porte bien son nom puisqu'elle sauvegardera toutes les informations persistantes et nécessaires au bon fonctionnement du jeu.\\
+Elle se chargera de:\\
+- préserver et manipuler les informations personnelles relatives à chaque joueur\\
+- conserver les historiques de discussions de tous les joueurs\\
+- la vérification de l'existence des données
+\subsubsection{Lobby}
+Le Lobby va servir de salle d'attente pour un ou deux joueurs avant de lancer une partie commune. L'hôte d'un lobby va pouvoir décider de son accessibilité (privé/publique).
+
+\subsubsection{Client}
+La classe Client permet a l'utilisateur de communiquer avec le serveur a travers divers actions possibles afficher grace au menu.
+Toutes les fonctionalites decrit dans la section 2.1 sont possible :
+\begin{itemize}
+    \item Se connecter
+    \item S'inscrire
+    \item rejoindre un lobby
+    \item crée une partie
+    \item chatter avec d'autre utilisateur
+    \item consulter le classement
+    \item ajouter ou supprimer un ami
+\end{itemize}
+
+Les actions cités precedement ne sont que si le client possede une connection avec le serveur. Les entrées du client capturer par la classe "Input".\\
+La classe Input est connecter au menu en cours d'affichage, ce qui permet de transmetre les entrées au client qui lui, les envoie au serveurs.\\
+La classe abstrait "Menu" a pour but de representer une interface au niveau graphique ou terminale. Les classes héritiere de la classe abstraite devrons afficher le menu qui leur correspond et verifier a la demande de la classe "Input" la validité d'une entrée.\\
+La classe "Display" permet de gerer l'affichage des objets du jeu pour le client. Cette classe possedera plus de methode dans la partie graphique du projet. 
+
+
+\subsubsection{Gestion des comptes}
+Un objet Account contiendra toutes les informations relatives à un utilisateur (nom, pseudo,...). Ces informations modulables seront stockées sur la database.
+ Les différentes demandes d'accès à la base de données sont traitées par le serveur. En effet, celui-ci permet la liaison entre le compte et l'utilisateur.
+
+- Accès:
+
+Lors de la création d'un compte, la disponibilité du pseudo est vérifiée par le serveur. Si celui-ci n'est pas trouvé, un nouveau compte est bien créé et ajouté dans la base de données.
+
+Lors de la connexion, c'est encore le serveur qui vérifie que le pseudo et le mot de passe saisis correspondent à un compte existant.
+
+- Contenu d'un compte:
+
+Chaque compte possède des informations sur l'utilisateur auquel il appartient, notamment ses identifiants(pseudo, mot de passe). Son score est aussi présent pour qu'il apparaisse dans le classement général des joueurs. Il a aussi une liste d'amis qu'il peut consulter à tout moment.
+
+
 
 \subsection{Besoins non fonctionnels}
 
