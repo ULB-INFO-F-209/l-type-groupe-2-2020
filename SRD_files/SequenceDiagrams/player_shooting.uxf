@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<diagram program="umlet" version="14.3.0">
-  <zoom_level>8</zoom_level>
+<diagram program="umlet" version="13.3">
+  <zoom_level>9</zoom_level>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>632</x>
-      <y>144</y>
-      <w>80</w>
-      <h>24</h>
+      <x>378</x>
+      <y>153</y>
+      <w>90</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>_:PlayerShip_</panel_attributes>
     <additional_attributes/>
@@ -15,10 +15,10 @@
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>928</x>
-      <y>144</y>
-      <w>80</w>
-      <h>24</h>
+      <x>810</x>
+      <y>153</y>
+      <w>90</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>_:EnemyShip_</panel_attributes>
     <additional_attributes/>
@@ -26,48 +26,32 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>664</x>
-      <y>160</y>
-      <w>24</w>
-      <h>616</h>
+      <x>414</x>
+      <y>171</y>
+      <w>27</w>
+      <h>540</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;750.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;580.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>960</x>
-      <y>160</y>
-      <w>24</w>
-      <h>312</h>
+      <x>846</x>
+      <y>171</y>
+      <w>27</w>
+      <h>351</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;370.0</additional_attributes>
   </element>
   <element>
-    <id>UMLFrame</id>
-    <coordinates>
-      <x>384</x>
-      <y>240</y>
-      <w>832</w>
-      <h>288</h>
-    </coordinates>
-    <panel_attributes>checkCollision()
---
-
-halign=left
-
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>960</x>
-      <y>224</y>
-      <w>16</w>
-      <h>232</h>
+      <x>846</x>
+      <y>243</y>
+      <w>18</w>
+      <h>261</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes/>
@@ -75,10 +59,10 @@ halign=left
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>448</x>
-      <y>144</y>
-      <w>80</w>
-      <h>24</h>
+      <x>216</x>
+      <y>153</y>
+      <w>90</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>_:Player_</panel_attributes>
     <additional_attributes/>
@@ -86,21 +70,21 @@ halign=left
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>480</x>
-      <y>160</y>
-      <w>24</w>
-      <h>616</h>
+      <x>252</x>
+      <y>171</y>
+      <w>27</w>
+      <h>540</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;750.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;580.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>664</x>
-      <y>208</y>
-      <w>16</w>
-      <h>520</h>
+      <x>414</x>
+      <y>207</y>
+      <w>18</w>
+      <h>486</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes/>
@@ -108,10 +92,10 @@ halign=left
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>1088</x>
-      <y>440</y>
-      <w>80</w>
-      <h>24</h>
+      <x>990</x>
+      <y>486</y>
+      <w>90</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>_:Bonus_</panel_attributes>
     <additional_attributes/>
@@ -119,21 +103,21 @@ halign=left
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1120</x>
-      <y>456</y>
-      <w>24</w>
-      <h>232</h>
+      <x>1026</x>
+      <y>504</y>
+      <w>27</w>
+      <h>180</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;270.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;180.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>1120</x>
-      <y>464</y>
-      <w>16</w>
-      <h>208</h>
+      <x>1026</x>
+      <y>513</y>
+      <w>18</w>
+      <h>162</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes/>
@@ -141,10 +125,10 @@ halign=left
   <element>
     <id>UMLFrame</id>
     <coordinates>
-      <x>856</x>
-      <y>416</y>
-      <w>344</w>
-      <h>80</h>
+      <x>729</x>
+      <y>459</y>
+      <w>387</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>if no more life</panel_attributes>
     <additional_attributes/>
@@ -152,22 +136,22 @@ halign=left
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>488</x>
-      <y>352</y>
-      <w>192</w>
-      <h>32</h>
+      <x>261</x>
+      <y>342</y>
+      <w>171</w>
+      <h>36</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;-
+    <panel_attributes>lt=&lt;-
 setScore()</panel_attributes>
-    <additional_attributes>10.0;20.0;220.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;170.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>480</x>
-      <y>192</y>
-      <w>16</w>
-      <h>536</h>
+      <x>252</x>
+      <y>207</y>
+      <w>18</w>
+      <h>486</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes/>
@@ -175,57 +159,21 @@ setScore()</panel_attributes>
   <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>952</x>
-      <y>448</y>
-      <w>24</w>
-      <h>24</h>
+      <x>837</x>
+      <y>495</y>
+      <w>27</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>type=termination</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>672</x>
-      <y>560</y>
-      <w>464</w>
-      <h>32</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-
-touched(Bonus, bonusType)</panel_attributes>
-    <additional_attributes>10.0;20.0;560.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLFrame</id>
-    <coordinates>
-      <x>600</x>
-      <y>544</y>
-      <w>584</w>
-      <h>160</h>
-    </coordinates>
-    <panel_attributes>alt
---
-
-
-halign=left
-[if caught]
-
-
-
--.
-
-
-[else]
-</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>1112</x>
-      <y>656</y>
-      <w>24</w>
-      <h>24</h>
+      <x>1017</x>
+      <y>657</y>
+      <w>27</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>type=termination</panel_attributes>
     <additional_attributes/>
@@ -233,10 +181,10 @@ halign=left
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>968</x>
-      <y>440</y>
-      <w>136</w>
-      <h>32</h>
+      <x>855</x>
+      <y>486</y>
+      <w>153</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
 dropBonus()</panel_attributes>
@@ -245,10 +193,10 @@ dropBonus()</panel_attributes>
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>1240</x>
-      <y>392</y>
-      <w>112</w>
-      <h>56</h>
+      <x>1161</x>
+      <y>432</y>
+      <w>126</w>
+      <h>63</h>
     </coordinates>
     <panel_attributes>la méthode 
 dropBonus() décide 
@@ -257,47 +205,12 @@ laché</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>672</x>
-      <y>576</y>
-      <w>56</w>
-      <h>32</h>
-    </coordinates>
-    <panel_attributes>lt=-
-</panel_attributes>
-    <additional_attributes>10.0;20.0;50.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>704</x>
-      <y>584</y>
-      <w>120</w>
-      <h>48</h>
-    </coordinates>
-    <panel_attributes>lt=-
-catchBonus(Bonus)</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>672</x>
-      <y>608</y>
-      <w>56</w>
-      <h>24</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;50.0;10.0</additional_attributes>
-  </element>
-  <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>160</x>
-      <y>168</y>
-      <w>216</w>
-      <h>48</h>
+      <x>9</x>
+      <y>0</y>
+      <w>243</w>
+      <h>54</h>
     </coordinates>
     <panel_attributes>Si la méthode setScore() 
 appartient au player, qui l'appelle ?</panel_attributes>
@@ -306,10 +219,10 @@ appartient au player, qui l'appelle ?</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>744</x>
-      <y>200</y>
-      <w>80</w>
-      <h>24</h>
+      <x>504</x>
+      <y>198</y>
+      <w>90</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>_:Projectile_</panel_attributes>
     <additional_attributes/>
@@ -317,10 +230,10 @@ appartient au player, qui l'appelle ?</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>776</x>
+      <x>540</x>
       <y>216</y>
-      <w>24</w>
-      <h>160</h>
+      <w>27</w>
+      <h>180</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;180.0</additional_attributes>
@@ -328,10 +241,10 @@ appartient au player, qui l'appelle ?</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>776</x>
-      <y>240</y>
-      <w>16</w>
-      <h>120</h>
+      <x>540</x>
+      <y>243</y>
+      <w>18</w>
+      <h>135</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes/>
@@ -339,10 +252,10 @@ appartient au player, qui l'appelle ?</panel_attributes>
   <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>768</x>
-      <y>352</y>
-      <w>24</w>
-      <h>24</h>
+      <x>531</x>
+      <y>369</y>
+      <w>27</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>type=termination</panel_attributes>
     <additional_attributes/>
@@ -350,37 +263,98 @@ appartient au player, qui l'appelle ?</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>672</x>
-      <y>192</y>
-      <w>88</w>
-      <h>32</h>
+      <x>414</x>
+      <y>189</y>
+      <w>117</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 shoot(Direction)</panel_attributes>
-    <additional_attributes>90.0;20.0;10.0;20.0</additional_attributes>
+    <additional_attributes>100.0;20.0;20.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>648</x>
+      <y>144</y>
+      <w>90</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>_:MapObjects_</panel_attributes>
+    <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>784</x>
-      <y>272</y>
-      <w>192</w>
-      <h>72</h>
+      <x>684</x>
+      <y>162</y>
+      <w>27</w>
+      <h>540</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;-
-touched(Ship, enemyType)</panel_attributes>
-    <additional_attributes>10.0;70.0;50.0;70.0;50.0;10.0;10.0;10.0</additional_attributes>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;580.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>684</x>
+      <y>180</y>
+      <w>18</w>
+      <h>504</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>968</x>
-      <y>280</y>
-      <w>192</w>
-      <h>72</h>
+      <x>549</x>
+      <y>252</y>
+      <w>153</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+touched(Ship, 
+enemyType)
+[checkCollisions]</panel_attributes>
+    <additional_attributes>10.0;20.0;150.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>693</x>
+      <y>252</y>
+      <w>171</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+touched(Projectile,
+type)
+[checkCollisions]</panel_attributes>
+    <additional_attributes>170.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>693</x>
+      <y>216</y>
+      <w>153</w>
+      <h>54</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
-touched(Ship, enemyType)</panel_attributes>
-    <additional_attributes>10.0;70.0;50.0;70.0;50.0;10.0;10.0;10.0</additional_attributes>
+checkCollisions()</panel_attributes>
+    <additional_attributes>10.0;40.0;40.0;40.0;40.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>423</x>
+      <y>333</y>
+      <w>135</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+setScore()</panel_attributes>
+    <additional_attributes>10.0;20.0;130.0;20.0</additional_attributes>
   </element>
 </diagram>

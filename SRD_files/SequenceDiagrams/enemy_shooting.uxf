@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<diagram program="umlet" version="14.3.0">
+<diagram program="umlet" version="13.3">
   <zoom_level>9</zoom_level>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>747</x>
-      <y>171</y>
+      <x>729</x>
+      <y>90</y>
       <w>90</w>
       <h>27</h>
     </coordinates>
@@ -15,8 +15,8 @@
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>972</x>
-      <y>171</y>
+      <x>954</x>
+      <y>90</y>
       <w>90</w>
       <h>27</h>
     </coordinates>
@@ -26,48 +26,47 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>783</x>
-      <y>189</y>
+      <x>765</x>
+      <y>108</y>
       <w>27</w>
-      <h>315</h>
+      <h>306</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;330.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;320.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1008</x>
-      <y>189</y>
+      <x>990</x>
+      <y>108</y>
       <w>27</w>
-      <h>684</h>
+      <h>675</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;740.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;730.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>423</x>
-      <y>225</y>
-      <w>126</w>
+      <x>333</x>
+      <y>135</y>
+      <w>135</w>
       <h>36</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 shoot(Direction)</panel_attributes>
-    <additional_attributes>120.0;20.0;10.0;20.0</additional_attributes>
+    <additional_attributes>130.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLFrame</id>
     <coordinates>
-      <x>666</x>
-      <y>459</y>
+      <x>648</x>
+      <y>369</y>
       <w>522</w>
-      <h>261</h>
+      <h>243</h>
     </coordinates>
     <panel_attributes>if no more hp
 --
-
 halign=left
 [if nLives &gt; 0]
 
@@ -75,7 +74,7 @@ halign=left
 
 
 
--.
+--
 
 
 [else]
@@ -86,8 +85,8 @@ layer=-1</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>1008</x>
-      <y>234</y>
+      <x>990</x>
+      <y>144</y>
       <w>18</w>
       <h>594</h>
     </coordinates>
@@ -97,8 +96,8 @@ layer=-1</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>387</x>
-      <y>180</y>
+      <x>297</x>
+      <y>81</y>
       <w>90</w>
       <h>27</h>
     </coordinates>
@@ -108,8 +107,8 @@ layer=-1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>414</x>
-      <y>198</y>
+      <x>324</x>
+      <y>99</y>
       <w>27</w>
       <h>684</h>
     </coordinates>
@@ -119,8 +118,8 @@ layer=-1</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>783</x>
-      <y>234</y>
+      <x>765</x>
+      <y>144</y>
       <w>18</w>
       <h>252</h>
     </coordinates>
@@ -130,8 +129,8 @@ layer=-1</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>414</x>
-      <y>225</y>
+      <x>324</x>
+      <y>126</y>
       <w>18</w>
       <h>603</h>
     </coordinates>
@@ -141,8 +140,8 @@ layer=-1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>792</x>
-      <y>594</y>
+      <x>774</x>
+      <y>504</y>
       <w>234</w>
       <h>36</h>
     </coordinates>
@@ -151,32 +150,10 @@ takeLife()</panel_attributes>
     <additional_attributes>240.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
-    <id>UMLFrame</id>
-    <coordinates>
-      <x>450</x>
-      <y>261</y>
-      <w>909</w>
-      <h>477</h>
-    </coordinates>
-    <panel_attributes>checkCollision()
---
-
-halign=left
-
-
-
-
-
-
-
-layer=-1</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>774</x>
-      <y>477</y>
+      <x>756</x>
+      <y>387</y>
       <w>27</w>
       <h>27</h>
     </coordinates>
@@ -186,8 +163,8 @@ layer=-1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>828</x>
-      <y>504</y>
+      <x>810</x>
+      <y>414</y>
       <w>198</w>
       <h>36</h>
     </coordinates>
@@ -198,8 +175,8 @@ newShip()</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>747</x>
-      <y>513</y>
+      <x>729</x>
+      <y>423</y>
       <w>90</w>
       <h>27</h>
     </coordinates>
@@ -209,8 +186,8 @@ newShip()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>783</x>
-      <y>531</y>
+      <x>765</x>
+      <y>441</y>
       <w>27</w>
       <h>117</h>
     </coordinates>
@@ -220,8 +197,8 @@ newShip()</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>783</x>
-      <y>549</y>
+      <x>765</x>
+      <y>459</y>
       <w>18</w>
       <h>81</h>
     </coordinates>
@@ -231,8 +208,8 @@ newShip()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>792</x>
-      <y>459</y>
+      <x>774</x>
+      <y>369</y>
       <w>234</w>
       <h>36</h>
     </coordinates>
@@ -243,8 +220,8 @@ takeLife()</panel_attributes>
   <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>774</x>
-      <y>612</y>
+      <x>756</x>
+      <y>522</y>
       <w>27</w>
       <h>27</h>
     </coordinates>
@@ -254,8 +231,8 @@ takeLife()</panel_attributes>
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>1377</x>
-      <y>486</y>
+      <x>1359</x>
+      <y>396</y>
       <w>126</w>
       <h>63</h>
     </coordinates>
@@ -264,22 +241,10 @@ une explosion</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLNote</id>
-    <coordinates>
-      <x>1143</x>
-      <y>783</y>
-      <w>279</w>
-      <h>54</h>
-    </coordinates>
-    <panel_attributes>modifier le takeLife(), en sachant l'origine 
-de la méthode</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>531</x>
-      <y>225</y>
+      <x>450</x>
+      <y>135</y>
       <w>90</w>
       <h>27</h>
     </coordinates>
@@ -289,8 +254,8 @@ de la méthode</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>567</x>
-      <y>243</y>
+      <x>486</x>
+      <y>153</y>
       <w>27</w>
       <h>162</h>
     </coordinates>
@@ -300,8 +265,8 @@ de la méthode</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>567</x>
-      <y>252</y>
+      <x>486</x>
+      <y>162</y>
       <w>18</w>
       <h>135</h>
     </coordinates>
@@ -309,38 +274,87 @@ de la méthode</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>576</x>
-      <y>306</y>
-      <w>216</w>
-      <h>81</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;-
-touched(Ship, enemyType)</panel_attributes>
-    <additional_attributes>10.0;70.0;50.0;70.0;50.0;10.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>792</x>
-      <y>306</y>
-      <w>243</w>
-      <h>81</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;-
-touched(Projectile, enemyType)</panel_attributes>
-    <additional_attributes>10.0;70.0;50.0;70.0;50.0;10.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>558</x>
-      <y>378</y>
+      <x>477</x>
+      <y>279</y>
       <w>27</w>
       <h>27</h>
     </coordinates>
     <panel_attributes>type=termination</panel_attributes>
     <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>558</x>
+      <y>81</y>
+      <w>90</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>_:MapObjects_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>594</x>
+      <y>99</y>
+      <w>27</w>
+      <h>684</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;740.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>594</x>
+      <y>117</y>
+      <w>18</w>
+      <h>603</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>603</x>
+      <y>153</y>
+      <w>153</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+checkCollisions()</panel_attributes>
+    <additional_attributes>10.0;60.0;40.0;60.0;40.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>495</x>
+      <y>207</y>
+      <w>117</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+touched(Ship,
+enemyType)
+[checkCollisions]</panel_attributes>
+    <additional_attributes>10.0;20.0;110.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>603</x>
+      <y>207</y>
+      <w>180</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+touched(Projectile,
+type)
+[checkCollisions]</panel_attributes>
+    <additional_attributes>180.0;20.0;10.0;20.0</additional_attributes>
   </element>
 </diagram>
