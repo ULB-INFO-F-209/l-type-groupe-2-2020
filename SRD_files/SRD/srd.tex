@@ -1,4 +1,4 @@
-\documentclass[utf8]{article}
+\documentclass[a4paper,12pt]{article}
 
 \usepackage[utf8]{inputenc}
 
@@ -17,25 +17,39 @@
 \newcolumntype{R}[1]{>{\raggedleft\arraybackslash }b{#1}}
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash }b{#1}}
 \newcolumntype{C}[1]{>{\centering\arraybackslash }b{#1}}
-\usepackage{amsmath}
-\usepackage{amssymb}
 \usepackage{amsfonts}
+\usepackage{fullpage}
 \usepackage{graphicx}
 \usepackage{float}
-\usepackage{algorithm}
-\usepackage{algorithmicx}
-\usepackage{algpseudocode}
-\usepackage{fullpage}
-
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{xspace}
+\usepackage{epstopdf}
 
 % -----------------------------------------------------
-
-
-\title{\\[3 cm]\Huge Software requirements document : \\[1 cm] L-type\\[7 cm]}
-\author{ELKENZE Camelia\\[0,2 cm] BARBER Jeremy\\[0,2 cm] Latoundji Salim\\[0,2 cm] DEMIREL Helin\\[0,2 cm] ABDOUL-AZIZ Aïssa\\[0,2 cm] ADEGNON Kokou\\[0,2 cm] KINSOEN Alexandre\\[0,2 cm] VANNESTE Martin\\[0,2 cm] MASSIMETTI Mario  }
-\date{20 novembre 2020}
-
 \begin{document}
+
+    \begin{titlepage}
+
+        \begin{center}
+
+            \title{\Huge INFO-F209 Projets d’informatique 2 \\
+            [1 cm] Software Requirements Document \\ 
+            L-type\\[2 cm]}
+            \author{Aïssa ABDOUL-AZIZ \\[0,2 cm] Kokou ADEGNON \\[0,2 cm] Jeremy BARBER \\[0,2 cm] Helin DEMIREL \\[0,2 cm] Camelia ELKENZE \\[0,2 cm] Alexandre KINSOEN \\[0,2 cm] Salim Latoundji \\[0,2 cm] Mario MASSIMETTI \\[0,2 cm] Martin VANNESTE \\ [2 cm]}
+            \date{Décembre 2020}
+
+            %\includegraphics[width = 40mm]{ulb.png}
+
+        \end{center}
+
+    \end{titlepage}
+
+    \maketitle
+
+\newpage
+
 \tableofcontents
 
 \newpage
@@ -43,11 +57,12 @@
 % -----------------------------------------------------
 
 \section{Introduction}
-Bla bla \emph{bla}.
 
-\subsection{But du projet}
-L’objectif de ce projet est de réaliser un shoot them up multijoueur à scrolling vertical dans lequel un ou deux joueurs doivent parcourir plusieurs niveaux en détruisant les ennemis qui se présentent devant eux ainsi qu’en esquivant les salves de tir provoquées par ces derniers.
-Les navires de guerre dirigés par les joueurs peuvent récupérer des bonus d’armement lâchés par leurs nombreux adversaires.
+L’objectif de ce projet consiste en la réalisation d'un jeu d'action de style shoot 'em up en multijoueur. Dans ce jeu, un ou deux joueurs doivent parcourir plusieurs niveaux en détruisant les ennemis qui se présentent devant eux, tout en esquivant les tirs provoqués par ces derniers. Les vaisseaux dirigés par les joueurs peuvent récupérer des bonus d’armement lâchés par leurs nombreux adversaires pour mieux les éliminer. Le but étant de terminer tous les niveaux sans perdre toute ses vies. En effet, un joueur en possède un nombre déterminé. Si le projectile d'un joueur touche un ennemi, son score est augmenté. Et à la fin d'une partie, le score de chaque utilisateur est mis à jour dans son compte.
+
+En dehors du jeu, un utilisateur a la capacité de gérer sa liste d'amis, de discuter avec d'autres utilisateurs et de consulter le classement général des joueurs.
+
+Le jeu ne sera exécutable que sous le système d'exploitation Linux.
 
 \subsection{Glossaire}
 Shoot them up : "abattez-les tous", genre de jeu vidéo
@@ -69,68 +84,114 @@ Historique \emph{de notre travail}
 \end{figure}
 
 \subsubsection{Connexion}
-En lançant le programme l'utilisateur arrive sur une page d’accueil qui l'invite à entrer son nom d'utilisateur et son mot de passe si ce dernier possède déjà un compte. 
-Si ce n'est pas le cas il a la possibilité de créer un nouveau compte. 
-Un pseudo et un mot de passe seront demandés tant que le format des entrées est incorrect et/ou que le pseudo n'est pas unique.
-Après s’être connecté l'utilisateur accède automatiquement au menu principal.
+En lançant le programme, l'utilisateur est invité à s'inscrire ou se connecter.
 
+A l'inscription, un pseudonyme unique et un mot de passe lui seront demandé tant que le pseudo entré est déjà pris par quelqu'un d'autre.
 
+Dans le cas de la connexion, on invite l'utilisateur à saisir son pseudo et son mot de passe tant que le pseudo est inexistant ou que le mot de passe ne correspond pas. Après s’être connecté l'utilisateur accède au menu principal.
+
+Dans les deux cas, une option de retour à la page d'accueil sera disponible.
 
 \subsubsection{Menu principal}
-Une fois l'utilisateur connecté il a accès aux différentes fonctionnalités du jeu telles que:
-\begin{itemsize}
-\par
-\item -Consulter le classement : L'utilisateur peut accéder au classement des meilleurs joueurs du jeu en fonction de leur score.
-\item -Consulter sa liste d'amis: La consultation de la liste d'amis se fait sur base
-\item -Ajouter un ami: Il est possible de trouver un ami en recherchant son pseudo et de l'ajouter si le pseudo existe. Il n'y a pas de demande d'ajout, si l'utilisateur trouve le second utilisateur leur liste d'amis est automatiquement mise à jour et l'ajout est effectué des deux cotés.
-Cépendant si le pseudo n'existe pas un message d'erreur sera renvoyé.
-\item-Supprimer un ami: La suppression d'un ami se fait à l'aide du pseudonyme de l'ami en question. Si le pseudo est invalide une erreur sera affichée.
-Après la suppression l'ami est retiré de la liste d'ami.
-\item-Discuter avec un autre utilisateur : Pour discuter avec un utilisateur il suffit d'entrer son pseudonyme, si le pseudo est connu du programme une fenêtre s'ouvre avec le chat en cours. Toutefois un pseudo invalide engendre un message d'erreur.
-En cas d'envoi d'un message à un utilisateur non connecté, le message s'enverra et le destinataire et pourra le lire à sa prochaine connexion.
-\item-Envoyer une demande de jeu : L'utilisateur a la possibilité d'inviter un autre utilisateur, avec un pseudo valide, à rejoindre une partie. Si ce dernier est connecté et qu'il n'est pas déjà entrain de jouer, il a possibilité d'accepter ou de refuser la demande. S'il accepte la connexion entre les deux joueurs sera établie, s'il refuse l'hôte ne sera pas averti.
-\item-Consulter les demandes de jeu :
-Lors d'une consultation de la liste d'invitations, la possibilité est laissée à l'utilisateur d'accepter ou de décliner l'invitation dans le cas ou une invitation est présente dans la liste. Ainsi, accepter une invitation transfère l'utilisateur dans le lobby de l'hôte si ce lobby n'a pas atteint son nombre maximum de joueurs.
-L'invité ne peut pas modifier les paramètres que le premier joueur aura choisi.
-A l'inverse refuser une invitation n'avertit pas l'hôte. 
-\item-Lancer une partie : Le lancement d'une partie se fait lorsque l'utilisateur crée une partie en gardant les paramètres par défauts ou en les redéfinissants.
-\end{itemsize}
 
+- Discuter:
+
+La liste des chats existant est présentée à l'utilisateur, il a le choix de discuter dans un chat existant ou d'en créer un nouveau avec un utilisateur. 
+
+L'utilisateur peut aussi voir si il a de nouveaux messages non-lus.\\
+
+- Consulter amis:
+
+La liste des amis de l'utilisateur est affichée lorsque cette option est sélectionnée. Il peut supprimer un ami, en ajouter un nouveau et aussi voir ses demandes d'amis. 
+
+La suppression d'un ami X par l'utilisateur Y implique la suppression de Y dans la liste d'amis de X. 
+
+L'ajout d'un ami est en fait une invitation. La personne sera l'ami de l'utilisateur seulement si elle accepte sa demande. \\
+
+- Consulter le classement:
+
+Le classement affiche le score de tout les utilisateurs. Si il le souhaite, l'utilisateur peut afficher seulement le classement de score de ses amis. \\
+
+-Envoyer une demande de jeu:
+
+L’utilisateur a la possibilité d’inviter un autre utilisateur, avec un pseudonyme valide, à rejoindre une partie. Si ce dernier est connecté et qu’il n’est pas déjà entrain de jouer, il a possibilité d’accepter ou de refuser la demande. S’il accepte la connexion entre les deux joueurs sera établie, s’il refuse l’hôte ne sera pas averti. \\
+
+-Consulter les demandes de jeu:
+
+Lors d’une consultation de la liste d’invitations, la possibilité est laissée à l’utilisateur d’accepter ou de décliner l’invitation dans le cas ou une invitation est présente dans la liste.Ainsi, accepter une invitation transfère l’utilisateur dans le lobby de l’hôte si ce lobby n’a pas atteint son nombre maximum de joueurs. L’invité ne peut pas modifier les paramètres que le premier joueur aura choisi.A l’inverse refuser une invitation n’avertit pas l’hôte. \\
+
+-Lancer une partie:
+
+Le lancement d’une partie se fait lorsque l’utilisateur crée une partie en gardant les paramètres par défauts ou en les redéfinissants.
+
+- Paramètres:
+
+Dans les paramètres, l'utilisateur peut consulter les règles du jeu avec le bouton "Help". Il peut également configurer ses préférences audio, visuel, ainsi qu'accéder à son profil. Dans son profil, il peut consulter ses informations de compte et s'il le souhaite, changer son mot de passe.
 
 \subsubsection{Création de partie}
-La création d'une partie est une option qui envoie l'utilisateur vers une fenetre de personnalisation permettant de modifier les paramètres du jeu.
-Cette fenetre contient déjà des paramètres par défauts.
+La création d'une partie est une option qui envoie l'utilisateur vers une fenêtre de personnalisation permettant de modifier les paramètres du jeu.
+Cette fenêtre contient déjà des paramètres par défauts.
 S'il le souhaite l'utilisateur peut définir :
-\begin{itemsize}
-\par
-\item-Le nombre de joueur:Un joueur a la possibilité de choisir entre un ou deux participants.Dans le cas où le nombre de participants équivaut à deux il aura la possibilité d'entrer un pseudo valide et la partie ne se lancera que si le joueur invité accepte la demande de jeu.
-\item-La difficulté de la partie: Chaque partie est composée de plusieurs niveaux qui auront chacun plusieurs niveaux de difficultés.
-\item-La probabilité d'apparation des bonus: L'utilisateur a le choix de gérer la probalité qu'aura un ennemi de lacher un bonus après sa destruction.
-\item-Le tir allié:La possibilité d'activer le tir allié ne peut être accordé que dans le cas où le nombre de joueur est supérieur à un.
-Dans ce premier scénario le joueur a le droit de choisir s'il souhaite que les projectiles de l'invité soit inoffensifs ou non. Cette option vaut pour les deux joueurs.
-\item-Le nombre de vies: Il est laissé à l'utilisateur le choix de posséder jusqu'à cinq vies.
-\end{itemsize}
 
-Une fois les paramètres validés,si une demande de jeu à un autre joueur a été envoyée le joueur est dirigé vers une salle d'attente en attendant la réponse du second utilisateur. Faute de quoi, le jeu commence directement.
+-Le nombre de joueur: 
 
+Un joueur a la possibilité de choisir entre un ou deux participants.Dans le cas où le nombre de participants équivaut à deux il aura la possibilité d'entrer un pseudo valide et la partie ne se lancera que si le joueur invité accepte la demande de jeu. \\
 
-\subsubsection{Settings}
-En entrant dans settings , l'utilisateur a le choix d'accéder à différentes options :
-\item-Display : Cette option permettra à l'utilisateur de modifier le style du jeu tel que changer la couleur de l'arrière plan de la partie. (Cette option sera développée d'avantage dans les futures versions)
-\item-Profil : En accédant à cette option l'utilisateur a le droit de modifier toutes les informations liées à son compte. Si ces nouvelles informations sont valides le profil sera mis à jour.
-\item-Help: Cette section permet à l'utilisateur de consulter les règles du jeu s'il le souhaite.
+-La difficulté de la partie: 
 
+Chaque partie est composée de plusieurs niveaux qui auront chacun plusieurs niveaux de difficultés.  \\
 
+-La probabilité d'apparition des bonus:
+
+L'utilisateur a le choix de gérer la probabilité qu'aura un ennemi de lâcher un bonus après sa destruction. \\
+
+-Le tir allié: 
+
+La possibilité d'activer le tir allié ne peut être accordé que dans le cas où le nombre de joueur est supérieur à un.
+Dans ce premier scénario le joueur a le droit de choisir s'il souhaite que les projectiles de l'invité soit inoffensifs ou non. Cette option vaut pour les deux joueurs. \\
+
+-Le nombre de vies: 
+
+Il est laissé à l'utilisateur le choix de posséder jusqu'à cinq vies. \\
+
+Une fois les paramètres validés, si une demande de jeu à un autre joueur a été envoyée le joueur est dirigé vers une salle d'attente en attendant la réponse du second utilisateur. Faute de quoi, le jeu commence directement.
 
 \subsection{Besoins non fonctionnels}
 
+\newpage
+
 \section{Besoins système}
 \subsection{Besoins fonctionnels}
-\subsubsection{Connexion}
-\subsubsection{Menu principal}
+\subsubsection{Gestion des comptes}
+Les comptes sont stockés dans une base de données. Les différentes demandes d'accès à la base de données sont traitées par le serveur. En effet, celui-ci permet la liaison entre le compte et l'utilisateur.
+
+- Accès:
+
+Lors de la création d'un compte, la disponibilité du pseudo est vérifiée par le serveur. Si celui-ci n'est pas trouvé, un nouveau compte est bien créé et ajouté dans la base de données.
+
+Lors de la connexion, c'est encore le serveur qui vérifie que le pseudo et le mot de passe saisis correspondent à un compte existant.
+
+- Contenu d'un compte:
+
+Chaque compte possède des informations sur l'utilisateur auquel il appartient, notamment ses identifiants(pseudo, mot de passe). Son score est aussi présent pour qu'il apparaisse dans le classement général des joueurs. Il a aussi une liste d'amis qu'il peut consulter à tout moment.
+
 \subsubsection{Création de partie}
-\subsubsection{Connexion}
-\subsubsection{Connexion}
+
+
+\subsubsection{Chat}
+
+
+\subsubsection{Gestion des amis}
+
+- Ajout: Lorsque l'utilisateur voudra ajouter un ami, le serveur fera des vérifications et enverra la demande, si elle est valide, à la personne concernée. Si la demande est acceptée, la liste d'amis des deux utilisateurs est mise à jour par le serveur.
+
+- Suppression: Le serveur fait une recherche de l'ami à supprimer et efface dans la liste d'amis de celui-ci, l'utilisateur ayant fait la demande de suppression. Ensuite, l'ami est effacé dans la liste de l'utilisateur.
+
+
+\subsubsection{Classement}
+
+Après chaque partie, le serveur met à jour le score des joueurs si ils ont battu leur record de meilleur score.
+
 \subsection{Besoins non fonctionnels}
 
 \newpage
