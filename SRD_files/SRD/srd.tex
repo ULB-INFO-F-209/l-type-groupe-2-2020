@@ -152,9 +152,15 @@ Dans ce premier scénario le joueur a le droit de choisir s'il souhaite que les 
 
 -Le nombre de vies: 
 
-Il est laissé à l'utilisateur le choix de posséder jusqu'à cinq vies. \\
+Le choix du nombre de vies est décidé par l'utilisateur. \\
 
-Une fois les paramètres validés, si une demande de jeu à un autre joueur a été envoyée le joueur est dirigé vers une salle d'attente en attendant la réponse du second utilisateur. Faute de quoi, le jeu commence directement.
+\subsubsection{Jeu}
+
+Un joueur commence sa partie avec un nombre de vies prédéterminé et un score nul. 
+Il contrôle un vaisseau avec lequel il peut tirer des projectiles vers des ennemis, ce qui augmentera son score selon la quantité de dommage infligée. Un vaisseau peut se déplacer dans toutes les directions. Celui d'un joueur peut également attraper des bonus qui lui donneront des améliorations d'armes. Ces bonus sont lâchés lors de la destruction d'ennemis. Le vaisseau joueur peut aussi subir des dégâts, qui vont réduire son niveau de vie. Si ce niveau est nul, le vaisseau est détruit et le nombre de vies est décrémenté. Un nouveau vaisseau est attribué au joueur s'il possède encore des vies. Sinon, la partie est terminée pour lui.
+
+La difficulté du jeu dépend du nombre de niveaux. Un niveau varie selon le nombre d'ennemis, de leur résistance, de la puissance de leur projectiles. Mais elle dépend également du nombre d'obstacles.
+
 
 \subsection{Besoins non fonctionnels}
 
@@ -177,29 +183,10 @@ Une fois les paramètres validés, si une demande de jeu à un autre joueur a é
 \label{fig:UerUseCase}
 \end{figure}
 
-
-\subsubsection{Création de partie}
-
-
-\subsubsection{Chat}
-
-
-\subsubsection{Gestion des amis}
-
-- Ajout: Lorsque l'utilisateur voudra ajouter un ami, le serveur fera des vérifications et enverra la demande, si elle est valide, à la personne concernée. Si la demande est acceptée, la liste d'amis des deux utilisateurs est mise à jour par le serveur.
-
-- Suppression: Le serveur fait une recherche de l'ami à supprimer et efface dans la liste d'amis de celui-ci, l'utilisateur ayant fait la demande de suppression. Ensuite, l'ami est effacé dans la liste de l'utilisateur.
-
-
-\subsubsection{Classement}
-
-Après chaque partie, le serveur met à jour le score des joueurs si ils ont battu leur record de meilleur score.
-
-
-\subsubsection{Server}
-Le Server est notre classe principale du système. C'est la classe qui va gérer la majorité des interactions du programme. Il va servir d'intermédiaire entre le client et toutes les fonctionnalités du jeu. Pour le bon fonctionnement du jeu, cette classe devra toujours être active.\\
-Parmi les fonctionnalités principales du server, on peut trouver:\\
-- la connexion entre client et server
+\subsubsection{Serveur}
+Le serveur est la classe principale du système. C'est la classe qui va gérer la majorité des interactions du programme. Il va servir d'intermédiaire entre le client et toutes les fonctionnalités du jeu. Pour le bon fonctionnement du jeu, cette classe devra toujours être active.\\
+Parmi les fonctionnalités principales du serveur, on peut trouver:\\
+- la connexion entre client et serveur
 - l'interaction entre les utilisateurs\\
 - la gestion des données personnelles\\
 - la gestion de toutes les parties en cours
@@ -213,26 +200,26 @@ Elle se chargera de:\\
 Le Lobby va servir de salle d'attente pour un ou deux joueurs avant de lancer une partie commune. L'hôte d'un lobby va pouvoir décider de son accessibilité (privé/publique).
 
 \subsubsection{Client}
-La classe Client permet a l'utilisateur de communiquer avec le serveur a travers divers actions possibles afficher grace au menu.
-Toutes les fonctionalites decrit dans la section 2.1 sont possible :
+La classe Client permet à l'utilisateur de communiquer avec le serveur à travers diverses actions possibles affichées grâce au menu.
+Toutes les fonctionnalités décrites dans la section 2.1 sont possibles :
 \begin{itemize}
     \item Se connecter
     \item S'inscrire
     \item rejoindre un lobby
     \item crée une partie
-    \item chatter avec d'autre utilisateur
+    \item discuter avec d'autres utilisateurs
     \item consulter le classement
     \item ajouter ou supprimer un ami
 \end{itemize}
 
-Les actions cités precedement ne sont que si le client possede une connection avec le serveur. Les entrées du client capturer par la classe "Input".\\
-La classe Input est connecter au menu en cours d'affichage, ce qui permet de transmetre les entrées au client qui lui, les envoie au serveurs.\\
-La classe abstrait "Menu" a pour but de representer une interface au niveau graphique ou terminale. Les classes héritiere de la classe abstraite devrons afficher le menu qui leur correspond et verifier a la demande de la classe "Input" la validité d'une entrée.\\
-La classe "Display" permet de gerer l'affichage des objets du jeu pour le client. Cette classe possedera plus de methode dans la partie graphique du projet. 
+Les actions citées précédemment ne sont que si le client possède une connexion avec le serveur. Les entrées du client capturer par la classe "Input".\\
+La classe Input est connecter au menu en cours d'affichage, ce qui permet de transmettre les entrées au client qui lui, les envoie au serveurs.\\
+La classe abstrait "Menu" a pour but de représenter une interface au niveau graphique ou terminale. Les classes héritières de la classe abstraite devrons afficher le menu qui leur correspond et vérifier a la demande de la classe "Input" la validité d'une entrée.\\
+La classe "Display" permet de gérer l'affichage des objets du jeu pour le client. Cette classe possédera plus de méthodes dans la partie graphique du projet. 
 
 
 \subsubsection{Gestion des comptes}
-Un objet Account contiendra toutes les informations relatives à un utilisateur (nom, pseudo,...). Ces informations modulables seront stockées sur la database.
+Un objet Account contiendra toutes les informations relatives à un utilisateur (nom, pseudo,...). Ces informations modulables seront stockées sur la base de données.
  Les différentes demandes d'accès à la base de données sont traitées par le serveur. En effet, celui-ci permet la liaison entre le compte et l'utilisateur.
 
 - Accès:
@@ -245,9 +232,33 @@ Lors de la connexion, c'est encore le serveur qui vérifie que le pseudo et le m
 
 Chaque compte possède des informations sur l'utilisateur auquel il appartient, notamment ses identifiants(pseudo, mot de passe). Son score est aussi présent pour qu'il apparaisse dans le classement général des joueurs. Il a aussi une liste d'amis qu'il peut consulter à tout moment.
 
+\subsubsection{Gestion d'une partie}
 
+Tout client connecté sera placé dans un lobby privé par défaut. Lorsqu'il voudra lancer une partie,
+il aura la possibilité de choisir les paramètres de celle-ci comme expliqué plus haut (cf 2.1.3). Le joueur peut aussi changer le statut du lobby(public/privé). Si le nombre de joueurs choisi est 2, l'hôte doit obligatoirement inviter un autre utilisateur connecté dans le cas où le lobby est privé.
+Le serveur vérifie que la personne invitée existe dans la base de donnée, qu'elle est connectée et qu'elle n'est pas dans une partie en cours.
+S'il est public, tout utilisateur connecté pourra rejoindre le lobby qui devient ainsi privé.
+La partie ne peut pas commencer tant que le nombre de joueurs spécifiés ne correspond pas au nombre de personnes présentes dans le lobby.
+
+\subsubsection{Gestion des amis}
+
+- Ajout: Lorsque l'utilisateur voudra ajouter un ami, le serveur fera des vérifications et enverra la demande, si elle est valide, à la personne concernée. Si la demande est acceptée, la liste d'amis des deux utilisateurs est mise à jour par le serveur.
+
+- Suppression: Le serveur fait une recherche de l'ami à supprimer et efface dans la liste d'amis de celui-ci, l'utilisateur ayant fait la demande de suppression. Ensuite, l'ami est effacé dans la liste de l'utilisateur.
+
+\subsubsection{Chat}
+
+Les fichiers de chat entre deux utilisateurs sont stockés dans la base de données. Ces fichiers ont comme nom "pseudo1\_pseudo2.txt" où pseudo1 est plus petit que pseudo2. Chaque ligne du fichier a comme format "pseudo: message".
+
+L'utilisateur peut discuter avec n'importe quel autre utilisateur. Lorsqu'il veut ouvrir un chat, le serveur vérifie qu'il n'existe pas déjà un fichier chat partagé par ces deux personnes. Si oui, son contenu est affiché, sinon, un nouveau fichier est créé et stocké dans la base de données. Chaque nouveau message entraîne l'écriture dans le fichier et une incrémentation du nombre de messages non-lus du destinataire.
+
+\subsubsection{Classement}
+
+Après chaque partie, le serveur met à jour le score des joueurs si ils ont battu leur record de meilleur score.
 
 \subsection{Besoins non fonctionnels}
+
+Le lancement du programme nécessite un environnement Linux. Par souci de sécurité, toutes les requêtes d'un client doivent passer par le serveur.
 
 \newpage
 \section{Annexes}
