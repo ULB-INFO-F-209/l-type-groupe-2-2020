@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.3.0">
-  <zoom_level>11</zoom_level>
+  <zoom_level>16</zoom_level>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>616</x>
-      <y>154</y>
-      <w>110</w>
-      <h>33</h>
+      <x>832</x>
+      <y>144</y>
+      <w>160</w>
+      <h>48</h>
     </coordinates>
     <panel_attributes>_:Server_</panel_attributes>
     <additional_attributes/>
@@ -15,10 +15,10 @@
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>880</x>
-      <y>154</y>
-      <w>110</w>
-      <h>33</h>
+      <x>1216</x>
+      <y>144</y>
+      <w>160</w>
+      <h>48</h>
     </coordinates>
     <panel_attributes>_:DataBase_</panel_attributes>
     <additional_attributes/>
@@ -26,10 +26,10 @@
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>1056</x>
-      <y>154</y>
-      <w>110</w>
-      <h>33</h>
+      <x>1472</x>
+      <y>144</y>
+      <w>160</w>
+      <h>48</h>
     </coordinates>
     <panel_attributes>_:MainMenu_</panel_attributes>
     <additional_attributes/>
@@ -37,10 +37,10 @@
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>660</x>
-      <y>220</y>
-      <w>22</w>
-      <h>550</h>
+      <x>896</x>
+      <y>240</y>
+      <w>32</w>
+      <h>800</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes/>
@@ -48,10 +48,10 @@
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>924</x>
-      <y>528</y>
-      <w>22</w>
-      <h>143</h>
+      <x>1280</x>
+      <y>688</y>
+      <w>32</w>
+      <h>208</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes/>
@@ -59,10 +59,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>660</x>
+      <x>896</x>
       <y>176</y>
-      <w>33</w>
-      <h>66</h>
+      <w>48</w>
+      <h>96</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
@@ -70,10 +70,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>924</x>
+      <x>1280</x>
       <y>176</y>
-      <w>33</w>
-      <h>374</h>
+      <w>48</w>
+      <h>544</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;320.0</additional_attributes>
@@ -81,10 +81,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>440</x>
-      <y>209</y>
-      <w>242</w>
-      <h>44</h>
+      <x>576</x>
+      <y>224</y>
+      <w>352</w>
+      <h>64</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 SignUp()</panel_attributes>
@@ -93,10 +93,10 @@ SignUp()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>440</x>
-      <y>418</y>
-      <w>242</w>
-      <h>44</h>
+      <x>576</x>
+      <y>528</y>
+      <w>352</w>
+      <h>64</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
 EnterPseudo()</panel_attributes>
@@ -105,10 +105,10 @@ EnterPseudo()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>440</x>
-      <y>451</y>
-      <w>242</w>
-      <h>55</h>
+      <x>576</x>
+      <y>576</y>
+      <w>352</w>
+      <h>80</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
          
@@ -118,10 +118,10 @@ EnterPseudo()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>440</x>
-      <y>330</y>
-      <w>242</w>
-      <h>44</h>
+      <x>576</x>
+      <y>400</y>
+      <w>352</w>
+      <h>64</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
 EnterPassword()</panel_attributes>
@@ -130,10 +130,10 @@ EnterPassword()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>440</x>
-      <y>363</y>
-      <w>242</w>
-      <h>55</h>
+      <x>576</x>
+      <y>448</y>
+      <w>352</w>
+      <h>80</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 
@@ -143,10 +143,10 @@ EnterPassword()</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>429</x>
-      <y>220</y>
-      <w>22</w>
-      <h>550</h>
+      <x>560</x>
+      <y>240</y>
+      <w>32</w>
+      <h>800</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes/>
@@ -154,21 +154,21 @@ EnterPassword()</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>407</x>
-      <y>154</y>
-      <w>99</w>
-      <h>33</h>
+      <x>528</x>
+      <y>144</y>
+      <w>144</w>
+      <h>48</h>
     </coordinates>
-    <panel_attributes>_:User_</panel_attributes>
+    <panel_attributes>_:Client_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>429</x>
+      <x>560</x>
       <y>176</y>
-      <w>33</w>
-      <h>66</h>
+      <w>48</w>
+      <h>96</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
@@ -176,10 +176,10 @@ EnterPassword()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>671</x>
-      <y>517</y>
-      <w>275</w>
-      <h>55</h>
+      <x>912</x>
+      <y>672</y>
+      <w>400</w>
+      <h>80</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
 
@@ -189,10 +189,10 @@ Find(pseudo)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>671</x>
-      <y>561</y>
-      <w>275</w>
-      <h>55</h>
+      <x>912</x>
+      <y>736</y>
+      <w>400</w>
+      <h>80</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 
@@ -202,10 +202,10 @@ Found:Bool</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>671</x>
-      <y>605</y>
-      <w>275</w>
-      <h>55</h>
+      <x>912</x>
+      <y>800</y>
+      <w>400</w>
+      <h>80</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 
@@ -215,10 +215,10 @@ Found:Bool</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1100</x>
+      <x>1536</x>
       <y>176</y>
-      <w>33</w>
-      <h>528</h>
+      <w>48</w>
+      <h>768</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;460.0</additional_attributes>
@@ -226,10 +226,10 @@ Found:Bool</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>1100</x>
-      <y>682</y>
-      <w>22</w>
-      <h>88</h>
+      <x>1536</x>
+      <y>912</y>
+      <w>32</w>
+      <h>128</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes/>
@@ -237,10 +237,10 @@ Found:Bool</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>440</x>
-      <y>242</y>
-      <w>242</w>
-      <h>44</h>
+      <x>576</x>
+      <y>272</y>
+      <w>352</w>
+      <h>64</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
 EnterName()</panel_attributes>
@@ -249,10 +249,10 @@ EnterName()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>440</x>
-      <y>275</y>
-      <w>242</w>
-      <h>55</h>
+      <x>576</x>
+      <y>320</y>
+      <w>352</w>
+      <h>80</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
          
@@ -262,10 +262,10 @@ EnterName()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>671</x>
-      <y>682</y>
-      <w>451</w>
-      <h>55</h>
+      <x>912</x>
+      <y>912</y>
+      <w>656</w>
+      <h>80</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 
@@ -275,10 +275,10 @@ StartMenu()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>924</x>
-      <y>660</y>
-      <w>33</w>
-      <h>132</h>
+      <x>1280</x>
+      <y>880</y>
+      <w>48</w>
+      <h>192</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
@@ -286,10 +286,10 @@ StartMenu()</panel_attributes>
   <element>
     <id>UMLFrame</id>
     <coordinates>
-      <x>264</x>
-      <y>418</y>
-      <w>748</w>
-      <h>187</h>
+      <x>320</x>
+      <y>528</y>
+      <w>1088</w>
+      <h>272</h>
     </coordinates>
     <panel_attributes>while Found
 or not quitted
@@ -301,10 +301,10 @@ or not quitted
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>440</x>
-      <y>594</y>
-      <w>242</w>
-      <h>55</h>
+      <x>576</x>
+      <y>784</y>
+      <w>352</w>
+      <h>80</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 [Exit]

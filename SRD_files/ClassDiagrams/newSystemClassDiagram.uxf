@@ -24,14 +24,14 @@
 
 
 // This text will be stored with each diagram;  use it for notes.</help_text>
-  <zoom_level>9</zoom_level>
+  <zoom_level>10</zoom_level>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>684</x>
-      <y>738</y>
-      <w>243</w>
-      <h>45</h>
+      <x>930</x>
+      <y>890</y>
+      <w>270</w>
+      <h>50</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -43,68 +43,65 @@ stores &gt;</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>909</x>
-      <y>648</y>
-      <w>261</w>
-      <h>225</h>
+      <x>1180</x>
+      <y>790</y>
+      <w>290</w>
+      <h>220</h>
     </coordinates>
     <panel_attributes>Account
 --
 -name:string
 -pseudo:string
 -password:string
--friends[nfriends]:list
+-friends[ ]:Account
 -bestScore:int
--listUnreadMessages[pseudo]:list
+-UnreadMessages[ ]:str
 --
-+getData()
 +removeFriend(pseudo)
 +verifyFriendsList(pseudo)
 +addFriend(pseudo)
 +addUnreadMessages(pseudo)
-
-bg=green</panel_attributes>
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>522</x>
-      <y>495</y>
-      <w>36</w>
-      <h>162</h>
+      <x>780</x>
+      <y>600</y>
+      <w>40</w>
+      <h>200</h>
     </coordinates>
     <panel_attributes>
 m1=1
 m2=1
 
 lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;160.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;180.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>450</x>
-      <y>0</y>
-      <w>216</w>
-      <h>81</h>
+      <x>670</x>
+      <y>70</y>
+      <w>240</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>ConnectedClient
 --
 -client:pidt
 -account:Account
 --
-
-bg=green</panel_attributes>
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>549</x>
-      <y>72</y>
-      <w>54</w>
-      <h>135</h>
+      <x>780</x>
+      <y>150</y>
+      <w>50</w>
+      <h>150</h>
     </coordinates>
     <panel_attributes>
 m1=1
@@ -116,10 +113,10 @@ lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>0</x>
-      <y>252</y>
-      <w>216</w>
-      <h>171</h>
+      <x>170</x>
+      <y>350</y>
+      <w>240</w>
+      <h>190</h>
     </coordinates>
     <panel_attributes>Lobby
 --
@@ -129,16 +126,16 @@ lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
 --
 +assignUser(user)
 +setLobySettings()
-bg=green</panel_attributes>
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>432</x>
-      <y>639</y>
-      <w>261</w>
-      <h>243</h>
+      <x>650</x>
+      <y>780</y>
+      <w>290</w>
+      <h>290</h>
     </coordinates>
     <panel_attributes>DataBase
 --
@@ -152,56 +149,55 @@ bg=green</panel_attributes>
 +createAccount(name, pseudo, pswd)
 +find(pseudo):bool
 +verifyLogin(pseudo, pswd)
-+getChatNames(pseudo, list)
++verifyFriendList(pseudo)
 +createChatFile()
 +addMessage(message,filename,myPseudo)
 +findChatFile(filename):bool
 +printChat(filename)
 +saveChatFile(filename)
 +updateScore(score,User)
-bg=green</panel_attributes>
++removeFriend(pseudo1, pseudo2)</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>405</x>
-      <y>189</y>
-      <w>297</w>
-      <h>315</h>
+      <x>620</x>
+      <y>280</y>
+      <w>330</w>
+      <h>330</h>
     </coordinates>
-    <panel_attributes>_Server_
+    <panel_attributes>Server
 --
 -dataBase:*DataBase
 -connectedClients[]:ConnectedClient
 -listofCurrentGames[]: CurrentGame
 --
-+catchinput(input,currentgameID,playerID)
++catchInput(input,currentGameID,firstPlayer)
 +sendPositionsBoard()
 +signIn()
 +signUp()
 +joinLobby()
 +inviteLobby(pseudo)
-+openChat(myPseudo,otherPseudo)
++openChat(pseudo)
 +sendMessage(message)
-+inviteFriend(pseudo)
++addFriend(pseudo)
 +delFriend(pseudo)
-+createGame()
-+signIn()
-+signUp()
-+setSettings()
-+checkLeaderboard()
-+createLobby()
-bg=green</panel_attributes>
++setSettings(settings)
++checkleaderboard()
++checkConnection(pseudo)
++checkIsPlaying(pseudo)
+
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>693</x>
-      <y>279</y>
-      <w>342</w>
-      <h>45</h>
+      <x>940</x>
+      <y>380</y>
+      <w>380</w>
+      <h>50</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -213,10 +209,10 @@ send Informations &gt;
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>693</x>
-      <y>333</y>
-      <w>342</w>
-      <h>45</h>
+      <x>940</x>
+      <y>440</y>
+      <w>380</w>
+      <h>50</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -228,12 +224,12 @@ m2=1..*
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1017</x>
-      <y>180</y>
-      <w>315</w>
-      <h>324</h>
+      <x>1300</x>
+      <y>270</y>
+      <w>350</w>
+      <h>380</h>
     </coordinates>
-    <panel_attributes>_Client_
+    <panel_attributes>Client
 --
 -positionsBoard[MapObjects]: MapObject
 -currentGameID:int
@@ -243,11 +239,11 @@ m2=1..*
 --
 +sendInput(currentgameID,playerID,input)
 +display(positionsBoard)
-
 +joinLobby()
++startGame()
 +inviteLobby(pseudo)
 +openChat(pseudo)
-+sendMessage()
++sendMessage(message)
 +inviteFriend(pseudo)
 +delFriend(pseudo)
 +createGame()
@@ -256,17 +252,17 @@ m2=1..*
 +setSettings()
 +checkLeaderboard()
 +dspUnreadMessages()
-bg=green
-group=1</panel_attributes>
++sendfriendRequest(pseudo)
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>207</x>
-      <y>306</y>
-      <w>216</w>
-      <h>45</h>
+      <x>400</x>
+      <y>410</y>
+      <w>240</w>
+      <h>50</h>
     </coordinates>
     <panel_attributes>
 m1=1
