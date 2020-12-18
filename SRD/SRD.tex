@@ -38,17 +38,17 @@
             \begin{figure}[H]
               \begin{minipage}[c]{.46\linewidth}
                     \centering
-                    \includegraphics[scale = 0.3]{ulb.png}
+                    \includegraphics[scale = 0.3]{images/ulb.png}
                 \end{minipage}
                 \hfill%
                 \begin{minipage}[c]{.46\linewidth}
                     \centering
-                    \includegraphics[scale=0.5]{ulb2.jpg}
+                    \includegraphics[scale=0.5]{images/ulb2.jpg}
                 \end{minipage}
             \end{figure}
         
-            {\\[2 cm] \Huge\\Software Requirements Document \\ 
-            L-type\\[4 cm]}
+            {\\[2 cm] \Huge\\INFO-F209 - Projets d'informatique 2 \\ \\ Software Requirements Document \\ [1 cm]
+            L-type\\[2 cm]}
             {Aïssa ABDOUL-AZIZ \\[0,2 cm] Kokou ADEGNON \\[0,2 cm] Jeremy BARBER \\[0,2 cm] Helin DEMIREL \\[0,2 cm] Camelia ELKENZE \\[0,2 cm] Alexandre KINSOEN \\[0,2 cm] Salim LATOUNDJI \\[0,2 cm] Mario MASSIMETTI \\[0,2 cm] Martin VANNESTE \\ [3 cm] Décembre 2020}
 
         \end{center}
@@ -65,7 +65,7 @@
 
 \section{Introduction}
 
-L’objectif de ce projet consiste en la réalisation d'un jeu d'action de style shoot 'em up en multijoueur. Dans ce jeu, un ou deux joueurs doivent parcourir plusieurs niveaux en détruisant les ennemis qui se présentent devant eux, tout en esquivant les tirs provoqués par ces derniers. Les vaisseaux dirigés par les joueurs peuvent récupérer des bonus d’armement lâchés par leurs nombreux adversaires pour mieux les éliminer. L'objectif des joueurs étant de terminer tous les niveaux sans que leur compteur de vies se retrouve à 0. En effet, un joueur en possède un nombre déterminé. Si un projectile d'un joueur touche un ennemi, son score est augmenté. À la fin d'une partie, le score de chaque utilisateur est mis à jour si celui est meilleur que son score actuel.
+L’objectif de ce projet consiste en la réalisation d'un jeu d'action de style shoot 'em up en multijoueur. Dans ce jeu, un ou deux joueurs doivent parcourir plusieurs niveaux en détruisant les ennemis qui se présentent devant eux, tout en esquivant les tirs provoqués par ces derniers. Les vaisseaux dirigés par les joueurs peuvent récupérer des bonus d’armement lâchés par leurs nombreux adversaires, pour mieux les éliminer. L'objectif des joueurs étant de terminer tous les niveaux sans que leur compteur de vies ne se retrouve à 0. En effet, un joueur en possède un nombre déterminé. Si un projectile d'un joueur touche un ennemi, son score est augmenté. À la fin d'une partie, le score de chaque utilisateur est mis à jour si celui-ci est meilleur que son score actuel.
 
 En dehors du jeu, un utilisateur a la capacité de gérer sa liste d'amis, de discuter avec d'autres utilisateurs et de consulter le classement général des joueurs.
 
@@ -107,9 +107,9 @@ Le jeu ne sera exécutable que sous le système d'exploitation Linux.
 
 \begin{figure}[h!]
 \centering
-\includegraphics[width=15cm]{UserUseCase}
-\caption{Diagramme de use case coté utilisateur}
-\label{fig:UerUseCase}
+\includegraphics[width=15cm]{images/UserUseCase.jpg}
+\caption{Diagramme de Use Case côté utilisateur}
+\label{fig:UserUseCase}
 \end{figure}
 
 \subsubsection{Connexion}
@@ -125,7 +125,7 @@ Dans les deux cas, une option de retour à la page d'accueil sera disponible.
 
 - Discuter:
 
-La liste des chats existant est présentée à l'utilisateur, il a le choix de discuter dans un chat existant ou d'en créer un nouveau avec un autre utilisateur, qu'ils soient amis ou non. 
+La liste des chats existants est présentée à l'utilisateur, il a le choix de discuter dans un chat existant ou d'en créer un nouveau avec un autre utilisateur, qu'ils soient amis ou non. 
 
 L'utilisateur peut aussi voir s'il a de nouveaux messages non-lus.\\
 
@@ -139,7 +139,7 @@ L'ajout d'un ami commence par une invitation. Le second utilisateur aura le choi
 
 - Consulter le classement:
 
-Le classement affiche le score de tous les utilisateurs. S'il le souhaite, l'utilisateur peut afficher seulement le classement de score de ses amis. \\
+Le classement affiche le score de tous les utilisateurs. S'il le souhaite, l'utilisateur peut afficher seulement le classement de ses amis. \\
 
 - Envoyer une demande de jeu:
 
@@ -147,15 +147,15 @@ L’utilisateur a la possibilité d’inviter un autre utilisateur, avec un pseu
 
 - Consulter les demandes de jeu:
 
-Lors d’une consultation de la liste d’invitations, la possibilité est laissée à l’utilisateur d’accepter ou de décliner l’invitation dans le cas où une invitation est présente dans la liste. Ainsi, accepter une invitation transfère l’utilisateur dans le lobby de l’hôte si ce lobby n’a pas atteint son nombre maximum de joueurs. L’invité ne peut pas modifier les paramètres que le premier joueur aura choisi. À l’inverse, refuser une invitation n’avertit pas l’hôte. \\
+Lors d’une consultation de la liste d’invitations, la possibilité est laissée à l’utilisateur de les accepter ou décliner s'il en a reçu. Ainsi, accepter une invitation transfère l’utilisateur dans le lobby de l’hôte si celui-ci n’a pas atteint son nombre maximum de joueurs. L’invité ne peut pas modifier les paramètres que le premier joueur aura choisi. À l’inverse, refuser une invitation n’avertit pas l’hôte. \\
 
 - Lancer une partie:
 
-Le lancement d’une partie se fait lorsque l’utilisateur crée une partie en gardant les paramètres par défaut ou en les redéfinissant.
+Le lancement d’une partie se fait lorsque l’utilisateur crée une partie en gardant les paramètres de celle-ci par défaut ou en les redéfinissant.
 
 - Paramètres:
 
-Dans les paramètres, l'utilisateur peut consulter les règles du jeu à l'aide le bouton "Help". Il peut également configurer ses préférences audiovisuelles. il peut aussi accéder à son profil afin de consulter ses informations de compte et s'il le souhaite, changer son mot de passe.
+Dans les paramètres, l'utilisateur peut consulter les règles du jeu à l'aide le bouton "Help". Configurer ses préférences audiovisuelles lui sont également permises. Il a aussi la possibilité d'accéder à son profil afin de consulter ses informations de compte s'il le souhaite.
 
 \subsubsection{Création de partie}
 La création d'une partie est une option qui envoie l'utilisateur vers une fenêtre de personnalisation permettant de modifier les paramètres du jeu.
@@ -164,20 +164,16 @@ S'il le souhaite, l'utilisateur peut définir :
 
 - Le nombre de joueurs: 
 
-Un joueur a la possibilité de choisir entre un ou deux participants. Dans le cas où le nombre de participants équivaut à deux, il aura la possibilité d'entrer un pseudo valide. La partie ne se lancera que si le joueur invité accepte la demande de jeu. \\
+L'utilisateur a la possibilité de choisir entre un ou deux participants. Dans le cas où le nombre de participants équivaut à deux, il pourra, s'il le souhaite, inviter un autre joueur dans sa partie. Celle-ci ne se lancera que si le joueur invité accepte la demande de jeu. \\
 
-- La difficulté de la partie: 
+- La difficulté de la partie:
 
-Chaque partie est composée de plusieurs niveaux de difficulté qui augmentent progressivement.  \\
-
-- La probabilité d'apparition des bonus:
-
-L'utilisateur a le choix de gérer la probabilité qu'aura un ennemi de lâcher un bonus après sa destruction. \\
+ L'utilisateur doit choisir une difficulté générale de sa partie. La difficulté de chaque niveau sera adaptée en fonction de ce choix, mais elle augmente progressivement au fur et à mesure, après chaque victoire de niveau. C'est également la difficulté de la partie qui va déterminer la probabilité qu'aura un ennemi de lâcher un bonus après sa destruction. \\
 
 - Le tir allié: 
 
 La possibilité d'activer le tir allié ne peut être accordée que dans le cas où le nombre de joueurs est supérieur à un.
-Dans ce premier scénario le joueur a le droit de choisir s'il souhaite que les projectiles de l'invité soient inoffensifs ou non. Cette option vaut pour les deux joueurs. \\
+Le joueur aura donc le droit de choisir s'il souhaite que les projectiles de l'invité soient inoffensifs ou non et inversément, que ses projectiles le soient pour l'invité. \\
 
 - Le nombre de vies: 
 
@@ -203,11 +199,11 @@ Le vaisseau d'un joueur ne peut pas lâcher de bonus mais peut en attraper.
 \_Player:
 
 Un joueur commence sa partie avec un nombre de vies prédéterminé et un score nul. 
-Il contrôle un vaisseau avec lequel il peut tirer des projectiles vers des ennemis, ce qui augmentera son score selon la quantité de dommages infligés. Son niveau de vie est réduit lorsqu'il subit des dégâts. Si ce niveau est nul, le vaisseau est détruit et le nombre de vies est décrémenté. Un nouveau vaisseau est attribué au joueur s'il possède encore au moins une vie. Sinon, la partie est terminée pour lui.
+Il contrôle un vaisseau avec lequel il peut tirer des projectiles vers des ennemis, ce qui augmentera son score selon la quantité de dommages qu'il aura infligé. Son niveau de vie est réduit lorsqu'il subit des dégâts. Si ce niveau est nul, le vaisseau est détruit et le nombre de vies est décrémenté. Un nouveau vaisseau est attribué au joueur s'il possède encore au moins une vie. Sinon, la partie est terminée pour lui.
 
 \_MapHandler: 
 
-Le "MapHandler" gère tous les objets (MapObjects) se trouvant à l'écran. Il s'occupe de vérifier à chaque action si des objets n'entrent pas en collision. Cette classe gère la mise à jour des positions des MapObjects lorsqu'ils sont en déplacement.
+Le "MapHandler" gère tous les objets (MapObjects) se trouvant à l'écran. Il s'occupe de vérifier après chaque action si des objets n'entrent pas en collision. Cette classe gère la mise à jour des positions des MapObjects lorsqu'ils sont en déplacement.
 
 \_CurrentGame:
 
@@ -217,33 +213,33 @@ Lors de sa création, elle possède les paramètres choisis par le joueur ainsi 
 \newpage
 \begin{figure}[hbtp]
 \centering
-\includegraphics[scale=0.5]{add_friend}
-\caption{Diagramme de sequence pour l'ajout d'un ami }
+\includegraphics[scale=0.5]{images/add_friend.jpg}
+\caption{Diagramme de Séquence pour l'ajout d'un ami }
 \end{figure}
 
 \begin{figure}[hbtp]
 \centering
-\includegraphics[scale=0.5]{del_friend}
-\caption{Diagramme de sequence pour la suppression d'un ami }
+\includegraphics[scale=0.5]{images/del_friend.jpg}
+\caption{Diagramme de Séquence pour la suppression d'un ami }
 \end{figure}
 
 \begin{figure}[hbtp]
 \centering
-\includegraphics[scale=0.4]{Chat-sequence-diagram}
-\caption{Diagramme de sequence pour le chat entre client }
+\includegraphics[scale=0.4]{images/Chat-sequence-diagram.jpg}
+\caption{Diagramme de Séquence pour le chat entre Clients }
 \end{figure}
 
 
 \begin{figure}[hbtp]
 \centering
-\includegraphics[scale=0.3]{newGameClassDiagram.jpg}
-\caption{Diagramme de Classe représentant les classes nécessaire au jeu}
+\includegraphics[scale=0.3]{images/newGameClassDiagram.jpg}
+\caption{Diagramme de Classe du jeu}
 \end{figure}
 
 \begin{figure}[hbtp]
 \centering
-\includegraphics[scale=0.3]{newClientClassDiagram.jpg}
-\caption{Diagramme de Classe coté client}
+\includegraphics[scale=0.3]{images/newClientClassDiagram.jpg}
+\caption{Diagramme de Classe côté Client}
 \end{figure}
 
 \newpage
@@ -253,19 +249,19 @@ Lors de sa création, elle possède les paramètres choisis par le joueur ainsi 
 
 \begin{figure}[h!]
 \centering
-\includegraphics[width=16cm]{newSystemClassDiagram.jpg}
-\caption{Diagramme de classe du système}
+\includegraphics[width=16cm]{images/newSystemClassDiagram.jpg}
+\caption{Diagramme de Classe du Système}
 \label{fig:UerUseCase}
 \end{figure}
 
 \subsubsection{Serveur}
 Le serveur est la classe principale du système. Il va gérer la majorité des interactions du programme et va servir d'intermédiaire entre le client et toutes les fonctionnalités du jeu. Pour le bon fonctionnement du programme, cette classe devra toujours être active.\\
 Parmi les fonctionnalités principales du serveur, on peut trouver:\\
-- la connexion entre client et serveur\\
-- l'interaction entre les utilisateurs\\
-- la gestion des données personnelles\\
-- la gestion de toutes les parties en cours
-\subsubsection{Database}
+- La connexion entre client et serveur\\
+- L'interaction entre les utilisateurs\\
+- La gestion des données personnelles\\
+- La gestion de toutes les parties en cours
+\subsubsection{DataBase}
 Cette classe sauvegardera toutes les informations persistantes et nécessaires au bon fonctionnement du jeu.\\
 Elle se chargera de:\\
 - préserver et manipuler les informations personnelles relatives à chaque joueur\\
@@ -278,30 +274,29 @@ Le Lobby va servir de salle d'attente pour un ou deux joueurs avant de lancer un
 La classe Client permet à l'utilisateur de communiquer avec le serveur à travers diverses actions possibles affichées grâce au menu.
 Toutes les fonctionnalités décrites dans la section 2.1 sont possibles :
 \begin{itemize}
-    \item se connecter
+    \item Se connecter
     \item s'inscrire
-    \item rejoindre un lobby
-    \item crée une partie
-    \item discuter avec d'autres utilisateurs
-    \item consulter le classement
-    \item ajouter ou supprimer un ami
+    \item Rejoindre un lobby
+    \item Créer une partie
+    \item Discuter avec d'autres utilisateurs
+    \item Consulter le classement
+    \item Ajouter ou supprimer un ami
 \end{itemize}
 
-Les actions citées précédemment ne sont possibles que si le client possède une connexion avec le serveur. Les entrées du client sont capturées par la classe Input.\\
-La classe Input est connectée au menu affiché à l'écran, ce qui permet de transmettre les entrées au client qui lui, les envoie au serveur.\\
+Les actions citées ne sont possibles que si le client est connecté au serveur. Les entrées du client sont capturées par la classe Input.\\
+La classe Input est connectée au menu affiché à l'écran, ce qui permet de transmettre les entrées au client qui les enverra ensuite au serveur.\\
 La classe abstraite Menu a pour but de représenter une interface au niveau graphique ou terminal. Les classes héritières de la classe abstraite devront afficher le menu qui leur correspond et vérifier à la demande de la classe Input la validité d'une entrée.\\
 La classe Display permet de gérer l'affichage des objets du jeu pour le client.
 
 
 \subsubsection{Gestion des comptes}
-Un objet Account contient toutes les informations relatives à un utilisateur (nom, pseudo, etc). Ces informations modulables sont stockées sur la base de données.
- Les différentes demandes d'accès à la base de données sont traitées par le serveur. En effet, celui-ci permet la liaison entre le compte et l'utilisateur.
+Un objet Account contient toutes les informations relatives à un utilisateur (pseudo, mot de passe, etc). Ces informations sont stockées dans la base de données et les différentes demandes d'accès à celle-ci sont traitées par le serveur.
 
 - Accès:
 
 Lors de la création d'un compte, la disponibilité du pseudo est vérifiée par le serveur. Si celui-ci n'est pas trouvé, un nouveau compte est bien créé et ajouté dans la base de données.
 
-Lors de la connexion, c'est encore le serveur qui vérifie que le pseudo et le mot de passe saisis correspondent à un compte existant.
+Lors de la connexion, c'est encore le serveur, à travers la base de données qui vérifie que le pseudo et le mot de passe saisis correspondent à un compte existant.
 
 - Contenu d'un compte:
 
@@ -312,14 +307,14 @@ Chaque compte possède des informations sur l'utilisateur auquel il appartient, 
 Tout client connecté sera placé dans un lobby privé par défaut. Lorsqu'il voudra lancer une partie,
 il aura la possibilité de choisir les paramètres de celle-ci comme expliqué plus haut (cf 2.1.3). Le joueur peut aussi changer le statut du lobby(public/privé). Si le nombre de joueurs choisi est 2, l'hôte doit obligatoirement inviter un autre utilisateur connecté dans le cas où le lobby est privé.
 Le serveur vérifie que la personne invitée existe dans la base de données, qu'elle est connectée et qu'elle n'est pas dans une partie en cours.
-S'il est public, tout utilisateur connecté pourra rejoindre le lobby qui deviendra ainsi privé.
+S'il est public, tout utilisateur connecté pourra rejoindre le lobby qui deviendra donc privé.
 La partie ne peut pas commencer tant que le nombre de joueurs spécifiés ne correspond pas au nombre de personnes présentes dans le lobby.
 
 \subsubsection{Gestion des amis}
 
 - Ajout: Lorsque l'utilisateur veut ajouter un ami, le serveur effectue des vérifications et envoie la demande, si elle est valide, à la personne concernée. Si la demande est acceptée, la liste d'amis des deux utilisateurs est mise à jour par le serveur.
 
-- Suppression: Le serveur fait une recherche de l'ami à supprimer et l'efface de la liste d'amis de l'utilisateur. l'utilisateur sera également supprimé de la liste de son ancien ami.
+- Suppression: Le serveur fait une recherche de l'ami à supprimer et l'efface de la liste d'amis de l'utilisateur. L'utilisateur sera également supprimé de la liste de son ancien ami.
 
 \subsubsection{Chat}
 
@@ -329,7 +324,7 @@ Un utilisateur peut discuter avec n'importe quel autre utilisateur. Lorsqu'il ve
 
 \subsubsection{Classement}
 
-Après chaque partie, le serveur met à jour le score de chaque joueur si celui ci est supérieur que son score actuel.
+Après chaque partie, le serveur met à jour le score de chaque joueur si celui-ci est supérieur à son score actuel.
 
 \subsection{Besoins non fonctionnels}
 
@@ -339,26 +334,26 @@ Après chaque partie, le serveur met à jour le score de chaque joueur si celui 
 
 \begin{figure}[hbtp]
 \centering
-\includegraphics[scale=0.3]{sequence_diagram_StartGame}
-\caption{Diagramme de sequence pour le lancement du jeu}
+\includegraphics[scale=0.3]{images/sequence_diagram_StartGame}
+\caption{Diagramme de Séquence de lancement du jeu}
 \end{figure}
 
 \begin{figure}[hbtp]
 \centering
-\includegraphics[scale=0.3]{player_shooting}
-\caption{Diagramme de Sequence pour le tire d'un joueur}
+\includegraphics[scale=0.3]{images/player_shooting.jpg}
+\caption{Diagramme de Séquence d'un tir de joueur}
 \end{figure}
 
 
 \begin{figure}[hbtp]
 \centering
-\includegraphics[scale=0.3]{enemy_shooting}
-\caption{Diagramme de sequence pour les tires ennemis }
+\includegraphics[scale=0.3]{images/enemy_shooting.jpg}
+\caption{Diagramme de Séquence d'un tir ennemi }
 \end{figure}
 
 \newpage
 \section{Annexes}
-\subsection{ Description du diagramme use case utilisateur}
+\subsection{ Description du diagramme Use Case utilisateur}
 
 \begin{center}
 \begin{longtable}{|p{1,5cm}||p{3,5cm}|p{3,5cm}|p{3,5cm}|p{3,5cm}|}
@@ -367,50 +362,50 @@ Après chaque partie, le serveur met à jour le score de chaque joueur si celui 
 USE CASE   &\center{Pré-conditions}   & \hfill Post-conditions \hfill\null & Cas Général & Cas exceptionnels\\
 \hline
 \hline
-\textbf{Sign in}      & L'utilisateur doit être enregistré dans la base de données  & L'utilisateur est connecté à sa base de données et le menu principal est affiché & L'utilisateur déjà enregistré se connecte à son compte en tapant son nom d’utilisateur et mot de passe. Le système vérifie que les données soient correctes et donne accès au compte du client.  & Si l’identifiant ou le mot de passe sont incorrectes, le système affiche un message d'erreur a l'utilisateur. \\
+\textbf{Sign in}      & L'utilisateur doit être enregistré dans la base de données  & L'utilisateur est connecté à sa base de données et le menu principal est affiché & L'utilisateur déjà enregistré se connecte à son compte en entrant son pseudonyme et mot de passe. Le serveur vérifie que les données soient correctes et donne accès au compte du client  & Si l’identifiant ou le mot de passe sont incorrects, affiche un message d'erreur est affiché à l'utilisateur \\
 \hline
 \hline
-\textbf{Sign up}     & L'utilisateur n'est pas présent dans la base de données   & Ajout d'un compte dans la base de données et affichage du menu principal & L'utilisateur crée un compte en introduisant un pseudo et un mdp  & Si les données entrées ne respectent pas le format requis ou que le nom d'utilisateur est déjà utilisé, un message d'erreur est affiché et l'utilisateur doit recommencer l'action jusqu'à ce que ce soit valide \\
+\textbf{Sign up}     & L'utilisateur n'est pas présent dans la base de données   & Ajout d'un compte dans la base de données et affichage du menu principal & L'utilisateur crée un compte en introduisant un pseudo et un mot de passe  & Si les données entrées ne respectent pas le format requis ou que le pseudonyme est déjà utilisé, un message d'erreur est affiché et l'utilisateur peut recommencer l'action jusqu'à ce qu'elle soit valide \\
 
 \hline
 \hline
-\textbf{Create game}    & L'utilisateur doit être enregistré dans la base de données  & Possibilité de sauvegarder les options requises  & L'utilisateur peut lancer une partie après avoir rempli les conditions minimales  & Néant \\
+\textbf{Create game}    & L'utilisateur doit être enregistré dans la base de données  & Possibilité de sauvegarder les paramètres par défaut d'une partie  & L'utilisateur peut lancer une partie après avoir rempli les conditions minimales  & Néant \\
 \hline
 \hline
-\textbf{Invite player} & L'utilisateur doit être enregistré dans la base de données   & Etablissement de la connexion via le serveur entre l’hôte et l’invité. & Inviter un joueur avec son pseudo & Invitation via pseudo qui n’existe pas. \\
+\textbf{Invite player} & L'utilisateur doit être enregistré dans la base de données   & Etablissement de la connexion via le serveur entre l’hôte et l’invité & Inviter un joueur avec son pseudo & Invitation d'un pseudo qui n’existe pas \\
 \hline
 \hline
-\textbf{Player request}  & Recevoir une invitation via le serveur.
-L'utilisateur doit être enregistré dans la base de données   & Etablissement de la connexion via le serveur entre l’hôte et l’invité.  & Accepter/ Refuser une invitation de partie  & La connexion échouera si :
-Accepter une invitation dont l'hôte n’est plus connecté.
-Rejoindre un salon complet. \\
+\textbf{Player request}  & 
+L'utilisateur doit être enregistré dans la base de données et connecté pour recevoir une invitation via le serveur
+& Etablissement de la connexion via le serveur entre l’hôte et l’invité & Accepter/ Refuser une invitation de partie  & La connexion échouera si :
+-Accepter une invitation dont l'hôte n’est plus connecté
+-Rejoindre un salon complet \\
 \hline
 \hline
-\textbf{Check Leaderboard}  & L'utilisateur doit être enregistré dans la base de données   & \hfill Néant  \hfill\null &Le joueur peut consulter le classement des meilleurs scores en envoyant une requête au serveur qui va lui renvoyer les informations  & Néant \\
+\textbf{Check Leaderboard}  & L'utilisateur doit être enregistré dans la base de données   & \hfill Néant  \hfill\null &Le joueur peut consulter le classement des scores en envoyant une requête au serveur qui va lui renvoyer les informations  & Néant \\
 \hline
 \hline
-\textbf{View friend list }   & L'utilisateur doit être enregistré dans la base de données   & Néant  & Consultation de liste d'ami dans la base de données. & Néant \\
+\textbf{View friend list }   & L'utilisateur doit être enregistré dans la base de données   & Néant  & Consultation de liste d'ami dans la base de données & Néant \\
 \hline
 \hline
-\textbf{Chat}     & L'utilisateur doit être enregistré dans la base de données   & Le serveur effectue les liaisons entre les utilisateurs  & Envoyer et recevoir des messages avec n'importe quel pseudo.  & Néant \\
+\textbf{Chat}     & L'utilisateur doit être enregistré dans la base de données   & Le serveur effectue les liaisons entre les utilisateurs  & Envoyer et recevoir des messages avec n'importe quel pseudo enregistré dans la base de données  & Néant \\
 \hline
 \hline
-\textbf{Add friend}    & L'utilisateur doit être enregistré dans la base de données   & Si invitation acceptée, ajout d'amis dans la base de donnée (bidirectionnel).  & Entrer le pseudo d’un ami. Le système va rechercher dans la base de données si le pseudo existe et l’ajouter.  & Ajouter un ami qui n’existe pas (affiche une erreur).\\
+\textbf{Add friend}    & L'utilisateur doit être enregistré dans la base de données   & Si invitation acceptée, ajout d'amis dans la base de donnée (bidirectionnel) & Entrer le pseudo d’un utilisateur. Le système va rechercher dans la base de données si le pseudo existe et lui envoyer une invitation.  & Ajouter un pseudo qui n’existe pas (affiche une erreur)\\
 \hline
 \hline
-\textbf{Delete friend}    & L'utilisateur doit être enregistré dans la base de données et avoir au moins un ami.   & Suppression d’amis(de la liste d’amis) de la base de données.  & Entrer le pseudo d’un ami. Le système va rechercher dans la base de données si le pseudo existe et le supprimer.  & Supprimer un ami qui n’existe pas (affiche une erreur). \\
+\textbf{Delete friend}    & L'utilisateur doit être enregistré dans la base de données et avoir au moins un ami.   & Suppression dans la liste d’amis par le serveur(bidirectionnel)  & Entrer le pseudo d’un ami. Le serveur va rechercher dans la base de données si le pseudo existe et le supprimer.  & Supprimer un ami qui n’existe pas (affiche une erreur) \\
 \hline
 \hline
-\textbf{Settings}     & L'utilisateur doit être enregistré dans la base de données   & Mise à jour des changements  & L'utilisateur modifie des parametres de son profil de l'affichage ou du son  & Néant\\
+\textbf{Settings}     & L'utilisateur doit être enregistré dans la base de données   & Mise à jour des changements  & L'utilisateur peut modifier ses paramètres de profil et/ou audiovisuels. Il peut également consulter les règles du jeu  & Néant\\
 \hline
 \hline
-\textbf{Ship’s controls}  & Charger une partie/créer une partie.   & Actualisation de l’état de jeu.  & Bouger, tirer recevoir des bonus.  & Néant\\
+\textbf{Ship’s controls}  & Créer une partie  & Actualisation de l’état de jeu  & Se déplacer, tirer recevoir des bonus  & Néant\\
 \hline
 \hline
 \textbf{Leave party}      & Être en train de jouer   & Retour au menu principal  & Le joueur arrête la partie en cours.  & Néant\\
 \hline
 \hline
-\textbf{Help}      & Etre connecté   & Néant  & Les règles principales du jeu sont affichées au joueur & Néant\\
 \hline
 \hline
 \textbf{Leave game}      & Etre connecté   & Fermeture du jeu  & L'utilisateur est connecté et veut quitter le jeu  & L'utilisateur est connecté et force sa sortie du jeu (CTRL+C, ...)\\
