@@ -179,11 +179,34 @@ Le choix du nombre de vies est décidé par l'utilisateur. \\
 
 \subsubsection{Jeu}
 
+\_Level:
+
+Un jeu est composé de plusieurs niveaux. Les niveaux se différencient selon le nombre d'ennemis, leur résistance et la puissance de leur projectiles. Le nombre d'obstacles varie également d'un niveau à l'autre.
+
+\_MapObjects: 
+
+Tout les objets apparaissant à l'écran et qui peuvent se déplacer sont des descendants de cette classe. 
+Parmi elles, il y a les vaisseaux, les bonus, les projectiles et les obstacles. 
+
+Les projectiles sont créés par les vaisseaux lorsque ces derniers désirent tirer sur leurs ennemis. Ils peuvent sortir de l'écran, s'annuler en rencontrant d'autres projectiles ou causer des dégâts en atteignant leurs cibles. 
+
+Un vaisseau peut se déplacer dans toutes les directions, subir et infliger des dégâts.
+Celui d'un ennemi peut créer un bonus en se détruisant. La probabilité de lâcher ce bonus est déterminée par le niveau de difficulté choisi par l'utilisateur. Les bonus sont de plusieurs types et peuvent rapporter des améliorations d'armes au joueur qui réussit à l'attraper.
+Le vaisseau d'un joueur ne peut pas lâcher de bonus mais peut en attraper.
+
+\_Player:
+
 Un joueur commence sa partie avec un nombre de vies prédéterminé et un score nul. 
-Il contrôle un vaisseau avec lequel il peut tirer des projectiles vers des ennemis, ce qui augmentera son score selon la quantité de dommage infligée. Un vaisseau peut se déplacer dans toutes les directions. Celui d'un joueur peut également attraper des bonus qui lui donneront des améliorations d'armes. Ces bonus sont lâchés lors de la destruction d'ennemis. Le vaisseau joueur peut aussi subir des dégâts, qui vont réduire son niveau de vie. Si ce niveau est nul, le vaisseau est détruit et le nombre de vies est décrémenté. Un nouveau vaisseau est attribué au joueur s'il possède encore des vies. Sinon, la partie est terminée pour lui.
+Il contrôle un vaisseau avec lequel il peut tirer des projectiles vers des ennemis, ce qui augmentera son score selon la quantité de dommage infligée. Son niveau de vie est réduit lorsqu'il subit des dégâts. Si ce niveau est nul, le vaisseau est détruit et le nombre de vies est décrémenté. Un nouveau vaisseau est attribué au joueur s'il possède encore des vies. Sinon, la partie est terminée pour lui.
 
-Un jeu est composé de plusieurs niveaux. Un niveau varie selon le nombre d'ennemis, de leur résistance, de la puissance de leur projectiles. Mais elle dépend également du nombre d'obstacles.
+\_MapHandler: 
 
+La "MapHandler" gère tout les objets (MapObjects) se trouvant à l'écran. En effet, elle s'occupe de vérifier à chaque action si des objets ne sont pas en collision. Cet objet s'occupe de mettre à jour les positions des MapObjects lorsqu'elles sont en déplacement.
+
+\_CurrentGame:
+
+CurrentGame représente un jeu en cours. Elle reçoit les actions faites par les joueurs à travers le serveur et les applique au jeu. 
+Lors de sa création, elle possède les paramètres choisis par le joueur ainsi qu'un identifiant. Ce dernier permet au serveur de déterminer à quelle partie il doit envoyer l'action d'un utilisateur. Le jeu continue de s'exécuter tant qu'un joueur a au moins une vie et n'a pas terminé tous les niveaux. Elle peut également s'arrêter en cas de déconnexion d'un client.
 \newpage
 
 \section{Besoins système}
