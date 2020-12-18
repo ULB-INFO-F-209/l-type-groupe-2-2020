@@ -34,20 +34,26 @@
     \begin{titlepage}
 
         \begin{center}
-
-            \title{\Huge INFO-F209 Projets d’informatique 2 \\
-            [1 cm] Software Requirements Document \\ 
-            L-type\\[2 cm]}
-            \author{Aïssa ABDOUL-AZIZ \\[0,2 cm] Kokou ADEGNON \\[0,2 cm] Jeremy BARBER \\[0,2 cm] Helin DEMIREL \\[0,2 cm] Camelia ELKENZE \\[0,2 cm] Alexandre KINSOEN \\[0,2 cm] Salim Latoundji \\[0,2 cm] Mario MASSIMETTI \\[0,2 cm] Martin VANNESTE \\ [2 cm]}
-            \date{Décembre 2020}
-
-            %\includegraphics[width = 40mm]{ulb.png}
+        
+            \begin{figure}[H]
+              \begin{minipage}[c]{.46\linewidth}
+                    \centering
+                    \includegraphics[scale = 0.3]{ulb.png}
+                \end{minipage}
+                \hfill%
+                \begin{minipage}[c]{.46\linewidth}
+                    \centering
+                    \includegraphics[scale=0.5]{ulb2.jpg}
+                \end{minipage}
+            \end{figure}
+        
+            {\\[2 cm] \Huge\\Software Requirements Document \\ 
+            L-type\\[4 cm]}
+            {Aïssa ABDOUL-AZIZ \\[0,2 cm] Kokou ADEGNON \\[0,2 cm] Jeremy BARBER \\[0,2 cm] Helin DEMIREL \\[0,2 cm] Camelia ELKENZE \\[0,2 cm] Alexandre KINSOEN \\[0,2 cm] Salim LATOUNDJI \\[0,2 cm] Mario MASSIMETTI \\[0,2 cm] Martin VANNESTE \\ [3 cm] Décembre 2020}
 
         \end{center}
 
     \end{titlepage}
-
-    \maketitle
 
 \newpage
 
@@ -55,7 +61,7 @@
 
 \newpage
 
-% -----------------------------------------------------
+% ----------------------------------------------------
 
 \section{Introduction}
 
@@ -207,6 +213,39 @@ Le "MapHandler" gère tous les objets (MapObjects) se trouvant à l'écran. Il s
 
 La classe CurrentGame représente un jeu en cours. Elle reçoit les actions effectuées par les joueurs à travers le serveur et les applique au jeu. 
 Lors de sa création, elle possède les paramètres choisis par le joueur ainsi qu'un identifiant. Ce dernier permet au serveur de déterminer à quelle partie il doit envoyer l'action d'un utilisateur. Le jeu continue de s'exécuter tant qu'un joueur a au moins une vie et n'a pas terminé tous les niveaux. Elle peut également s'arrêter en cas de déconnexion d'un client.
+
+\newpage
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.5]{add_friend}
+\caption{Diagramme de sequence pour l'ajout d'un ami }
+\end{figure}
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.5]{del_friend}
+\caption{Diagramme de sequence pour la suppression d'un ami }
+\end{figure}
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.4]{Chat-sequence-diagram}
+\caption{Diagramme de sequence pour le chat entre client }
+\end{figure}
+
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.3]{newGameClassDiagram.jpg}
+\caption{Diagramme de Classe représentant les classes nécessaire au jeu}
+\end{figure}
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.3]{newClientClassDiagram.jpg}
+\caption{Diagramme de Classe coté client}
+\end{figure}
+
 \newpage
 
 \section{Besoins système}
@@ -296,6 +335,26 @@ Après chaque partie, le serveur met à jour le score de chaque joueur si celui 
 
 - Le lancement du programme nécessite un environnement Linux.\\
 - Par souci de sécurité, toutes les requêtes d'un client doivent passer par le serveur.
+
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.3]{sequence_diagram_StartGame}
+\caption{Diagramme de sequence pour le lancement du jeu}
+\end{figure}
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.3]{player_shooting}
+\caption{Diagramme de Sequence pour le tire d'un joueur}
+\end{figure}
+
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.3]{enemy_shooting}
+\caption{Diagramme de sequence pour les tires ennemis }
+\end{figure}
 
 \newpage
 \section{Annexes}
