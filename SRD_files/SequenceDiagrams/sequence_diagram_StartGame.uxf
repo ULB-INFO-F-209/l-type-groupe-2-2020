@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.3.0">
   <help_text/>
-  <zoom_level>13</zoom_level>
+  <zoom_level>6</zoom_level>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>273</x>
-      <y>0</y>
-      <w>130</w>
-      <h>39</h>
+      <x>342</x>
+      <y>96</y>
+      <w>60</w>
+      <h>18</h>
     </coordinates>
-    <panel_attributes>_:Client 1_
+    <panel_attributes>_:Client_
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>1014</x>
-      <y>1300</y>
-      <w>130</w>
-      <h>39</h>
+      <x>612</x>
+      <y>468</y>
+      <w>60</w>
+      <h>18</h>
     </coordinates>
     <panel_attributes>_:CurrentGame_</panel_attributes>
     <additional_attributes/>
@@ -28,32 +28,32 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>325</x>
-      <y>26</y>
-      <w>39</w>
-      <h>1781</h>
+      <x>366</x>
+      <y>108</y>
+      <w>18</w>
+      <h>666</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;1350.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;1090.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1066</x>
-      <y>1326</y>
-      <w>39</w>
-      <h>403</h>
+      <x>636</x>
+      <y>480</y>
+      <w>18</w>
+      <h>150</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;290.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;230.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>338</x>
-      <y>1248</y>
-      <w>273</w>
-      <h>52</h>
+      <x>372</x>
+      <y>426</y>
+      <w>126</w>
+      <h>24</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
 startGame()</panel_attributes>
@@ -62,10 +62,10 @@ startGame()</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>533</x>
-      <y>0</y>
-      <w>130</w>
-      <h>39</h>
+      <x>462</x>
+      <y>96</y>
+      <w>60</w>
+      <h>18</h>
     </coordinates>
     <panel_attributes>_:Server_</panel_attributes>
     <additional_attributes/>
@@ -73,55 +73,10 @@ startGame()</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>585</x>
-      <y>78</y>
-      <w>26</w>
-      <h>1677</h>
-    </coordinates>
-    <panel_attributes/>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLGeneric</id>
-    <coordinates>
-      <x>793</x>
-      <y>91</y>
-      <w>130</w>
-      <h>39</h>
-    </coordinates>
-    <panel_attributes>_:Lobby_</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>845</x>
-      <y>117</y>
-      <w>39</w>
-      <h>1690</h>
-    </coordinates>
-    <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;1280.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>598</x>
-      <y>78</y>
-      <w>221</w>
-      <h>52</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;-
-createLobby()</panel_attributes>
-    <additional_attributes>150.0;20.0;10.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLGeneric</id>
-    <coordinates>
-      <x>845</x>
-      <y>182</y>
-      <w>26</w>
-      <h>130</h>
+      <x>486</x>
+      <y>132</y>
+      <w>12</w>
+      <h>594</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes/>
@@ -129,85 +84,22 @@ createLobby()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>338</x>
-      <y>611</y>
-      <w>273</w>
-      <h>52</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;-
-inviteLobby(pseudo)</panel_attributes>
-    <additional_attributes>190.0;20.0;10.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>598</x>
-      <y>988</y>
-      <w>273</w>
-      <h>143</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;-
-assignUser(User2)
-
-[found &amp;&amp;
-friend connected
-&amp;&amp; not playing 
-&amp;&amp; friend accepted]</panel_attributes>
-    <additional_attributes>190.0;20.0;10.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLGeneric</id>
-    <coordinates>
-      <x>845</x>
-      <y>988</y>
-      <w>26</w>
-      <h>78</h>
-    </coordinates>
-    <panel_attributes/>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>598</x>
-      <y>637</y>
-      <w>702</w>
-      <h>52</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;-
-find(pseudo)</panel_attributes>
-    <additional_attributes>520.0;20.0;10.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>598</x>
-      <y>1287</y>
-      <w>442</w>
-      <h>52</h>
+      <x>492</x>
+      <y>462</y>
+      <w>132</w>
+      <h>24</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
 createGame(settings)</panel_attributes>
-    <additional_attributes>320.0;20.0;10.0;20.0</additional_attributes>
+    <additional_attributes>200.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLFrame</id>
     <coordinates>
-      <x>104</x>
-      <y>611</y>
-      <w>1560</w>
-      <h>507</h>
-    </coordinates>
-    <panel_attributes>optional</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLFrame</id>
-    <coordinates>
-      <x>936</x>
-      <y>1404</y>
-      <w>286</w>
-      <h>169</h>
+      <x>570</x>
+      <y>498</y>
+      <w>132</w>
+      <h>78</h>
     </coordinates>
     <panel_attributes>while not endGame()
 layer=-1</panel_attributes>
@@ -216,10 +108,10 @@ layer=-1</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>1066</x>
-      <y>1443</y>
-      <w>26</w>
-      <h>169</h>
+      <x>636</x>
+      <y>522</y>
+      <w>12</w>
+      <h>78</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes/>
@@ -227,22 +119,22 @@ layer=-1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1079</x>
-      <y>1469</y>
-      <w>182</w>
-      <h>91</h>
+      <x>642</x>
+      <y>534</y>
+      <w>84</w>
+      <h>42</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
 gameLoop()</panel_attributes>
-    <additional_attributes>10.0;50.0;50.0;50.0;50.0;10.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;50.0;40.0;50.0;40.0;10.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>1053</x>
-      <y>1599</y>
-      <w>52</w>
-      <h>52</h>
+      <x>630</x>
+      <y>606</y>
+      <w>24</w>
+      <h>24</h>
     </coordinates>
     <panel_attributes>type=termination</panel_attributes>
     <additional_attributes/>
@@ -250,22 +142,22 @@ gameLoop()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>598</x>
-      <y>1560</y>
-      <w>494</w>
-      <h>52</h>
+      <x>492</x>
+      <y>588</y>
+      <w>156</w>
+      <h>24</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 score</panel_attributes>
-    <additional_attributes>10.0;20.0;360.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;240.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>325</x>
-      <y>78</y>
-      <w>26</w>
-      <h>1625</h>
+      <x>366</x>
+      <y>132</y>
+      <w>12</w>
+      <h>594</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes/>
@@ -273,22 +165,10 @@ score</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>598</x>
-      <y>156</y>
-      <w>273</w>
-      <h>52</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;-
-assignUser(User)</panel_attributes>
-    <additional_attributes>190.0;20.0;10.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>338</x>
-      <y>52</y>
-      <w>273</w>
-      <h>52</h>
+      <x>372</x>
+      <y>120</y>
+      <w>126</w>
+      <h>24</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
 connects</panel_attributes>
@@ -297,26 +177,10 @@ connects</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>338</x>
-      <y>1118</y>
-      <w>273</w>
-      <h>117</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;.
-joinedStatus: bool
-[PlayerNotFound
-|| PlayerNotConnected
-|| PlayerIsPlaying
-|| NotAccepted]</panel_attributes>
-    <additional_attributes>10.0;20.0;190.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>338</x>
-      <y>286</y>
-      <w>273</w>
-      <h>52</h>
+      <x>372</x>
+      <y>162</y>
+      <w>126</w>
+      <h>24</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 connected: bool</panel_attributes>
@@ -325,45 +189,22 @@ connected: bool</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>338</x>
-      <y>377</y>
-      <w>273</w>
-      <h>52</h>
+      <x>372</x>
+      <y>270</y>
+      <w>126</w>
+      <h>24</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
 setSettings(settings)</panel_attributes>
     <additional_attributes>190.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>598</x>
-      <y>416</y>
-      <w>273</w>
-      <h>52</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;-
-setLobySettings()</panel_attributes>
-    <additional_attributes>190.0;20.0;10.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLGeneric</id>
-    <coordinates>
-      <x>845</x>
-      <y>442</y>
-      <w>26</w>
-      <h>78</h>
-    </coordinates>
-    <panel_attributes/>
-    <additional_attributes/>
-  </element>
-  <element>
     <id>UMLFrame</id>
     <coordinates>
-      <x>208</x>
-      <y>351</y>
-      <w>767</w>
-      <h>234</h>
+      <x>282</x>
+      <y>258</y>
+      <w>576</w>
+      <h>138</h>
     </coordinates>
     <panel_attributes>optional</panel_attributes>
     <additional_attributes/>
@@ -371,10 +212,10 @@ setLobySettings()</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>1222</x>
-      <y>0</y>
-      <w>130</w>
-      <h>39</h>
+      <x>714</x>
+      <y>96</y>
+      <w>60</w>
+      <h>18</h>
     </coordinates>
     <panel_attributes>_:DataBase_</panel_attributes>
     <additional_attributes/>
@@ -382,21 +223,21 @@ setLobySettings()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1274</x>
-      <y>26</y>
-      <w>39</w>
-      <h>1781</h>
+      <x>738</x>
+      <y>108</y>
+      <w>18</w>
+      <h>666</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;1350.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;1090.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>1274</x>
-      <y>624</y>
-      <w>26</w>
-      <h>117</h>
+      <x>738</x>
+      <y>672</y>
+      <w>12</w>
+      <h>54</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes/>
@@ -404,152 +245,59 @@ setLobySettings()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>598</x>
-      <y>676</y>
-      <w>702</w>
-      <h>52</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;.
-found:bool</panel_attributes>
-    <additional_attributes>10.0;20.0;520.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>611</x>
-      <y>728</y>
-      <w>312</w>
-      <h>78</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;-
-checkConnection(pseudo)</panel_attributes>
-    <additional_attributes>10.0;40.0;60.0;40.0;60.0;10.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLGeneric</id>
-    <coordinates>
-      <x>598</x>
-      <y>728</y>
-      <w>26</w>
-      <h>78</h>
-    </coordinates>
-    <panel_attributes/>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLGeneric</id>
-    <coordinates>
-      <x>1274</x>
-      <y>1677</y>
-      <w>26</w>
-      <h>117</h>
-    </coordinates>
-    <panel_attributes/>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>598</x>
-      <y>1690</y>
-      <w>702</w>
-      <h>52</h>
+      <x>492</x>
+      <y>678</y>
+      <w>258</w>
+      <h>24</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
-updateScore(score,User)</panel_attributes>
-    <additional_attributes>520.0;20.0;10.0;20.0</additional_attributes>
+updateScore(score,Users)</panel_attributes>
+    <additional_attributes>410.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>611</x>
-      <y>819</y>
-      <w>299</w>
-      <h>78</h>
+      <x>486</x>
+      <y>108</y>
+      <w>18</w>
+      <h>666</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;-
-checkIsPlaying(pseudo)</panel_attributes>
-    <additional_attributes>10.0;40.0;60.0;40.0;60.0;10.0;10.0;10.0</additional_attributes>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;1090.0</additional_attributes>
   </element>
   <element>
-    <id>UMLClass</id>
+    <id>UMLFrame</id>
     <coordinates>
-      <x>1534</x>
-      <y>0</y>
-      <w>130</w>
-      <h>39</h>
+      <x>300</x>
+      <y>300</y>
+      <w>546</w>
+      <h>78</h>
     </coordinates>
-    <panel_attributes>_:Client 2_
-</panel_attributes>
+    <panel_attributes>if 2 players</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1586</x>
-      <y>26</y>
-      <w>39</w>
-      <h>1781</h>
-    </coordinates>
-    <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;1350.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>598</x>
-      <y>871</y>
-      <w>1014</w>
-      <h>65</h>
+      <x>372</x>
+      <y>312</y>
+      <w>126</w>
+      <h>24</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
-ChallengeRequest(Client)
-[Found&amp;&amp;Connected&amp;&amp;NotPlaying]</panel_attributes>
-    <additional_attributes>760.0;20.0;10.0;20.0</additional_attributes>
+signIn()</panel_attributes>
+    <additional_attributes>190.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>598</x>
-      <y>923</y>
-      <w>1014</w>
-      <h>52</h>
+      <x>372</x>
+      <y>336</y>
+      <w>126</w>
+      <h>24</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
-response</panel_attributes>
-    <additional_attributes>10.0;20.0;760.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLGeneric</id>
-    <coordinates>
-      <x>1586</x>
-      <y>884</y>
-      <w>26</w>
-      <h>78</h>
-    </coordinates>
-    <panel_attributes/>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>585</x>
-      <y>26</y>
-      <w>39</w>
-      <h>1781</h>
-    </coordinates>
-    <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;1350.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLGeneric</id>
-    <coordinates>
-      <x>598</x>
-      <y>819</y>
-      <w>26</w>
-      <h>78</h>
-    </coordinates>
-    <panel_attributes/>
-    <additional_attributes/>
+connected: bool</panel_attributes>
+    <additional_attributes>10.0;20.0;190.0;20.0</additional_attributes>
   </element>
 </diagram>
