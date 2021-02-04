@@ -24,14 +24,14 @@
 
 
 // This text will be stored with each diagram;  use it for notes.</help_text>
-  <zoom_level>10</zoom_level>
+  <zoom_level>18</zoom_level>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>930</x>
-      <y>890</y>
-      <w>270</w>
-      <h>50</h>
+      <x>810</x>
+      <y>1476</y>
+      <w>486</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -43,10 +43,10 @@ stores &gt;</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1180</x>
-      <y>790</y>
-      <w>290</w>
-      <h>220</h>
+      <x>1260</x>
+      <y>1296</y>
+      <w>522</w>
+      <h>396</h>
     </coordinates>
     <panel_attributes>Account
 --
@@ -55,37 +55,35 @@ stores &gt;</panel_attributes>
 -password:string
 -friends[ ]:Account
 -bestScore:int
--UnreadMessages[ ]:str
 --
 +removeFriend(pseudo)
 +verifyFriendsList(pseudo)
 +addFriend(pseudo)
-+addUnreadMessages(pseudo)
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>780</x>
-      <y>600</y>
-      <w>40</w>
-      <h>200</h>
+      <x>540</x>
+      <y>756</y>
+      <w>72</w>
+      <h>558</h>
     </coordinates>
     <panel_attributes>
 m1=1
 m2=1
 
 lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;180.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;290.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>670</x>
-      <y>70</y>
-      <w>240</w>
-      <h>90</h>
+      <x>342</x>
+      <y>0</y>
+      <w>432</w>
+      <h>162</h>
     </coordinates>
     <panel_attributes>ConnectedClient
 --
@@ -98,10 +96,10 @@ lt=&lt;&lt;&lt;&lt;-</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>780</x>
-      <y>150</y>
-      <w>50</w>
-      <h>150</h>
+      <x>540</x>
+      <y>144</y>
+      <w>90</w>
+      <h>270</h>
     </coordinates>
     <panel_attributes>
 m1=1
@@ -113,35 +111,15 @@ lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>170</x>
-      <y>350</y>
-      <w>240</w>
-      <h>190</h>
-    </coordinates>
-    <panel_attributes>Lobby
---
--private:bool
--listofplayer[nclients]:Client
--lobbyID:int
---
-+assignUser(user)
-+setLobySettings()
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>650</x>
-      <y>780</y>
-      <w>290</w>
-      <h>290</h>
+      <x>306</x>
+      <y>1278</y>
+      <w>522</w>
+      <h>522</h>
     </coordinates>
     <panel_attributes>DataBase
 --
 -nbAccount:int
 -accountList[nbAccount]:Account
--chatFilesName[ ]:string
 --
 +dspPlayerInfo(string)
 +dbSave(DataBase)
@@ -150,11 +128,6 @@ lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
 +find(pseudo):bool
 +verifyLogin(pseudo, pswd)
 +verifyFriendList(pseudo)
-+createChatFile()
-+addMessage(message,filename,myPseudo)
-+findChatFile(filename):bool
-+printChat(filename)
-+saveChatFile(filename)
 +updateScore(score,User)
 +removeFriend(pseudo1, pseudo2)</panel_attributes>
     <additional_attributes/>
@@ -162,10 +135,10 @@ lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>620</x>
-      <y>280</y>
-      <w>330</w>
-      <h>330</h>
+      <x>252</x>
+      <y>378</y>
+      <w>594</w>
+      <h>396</h>
     </coordinates>
     <panel_attributes>Server
 --
@@ -177,16 +150,10 @@ lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
 +sendPositionsBoard()
 +signIn()
 +signUp()
-+joinLobby()
-+inviteLobby(pseudo)
-+openChat(pseudo)
-+sendMessage(message)
 +addFriend(pseudo)
 +delFriend(pseudo)
 +setSettings(settings)
 +checkleaderboard()
-+checkConnection(pseudo)
-+checkIsPlaying(pseudo)
 
 </panel_attributes>
     <additional_attributes/>
@@ -194,10 +161,10 @@ lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>940</x>
-      <y>380</y>
-      <w>380</w>
-      <h>50</h>
+      <x>828</x>
+      <y>558</y>
+      <w>684</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -209,10 +176,10 @@ send Informations &gt;
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>940</x>
-      <y>440</y>
-      <w>380</w>
-      <h>50</h>
+      <x>828</x>
+      <y>666</y>
+      <w>684</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -224,10 +191,10 @@ m2=1..*
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1300</x>
-      <y>270</y>
-      <w>350</w>
-      <h>380</h>
+      <x>1476</x>
+      <y>360</y>
+      <w>630</w>
+      <h>504</h>
     </coordinates>
     <panel_attributes>Client
 --
@@ -239,36 +206,15 @@ m2=1..*
 --
 +sendInput(currentgameID,playerID,input)
 +display(positionsBoard)
-+joinLobby()
 +startGame()
-+inviteLobby(pseudo)
-+openChat(pseudo)
-+sendMessage(message)
-+inviteFriend(pseudo)
 +delFriend(pseudo)
 +createGame()
 +signIn()
 +signUp()
 +setSettings()
 +checkLeaderboard()
-+dspUnreadMessages()
 +sendfriendRequest(pseudo)
 </panel_attributes>
     <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>400</x>
-      <y>410</y>
-      <w>240</w>
-      <h>50</h>
-    </coordinates>
-    <panel_attributes>
-m1=1
-m2=0..*
-
-lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>220.0;20.0;10.0;20.0</additional_attributes>
   </element>
 </diagram>
