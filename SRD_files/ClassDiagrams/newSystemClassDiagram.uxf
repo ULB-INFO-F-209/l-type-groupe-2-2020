@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<diagram program="umlet" version="14.3.0">
+<?xml version="1.0" encoding="UTF-8"?><diagram program="umlet" version="13.3">
   <help_text>++// Uncomment the following line to change the fontsize and font:
 // fontsize=14
 // fontfamily=SansSerif //possible: SansSerif,Serif,Monospaced
@@ -24,14 +23,14 @@
 
 
 // This text will be stored with each diagram;  use it for notes.</help_text>
-  <zoom_level>18</zoom_level>
+  <zoom_level>7</zoom_level>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>810</x>
-      <y>1476</y>
-      <w>486</w>
-      <h>90</h>
+      <x>875</x>
+      <y>735</y>
+      <w>189</w>
+      <h>35</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -43,10 +42,10 @@ stores &gt;</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1260</x>
-      <y>1296</y>
-      <w>522</w>
-      <h>396</h>
+      <x>1050</x>
+      <y>665</y>
+      <w>203</w>
+      <h>154</h>
     </coordinates>
     <panel_attributes>Account
 --
@@ -65,10 +64,10 @@ stores &gt;</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>540</x>
-      <y>756</y>
-      <w>72</w>
-      <h>558</h>
+      <x>770</x>
+      <y>455</y>
+      <w>21</w>
+      <h>217</h>
     </coordinates>
     <panel_attributes>
 m1=1
@@ -80,10 +79,10 @@ lt=&lt;&lt;&lt;&lt;-</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>342</x>
-      <y>0</y>
-      <w>432</w>
-      <h>162</h>
+      <x>693</x>
+      <y>161</y>
+      <w>168</w>
+      <h>63</h>
     </coordinates>
     <panel_attributes>ConnectedClient
 --
@@ -96,10 +95,10 @@ lt=&lt;&lt;&lt;&lt;-</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>540</x>
-      <y>144</y>
-      <w>90</w>
-      <h>270</h>
+      <x>770</x>
+      <y>217</y>
+      <w>35</w>
+      <h>105</h>
     </coordinates>
     <panel_attributes>
 m1=1
@@ -111,10 +110,10 @@ lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>306</x>
-      <y>1278</y>
-      <w>522</w>
-      <h>522</h>
+      <x>679</x>
+      <y>658</y>
+      <w>203</w>
+      <h>203</h>
     </coordinates>
     <panel_attributes>DataBase
 --
@@ -135,10 +134,10 @@ lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>252</x>
-      <y>378</y>
-      <w>594</w>
-      <h>396</h>
+      <x>658</x>
+      <y>308</y>
+      <w>231</w>
+      <h>154</h>
     </coordinates>
     <panel_attributes>Server
 --
@@ -161,10 +160,10 @@ lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>828</x>
-      <y>558</y>
-      <w>684</w>
-      <h>90</h>
+      <x>882</x>
+      <y>378</y>
+      <w>266</w>
+      <h>35</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -176,10 +175,10 @@ send Informations &gt;
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>828</x>
-      <y>666</y>
-      <w>684</w>
-      <h>90</h>
+      <x>882</x>
+      <y>420</y>
+      <w>266</w>
+      <h>35</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -191,10 +190,10 @@ m2=1..*
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1476</x>
-      <y>360</y>
-      <w>630</w>
-      <h>504</h>
+      <x>1134</x>
+      <y>301</y>
+      <w>245</w>
+      <h>196</h>
     </coordinates>
     <panel_attributes>Client
 --
