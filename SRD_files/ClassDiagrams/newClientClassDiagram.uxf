@@ -4,8 +4,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>837</x>
-      <y>360</y>
+      <x>549</x>
+      <y>189</y>
       <w>315</w>
       <h>342</h>
     </coordinates>
@@ -13,7 +13,6 @@
 --
 -positionsBoard[MapObjects]: MapObject
 -currentGameID:int
--firstPlayer:bool
 -inGame:bool
 
 --
@@ -34,8 +33,8 @@ group=1</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1278</x>
-      <y>180</y>
+      <x>990</x>
+      <y>9</y>
       <w>243</w>
       <h>189</h>
     </coordinates>
@@ -51,8 +50,8 @@ group=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>981</x>
-      <y>234</y>
+      <x>693</x>
+      <y>63</y>
       <w>315</w>
       <h>144</h>
     </coordinates>
@@ -64,8 +63,8 @@ m2=1</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>450</x>
-      <y>369</y>
+      <x>162</x>
+      <y>198</y>
       <w>198</w>
       <h>63</h>
     </coordinates>
@@ -77,8 +76,8 @@ m2=1</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1341</x>
-      <y>612</y>
+      <x>1053</x>
+      <y>441</y>
       <w>189</w>
       <h>153</h>
     </coordinates>
@@ -95,8 +94,8 @@ Menu
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1143</x>
-      <y>909</y>
+      <x>855</x>
+      <y>738</y>
       <w>171</w>
       <h>63</h>
     </coordinates>
@@ -111,8 +110,8 @@ Menu
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1359</x>
-      <y>909</y>
+      <x>1071</x>
+      <y>738</y>
       <w>171</w>
       <h>63</h>
     </coordinates>
@@ -126,8 +125,8 @@ Menu
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1566</x>
-      <y>909</y>
+      <x>1278</x>
+      <y>738</y>
       <w>180</w>
       <h>63</h>
     </coordinates>
@@ -142,8 +141,8 @@ Menu
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1431</x>
-      <y>756</y>
+      <x>1143</x>
+      <y>585</y>
       <w>216</w>
       <h>171</h>
     </coordinates>
@@ -153,8 +152,8 @@ Menu
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1431</x>
-      <y>855</y>
+      <x>1143</x>
+      <y>684</y>
       <w>27</w>
       <h>72</h>
     </coordinates>
@@ -164,8 +163,8 @@ Menu
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1206</x>
-      <y>855</y>
+      <x>918</x>
+      <y>684</y>
       <w>252</w>
       <h>72</h>
     </coordinates>
@@ -175,8 +174,8 @@ Menu
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1422</x>
-      <y>360</y>
+      <x>1134</x>
+      <y>189</y>
       <w>63</w>
       <h>270</h>
     </coordinates>
@@ -189,8 +188,8 @@ uses ^</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1143</x>
-      <y>657</y>
+      <x>855</x>
+      <y>486</y>
       <w>216</w>
       <h>45</h>
     </coordinates>
@@ -203,8 +202,8 @@ m2=1
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>639</x>
-      <y>387</y>
+      <x>351</x>
+      <y>216</y>
       <w>216</w>
       <h>45</h>
     </coordinates>
@@ -217,8 +216,8 @@ m2=1
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>450</x>
-      <y>549</y>
+      <x>162</x>
+      <y>378</y>
       <w>189</w>
       <h>54</h>
     </coordinates>
@@ -230,8 +229,8 @@ m2=1
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>630</x>
-      <y>540</y>
+      <x>342</x>
+      <y>369</y>
       <w>225</w>
       <h>45</h>
     </coordinates>
@@ -245,8 +244,8 @@ send Informations &gt;
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>630</x>
-      <y>576</y>
+      <x>342</x>
+      <y>405</y>
       <w>225</w>
       <h>45</h>
     </coordinates>
