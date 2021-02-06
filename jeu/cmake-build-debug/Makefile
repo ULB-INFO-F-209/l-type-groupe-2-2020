@@ -143,32 +143,59 @@ jeu/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/jeu.dir/build.make CMakeFiles/jeu.dir/build
 .PHONY : jeu/fast
 
-main.o: main.cpp.o
+src/game.o: src/game.cpp.o
 
-.PHONY : main.o
+.PHONY : src/game.o
 
 # target to build an object file
-main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/jeu.dir/build.make CMakeFiles/jeu.dir/main.cpp.o
-.PHONY : main.cpp.o
+src/game.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jeu.dir/build.make CMakeFiles/jeu.dir/src/game.cpp.o
+.PHONY : src/game.cpp.o
 
-main.i: main.cpp.i
+src/game.i: src/game.cpp.i
 
-.PHONY : main.i
+.PHONY : src/game.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/jeu.dir/build.make CMakeFiles/jeu.dir/main.cpp.i
-.PHONY : main.cpp.i
+src/game.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jeu.dir/build.make CMakeFiles/jeu.dir/src/game.cpp.i
+.PHONY : src/game.cpp.i
 
-main.s: main.cpp.s
+src/game.s: src/game.cpp.s
 
-.PHONY : main.s
+.PHONY : src/game.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/jeu.dir/build.make CMakeFiles/jeu.dir/main.cpp.s
-.PHONY : main.cpp.s
+src/game.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jeu.dir/build.make CMakeFiles/jeu.dir/src/game.cpp.s
+.PHONY : src/game.cpp.s
+
+src/main.o: src/main.cpp.o
+
+.PHONY : src/main.o
+
+# target to build an object file
+src/main.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jeu.dir/build.make CMakeFiles/jeu.dir/src/main.cpp.o
+.PHONY : src/main.cpp.o
+
+src/main.i: src/main.cpp.i
+
+.PHONY : src/main.i
+
+# target to preprocess a source file
+src/main.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jeu.dir/build.make CMakeFiles/jeu.dir/src/main.cpp.i
+.PHONY : src/main.cpp.i
+
+src/main.s: src/main.cpp.s
+
+.PHONY : src/main.s
+
+# target to generate assembly for a file
+src/main.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jeu.dir/build.make CMakeFiles/jeu.dir/src/main.cpp.s
+.PHONY : src/main.cpp.s
 
 # Help Target
 help:
@@ -179,9 +206,12 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... jeu"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... src/game.o"
+	@echo "... src/game.i"
+	@echo "... src/game.s"
+	@echo "... src/main.o"
+	@echo "... src/main.i"
+	@echo "... src/main.s"
 .PHONY : help
 
 

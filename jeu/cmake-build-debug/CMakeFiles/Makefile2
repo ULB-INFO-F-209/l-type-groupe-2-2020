@@ -94,12 +94,12 @@ clean: CMakeFiles/jeu.dir/clean
 CMakeFiles/jeu.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/jeu.dir/build.make CMakeFiles/jeu.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/jeu.dir/build.make CMakeFiles/jeu.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ubuntu/l-type-groupe-2-2020/jeu/cmake-build-debug/CMakeFiles --progress-num=1,2 "Built target jeu"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ubuntu/l-type-groupe-2-2020/jeu/cmake-build-debug/CMakeFiles --progress-num=1,2,3 "Built target jeu"
 .PHONY : CMakeFiles/jeu.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/jeu.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ubuntu/l-type-groupe-2-2020/jeu/cmake-build-debug/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ubuntu/l-type-groupe-2-2020/jeu/cmake-build-debug/CMakeFiles 3
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/jeu.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/ubuntu/l-type-groupe-2-2020/jeu/cmake-build-debug/CMakeFiles 0
 .PHONY : CMakeFiles/jeu.dir/rule

@@ -4,7 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/ubuntu/l-type-groupe-2-2020/jeu/main.cpp" "/home/ubuntu/l-type-groupe-2-2020/jeu/cmake-build-debug/CMakeFiles/jeu.dir/main.cpp.o"
+  "/home/ubuntu/l-type-groupe-2-2020/jeu/src/game.cpp" "/home/ubuntu/l-type-groupe-2-2020/jeu/cmake-build-debug/CMakeFiles/jeu.dir/src/game.cpp.o"
+  "/home/ubuntu/l-type-groupe-2-2020/jeu/src/main.cpp" "/home/ubuntu/l-type-groupe-2-2020/jeu/cmake-build-debug/CMakeFiles/jeu.dir/src/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

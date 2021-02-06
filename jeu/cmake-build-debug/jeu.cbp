@@ -82,7 +82,13 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/ubuntu/l-type-groupe-2-2020/jeu/main.cpp">
+		<Unit filename="/home/ubuntu/l-type-groupe-2-2020/jeu/src/game.cpp">
+			<Option target="jeu"/>
+		</Unit>
+		<Unit filename="/home/ubuntu/l-type-groupe-2-2020/jeu/src/game.h">
+			<Option target="jeu"/>
+		</Unit>
+		<Unit filename="/home/ubuntu/l-type-groupe-2-2020/jeu/src/main.cpp">
 			<Option target="jeu"/>
 		</Unit>
 		<Unit filename="/home/ubuntu/l-type-groupe-2-2020/jeu/CMakeLists.txt">
