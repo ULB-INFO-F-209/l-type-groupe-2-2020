@@ -1,5 +1,8 @@
 #include "Client.hpp"
 
+
+Client::Client(int *obj) : _com(obj){}
+
 void Client::sendInput(int currentGameID, int playerID, char input) {
 
 }
