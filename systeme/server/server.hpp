@@ -1,9 +1,15 @@
 #ifndef SERVER_HPP
 #define SERVER_HPP
 
+#include <thread>
+#include <vector>
+
 
 Class Server{
 
+private:
+    static _is_active = false;
+    std::vector<const char *> _pipe_running = {};
 
 public:
 
@@ -16,8 +22,12 @@ public:
     bool addFriend();
     bool delFriend();
     void checklearderboard();
-    
+    bool static isServerActive() {return _is_active;}
 
+private:
+
+    void initConnexions();
+    void createPipe(const char*);
 
 
     ~Server()=default;
