@@ -3,12 +3,13 @@
 
 class Client{
     // MapObject positionsBoard;
-    int _currentGameID;
-    bool _firstPlayer;
-    bool _inGame;
+    int _currentGameID=-1;
+    bool _inGame=0;
 public:
-    Client() = default;
+    //constructor
+   constexpr Client() = default;
 
+    //getters/setter
     void sendInput(int currentGameID, int playerID, char input);
     // void display(MapObject);
     void startGame();
@@ -20,6 +21,7 @@ public:
     void checkLeaderboard();
     void sendFriendRequest(char pseudo);
 
+    //destructor
     ~Client() = default;
 
 };
