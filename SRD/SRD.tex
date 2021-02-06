@@ -67,7 +67,7 @@
 
 L’objectif de ce projet consiste en la réalisation d'un jeu d'action de style shoot 'em up en multijoueur. Dans ce jeu, un ou deux joueurs doivent parcourir plusieurs niveaux en détruisant les ennemis qui se présentent devant eux, tout en esquivant les tirs provoqués par ces derniers. Les vaisseaux dirigés par les joueurs peuvent récupérer des bonus d’armement lâchés par leurs nombreux adversaires, pour mieux les éliminer. L'objectif des joueurs étant de terminer tous les niveaux sans que leur compteur de vies ne se retrouve à 0. En effet, un joueur en possède un nombre déterminé. Si un projectile d'un joueur touche un ennemi, son score est augmenté. À la fin d'une partie, le score de chaque utilisateur est mis à jour si celui-ci est meilleur que son score actuel.
 
-En dehors du jeu, un utilisateur a la capacité de gérer sa liste d'amis, de discuter avec d'autres utilisateurs et de consulter le classement général des joueurs.
+En dehors du jeu, un utilisateur a la capacité de gérer sa liste d'amis et de consulter le classement général des joueurs.
 
 Le jeu ne sera exécutable que sous le système d'exploitation Linux.
 
@@ -123,12 +123,6 @@ Dans les deux cas, une option de retour à la page d'accueil sera disponible.
 
 \subsubsection{Menu principal}
 
-- Discuter:
-
-La liste des chats existants est présentée à l'utilisateur, il a le choix de discuter dans un chat existant ou d'en créer un nouveau avec un autre utilisateur, qu'ils soient amis ou non. 
-
-L'utilisateur peut aussi voir s'il a de nouveaux messages non-lus.\\
-
 - Consulter amis:
 
 La liste des amis de l'utilisateur est affichée lorsque cette option est sélectionnée. Il peut supprimer un ami, en ajouter un nouveau et aussi voir ses demandes d'amis. 
@@ -141,17 +135,9 @@ L'ajout d'un ami commence par une invitation. Le second utilisateur aura le choi
 
 Le classement affiche le score de tous les utilisateurs. S'il le souhaite, l'utilisateur peut afficher seulement le classement de ses amis. \\
 
-- Envoyer une demande de jeu:
-
-L’utilisateur a la possibilité d’inviter un autre utilisateur, avec un pseudonyme valide, à rejoindre une partie. Si ce dernier est connecté et qu’il n’est pas déjà en train de jouer, il a possibilité d’accepter ou de refuser la demande. S’il accepte, la connexion entre les deux joueurs sera établie, s’il refuse l’hôte ne sera pas averti. \\
-
-- Consulter les demandes de jeu:
-
-Lors d’une consultation de la liste d’invitations, la possibilité est laissée à l’utilisateur de les accepter ou décliner s'il en a reçu. Ainsi, accepter une invitation transfère l’utilisateur dans le lobby de l’hôte si celui-ci n’a pas atteint son nombre maximum de joueurs. L’invité ne peut pas modifier les paramètres que le premier joueur aura choisi. À l’inverse, refuser une invitation n’avertit pas l’hôte. \\
-
 - Lancer une partie:
 
-Le lancement d’une partie se fait lorsque l’utilisateur crée une partie en gardant les paramètres de celle-ci par défaut ou en les redéfinissant.
+Le lancement d’une partie se fait lorsque l’utilisateur crée une partie en gardant les paramètres de celle-ci par défaut ou en les redéfinissant. \\
 
 - Paramètres:
 
@@ -164,7 +150,7 @@ S'il le souhaite, l'utilisateur peut définir :
 
 - Le nombre de joueurs: 
 
-L'utilisateur a la possibilité de choisir entre un ou deux participants. Dans le cas où le nombre de participants équivaut à deux, il pourra, s'il le souhaite, inviter un autre joueur dans sa partie. Celle-ci ne se lancera que si le joueur invité accepte la demande de jeu. \\
+L'utilisateur a la possibilité de choisir entre un ou deux participants. Dans le cas où le nombre de participants équivaut à deux, la deuxième personne est invitée à se connecter. L’invité ne peut pas modifier les paramètres que le premier joueur aura choisi. \\
 
 - La difficulté de la partie:
 
@@ -223,12 +209,6 @@ Lors de sa création, elle possède les paramètres choisis par le joueur ainsi 
 \caption{Diagramme de Séquence pour la suppression d'un ami }
 \end{figure}
 
-\begin{figure}[hbtp]
-\centering
-\includegraphics[scale=0.4]{images/Chat-sequence-diagram.jpg}
-\caption{Diagramme de Séquence pour le chat entre Clients }
-\end{figure}
-
 
 \begin{figure}[hbtp]
 \centering
@@ -260,25 +240,20 @@ Parmi les fonctionnalités principales du serveur, on peut trouver:\\
 - La connexion entre client et serveur\\
 - L'interaction entre les utilisateurs\\
 - La gestion des données personnelles\\
-- La gestion de toutes les parties en cours
+- La gestion de la partie en cours 
 \subsubsection{DataBase}
 Cette classe sauvegardera toutes les informations persistantes et nécessaires au bon fonctionnement du jeu.\\
 Elle se chargera de:\\
 - préserver et manipuler les informations personnelles relatives à chaque joueur\\
-- conserver les historiques de discussions de tous les joueurs\\
 - la vérification de l'existence des données
-\subsubsection{Lobby}
-Le Lobby va servir de salle d'attente pour un ou deux joueurs avant de lancer une partie commune. L'hôte d'un lobby va pouvoir décider de son accessibilité (privé/publique).
 
 \subsubsection{Client}
 La classe Client permet à l'utilisateur de communiquer avec le serveur à travers diverses actions possibles affichées grâce au menu.
 Toutes les fonctionnalités décrites dans la section 2.1 sont possibles :
 \begin{itemize}
     \item Se connecter
-    \item s'inscrire
-    \item Rejoindre un lobby
+    \item S'inscrire
     \item Créer une partie
-    \item Discuter avec d'autres utilisateurs
     \item Consulter le classement
     \item Ajouter ou supprimer un ami
 \end{itemize}
@@ -304,23 +279,16 @@ Chaque compte possède des informations sur l'utilisateur auquel il appartient, 
 
 \subsubsection{Gestion d'une partie}
 
-Tout client connecté sera placé dans un lobby privé par défaut. Lorsqu'il voudra lancer une partie,
-il aura la possibilité de choisir les paramètres de celle-ci comme expliqué plus haut (cf 2.1.3). Le joueur peut aussi changer le statut du lobby(public/privé). Si le nombre de joueurs choisi est 2, l'hôte doit obligatoirement inviter un autre utilisateur connecté dans le cas où le lobby est privé.
-Le serveur vérifie que la personne invitée existe dans la base de données, qu'elle est connectée et qu'elle n'est pas dans une partie en cours.
-S'il est public, tout utilisateur connecté pourra rejoindre le lobby qui deviendra donc privé.
-La partie ne peut pas commencer tant que le nombre de joueurs spécifiés ne correspond pas au nombre de personnes présentes dans le lobby.
+Lorsque le joueur voudra lancer une partie,
+il aura la possibilité de choisir les paramètres de celle-ci comme expliqué plus haut (cf 2.1.3). Si le nombre de joueurs choisi est 2, l'hôte doit obligatoirement inviter un autre utilisateur à se connecter.
 
+La partie ne peut pas commencer tant que le second joueur ne réussit pas à se connecter.
 \subsubsection{Gestion des amis}
 
 - Ajout: Lorsque l'utilisateur veut ajouter un ami, le serveur effectue des vérifications et envoie la demande, si elle est valide, à la personne concernée. Si la demande est acceptée, la liste d'amis des deux utilisateurs est mise à jour par le serveur.
 
 - Suppression: Le serveur fait une recherche de l'ami à supprimer et l'efface de la liste d'amis de l'utilisateur. L'utilisateur sera également supprimé de la liste de son ancien ami.
 
-\subsubsection{Chat}
-
-Les fichiers de chat entre deux utilisateurs sont stockés dans la base de données. Ces fichiers ont comme nom "pseudo1\_pseudo2.txt" où pseudo1 est plus petit lexicographiquement que pseudo2. Chaque ligne du fichier a comme format "pseudo: message".
-
-Un utilisateur peut discuter avec n'importe quel autre utilisateur. Lorsqu'il veut ouvrir un chat, le serveur vérifie qu'il n'existe pas déjà un fichier chat partagé par ces deux personnes. Si oui, son contenu est affiché, sinon, un nouveau fichier est créé et stocké dans la base de données. Chaque nouveau message entraîne l'écriture dans le fichier et une incrémentation du nombre de messages non-lus du destinataire.
 
 \subsubsection{Classement}
 
@@ -372,23 +340,10 @@ USE CASE   &\center{Pré-conditions}   & \hfill Post-conditions \hfill\null & Ca
 \textbf{Create game}    & L'utilisateur doit être enregistré dans la base de données  & Possibilité de sauvegarder les paramètres par défaut d'une partie  & L'utilisateur peut lancer une partie après avoir rempli les conditions minimales  & Néant \\
 \hline
 \hline
-\textbf{Invite player} & L'utilisateur doit être enregistré dans la base de données   & Etablissement de la connexion via le serveur entre l’hôte et l’invité & Inviter un joueur avec son pseudo & Invitation d'un pseudo qui n’existe pas \\
-\hline
-\hline
-\textbf{Player request}  & 
-L'utilisateur doit être enregistré dans la base de données et connecté pour recevoir une invitation via le serveur
-& Etablissement de la connexion via le serveur entre l’hôte et l’invité & Accepter/ Refuser une invitation de partie  & La connexion échouera si :
--Accepter une invitation dont l'hôte n’est plus connecté
--Rejoindre un salon complet \\
-\hline
-\hline
 \textbf{Check Leaderboard}  & L'utilisateur doit être enregistré dans la base de données   & \hfill Néant  \hfill\null &Le joueur peut consulter le classement des scores en envoyant une requête au serveur qui va lui renvoyer les informations  & Néant \\
 \hline
 \hline
 \textbf{View friend list }   & L'utilisateur doit être enregistré dans la base de données   & Néant  & Consultation de liste d'ami dans la base de données & Néant \\
-\hline
-\hline
-\textbf{Chat}     & L'utilisateur doit être enregistré dans la base de données   & Le serveur effectue les liaisons entre les utilisateurs  & Envoyer et recevoir des messages avec n'importe quel pseudo enregistré dans la base de données  & Néant \\
 \hline
 \hline
 \textbf{Add friend}    & L'utilisateur doit être enregistré dans la base de données   & Si invitation acceptée, ajout d'amis dans la base de donnée (bidirectionnel) & Entrer le pseudo d’un utilisateur. Le système va rechercher dans la base de données si le pseudo existe et lui envoyer une invitation.  & Ajouter un pseudo qui n’existe pas (affiche une erreur)\\
