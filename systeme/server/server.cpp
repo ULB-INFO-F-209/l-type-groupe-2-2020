@@ -10,7 +10,7 @@ Server::Server(){
         createPipe("connexion");
         std::cout << "Serveur connecter ... \n";}
         _is_active = true;
-        std::thread listening_connexion(initConnexion)
+        std::thread listening_connexion(initConnexion) // thread d'ecoute (deamon)
     }
     else
         std::cerr << "[ERROR SERVER ALREADY ACTIVE]" << std::endl; exit(1);
@@ -41,7 +41,7 @@ void Server::initConnexions(){
             char pipe_name[]= {"pipefile_"};
             strcat(pipe_name, proc_id);
 
-            createPipe(pipe_name); //TODO appel thread avec cette fct 
+            createPipe(pipe_name);
             close(fd);
 
             //break;
