@@ -1,10 +1,17 @@
+/**
+ * TODO:
+ *  thread pour jouer en même temps
+ *
+ */
+
 #include <unistd.h>
 #include <ncurses.h>
 
 #include <cstdint>
 #include <string>
-
-#include "game.h"
+#include <vector>
+#include "MapHandler.hpp"
+#include "game.hpp"
 
 struct {
     vec2i pos;
@@ -17,6 +24,8 @@ struct {
 } player2;
 
 WINDOW* wnd;
+
+MapHandler map;
 
 int init() {
     wnd = initscr();
@@ -53,6 +62,7 @@ int init() {
 
 
 void run() {
+    uint_fast16_t maxx, maxy;
 
     player1.disp_char = '0';
     player1.pos = {10, 5};
@@ -60,8 +70,11 @@ void run() {
     player2.disp_char = '1';
     player2.pos = {50, 5};
 
-    int in_char;
+    getmaxyx(wnd, maxy, maxx);
+    rect a = { {0, 0}, {maxx , maxy} };
+    map.setBounds(a);
 
+    int in_char;
     bool exit_requested = false;
 
     while(1) {
@@ -70,6 +83,13 @@ void run() {
         mvaddch(player1.pos.y, player1.pos.x, ' ');
         mvaddch(player2.pos.y, player2.pos.x, ' ');
 
+        for(auto s : map.getData()){
+            if (s->typ==MapObject::star){
+                mvaddch(s->getPos().y, s->getPos().x, ' ');
+            }
+        }
+
+        map.update();
         switch(in_char) {
             case 'q':
                 player1.pos.x -= 1;
@@ -139,12 +159,19 @@ void run() {
         mvaddch(player1.pos.y, player1.pos.x, player1.disp_char);
         mvaddch(player2.pos.y, player2.pos.x, player2.disp_char);
 
+        for(auto s : map.getData()){
+            if (s->typ==MapObject::star){
+                mvaddch(s->getPos().y, s->getPos().x, '*');
+            }
+        }
+
         if(exit_requested) break;
 
         usleep(10000); // 10 ms
 
         refresh();
     }
+    close();
 }
 
 

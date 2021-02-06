@@ -1,5 +1,5 @@
 #include <cstdint>
-#include "game.h"
+#include "game.hpp"
 
 
 int main(int argc, char **argv){

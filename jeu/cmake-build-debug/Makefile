@@ -143,6 +143,33 @@ jeu/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/jeu.dir/build.make CMakeFiles/jeu.dir/build
 .PHONY : jeu/fast
 
+src/MapHandler.o: src/MapHandler.cpp.o
+
+.PHONY : src/MapHandler.o
+
+# target to build an object file
+src/MapHandler.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jeu.dir/build.make CMakeFiles/jeu.dir/src/MapHandler.cpp.o
+.PHONY : src/MapHandler.cpp.o
+
+src/MapHandler.i: src/MapHandler.cpp.i
+
+.PHONY : src/MapHandler.i
+
+# target to preprocess a source file
+src/MapHandler.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jeu.dir/build.make CMakeFiles/jeu.dir/src/MapHandler.cpp.i
+.PHONY : src/MapHandler.cpp.i
+
+src/MapHandler.s: src/MapHandler.cpp.s
+
+.PHONY : src/MapHandler.s
+
+# target to generate assembly for a file
+src/MapHandler.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jeu.dir/build.make CMakeFiles/jeu.dir/src/MapHandler.cpp.s
+.PHONY : src/MapHandler.cpp.s
+
 src/game.o: src/game.cpp.o
 
 .PHONY : src/game.o
@@ -206,6 +233,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... jeu"
+	@echo "... src/MapHandler.o"
+	@echo "... src/MapHandler.i"
+	@echo "... src/MapHandler.s"
 	@echo "... src/game.o"
 	@echo "... src/game.i"
 	@echo "... src/game.s"
