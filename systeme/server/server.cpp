@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include <thread>
 #include <vector>
+#include <cstring>
 
 
 Server::Server(){
@@ -13,7 +14,8 @@ Server::Server(){
         std::thread listening_connexion(initConnexion) // thread d'ecoute (deamon)
     }
     else
-        std::cerr << "[ERROR SERVER ALREADY ACTIVE]" << std::endl; exit(1);
+        std::cerr << "[ERROR SERVER ALREADY ACTIVE]" << std::endl; 
+        exit(1);
     
 }
 void Server::catchInput() {
@@ -48,7 +50,8 @@ void Server::catchInput() {
 		//similaire a M mais on a besoin de connaitre les input du jeu
 	}
 	else {
-		std::cerr << "[ERROR SERVER ALREADY ACTIVE]" << std::endl; exit(1);
+		std::cerr << "[ERROR SERVER ALREADY ACTIVE]" << std::endl;
+		exit(1);
 	}
 
 }
@@ -86,6 +89,14 @@ void Server::initConnexions(){
         
     }
     
-    
-    return 0;
 }
+
+int main() {
+	return 0;
+}
+
+
+
+
+
+

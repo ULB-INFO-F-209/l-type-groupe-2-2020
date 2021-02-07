@@ -18,13 +18,13 @@ public:
 
     Server();
 
-    void catchInput(); // devrait se nommer handeInput(input)
+    void catchInput(char* input); // devrait se nommer handeInput(input)
     void sendPositionBoard();
-    bool signIn();
-    bool signUp();
-    bool addFriend();
-    bool delFriend();
-    void checklearderboard();
+    bool signIn(char* input);
+    bool signUp(char* input);
+    bool addFriend(char* input);
+    bool delFriend(char* input);
+    void checkleaderboard(char* input);
     bool static isServerActive() {return _is_active;}
     ~Server()=default;
 
