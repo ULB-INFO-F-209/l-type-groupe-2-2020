@@ -31,7 +31,7 @@ public:
 		_nb_client_courant ++;
 		pid_t new_process = fork();
 		if(new_process==0){//fils
-			system("xterm ./session");
+			system("xterm");
 			x->start_session(new_process);
 		}
 	}

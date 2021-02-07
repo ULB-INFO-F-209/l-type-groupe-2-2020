@@ -32,7 +32,26 @@ public:
 	
 };
 
+class ConnexionMenu{
+public:
+	ConnexionMenu();
+	~ConnexionMenu();
+	
+};
 
+class MainMenu
+{
+public:
+	MainMenu();
+	~MainMenu();
+	
+};
+
+
+class FriendMenu{
+
+
+};
 
 
 
