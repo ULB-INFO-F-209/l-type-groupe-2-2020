@@ -5,10 +5,10 @@
 #include <vector>
 
 
-Class Server{
+class Server{
 
 private:
-    static _is_active = false;
+    static bool _is_active = false;
     std::vector<const char *> _pipe_running = {};
 
 public:
@@ -32,6 +32,6 @@ private:
 
     ~Server()=default;
 
-}
+};
 
 #endif //Server

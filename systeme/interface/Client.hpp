@@ -29,7 +29,7 @@ public:
     void setSettings();
     void checkLeaderboard();
 
-    void sendFriendRequest(char pseudo);
+    void sendFriendRequest(char *pseudo);
 
     //destructor
     ~Client() = default;

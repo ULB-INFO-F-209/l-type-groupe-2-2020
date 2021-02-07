@@ -19,14 +19,6 @@ void Client::createGame() {
 
 }
 
-void Client::signIn() {
-
-}
-
-void Client::signUp() {
-
-}
-
 void Client::setSettings() {
 
 }
@@ -35,6 +27,6 @@ void Client::checkLeaderboard() {
 
 }
 
-void Client::sendFriendRequest(char pseudo) {
+void Client::sendFriendRequest(char *pseudo) {
 
 }
