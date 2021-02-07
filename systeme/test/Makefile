@@ -5,7 +5,7 @@ flag = -std=c++17 -masm=intel -fcoroutines -fconcepts -pthread \
 		 -Wsuggest-final-types -Wsuggest-final-methods  -Wsuggest-override -lquadmath
 
 test: process.cpp
-	gcc -o test process.cpp ${flag}
+	g++ -o test process.cpp ${flag}
 
 run: 
 	make test && ./test

@@ -8,27 +8,29 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <fcntl.h> // mode_t (permission : O_WRONLY)
+//#include <fcntl.h> // mode_t (permission : O_WRONLY)
 
 class Client
 {
 	char *_pseudo;
 	char * _pswd;
-	pid_t _pid;
+	pid_t _pid=0;
 	int _id;
 	char *_tube; //tube
-	int fd;	//
+	int fd[2]{};	//
 public:
-	//constructor
-	explicit Client(char *nom_tube):_tube(nom_tube){}
 	explicit Client(char *nom_tube, char *pseudo, char *pswd, int id):
-	_pseudo(pseudo), _pswd(pswd), _id(id){}
+	_pseudo(pseudo), _pswd(pswd), _id(id),_tube(nom_tube){}
 
 	void start_session(pid_t){ //boucle infini
-		std::cout <<" je suis "<<_pseudo<<std::endl;
-		std::cout <<"mon mot de passe est : "<<_pswd<<std::endl;
-		std::cout << " mon id est "<<_id<<std::endl;
-		fd = open(_pseudo, O_WRONLY); //mask unused variable
+
+		std::cout<<" je suis ";
+		fputs(_pseudo, stdout);
+		std::cout<<"\n\n";
+		std::cout<<"mon mot de passe est : ";
+		fputs(_pswd, stdout);
+		std::cout<< " mon id est "<<_id<<std::endl;	
+		std::cout << "juste utiliser fd sinon unused variable "<<fd[0]<<std::endl; 
 	}
 
 	void set_pid(pid_t pid){_pid = pid;}

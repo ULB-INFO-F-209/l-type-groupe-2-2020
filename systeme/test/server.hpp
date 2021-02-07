@@ -6,8 +6,11 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <fcntl.h> // mode_t (permission : O_WRONLY)
+//#include <fcntl.h> // mode_t (permission : O_WRONLY)
 #include <signal.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 #include "client.hpp"
 
@@ -21,14 +24,14 @@ public:
 	explicit Server()=default;
 	void connect_client(char *pseudo, char*pswd){
 		
-		mkfifo(pseudo,O_WRONLY); //voir les mode d'accé
+		mkfifo(pseudo,0666); //voir les mode d'accé
 		Client * x = new Client(pseudo, pseudo, pswd, _nb_client_courant);
 		_clients_connectee[_nb_client_courant] = x;
 		_pipes[_nb_client_courant] = pseudo;
 		_nb_client_courant ++;
 		pid_t new_process = fork();
 		if(new_process==0){//fils
-			system("xterm");
+			system("xterm ./session");
 			x->start_session(new_process);
 		}
 	}
@@ -41,11 +44,11 @@ public:
 
 	void connexion(){
 		system("clear");
-		char * pseudo; char*pswd;
+		char pseudo[60]; char pswd[60];
 		std::cout << "\n\n"<<"Entrez un pseudo >> ";
-		std::cin >>pseudo;
+		fgets(pseudo, 60, stdin);
 		std::cout <<"\n\n"<<"Entrez un mot de passe >> ";
-		std::cin >> pswd; 
+		fgets(pswd, 60, stdin);
 		connect_client(pseudo, pswd);
 	}
 
