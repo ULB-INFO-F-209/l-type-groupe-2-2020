@@ -24,12 +24,16 @@ vec2ui cur_size;
 
 struct {
     vec2i pos;
+    rect bounds;
     char disp_char;
+    int energy;
 } player1;
 
 struct {
     vec2i pos;
+    rect bounds;
     char disp_char;
+    int energy;
 } player2;
 
 
@@ -187,51 +191,108 @@ void run() {
                 break;
 //player2
             case 'f':
-                player2.pos.x -= 1;
+                if(player2.pos.x > game_area.left() + 1)
+                    player2.pos.x -= 1;
                 break;
             case 't':
-                player2.pos.y -= 1;
+                if(player2.pos.y > game_area.top())
+                    player2.pos.y -= 1;
                 break;
             case 'g':
-                player2.pos.y += 1;
+                if(player2.pos.y < game_area.bot() + 1)
+                    player2.pos.y += 1;
                 break;
             case 'h':
-                player2.pos.x += 1;
+                if(player2.pos.x < game_area.right() - 2)
+                    player2.pos.x += 1;
                 break;
             case 'r':
-                player2.pos.x-=1;
-                player2.pos.y-=1;
+                if((player2.pos.x > game_area.left() + 1) && (player2.pos.y > game_area.top())){
+                    player2.pos.x-=1;
+                    player2.pos.y-=1;}
                 break;
             case 'y':
-                player2.pos.x+=1;
-                player2.pos.y-=1;
+                if((player2.pos.x < game_area.right() - 2) && (player2.pos.y > game_area.top())){
+                    player2.pos.x+=1;
+                    player2.pos.y-=1;}
                 break;
             case 'n':
-                player2.pos.x+=1;
-                player2.pos.y+=1;
+                if((player2.pos.x < game_area.right() - 2) && (player2.pos.y < game_area.bot() + 1)){
+                    player2.pos.x+=1;
+                    player2.pos.y+=1;}
                 break;
             case 'v':
-                player2.pos.x-=1;
-                player2.pos.y+=1;
+                if((player2.pos.x > game_area.left() + 1) && (player2.pos.y < game_area.bot() + 1)){
+                    player2.pos.x-=1;
+                    player2.pos.y+=1;}
                 break;
 
             default:
                 break;
         }
-
+        // update object field
         if(tick % 7 == 0)
-            
-        mvaddch(player1.pos.y, player1.pos.x, player1.disp_char);
-        mvaddch(player2.pos.y, player2.pos.x, player2.disp_char);
+            map.update(MapObject::star, tick);
 
-        for(auto s : map.getData()){
-            if (s->typ==MapObject::star){
-                mvaddch(s->getPos().y, s->getPos().x, '*');
+        if(tick > 100 && tick %50  == 0)
+            map.update(MapObject::obstacle, tick);
+            
+        // update player bounds
+        player1.bounds = { { player1.pos.x -1, player1.pos.y}, {3, 1}};
+        player2.bounds = { { player2.pos.x -1, player2.pos.y}, {3, 1}};
+        
+        // remove obstacle if collided
+        for(size_t i = 0; i < map.getData(MapObject::obstacle).size(); i++){
+            if(player1.bounds.contains(map.getData(MapObject::obstacle).at(i)->getPos())){
+                map.erase(i, MapObject::obstacle);
+            }
+            if(player2.bounds.contains(map.getData(MapObject::obstacle).at(i)->getPos())){
+                map.erase(i, MapObject::obstacle);
             }
         }
 
-        if(exit_requested) break;
+        // draw object fields
+        for(auto s : map.getData(MapObject::star)){   
+            mvwaddch(game_wnd, s->getPos().y, s->getPos().x, '.');        
+        }
 
+        for(auto o : map.getData(MapObject::obstacle)){
+                wattron(game_wnd, A_BOLD);
+                mvwaddch(game_wnd, o->getPos().y, o->getPos().x, '*');
+                wattroff(game_wnd, A_BOLD);
+
+        }
+
+        // draw player body
+        wattron(game_wnd, A_BOLD);
+        mvwaddch(game_wnd, player1.pos.y, player1.pos.x, player1.disp_char);
+        wattroff(game_wnd, A_BOLD);
+        wattron(game_wnd, A_BOLD);
+        mvwaddch(game_wnd, player2.pos.y, player2.pos.x, player2.disp_char);
+        wattroff(game_wnd, A_BOLD);
+
+        wattron(game_wnd, A_ALTCHARSET);
+        mvwaddch(game_wnd, player1.pos.y, player1.pos.x - 1, ACS_LARROW);
+        mvwaddch(game_wnd, player1.pos.y, player1.pos.x + 1, ACS_RARROW);
+        mvwaddch(game_wnd, player2.pos.y, player2.pos.x - 1, ACS_LARROW);
+        mvwaddch(game_wnd, player2.pos.y, player2.pos.x + 1, ACS_RARROW);
+
+        // draw engines flames
+        if((tick % 10) / 3){
+            wattron(game_wnd, COLOR_PAIR(tick % 2 ? 3 : 4));
+            mvwaddch(game_wnd, player1.pos.y + 1, player1.pos.x, ACS_UARROW);
+            mvwaddch(game_wnd, player2.pos.y + 1, player2.pos.x, ACS_UARROW);
+            wattroff(game_wnd, COLOR_PAIR(tick % 2 ? 3 : 4));
+        }
+
+        wattroff(game_wnd, A_ALTCHARSET);
+
+        //refresh all
+        wrefresh(main_wnd);
+        wrefresh(game_wnd);
+        if(exit_requested || game_over) break;
+
+        tick++;
         usleep(10000); // 10 ms
 
         refresh();
@@ -241,5 +302,7 @@ void run() {
 
 
 void close() {
+    delwin(main_wnd);
+    delwin(game_wnd);
     endwin();
 }

@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <vector>
 #include <cstdint>
+#include <list>
 
 class MapObject{
 public:
@@ -58,14 +59,19 @@ public:
 
 class MapHandler{
 public:
-    void update();
-    void erase(size_t);
-    std::vector<MapObject*> getData() const;
+    void update(MapObject::type, int);
+    void erase(size_t, MapObject::type);
+    std::vector<MapObject*> getData(MapObject::type) const;
 
     void setBounds(rect);
 
 private:
     rect field_bounds;
-    std::vector<MapObject*> object_set;
+    
+    std::vector<MapObject*> stars_set;
+    std::vector<MapObject*> asteroids_set;
+    std::vector<MapObject*> object_set[2] = {stars_set, asteroids_set};
+     
+    
 };
 #endif //JEU_MAPHANDLER_HPP
