@@ -41,7 +41,7 @@ void Server::initConnexions(){
             char pipe_name[]= {"pipefile_"};
             strcat(pipe_name, proc_id);
 
-            createPipe(pipe_name);
+            createPipe(pipe_name); // creation de nv pipe avce le pid du client
             close(fd);
 
             //break;

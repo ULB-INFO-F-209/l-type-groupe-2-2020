@@ -26,14 +26,12 @@ public:
     bool delFriend();
     void checklearderboard();
     bool static isServerActive() {return _is_active;}
+    ~Server()=default;
 
 private:
 
     void initConnexions();
     void createPipe(const char*);
-
-
-    ~Server()=default;
 
 };
 
