@@ -16,6 +16,42 @@ Server::Server(){
         std::cerr << "[ERROR SERVER ALREADY ACTIVE]" << std::endl; exit(1);
     
 }
+void Server::catchInput() {
+	char input[100]; //input[0] = M pour menu et J pour jeu
+	bool res = false;
+	if (input[0] == 'M') {
+		switch(input[1]) {
+			case 'a':
+				res = signIn(input);    //Ma-Pseudo-MDP-PID
+				break;					//a chaque connexion le server associe un pid a un pseudo
+			case 'b':
+				res = signUp(input);    //Mb-Pseudo-MDP-PID
+				break;
+			case 'c':
+				res = addFriend(input); //Mc-Pseudo-PID
+				break;
+			case 'd':
+				res = delFriend(input); //Md-Pseudo-PID
+				break;
+			case 'e':
+				checkleaderboard(input);//Me-PID
+				//resClient(processId, ret) avec ret le retour de checkleaderboard
+				break;
+		}
+		string processId(input); 
+    	int i = processId.rfind("-");
+    	processId = processId.substr(i+1,processId.length()); //pour recup le PID
+    	resClient(processId, res)
+	}
+	
+	else if (input[0] == 'J'){
+		//similaire a M mais on a besoin de connaitre les input du jeu
+	}
+	else {
+		std::cerr << "[ERROR SERVER ALREADY ACTIVE]" << std::endl; exit(1);
+	}
+
+}
 
 void Server::createPipe(const char *name){
 

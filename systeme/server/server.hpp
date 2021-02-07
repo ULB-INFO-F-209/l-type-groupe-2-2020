@@ -32,7 +32,24 @@ private:
 
     void initConnexions();
     void createPipe(const char*);
+    template<typename T>;
+    void resClient(char*, T);
+    
 
 };
+template<typename T>;
+void resClient(char* processId, T res) {
+	char* message(res);
+	int fd;
+	fd = open("pipefile_processId",O_WRONLY);
+    if (fd != -1){
+        write(fd,message,strlen(message)+1);
+    }
+    else{
+        printf("pas de connexion\n");
+    }
+    close(fd);
+}
 
 #endif //Server
+
