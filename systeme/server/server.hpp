@@ -3,6 +3,9 @@
 
 #include <thread>
 #include <vector>
+#include "database/Database.hpp" //gardons les dossiers
+#include "database/interface/Client.hpp" //pour la clarté
+#include "database/interface/Menu.hpp" //aprés on changera
 
 
 class Server{
@@ -10,7 +13,7 @@ class Server{
 private:
     static bool _is_active = false;
     std::vector<const char *> _pipe_running = {};
-
+    Database _db; 
 public:
 
     Server();
