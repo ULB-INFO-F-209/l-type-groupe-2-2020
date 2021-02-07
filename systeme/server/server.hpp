@@ -3,28 +3,42 @@
 
 #include <thread>
 #include <vector>
-#include "database/Database.hpp" //gardons les dossiers
-#include "database/interface/Client.hpp" //pour la clarté
-#include "database/interface/Menu.hpp" //aprés on changera
+//#include "database/Database.hpp" //gardons les dossiers
+//#include "database/interface/Client.hpp" //pour la clarté
+//#include "database/interface/Menu.hpp" //aprés on changera
+
+#include <cstring>
+#include <string>
+#include <iostream>
+#include <unistd.h>
+#include <stdexcept>
+
+#include <sys/types.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <iostream>
+
 
 
 class Server{
 
 private:
-    static bool _is_active = false;
+    static bool _is_active;
     std::vector<const char *> _pipe_running = {};
-    Database _db; 
+    //Database _db; 
 public:
 
     Server();
 
-    void catchInput(char* input); // devrait se nommer handeInput(input)
+    void catchInput(); // devrait se nommer handeInput()
     void sendPositionBoard();
-    bool signIn(char* input);
-    bool signUp(char* input);
-    bool addFriend(char* input);
-    bool delFriend(char* input);
-    void checkleaderboard(char* input);
+    bool signIn(char* );
+    bool signUp(char* );
+    bool addFriend(char* );
+    bool delFriend(char* );
+    void checkleaderboard(char* );
     bool static isServerActive() {return _is_active;}
     ~Server()=default;
 
@@ -32,24 +46,13 @@ private:
 
     void initConnexions();
     void createPipe(const char*);
-    template<typename T>;
-    void resClient(char*, T);
+    
+    void resClient(std::string*, bool);
     
 
 };
-template<typename T>;
-void resClient(char* processId, T res) {
-	char* message(res);
-	int fd;
-	fd = open("pipefile_processId",O_WRONLY);
-    if (fd != -1){
-        write(fd,message,strlen(message)+1);
-    }
-    else{
-        printf("pas de connexion\n");
-    }
-    close(fd);
-}
+
+
 
 #endif //Server
 

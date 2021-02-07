@@ -1,23 +1,23 @@
 #include "server.hpp"
-#include <stdexcept>
-#include <thread>
-#include <vector>
-#include <cstring>
 
+bool Server::_is_active = false;
 
 Server::Server(){
 
+    std::cout << "LANCEMENT DU SERVEUR \n";
     if (!isServerActive()){ // pas actif
         createPipe("connexion");
-        std::cout << "Serveur connecter ... \n";}
+        std::cout << "Serveur connecter ... \n";
         _is_active = true;
-        std::thread listening_connexion(initConnexion) // thread d'ecoute (deamon)
+        std::thread(initConnexions); // thread d'ecoute (deamon)
     }
-    else
+    else{
         std::cerr << "[ERROR SERVER ALREADY ACTIVE]" << std::endl; 
         exit(1);
-    
+    }
+    pause();
 }
+
 void Server::catchInput() {
 	char input[100]; //input[0] = M pour menu et J pour jeu
 	bool res = false;
@@ -40,10 +40,10 @@ void Server::catchInput() {
 				//resClient(processId, ret) avec ret le retour de checkleaderboard
 				break;
 		}
-		string processId(input); 
+		std::string processId(input); 
     	int i = processId.rfind("-");
     	processId = processId.substr(i+1,processId.length()); //pour recup le PID
-    	resClient(processId, res)
+    	resClient(&processId, res);
 	}
 	
 	else if (input[0] == 'J'){
@@ -91,12 +91,45 @@ void Server::initConnexions(){
     
 }
 
-int main() {
-	return 0;
+void Server::sendPositionBoard(){
+    return ;
 }
 
+bool Server::signIn(char* val){
+    return false;
+}
 
+bool Server::signUp(char* val){
+    return false;
+}
 
+bool Server::addFriend(char* val ){
+    return false;
+}
+
+bool Server::delFriend(char* val ){
+    return false;
+}
+
+void Server::checkleaderboard(char* ){
+    return ;
+}
+
+void Server::resClient(std::string* processId, bool res) {
+	char message;
+    message = res;
+	int fd;
+    char pipe_name[100] ;
+    sprintf(pipe_name,"pipefile_%s",(*processId).c_str());
+	fd = open(pipe_name,O_WRONLY);
+    if (fd != -1){
+        write(fd,&message,strlen(&message)+1);
+    }
+    else{
+        printf("pas de connexion\n");
+    }
+    close(fd);
+}
 
 
 
