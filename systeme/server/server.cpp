@@ -64,6 +64,9 @@ void Server::createPipe(const char *name){
     std::cerr << "[ERROR PIPE ("<< ret_val <<")] " << std::endl;
     exit(1);
     }
+    else{
+        std::cout << "creation du pipe : " << name <<std::endl;
+    }
     _pipe_running.push_back(name);
 }
 

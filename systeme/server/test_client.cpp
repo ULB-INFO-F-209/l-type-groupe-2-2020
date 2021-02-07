@@ -14,6 +14,7 @@ void initConnexion(){
     fd = open("connexion",O_WRONLY);
     if (fd != -1){
         write(fd,message,strlen(message)+1);
+        printf("Connexion fait 2 \n");
 
     }
     else{
@@ -37,6 +38,7 @@ void sendInput(){
     fd = open(pipe_name,O_WRONLY);
     if (fd != -1){
         write(fd,message,strlen(message)+1);
+        printf("Input fait 2 \n");
 
     }
     else{
@@ -68,7 +70,9 @@ void receiveInput(){
 int main(){
 
     initConnexion();
+    printf("COnnexion fait\n");
     sendInput();
+    printf("Input fait\n");
 
     return 0;
 
