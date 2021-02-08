@@ -1,7 +1,10 @@
 /**
  * TODO:
  *  thread pour jouer en même temps
- *
+ *  class player
+ *  list player
+ *  shoot player 2
+ *  projectile collision
  */
 
 #include <unistd.h>
@@ -194,6 +197,9 @@ void run() {
                     player1.pos.x-=1;
                     player1.pos.y+=1;}
                 break;
+            case ' ':
+                map.spawnProjectile(player1.pos.x, player1.pos.y -1, 10, true);
+                break;
 //player2
             case 'f':
                 if(player2.pos.x > game_area.left() + 1)
@@ -238,7 +244,8 @@ void run() {
         // update object field
         if(tick % 7 == 0)
             map.update(MapObject::star, tick);
-
+        if(tick % 7 == 0)
+            map.update(MapObject::projectile, tick);
         if(tick > 100 && tick %50  == 0)
             map.update(MapObject::obstacle, tick);
             
@@ -272,6 +279,10 @@ void run() {
                 mvwaddch(game_wnd, o->getPos().y, o->getPos().x, '*');
                 wattroff(game_wnd, A_BOLD);
 
+        }
+        for(auto p : map.getProjectiles()){
+
+            mvwaddch(game_wnd, p->getPos().y, p->getPos().x, '#');
         }
 
         // draw player body

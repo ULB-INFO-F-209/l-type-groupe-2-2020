@@ -12,7 +12,7 @@
 
 class MapObject{
 public:
-    void move();
+    void virtual move();
     vec2i getPos() const;
     void setPos(vec2i);
     enum type{star,obstacle,ship,projectile,bonus};
@@ -48,6 +48,7 @@ class Projectile: public MapObject{
     bool shipType;
     //PlayerShip player;
 public:
+    void move() override;
     Projectile(int nx, int ny,int dam,bool ship_t) {pos.x = nx; pos.y = ny; damage=dam; shipType=ship_t;typ=projectile;}
 };
 
@@ -63,15 +64,17 @@ public:
     void erase(size_t, MapObject::type);
     std::vector<Star*> getStars() const;
     std::vector<Obstacle*> getObstacles() const;
-
+    std::vector<Projectile*> getProjectiles() const;
     void setBounds(rect);
-
-private:
+    void spawnProjectile(int, int, int, bool );
+    
     rect field_bounds;
+private:
+    
     
     std::vector<Star*> stars_set;
     std::vector<Obstacle*> obstacles_set;
-     
+    std::vector<Projectile*> projectiles_set;
     
 };
 #endif //JEU_MAPHANDLER_HPP
