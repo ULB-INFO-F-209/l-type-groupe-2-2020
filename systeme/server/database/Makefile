@@ -5,10 +5,10 @@ flag = -std=c++17 -masm=intel -fcoroutines -fconcepts -pthread \
 		 -Wsuggest-final-types -Wsuggest-final-methods  -Wsuggest-override -lquadmath
 
 test: test_db.cpp database.o
-	gcc -o test test_db database.o ${flag}
+	g++ -o test test_db.cpp database.o ${flag}
 
 database.o: database.hpp database.cpp
-	gcc -c database.cpp -o database.o ${flag}
+	g++ -c database.cpp -o database.o ${flag}
 
 run: 
 	make test && ./test
