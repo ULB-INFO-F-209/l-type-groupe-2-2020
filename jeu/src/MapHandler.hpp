@@ -23,9 +23,9 @@ protected:
 
 };
 
-class Stars: public MapObject{ //background
+class Star: public MapObject{ //background
 public:
-    Stars(int nx, int ny) { pos.x = nx; pos.y = ny;typ=star; }
+    Star(int nx, int ny) { pos.x = nx; pos.y = ny;typ=star; }
 };
 
 class Obstacle: public MapObject{
@@ -33,7 +33,7 @@ class Obstacle: public MapObject{
 public:
 
     Obstacle(int nx, int ny,int dam) { pos.x = nx; pos.y = ny; damage=dam;typ=obstacle;}
-
+    int get_damage() {return damage;};
 };
 
 class Ship: public MapObject{
@@ -54,23 +54,23 @@ public:
 class Bonus: public MapObject{
     int bonusType;
 public:
-    Bonus(int nx, int ny,int bonus_t) { pos.x = nx; pos.y = ny; bonusType=bonus_t;typ=bonus; }
+    Bonus(int nx, int ny,int bonus_t) { pos.x = nx; pos.y = ny; bonusType=bonus_t;typ=bonus;}
 };
 
 class MapHandler{
 public:
     void update(MapObject::type, int);
     void erase(size_t, MapObject::type);
-    std::vector<MapObject*> getData(MapObject::type) const;
+    std::vector<Star*> getStars() const;
+    std::vector<Obstacle*> getObstacles() const;
 
     void setBounds(rect);
 
 private:
     rect field_bounds;
     
-    std::vector<MapObject*> stars_set;
-    std::vector<MapObject*> asteroids_set;
-    std::vector<MapObject*> object_set[2] = {stars_set, asteroids_set};
+    std::vector<Star*> stars_set;
+    std::vector<Obstacle*> obstacles_set;
      
     
 };

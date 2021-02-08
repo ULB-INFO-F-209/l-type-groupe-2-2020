@@ -9,6 +9,8 @@
 
 #include <cstdint>
 #include <string>
+#include <stdlib.h>
+#include <time.h>
 #include <vector>
 #include "MapHandler.hpp"
 #include "game.hpp"
@@ -24,15 +26,21 @@ vec2ui cur_size;
 
 struct {
     vec2i pos;
+    vec2i dir;
     rect bounds;
     char disp_char;
+    char ship_type;
+    bool moving;
     int energy;
 } player1;
 
 struct {
     vec2i pos;
+    vec2i dir;
     rect bounds;
     char disp_char;
+    char ship_type;
+    bool moving;
     int energy;
 } player2;
 
@@ -41,6 +49,9 @@ struct {
 MapHandler map;
 
 int init() {
+
+    srand(time(0)); // ??????
+
     main_wnd = initscr();
     cbreak();
     noecho();
@@ -53,8 +64,11 @@ int init() {
     // enable color modification
     start_color();
 
+
+    // define area for screen (default terminal size)
     screen_area = { {0, 0}, {80, 24}};
 
+    // initialize window areas
     int infopanel_height = 4;
     game_wnd = newwin( screen_area.height() - infopanel_height - 2,
                         screen_area.width() - 2,
@@ -63,6 +77,7 @@ int init() {
 
     main_wnd = newwin(screen_area.height(), screen_area.width(), 0, 0);
 
+    // define area for movement
     game_area = { {0, 0}, {screen_area.width() - 2, screen_area.height() - infopanel_height - 4}};
 
     init_pair(1, COLOR_WHITE, COLOR_BLACK);
@@ -97,9 +112,15 @@ void run() {
     // init character
     player1.disp_char = '0';
     player1.pos = {10, 5};
+    player1.bounds = { { player1.pos.x - 1, player1.pos.y }, { 3, 2 } }; // player1 is 3 wide, 2 tall
+    player1.moving = false;
+    player1.energy = 100;
 
     player2.disp_char = '1';
     player2.pos = {50, 5};
+    player2.bounds = { { player2.pos.x - 1, player2.pos.y }, { 3, 2 } }; // player2 is 3 wide, 2 tall
+    player2.moving = false;
+    player2.energy = 100;
 
     map.setBounds(game_area);
 
@@ -121,15 +142,6 @@ void run() {
     wrefresh(main_wnd);
     wrefresh(game_wnd);
 
-    /*uint_fast16_t maxx, maxy;
-
-    getmaxyx(game_wnd, maxy, maxx);
-    rect a = { {0, 0}, {maxx , maxy} };
-    map.setBounds(a);
-
-    int in_char;
-    bool exit_requested = false;*/
-
     tick = 0;
 
     while(1) {
@@ -140,14 +152,7 @@ void run() {
         in_char = wgetch(main_wnd);
         in_char = tolower(in_char);
 
-        /*mvaddch(player1.pos.y, player1.pos.x, ' ');
-        mvaddch(player2.pos.y, player2.pos.x, ' ');
-
-        for(auto s : map.getData()){
-            if (s->typ==MapObject::star){
-                mvaddch(s->getPos().y, s->getPos().x, ' ');
-            }
-        }*/
+        
 
         switch(in_char) {
             case 'q':
@@ -238,25 +243,31 @@ void run() {
             map.update(MapObject::obstacle, tick);
             
         // update player bounds
-        player1.bounds = { { player1.pos.x -1, player1.pos.y}, {3, 1}};
-        player2.bounds = { { player2.pos.x -1, player2.pos.y}, {3, 1}};
+        player1.bounds = { { player1.pos.x -1, player1.pos.y}, {3, 2}};
+        player2.bounds = { { player2.pos.x -1, player2.pos.y}, {3, 2}};
         
         // remove obstacle if collided
-        for(size_t i = 0; i < map.getData(MapObject::obstacle).size(); i++){
-            if(player1.bounds.contains(map.getData(MapObject::obstacle).at(i)->getPos())){
+        for(size_t i = 0; i < map.getObstacles().size(); i++){
+            if(player1.bounds.contains(map.getObstacles().at(i)->getPos())){
                 map.erase(i, MapObject::obstacle);
+                player1.energy -= map.getObstacles().at(i)->get_damage();
             }
-            if(player2.bounds.contains(map.getData(MapObject::obstacle).at(i)->getPos())){
+            if(player2.bounds.contains(map.getObstacles().at(i)->getPos())){
                 map.erase(i, MapObject::obstacle);
+                player2.energy -= map.getObstacles().at(i)->get_damage();
             }
         }
 
-        // draw object fields
-        for(auto s : map.getData(MapObject::star)){   
+
+        if (player1.energy <= 0 && player2.energy <= 0)
+            game_over = true;
+
+        // draw stars
+        for(auto s : map.getStars()){   
             mvwaddch(game_wnd, s->getPos().y, s->getPos().x, '.');        
         }
 
-        for(auto o : map.getData(MapObject::obstacle)){
+        for(auto o : map.getObstacles()){
                 wattron(game_wnd, A_BOLD);
                 mvwaddch(game_wnd, o->getPos().y, o->getPos().x, '*');
                 wattroff(game_wnd, A_BOLD);
@@ -286,6 +297,44 @@ void run() {
         }
 
         wattroff(game_wnd, A_ALTCHARSET);
+
+        // draw UI elements
+        // energy bar player1
+        wmove(main_wnd, 20, 1);
+        whline(main_wnd, ' ', 25); // health bar is 25 chars long
+        wmove(main_wnd, 20, 1);
+        drawEnergyBar(player1.energy);
+
+        // energy bar player2
+        wmove(main_wnd, 30, 1);
+        whline(main_wnd, ' ', 25); // health bar is 25 chars long
+        wmove(main_wnd, 20, 1);
+        drawEnergyBar(player2.energy);
+
+        // draw static string to hold percentage
+        mvwprintw(main_wnd, 21, 1, " - E N E R G Y -      //");
+
+        // draw numeric percentage player 1
+        wattron(main_wnd, A_BOLD);
+        if(player1.energy <= 25) {
+            wattron(main_wnd, COLOR_PAIR(4));
+            if(tick % 100 < 50)
+                mvwprintw(main_wnd, 21, 18, "%i%%", player1.energy); 
+            wattroff(main_wnd, COLOR_PAIR(4));
+        } else
+            mvwprintw(main_wnd, 21, 18, "%i%%", player1.energy); 
+        wattroff(main_wnd, A_BOLD);
+
+        // draw numeric percentage player 1
+        wattron(main_wnd, A_BOLD);
+        if(player2.energy <= 25) {
+            wattron(main_wnd, COLOR_PAIR(4));
+            if(tick % 100 < 50)
+                mvwprintw(main_wnd, 21, 18, "%i%%", player2.energy); 
+            wattroff(main_wnd, COLOR_PAIR(4));
+        } else
+            mvwprintw(main_wnd, 21, 18, "%i%%", player2.energy); 
+        wattroff(main_wnd, A_BOLD);
 
         //refresh all
         wrefresh(main_wnd);
