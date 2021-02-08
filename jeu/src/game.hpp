@@ -44,5 +44,6 @@ struct star {
 int init();
 void run();
 void close();
+void drawEnergyBar(int);
 
 #endif

@@ -249,12 +249,12 @@ void run() {
         // remove obstacle if collided
         for(size_t i = 0; i < map.getObstacles().size(); i++){
             if(player1.bounds.contains(map.getObstacles().at(i)->getPos())){
-                map.erase(i, MapObject::obstacle);
                 player1.energy -= map.getObstacles().at(i)->get_damage();
+                map.erase(i, MapObject::obstacle);
             }
             if(player2.bounds.contains(map.getObstacles().at(i)->getPos())){
-                map.erase(i, MapObject::obstacle);
                 player2.energy -= map.getObstacles().at(i)->get_damage();
+                map.erase(i, MapObject::obstacle);
             }
         }
 
@@ -306,23 +306,24 @@ void run() {
         drawEnergyBar(player1.energy);
 
         // energy bar player2
-        wmove(main_wnd, 30, 1);
+        wmove(main_wnd, 20, 54);
         whline(main_wnd, ' ', 25); // health bar is 25 chars long
-        wmove(main_wnd, 20, 1);
+        wmove(main_wnd, 20, 54);
         drawEnergyBar(player2.energy);
 
         // draw static string to hold percentage
-        mvwprintw(main_wnd, 21, 1, " - E N E R G Y -      //");
+        mvwprintw(main_wnd, 21, 1, " - P1 E N E R G Y      -");
+        mvwprintw(main_wnd, 21, 54, " - P2 E N E R G Y      -");
 
         // draw numeric percentage player 1
         wattron(main_wnd, A_BOLD);
         if(player1.energy <= 25) {
             wattron(main_wnd, COLOR_PAIR(4));
             if(tick % 100 < 50)
-                mvwprintw(main_wnd, 21, 18, "%i%%", player1.energy); 
+                mvwprintw(main_wnd, 21, 19, "%i%%", player1.energy); 
             wattroff(main_wnd, COLOR_PAIR(4));
         } else
-            mvwprintw(main_wnd, 21, 18, "%i%%", player1.energy); 
+            mvwprintw(main_wnd, 21, 19, "%i%%", player1.energy); 
         wattroff(main_wnd, A_BOLD);
 
         // draw numeric percentage player 1
@@ -330,10 +331,10 @@ void run() {
         if(player2.energy <= 25) {
             wattron(main_wnd, COLOR_PAIR(4));
             if(tick % 100 < 50)
-                mvwprintw(main_wnd, 21, 18, "%i%%", player2.energy); 
+                mvwprintw(main_wnd, 21, 72, "%i%%", player2.energy); 
             wattroff(main_wnd, COLOR_PAIR(4));
         } else
-            mvwprintw(main_wnd, 21, 18, "%i%%", player2.energy); 
+            mvwprintw(main_wnd, 21, 72, "%i%%", player2.energy); 
         wattroff(main_wnd, A_BOLD);
 
         //refresh all
@@ -354,4 +355,25 @@ void close() {
     delwin(main_wnd);
     delwin(game_wnd);
     endwin();
+}
+
+void drawEnergyBar(int a) {
+
+    int col_pair = 1;
+    for(int i = 0; i < a; i+=4) {
+        if(i > 100)
+            col_pair = 5; // blue
+        else if(i > 50)
+            col_pair = 2; // green
+        else if(i > 25)
+            col_pair = 3; // yellow
+        else
+            col_pair = 4; // red
+
+        wattron(main_wnd, COLOR_PAIR(col_pair));
+        wattron(main_wnd, A_BOLD);
+        waddch(main_wnd, '/');
+        wattroff(main_wnd, A_BOLD);
+        wattroff(main_wnd, COLOR_PAIR(col_pair));
+    }
 }
