@@ -8,7 +8,7 @@ client: test_client.cpp
 main.o: test_serve.cpp server.hpp
 	g++ $(FLAGS) -c test_serve.cpp -o main.o 
 	
-server.o: server.cpp server.hpp
+server.o: server.cpp server.hpp Constante.hpp
 	g++ $(FLAGS) -c server.cpp -o server.o 
 
 clean:

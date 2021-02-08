@@ -1,12 +1,13 @@
 #include "server.hpp"
+#include "Constante.hpp"
 
 bool Server::_is_active = false;
 
-Server::Server(){
+Server::Server():_pipe_running()/*,_db()*/{
 
     std::cout << "LANCEMENT DU SERVEUR \n";
     if (!isServerActive()){ // pas actif
-        createPipe("connexion");
+        createPipe(Constante::PIPE_DE_CONNEXION);
         std::cout << "Serveur connecter ... \n";
         _is_active = true;
         std::thread t1(&Server::initConnexions,this); // thread d'ecoute (deamon)
@@ -20,38 +21,40 @@ Server::Server(){
 }
 
 void Server::catchInput() {
-	char input[100]; //input[0] = M pour menu et J pour jeu
+	char input[Constante::CHAR_SIZE]; //input[0] = M pour menu et J pour jeu
 	bool res = false;
-	if (input[0] == 'M') {
+
+	if (input[0] == Constante::ACTION_MENU_PRINCIPAL[0]) {
 		switch(input[1]) {
-			case 'a':
+			case Constante::ACTION_MENU_PRINCIPAL[1]:
 				res = signIn(input);    //Ma-Pseudo-MDP-PID
 				break;					//a chaque connexion le server associe un pid a un pseudo
-			case 'b':
+			case Constante::ACTION_MENU_PRINCIPAL[2]:
 				res = signUp(input);    //Mb-Pseudo-MDP-PID
 				break;
-			case 'c':
+			case Constante::ACTION_MENU_PRINCIPAL[3]:
 				res = addFriend(input); //Mc-Pseudo-PID
 				break;
-			case 'd':
+			case Constante::ACTION_MENU_PRINCIPAL[4]:
 				res = delFriend(input); //Md-Pseudo-PID
 				break;
-			case 'e':
+			case Constante::ACTION_MENU_PRINCIPAL[5]:
 				checkleaderboard(input);//Me-PID
 				//resClient(processId, ret) avec ret le retour de checkleaderboard
 				break;
 		}
+
 		std::string processId(input); 
-    	int i = processId.rfind("-");
+    	int i = processId.rfind(Constante::DELIMITEUR);
     	processId = processId.substr(i+1,processId.length()); //pour recup le PID
     	resClient(&processId, res);
 	}
 	
-	else if (input[0] == 'J'){
+	else if (input[0] == Constante::ACTION_JEU[0]){
 		//similaire a M mais on a besoin de connaitre les input du jeu
 	}
 	else {
-		std::cerr << "[ERROR SERVER ALREADY ACTIVE]" << std::endl;
+		std::cerr << "[ERROR IN INPUT]" << std::endl;
 		exit(1);
 	}
 
@@ -59,14 +62,16 @@ void Server::catchInput() {
 
 void Server::createPipe(const char *name){
 
-    
-    if (int ret_val = mkfifo(name,0666) > 1 ){ // gestion des erreurs
+    char path[Constante::CHAR_SIZE];
+    sprintf(path,"%s%s",Constante::PIPE_PATH,name);
 
-    std::cerr << "[ERROR PIPE ("<< ret_val <<")] " << std::endl;
-    exit(1);
+    if (int ret_val = mkfifo(path,0666) > 1 ){ // gestion des erreurs
+
+        std::cerr << "[ERROR PIPE ("<< ret_val <<")] " << std::endl;
+        exit(1);
     }
     else{
-        std::cout << "creation du pipe : " << name <<std::endl;
+        std::cout << "creation du pipe : " << path <<std::endl;
     }
     _pipe_running.push_back(name);
 }
@@ -74,17 +79,18 @@ void Server::createPipe(const char *name){
 void Server::initConnexions(){
 
     int fd;
-    char proc_id[100];
+    char proc_id[Constante::CHAR_SIZE];
    
     while (true){
-        fd =open("connexion", O_RDONLY);
+        fd =open(Constante::PIPE_DE_CONNEXION, O_RDONLY);
         if (fd != -1){
-            int val = read(fd,proc_id,100);
+            int val = read(fd,proc_id,Constante::CHAR_SIZE);
             std::cout << "connexion du processus :" <<proc_id<<std::endl;
-            char pipe_name[]= {"pipefile_"};
-            strcat(pipe_name, proc_id);
 
-            createPipe(pipe_name); // creation de nv pipe avce le pid du client
+            char pipe_name[Constante::CHAR_SIZE*2];
+            sprintf(pipe_name,"%s%s",Constante::BASE_PIPE_FILE,proc_id);
+            
+            createPipe(pipe_name); // creation de nouveau pipe avec le pid du client
             close(fd);
 
             //break;
@@ -120,12 +126,14 @@ void Server::checkleaderboard(char* ){
 }
 
 void Server::resClient(std::string* processId, bool res) {
-	char message;
+	char message;int fd;
     message = res;
-	int fd;
-    char pipe_name[100] ;
-    sprintf(pipe_name,"pipefile_%s",(*processId).c_str());
+	
+    char pipe_name[Constante::CHAR_SIZE];
+    sprintf(pipe_name,"%s%s",Constante::BASE_PIPE_FILE,(*processId).c_str());
+
 	fd = open(pipe_name,O_WRONLY);
+
     if (fd != -1){
         write(fd,&message,strlen(&message)+1);
     }

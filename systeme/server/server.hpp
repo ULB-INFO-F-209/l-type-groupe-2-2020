@@ -26,13 +26,13 @@ class Server{
 
 private:
     static bool _is_active;
-    std::vector<const char *> _pipe_running = {};
+    std::vector<const char *> _pipe_running;
+    
+
     //Database _db; 
 public:
 
     Server();
-
-    
     ~Server()=default;
 
 private:
