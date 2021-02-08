@@ -20,7 +20,7 @@ namespace Constante{
     constexpr char ACTION_JEU[] = {"J"/* ajouter les touches possibles*/};
     constexpr char DELIMITEUR = '_';
     const char BASE_PIPE_FILE[] = {"pipefile_"};
-    const char PIPE_PATH[] = {"database/interface/"};
+    const char PIPE_PATH[] = {""};
     
 }
 
