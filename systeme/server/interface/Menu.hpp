@@ -2,53 +2,102 @@
 #define Menu_HPP
 
 #include <iostream>
-//#include <cstdlib>
-//#include <cstdio>
 
 class Menu{
 	size_t _size;
-	std::string *_choices;
-protected: 
-	virtual void _dsp (std::ostream&) const;  
+	std::string *_choices; 
 public:
 	//constructeur
-	explicit Menu(const std::initializer_list<std::string>& init)noexcept;
+	explicit Menu(const std::initializer_list<std::string>& init)noexcept : 
+	_size(init.size()), _choices(new std::string[_size]){
+		const std::string* p = init.begin();
+		ptrdiff_t max = static_cast<ptrdiff_t>(_size);
+		for (ptrdiff_t i = 0; i < max; ++i){
+			_choices[i] = p[i];	
+		}
+	}
 	
 	//getters
-	virtual const void get_user_choice();
+	//virtual const void get_user_choice(); //realiser par window
+	std::size_t size(){return _size;}
+	std::string get_choice(ptrdiff_t idx){return _choices[idx];}
+	bool verify_choice(int choice){return true ? choice > 0 && choice <= _size : false;}
 
 	//application
 	virtual void execute_choice(int choice)=0;
 
 	//destructor
 	virtual ~Menu() noexcept;
+};
 
-	//extern
-	friend inline std::ostream& operator<< (std::ostream& out, const Menu& menu){
-		system("clear"); //que sur linux
-		menu._dsp(out);
-		return out;
+
+class ConnexionMenu final: public Menu{
+public:
+	ConnexionMenu(): Menu({"Connexion", "Inscription"}){}
+	void execute_choice(int choice) override{
+		if(choice == 1){
+			std::cout << "Vous avez choisie de vous connecter";
+		}
+		else if(choice == 2){std::cout << "Vous avez choisie de vous inscrire";}
 	}
+
+	~ConnexionMenu()=default;
 	
 };
 
-class ConnexionMenu{
+class MainMenu final: public Menu{
 public:
-	ConnexionMenu();
-	~ConnexionMenu();
+	MainMenu() : Menu({"Nouvelle partie", "Gestion des amis",\
+		"Classement","Profile"}){}
+	void execute_choice(int choice) override{
+		switch(choice){
+			case 1:
+				std::cout << "Vous avez choisie de crée une partie";
+				break;
+			case 2:
+				std::cout << "Vous avez choisie d'aller gérer vos amis";
+				break;
+			case 3:
+				std::cout << "Vous avez choisie de voir le classement";
+				break;
+			case 4:
+				std::cout << "Vous avez choisie de voir votre profile";
+				break;
+			default:
+				break;
+		}
+	}
+	~MainMenu()=default;
 	
 };
 
-class MainMenu
-{
+
+class FriendMenu final: public Menu{
+
 public:
-	MainMenu();
-	~MainMenu();
-	
-};
+	FriendMenu(): Menu({"Ajouter un ami", "Supprimer un ami",\
+		"Liste d'ami","Demandes d'ami"}){}
 
+	void execute_choice(int choice) override{
+		switch(choice){
+			case 1:
+				std::cout << "Vous avez choisie d'ajouter un ami";
+				break;
+			case 2:
+				std::cout << "Vous avez choisie de supprimer un ami";
+				break;
+			case 3:
+				std::cout << "Vous avez choisie de voir vos amis";
+				break;
+			case 4:
+				std::cout << "Vous avez choisie de voir vos demandes d'amis";
+				break;
+			default:
+				break;
+		}
+	}
 
-class FriendMenu{
+	~FriendMenu();
 
 
 };
