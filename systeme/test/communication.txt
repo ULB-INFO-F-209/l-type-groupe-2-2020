@@ -1,0 +1,61 @@
+__________________SYNTAXE DES REQUÊTES________________________________
+
+---------------------
+		Menu
+---------------------
+	Open: 
+		Client : "_pid_t process_client" via le pipe connexion
+		Server : "pid_t processus_server"
+
+	Connexion:
+		Client : "Ma_pseudo_mdp" via pipe pid_t
+		Server : "true"/"false" via le pipe pid_t 
+
+	Inscription: 
+		Client : "Mb_pseudo_mdp" via pipe pid_t
+		Server : "true"/"false" via le pipe pid_t 
+
+	CheckleaderBoard: 
+		Client : "Me" via pipe pid_t
+		Server: "le leaderboard formatée" via pipe pid_t
+
+	addfriend:
+		Client : "Mc-Pseudo" via pipe pid_t
+		Server: "erreur"/ "already" / "sent"
+
+	delfriend:
+		Client : "Md-Pseudo" via pipe pid_t
+		Server: "True"/ "False" 
+
+	FriendMenu:
+		friendrequest:
+			Client : "Md-Pseudo" via pipe pid_t
+			Server: "liste de mes demnade" 
+
+			Client: "R_pseudo_Amis" // reponse!
+
+		Liste_d'amis:
+			Client : "Mf_pseudo" via pipe pid_t
+			Server: "tableau de mes amis avec pseudo | score" 
+
+
+
+----------------------
+	CREE UNE PARTIE
+----------------------
+	Verification identité second joueur :
+		même chose que dans connexion ! (pose pas de question)
+
+	Cree une partie:
+		Client : "P_pseudoHote_pseudoj2_" via pipe pid_t //pseudo2 = Null 	si personne
+		Server : "ID" via le pipe pid_t 
+
+	Action:
+		Client : "J_Action_ID" via pipe pid_t
+		Server : "IMAGE du jeux" via le pipe pid_t 
+
+
+
+
+
+
