@@ -69,6 +69,7 @@ void receiveInput(){
 
 int main(){
 
+    printf("1er msg\n");
     initConnexion();
     printf("COnnexion fait\n");
     sendInput();

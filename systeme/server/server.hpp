@@ -32,7 +32,16 @@ public:
 
     Server();
 
-    void catchInput(); // devrait se nommer handeInput()
+    
+    ~Server()=default;
+
+private:
+
+    void initConnexions();
+    void createPipe(const char*);
+    void resClient(std::string*, bool);
+
+    void catchInput(); // devrait se nommer handeInput(input)
     void sendPositionBoard();
     bool signIn(char* );
     bool signUp(char* );
@@ -40,14 +49,6 @@ public:
     bool delFriend(char* );
     void checkleaderboard(char* );
     bool static isServerActive() {return _is_active;}
-    ~Server()=default;
-
-private:
-
-    void initConnexions();
-    void createPipe(const char*);
-    
-    void resClient(std::string*, bool);
     
 
 };

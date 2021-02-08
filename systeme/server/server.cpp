@@ -9,7 +9,8 @@ Server::Server(){
         createPipe("connexion");
         std::cout << "Serveur connecter ... \n";
         _is_active = true;
-        std::thread(initConnexions); // thread d'ecoute (deamon)
+        std::thread t1(&Server::initConnexions,this); // thread d'ecoute (deamon)
+        t1.detach(); //TODO verifier le comportement de ca 
     }
     else{
         std::cerr << "[ERROR SERVER ALREADY ACTIVE]" << std::endl; 
