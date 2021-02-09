@@ -1,6 +1,8 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
+#include <iostream>
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>                  /*  for sleep()  */
@@ -31,6 +33,8 @@ public:
 	}
 	void start_session(){
 		//lancer l'accueil
+		_acceuil.print(_mainWindow);
+		refresh();
 	}
 
 	//destructor

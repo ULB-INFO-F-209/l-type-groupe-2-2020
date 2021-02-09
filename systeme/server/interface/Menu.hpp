@@ -2,6 +2,8 @@
 #define Menu_HPP
 
 #include <iostream>
+#include <cstring>
+#include <ncurses.h>
 
 class Menu{
 	size_t _size;
@@ -17,8 +19,20 @@ public:
 		}
 	}
 	
-	//getters
-	//virtual const void get_user_choice(); //realiser par window
+	//getters 
+	virtual const void get_user_choice(){}
+	virtual void print(WINDOW *win){
+		int y = 3, x = 20;
+		for (size_t i = 0; i < _size; ++i)
+		{
+			char cstr[_choices[i].size() + 1];
+			strcpy(cstr, _choices[i].c_str());  
+			move(y, x);
+			wprintw(win,"%d %s", i+1, cstr); //n'accepte qu un char *
+			y += 2; 
+		}
+
+	}
 	std::size_t size(){return _size;}
 	std::string get_choice(ptrdiff_t idx){return _choices[idx];}
 	bool verify_choice(int choice){return true ? choice > 0 && choice <= _size : false;}
@@ -27,7 +41,7 @@ public:
 	virtual void execute_choice(int choice)=0;
 
 	//destructor
-	virtual ~Menu() noexcept;
+	virtual ~Menu(){delete[] _choices;}
 };
 
 
@@ -41,7 +55,7 @@ public:
 		else if(choice == 2){std::cout << "Vous avez choisie de vous inscrire";}
 	}
 
-	~ConnexionMenu()=default;
+	virtual ~ConnexionMenu()=default;
 	
 };
 
@@ -67,7 +81,7 @@ public:
 				break;
 		}
 	}
-	~MainMenu()=default;
+	virtual ~MainMenu()=default;
 	
 };
 
@@ -97,7 +111,7 @@ public:
 		}
 	}
 
-	~FriendMenu();
+	virtual ~FriendMenu()=default;
 
 
 };
