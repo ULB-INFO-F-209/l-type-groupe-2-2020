@@ -26,16 +26,11 @@
 class Server{
 
 private:
-    static bool _is_active;
-    static std::vector<Server *> _server_instance; // pour la gestion des signaux dans la classe 
-    std::vector<const char *> _pipe_running;
-    const int _SERVER_PID;
-    
-    
-
+    static bool _is_active; 
+    std::vector<const char *> _pipe_running;    
     //Database _db; 
-public:
 
+public:
     Server();
     ~Server()=default;
 
@@ -44,10 +39,7 @@ private:
     void initConnexions();
     void createPipe(const char*);
     void resClient(std::string*, bool);
-
     void handleIncommingMessages();
-    void handleClientPipe(const char * ); //pas forcement necessaire
-
     void catchInput(char *); // devrait se nommer handeInput(input)
     void sendPositionBoard();
     bool signIn(char* );

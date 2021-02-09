@@ -2,9 +2,14 @@
 #include "Constante.hpp"
 
 bool Server::_is_active = false;
-std::vector<Server* > Server::_server_instance{};
 
-Server::Server():_pipe_running(),_SERVER_PID(getpid())/*,_db()*/{
+/**
+ * Constructeur :
+ *  - cree 2 pipe, connexion et reponse
+ *  - lance 2 threads independant pour gerer connexion et reponse
+ * 
+ **/
+Server::Server():_pipe_running()/*,_db()*/{
 
     std::cout << "LANCEMENT DU SERVEUR \n";
     if (!isServerActive()){ // pas actif
@@ -30,8 +35,13 @@ Server::Server():_pipe_running(),_SERVER_PID(getpid())/*,_db()*/{
     
 }
 
-
+/**
+ * Ecoute le pipe de reponse et cree un nouveau thread(catchInput) pour gerer 
+ * l'input et envoyer la reponse
+ * 
+ **/
 void Server::handleIncommingMessages(){
+    
 
     std::cout << "Lancement de l'ecoute des requetes" <<std::endl;
     char response_pipe_path[Constante::CHAR_SIZE],message[Constante::CHAR_SIZE];
@@ -70,11 +80,10 @@ void Server::handleIncommingMessages(){
 
 }
 
-void Server::handleClientPipe(const char * input){
-
-
-}
-
+/**
+ * gere les messages client et envoie la reponse au bon client
+ * 
+ **/
 void Server::catchInput(char * input) {
 	//char input[Constante::CHAR_SIZE]; //input[0] = M pour menu et J pour jeu
 	bool res = false;
@@ -115,12 +124,17 @@ void Server::catchInput(char * input) {
 
 }
 
+/**
+ * Cree des pipes dans le dossier /tmp
+ * 
+ * format du pipe : /tmp/pipefile_name
+ **/
 void Server::createPipe(const char *name){
 
     char path[Constante::CHAR_SIZE];
     sprintf(path,"%s%s",Constante::PIPE_PATH,name);
 
-    if (int ret_val = mkfifo(path,0666) > 1 ){ // gestion des erreurs
+    if (int ret_val = mkfifo(path,Constante::PIPE_MODE) > 1 ){ //cree le pipe
 
         std::cerr << "[ERROR PIPE ("<< ret_val <<")] " << std::endl;
         exit(1);
@@ -131,6 +145,11 @@ void Server::createPipe(const char *name){
     _pipe_running.push_back(name);
 }
 
+/**
+ * (deamon)
+ * Ecoute constament le pipe connexion et cree les autres pipes 
+ * en consequence
+ **/
 void Server::initConnexions(){
 
     int fd;
@@ -219,6 +238,10 @@ void Server::checkleaderboard(char* ){
     return ;
 }
 
+/**
+ * Envoie la réponse au bon client si la réponse est un booléen
+ * 
+ **/ 
 void Server::resClient(std::string* processId, bool res) {
 	char message;int fd;
     message = res;
