@@ -2,14 +2,17 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "window.hpp"
+#include "Menu.hpp"
 
 
 
 int main(void) {
+	ConnexionMenu cm;
+	MainMenu mm;
+	FriendMenu fm;
 
-	Interface win{};
-	win.start_session();
+	std::cout <<cm;
+	cm.get_user_choice();
 
     return EXIT_SUCCESS;
 }

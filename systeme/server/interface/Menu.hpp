@@ -1,13 +1,24 @@
+/*
+	Ajouter:
+		titre aux menu
+		option quitter pour venir au précédent menu
+	Bugs:
+		Entrez autre chose qu un nombre dans get_user_choice casse la machine!
+*/
+
 #ifndef Menu_HPP
 #define Menu_HPP
 
 #include <iostream>
-#include <cstring>
-#include <ncurses.h>
+#include <sys/types.h>
 
 class Menu{
 	size_t _size;
 	std::string *_choices; 
+	virtual void _dsp (std::ostream& out) const{
+		for (size_t i = 0; i < _size; ++i){
+			out<<"                                             "<<i+1<<" "<<_choices[i]<<"\n";}
+	} 
 public:
 	//constructeur
 	explicit Menu(const std::initializer_list<std::string>& init)noexcept : 
@@ -19,29 +30,48 @@ public:
 		}
 	}
 	
-	//getters 
-	virtual const void get_user_choice(){}
-	virtual void print(WINDOW *win){
-		int y = 3, x = 20;
-		for (size_t i = 0; i < _size; ++i)
-		{
-			char cstr[_choices[i].size() + 1];
-			strcpy(cstr, _choices[i].c_str());  
-			move(y, x);
-			wprintw(win,"%d %s", i+1, cstr); //n'accepte qu un char *
-			y += 2; 
+	//getters & setters
+	virtual void get_user_choice(){
+		int choice; 
+		std::cout<<"                                             "; // 13*" " abrege le 
+		std::cout<< "Votre choix >>  ";
+		std::cin>>choice;
+		while(not verify_choice(choice)){
+			system("clear");
+			std::cout<<*this;
+			std::cout<<"                                             "; // 13*" " abrege le 
+			std::cout<< "Option non valide! \n";
+			std::cout<<"                                             "; // 13*" " abrege le 
+			std::cout<< "Entrez un choix valide >>  ";
+			std::cin>>choice;
 		}
-
+		execute_choice(choice);
 	}
+
+
+	//utilities (maybe not necessary)
 	std::size_t size(){return _size;}
 	std::string get_choice(ptrdiff_t idx){return _choices[idx];}
-	bool verify_choice(int choice){return true ? choice > 0 && choice <= _size : false;}
+	bool verify_choice(int choice){return true ? choice > 0 && choice <= static_cast<int>(_size): false;}
 
-	//application
+	//application (depend of choices!)
 	virtual void execute_choice(int choice)=0;
 
 	//destructor
 	virtual ~Menu(){delete[] _choices;}
+
+	//extern
+	friend inline std::ostream& operator<< (std::ostream& out, const Menu& m){
+		system("clear");
+		out << "\n\n\n";
+		m._dsp(out);
+		out << "\n\n\n";
+		return out;
+	}
+
+	//copie
+	Menu(const Menu&)=default;
+	Menu& operator=(const Menu&)=default;
 };
 
 
