@@ -55,7 +55,17 @@ void Database::dbSave(){
 
 void Database::add(Account account){
     _data.push_back(account);
+    print(_size);
+    //std::cout << "hello " << _size << std::endl;
     _size++;
+}
+
+void Database::print(unsigned index){
+    if (0 <= index){
+        char buff[sizeof(Account)];
+        account_to_str(buff, &_data[index]);
+        fprintf(stdout, "%s\n", buff);
+    }
 }
 
 //destructor
