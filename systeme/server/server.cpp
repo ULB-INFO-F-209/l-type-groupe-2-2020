@@ -30,6 +30,7 @@ Server::Server():_pipe_running(),_SERVER_PID(getpid())/*,_db()*/{
 
 void Server::handleSignalCall(int signb){
 
+    std::cout << "Signale recu " << std::endl;
     int fd; char message[Constante::CHAR_SIZE];
     for(int i = 0; i < ((_server_instance[0])->_pipe_running).size(); i++){ 
 
@@ -131,15 +132,28 @@ void Server::initConnexions(){
             createPipe(pipe_name); // creation de nouveau pipe avec le pid du client
             close(fd);
 
+            /**                            TODO 
+             * mettre tout ce qu'il y en dessous dans un thread sinon ce thread est bloqué ... 
+             *
+             **/
+            char pipe_path[Constante::CHAR_SIZE*3];
+            sprintf(pipe_path,"%s%s",Constante::PIPE_PATH,pipe_name);
+
             // ecire le pid du serveur sur le pipe connexion
             sprintf(message,"%d",_SERVER_PID);
-            int fd2 = open(pipe_name,O_WRONLY);
-            printf("Jai ecris mon pid : %d\n",_SERVER_PID);
-            if (fd2 != -1){
-                write(fd2,message,strlen(message)+1);
-                
+            sleep(5);
+            printf("Jai ecris mon pid  : %d sur %s\n",_SERVER_PID,pipe_path);
+            while (true)
+            {
+                int fd2 = open(pipe_path,O_WRONLY);
+                if (fd2 != -1){
+                    write(fd2,message,strlen(message)+1);
+                    break;
+                }
+                close(fd2);
             }
-            close(fd2);
+            
+            
         }
 
 

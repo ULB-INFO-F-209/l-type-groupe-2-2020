@@ -20,6 +20,25 @@ void initConnexion(){
         write(fd,message,strlen(message)+1);
         printf("Connexion fait \n");
 
+
+        char pipe_name[100];
+        sprintf(pipe_name,"/tmp/pipefile_%d",getpid());
+        while(true){
+            fd =open(pipe_name, O_RDONLY);
+            if (fd != -1){
+                //std::cout << "je suis ici " << std::endl;
+                int val = read(fd,PID_SERVER,100);
+                std::cout << "PID du serveur :" <<PID_SERVER<<std::endl;
+                break;
+                
+                
+            }
+            else{
+                std::cout << "Pas recu le pid serveur :" <<PID_SERVER<<std::endl;
+            }
+            close(fd);
+        }
+
     }
     else{
         printf("pas de connexion init connexion \n");
@@ -28,20 +47,8 @@ void initConnexion(){
     close(fd);
 
     
-    char pipe_name[100];
-    sprintf(pipe_name,"/tmp/pipefile_%d",getpid());
-    fd =open(pipe_name, O_RDONLY);
-    if (fd != -1){
-        while(int val = read(fd,PID_SERVER,100)){
-            std::cout << "PID du serveur :" <<PID_SERVER<<std::endl;
-        }
-        
-        
-    }
-    else{
-        std::cout << "Pas recu le pid serveur :" <<PID_SERVER<<std::endl;
-    }
-    close(fd);
+    
+    
 
 }
 
@@ -57,7 +64,7 @@ void sendInput(){
     
     fd = open(pipe_name,O_WRONLY);
     if (fd != -1){
-        while(!write(fd,message,strlen(message)+1)){printf("Pas encore envoyer \n");kill(atoi(PID_SERVER),SIGUSR1);};
+        while(write(fd,message,strlen(message)+1)){printf("Pas encore envoyer \n");kill(atoi(PID_SERVER),SIGUSR1);};
         printf("Input fait  \n");
 
     }
