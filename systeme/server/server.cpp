@@ -10,14 +10,17 @@ Server::Server():_pipe_running(),_SERVER_PID(getpid())/*,_db()*/{
     if (!isServerActive()){ // pas actif
 
         createPipe(Constante::PIPE_DE_CONNEXION);
+        createPipe(Constante::PIPE_DE_REPONSE);
 
-        _server_instance.push_back(this);
-        signal(SIGUSR1,handleSignalCall);
+        //_server_instance.push_back(this);
+        //signal(SIGUSR1,handleSignalCall);
 
         std::cout << "Serveur connecter ... \n";
         _is_active = true;
         std::thread t1(&Server::initConnexions,this); // thread d'ecoute (deamon)
         t1.detach(); //TODO verifier le comportement de ca 
+        std::thread t2(&Server::handleIncommingMessages,this);
+        t2.detach();
     }
     else{
         std::cerr << "[ERROR SERVER ALREADY ACTIVE]" << std::endl; 
@@ -28,27 +31,42 @@ Server::Server():_pipe_running(),_SERVER_PID(getpid())/*,_db()*/{
 }
 
 
-void Server::handleSignalCall(int signb){
+void Server::handleIncommingMessages(){
 
-    std::cout << "Signale recu " << std::endl;
-    int fd; char message[Constante::CHAR_SIZE];
-    for(int i = 0; i < ((_server_instance[0])->_pipe_running).size(); i++){ 
+    std::cout << "Lancement de l'ecoute des requetes" <<std::endl;
+    char response_pipe_path[Constante::CHAR_SIZE],message[Constante::CHAR_SIZE];
+    sprintf(response_pipe_path,"%s%s",Constante::PIPE_PATH,Constante::PIPE_DE_REPONSE);
 
-        const char * private_pipe_name = ((_server_instance[0])->_pipe_running)[i]; // recuparation du pipe stocker
-        std::cout << "lancement du pipe : " << private_pipe_name << std::endl;
-        fd =open(private_pipe_name, O_RDONLY);
+    int fd, val;
+    
+    
+    while (true){
+        
+        fd =open(response_pipe_path, O_RDONLY);
+        if (fd < 0){
+            std::cerr << "[ERROR OPENING PIPE("<<response_pipe_path<<")]" <<std::endl;
+            exit(-1);
+        }
 
-        if (fd != -1){
-            int val = read(fd,message,Constante::CHAR_SIZE);
-
-            std::thread t1(&Server::catchInput,_server_instance[0],message);
+        val = read(fd,message,Constante::CHAR_SIZE);
+        if (val < 0){
+            std::cerr << "[ERROR READING PIPE("<<response_pipe_path<<")]" <<std::endl;
+            //exit(-1);
+        }
+        else if (val >= 0){
+            //char *message2 = message;
+        
+            std::thread t1(&Server::catchInput,this,message); // thread de reponse 
             t1.detach();
         }
-        else{
-            std::cerr << "[ERROR AVEC LE PIPE : "<< private_pipe_name<<"]" << std::endl;
-        }
+        
+        
+        close(fd);
         
     }
+    close(fd);
+    
+    
 
 }
 
@@ -60,7 +78,7 @@ void Server::handleClientPipe(const char * input){
 void Server::catchInput(char * input) {
 	//char input[Constante::CHAR_SIZE]; //input[0] = M pour menu et J pour jeu
 	bool res = false;
-
+    std::cout << "The Input : " << input <<std::endl;
 	if (input[0] == Constante::ACTION_MENU_PRINCIPAL[0]) {
 		switch(input[1]) {
 			case Constante::ACTION_MENU_PRINCIPAL[1]:
@@ -84,7 +102,7 @@ void Server::catchInput(char * input) {
 		std::string processId(input); 
     	int i = processId.rfind(Constante::DELIMITEUR);
     	processId = processId.substr(i+1,processId.length()); //pour recup le PID
-    	resClient(&processId, res);
+    	//resClient(&processId, res);
 	}
 	
 	else if (input[0] == Constante::ACTION_JEU[0]){
@@ -132,28 +150,44 @@ void Server::initConnexions(){
             createPipe(pipe_name); // creation de nouveau pipe avec le pid du client
             close(fd);
 
+
+
+
             /**                            TODO 
              * mettre tout ce qu'il y en dessous dans un thread sinon ce thread est bloqué ... 
              *
-             **/
+             * ci dessous : envoie le pid du serveur au client pour que le client puisse envoyer 
+             * des signaux au serveur pour le prevenir d'un message ... ajout future de cette option :(
+             *
             char pipe_path[Constante::CHAR_SIZE*3];
             sprintf(pipe_path,"%s%s",Constante::PIPE_PATH,pipe_name);
 
             // ecire le pid du serveur sur le pipe connexion
             sprintf(message,"%d",_SERVER_PID);
-            sleep(5);
-            printf("Jai ecris mon pid  : %d sur %s\n",_SERVER_PID,pipe_path);
-            while (true)
+            //sleep(1);
+
+            int fd2 = open(pipe_path,O_WRONLY);
+            if (fd2 < 0){
+                std::cout << "Probleme a louverture du pipe : " << pipe_path <<std::endl;
+            }
+            else{
+                std::cout << "Ouverture du pipe " << pipe_path << " fait correctement" << std::endl;
+            }
+
+            //while (true)
             {
-                int fd2 = open(pipe_path,O_WRONLY);
-                if (fd2 != -1){
-                    write(fd2,message,strlen(message)+1);
+                
+                if (int tmp_val = write(fd2,message,strlen(message)+1) >= 0){
+                    printf("Jai ecris mon pid  : %d sur %s\n",_SERVER_PID,pipe_path);
                     break;
                 }
-                close(fd2);
+                
             }
+            close(fd2);*/
             
-            
+        }
+        else{
+            std::cerr << "[ERROR PIPE CONNEXION]" <<std::endl;
         }
 
 

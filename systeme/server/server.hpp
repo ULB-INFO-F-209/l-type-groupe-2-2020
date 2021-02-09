@@ -14,10 +14,10 @@
 #include <stdexcept>
 
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <fcntl.h>
-#include <sys/stat.h>
 #include <iostream>
 #include <signal.h>
 
@@ -45,7 +45,7 @@ private:
     void createPipe(const char*);
     void resClient(std::string*, bool);
 
-    void static handleSignalCall(int);
+    void handleIncommingMessages();
     void handleClientPipe(const char * ); //pas forcement necessaire
 
     void catchInput(char *); // devrait se nommer handeInput(input)

@@ -14,6 +14,7 @@ namespace Constante{
     const std::size_t CHAR_SIZE = 100;
 
     const char PIPE_DE_CONNEXION[] = {"connexion"};
+    const char PIPE_DE_REPONSE[] = {"reponse"};
     constexpr char ACTION_MENU_PRINCIPAL[] = {"Mabcdefg"};
     constexpr char REPONSE_AMI = 'R';
     const char PAS_SECOND_JOUEUR[] = {"Null"};
