@@ -2,12 +2,18 @@
 #include "Constante.hpp"
 
 bool Server::_is_active = false;
+std::vector<Server* > Server::_server_instance{};
 
-Server::Server():_pipe_running()/*,_db()*/{
+Server::Server():_pipe_running(),_SERVER_PID(getpid())/*,_db()*/{
 
     std::cout << "LANCEMENT DU SERVEUR \n";
     if (!isServerActive()){ // pas actif
+
         createPipe(Constante::PIPE_DE_CONNEXION);
+
+        _server_instance.push_back(this);
+        signal(SIGUSR1,handleSignalCall);
+
         std::cout << "Serveur connecter ... \n";
         _is_active = true;
         std::thread t1(&Server::initConnexions,this); // thread d'ecoute (deamon)
@@ -18,10 +24,40 @@ Server::Server():_pipe_running()/*,_db()*/{
         exit(1);
     }
     pause();
+    
 }
 
-void Server::catchInput() {
-	char input[Constante::CHAR_SIZE]; //input[0] = M pour menu et J pour jeu
+
+void Server::handleSignalCall(int signb){
+
+    int fd; char message[Constante::CHAR_SIZE];
+    for(int i = 0; i < ((_server_instance[0])->_pipe_running).size(); i++){ 
+
+        const char * private_pipe_name = ((_server_instance[0])->_pipe_running)[i]; // recuparation du pipe stocker
+        std::cout << "lancement du pipe : " << private_pipe_name << std::endl;
+        fd =open(private_pipe_name, O_RDONLY);
+
+        if (fd != -1){
+            int val = read(fd,message,Constante::CHAR_SIZE);
+
+            std::thread t1(&Server::catchInput,_server_instance[0],message);
+            t1.detach();
+        }
+        else{
+            std::cerr << "[ERROR AVEC LE PIPE : "<< private_pipe_name<<"]" << std::endl;
+        }
+        
+    }
+
+}
+
+void Server::handleClientPipe(const char * input){
+
+
+}
+
+void Server::catchInput(char * input) {
+	//char input[Constante::CHAR_SIZE]; //input[0] = M pour menu et J pour jeu
 	bool res = false;
 
 	if (input[0] == Constante::ACTION_MENU_PRINCIPAL[0]) {
@@ -79,28 +115,38 @@ void Server::createPipe(const char *name){
 void Server::initConnexions(){
 
     int fd;
-    char proc_id[Constante::CHAR_SIZE];
-   
+    char proc_id[Constante::CHAR_SIZE], connex_pipe_path[Constante::CHAR_SIZE], message[Constante::CHAR_SIZE];
+    sprintf(connex_pipe_path,"%s%s",Constante::PIPE_PATH,Constante::PIPE_DE_CONNEXION);
+
     while (true){
-        fd =open(Constante::PIPE_DE_CONNEXION, O_RDONLY);
+        std::cout << std::endl;
+        fd =open(connex_pipe_path, O_RDONLY);
         if (fd != -1){
-            int val = read(fd,proc_id,Constante::CHAR_SIZE);
+            int val = read(fd,proc_id,Constante::CHAR_SIZE); // TODO verification de val 
             std::cout << "connexion du processus :" <<proc_id<<std::endl;
 
             char pipe_name[Constante::CHAR_SIZE*2];
-            sprintf(pipe_name,"%s%s",Constante::BASE_PIPE_FILE,proc_id);
+            sprintf(pipe_name,"%s%s",Constante::BASE_PIPE_FILE,proc_id); // constitue le nom du pipe priver entre le serveur et le client
             
             createPipe(pipe_name); // creation de nouveau pipe avec le pid du client
             close(fd);
 
-            //break;
-            
+            // ecire le pid du serveur sur le pipe connexion
+            sprintf(message,"%d",_SERVER_PID);
+            int fd2 = open(pipe_name,O_WRONLY);
+            printf("Jai ecris mon pid : %d\n",_SERVER_PID);
+            if (fd2 != -1){
+                write(fd2,message,strlen(message)+1);
+                
+            }
+            close(fd2);
         }
-        
-    }
-    
-}
 
+
+    }
+
+}
+            
 void Server::sendPositionBoard(){
     return ;
 }

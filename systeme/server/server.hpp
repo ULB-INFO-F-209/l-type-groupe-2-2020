@@ -19,6 +19,7 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <iostream>
+#include <signal.h>
 
 
 
@@ -26,7 +27,10 @@ class Server{
 
 private:
     static bool _is_active;
+    static std::vector<Server *> _server_instance; // pour la gestion des signaux dans la classe 
     std::vector<const char *> _pipe_running;
+    const int _SERVER_PID;
+    
     
 
     //Database _db; 
@@ -41,7 +45,10 @@ private:
     void createPipe(const char*);
     void resClient(std::string*, bool);
 
-    void catchInput(); // devrait se nommer handeInput(input)
+    void static handleSignalCall(int);
+    void handleClientPipe(const char * ); //pas forcement necessaire
+
+    void catchInput(char *); // devrait se nommer handeInput(input)
     void sendPositionBoard();
     bool signIn(char* );
     bool signUp(char* );
