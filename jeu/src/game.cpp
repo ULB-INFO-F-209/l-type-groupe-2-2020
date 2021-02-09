@@ -17,6 +17,7 @@
 #include <vector>
 #include "MapHandler.hpp"
 #include "game.hpp"
+#include "Player.hpp"
 
 WINDOW* main_wnd;
 WINDOW* game_wnd;
@@ -27,25 +28,6 @@ rect screen_area;
 vec2ui cur_size;
 
 
-struct {
-    vec2i pos;
-    vec2i dir;
-    rect bounds;
-    char disp_char;
-    char ship_type;
-    bool moving;
-    int energy;
-} player1;
-
-struct {
-    vec2i pos;
-    vec2i dir;
-    rect bounds;
-    char disp_char;
-    char ship_type;
-    bool moving;
-    int energy;
-} player2;
 
 
 
@@ -67,7 +49,7 @@ int init() {
     // enable color modification
     start_color();
 
-
+    
     // define area for screen (default terminal size)
     screen_area = { {0, 0}, {80, 24}};
 
@@ -112,8 +94,12 @@ void run() {
 
     int tick;
 
+    PlayerShip* playership1 = new PlayerShip(10, 5, { {10 - 1, 5 }, { 3, 2 } }, '0',100);
+    PlayerShip* playership2 = new PlayerShip(50, 5, { { 50 - 1, 5 }, { 3, 2 } }, '1',100);
+    PlayerShip* listPlayers[2] = {playership1, playership2};
+
     // init character
-    player1.disp_char = '0';
+    /*player1.disp_char = '0';
     player1.pos = {10, 5};
     player1.bounds = { { player1.pos.x - 1, player1.pos.y }, { 3, 2 } }; // player1 is 3 wide, 2 tall
     player1.moving = false;
@@ -123,7 +109,7 @@ void run() {
     player2.pos = {50, 5};
     player2.bounds = { { player2.pos.x - 1, player2.pos.y }, { 3, 2 } }; // player2 is 3 wide, 2 tall
     player2.moving = false;
-    player2.energy = 100;
+    player2.energy = 100;*/
 
     map.setBounds(game_area);
 
@@ -156,88 +142,85 @@ void run() {
         in_char = tolower(in_char);
 
         
-
+        uint_fast16_t x1 = playership1->getPos().x;
+        uint_fast16_t y1 = playership1->getPos().y;
+        uint_fast16_t  x2 = playership2->getPos().x;
+        uint_fast16_t y2 = playership2->getPos().y;
         switch(in_char) {
             case 'q':
-                if(player1.pos.x > game_area.left() + 1)
-                    player1.pos.x -= 1;
+                if(x1 > game_area.left() + 1)
+                    playership1->setPos(x1 - 1, y1);
                 break;
             case 'p':
                 exit_requested = true;
                 break;
             case 'z':
-                if(player1.pos.y > game_area.top())
-                    player1.pos.y -= 1;
+                if(y1 > game_area.top())
+                    playership1->setPos(x1, y1 - 1);
                 break;
             case 's':
-                if(player1.pos.y < game_area.bot() + 1)
-                    player1.pos.y += 1;
+                if(y1 < game_area.bot() + 1)
+                    playership1->setPos(x1, y1 + 1);
                 break;
             case 'd':
-                if(player1.pos.x < game_area.right() - 2)
-                    player1.pos.x += 1;
+                if(x1 < game_area.right() - 2)
+                    playership1->setPos(x1 + 1, y1);
                 break;
             case 'a':
-                if((player1.pos.x > game_area.left() + 1) && (player1.pos.y > game_area.top())){
-                    player1.pos.x-=1;
-                    player1.pos.y-=1;}
+                if((x1 > game_area.left() + 1) && (y1 > game_area.top())){
+                    playership1->setPos(x1 - 1, y1 - 1);}
                 break;
             case 'e':
-                if((player1.pos.x < game_area.right() - 2) && (player1.pos.y > game_area.top())){
-                    player1.pos.x+=1;
-                    player1.pos.y-=1;}
+                if((x1 < game_area.right() - 2) && (y1 > game_area.top())){
+                    playership1->setPos(x1 + 1, y1 - 1);}
                 break;
             case 'c':
-                if((player1.pos.x < game_area.right() - 2) && (player1.pos.y < game_area.bot() + 1)){
-                    player1.pos.x+=1;
-                    player1.pos.y+=1;}
+                if((x1 < game_area.right() - 2) && (y1 < game_area.bot() + 1)){
+                    playership1->setPos(x1 + 1, y1 + 1);}
                 break;
             case 'w':
-                if((player1.pos.x > game_area.left() + 1) && (player1.pos.y < game_area.bot() + 1)){
-                    player1.pos.x-=1;
-                    player1.pos.y+=1;}
+                if((x1 > game_area.left() + 1) && (y1 < game_area.bot() + 1)){
+                    playership1->setPos(x1 - 1, y1 + 1);}
                 break;
             case ' ':
-                map.spawnProjectile(player1.pos.x, player1.pos.y -1, 10, true);
+                map.spawnProjectile(playership1->getPos().x, playership1->getPos().y -1, 10, true);
                 break;
 //player2
             case 'f':
-                if(player2.pos.x > game_area.left() + 1)
-                    player2.pos.x -= 1;
+                if(x2 > game_area.left() + 1)
+                    playership2->setPos(x2 - 1 , y2);
                 break;
             case 't':
-                if(player2.pos.y > game_area.top())
-                    player2.pos.y -= 1;
+                if(y2 > game_area.top())
+                    playership2->setPos(x2, y2 - 1);;
                 break;
             case 'g':
-                if(player2.pos.y < game_area.bot() + 1)
-                    player2.pos.y += 1;
+                if(y2 < game_area.bot() + 1)
+                    playership2->setPos(x2 , y2 + 1);
                 break;
             case 'h':
-                if(player2.pos.x < game_area.right() - 2)
-                    player2.pos.x += 1;
+                if(x2< game_area.right() - 2)
+                    playership2->setPos(x2 + 1 , y2);
                 break;
             case 'r':
-                if((player2.pos.x > game_area.left() + 1) && (player2.pos.y > game_area.top())){
-                    player2.pos.x-=1;
-                    player2.pos.y-=1;}
+                if((x2 > game_area.left() + 1) && (y2 > game_area.top())){
+                    playership2->setPos(x2 - 1 , y2 - 1);}
                 break;
             case 'y':
-                if((player2.pos.x < game_area.right() - 2) && (player2.pos.y > game_area.top())){
-                    player2.pos.x+=1;
-                    player2.pos.y-=1;}
+                if((x2 < game_area.right() - 2) && (y2 > game_area.top())){
+                    playership2->setPos(x2 + 1 , y2 - 1);}
                 break;
             case 'n':
-                if((player2.pos.x < game_area.right() - 2) && (player2.pos.y < game_area.bot() + 1)){
-                    player2.pos.x+=1;
-                    player2.pos.y+=1;}
+                if((x2 < game_area.right() - 2) && (y2 < game_area.bot() + 1)){
+                    playership2->setPos(x2 + 1 , y2 + 1);}
                 break;
             case 'v':
-                if((player2.pos.x > game_area.left() + 1) && (player2.pos.y < game_area.bot() + 1)){
-                    player2.pos.x-=1;
-                    player2.pos.y+=1;}
+                if((x2 > game_area.left() + 1) && (y2 < game_area.bot() + 1)){
+                    playership2->setPos(x2 - 1 , y2 + 1);}
                 break;
-
+            case 'm':
+                map.spawnProjectile(playership2->getPos().x, playership2->getPos().y -1, 10, true);
+                break;
             default:
                 break;
         }
@@ -250,23 +233,21 @@ void run() {
             map.update(MapObject::obstacle, tick);
             
         // update player bounds
-        player1.bounds = { { player1.pos.x -1, player1.pos.y}, {3, 2}};
-        player2.bounds = { { player2.pos.x -1, player2.pos.y}, {3, 2}};
+        for( PlayerShip* p : listPlayers){
+            p->setBounds({ { p->getPos().x -1, p->getPos().y}, {3, 2}});
+        
         
         // remove obstacle if collided
-        for(size_t i = 0; i < map.getObstacles().size(); i++){
-            if(player1.bounds.contains(map.getObstacles().at(i)->getPos())){
-                player1.energy -= map.getObstacles().at(i)->get_damage();
-                map.erase(i, MapObject::obstacle);
-            }
-            if(player2.bounds.contains(map.getObstacles().at(i)->getPos())){
-                player2.energy -= map.getObstacles().at(i)->get_damage();
-                map.erase(i, MapObject::obstacle);
-            }
-        }
+            for(size_t i = 0; i < map.getObstacles().size(); i++){
+                if(p->getBounds().contains(map.getObstacles().at(i)->getPos())){
+                    p->setHp(p->getHp() - map.getObstacles().at(i)->get_damage());
+                    map.erase(i, MapObject::obstacle);
+                }
+                
+            }}
 
 
-        if (player1.energy <= 0 && player2.energy <= 0)
+        if (playership1->getHp() <= 0 && playership2->getHp() <= 0)
             game_over = true;
 
         // draw stars
@@ -285,42 +266,40 @@ void run() {
             mvwaddch(game_wnd, p->getPos().y, p->getPos().x, '#');
         }
 
-        // draw player body
-        wattron(game_wnd, A_BOLD);
-        mvwaddch(game_wnd, player1.pos.y, player1.pos.x, player1.disp_char);
-        wattroff(game_wnd, A_BOLD);
-        wattron(game_wnd, A_BOLD);
-        mvwaddch(game_wnd, player2.pos.y, player2.pos.x, player2.disp_char);
-        wattroff(game_wnd, A_BOLD);
+        for( PlayerShip* p : listPlayers){
+            // draw player body
+            wattron(game_wnd, A_BOLD);
+            mvwaddch(game_wnd, p->getPos().y, p->getPos().x, p->getChar());
+            wattroff(game_wnd, A_BOLD);
+        
 
-        wattron(game_wnd, A_ALTCHARSET);
-        mvwaddch(game_wnd, player1.pos.y, player1.pos.x - 1, ACS_LARROW);
-        mvwaddch(game_wnd, player1.pos.y, player1.pos.x + 1, ACS_RARROW);
-        mvwaddch(game_wnd, player2.pos.y, player2.pos.x - 1, ACS_LARROW);
-        mvwaddch(game_wnd, player2.pos.y, player2.pos.x + 1, ACS_RARROW);
+            wattron(game_wnd, A_ALTCHARSET);
+            mvwaddch(game_wnd, p->getPos().y, p->getPos().x - 1, ACS_LARROW);
+            mvwaddch(game_wnd, p->getPos().y, p->getPos().x + 1, ACS_RARROW);
+        
 
-        // draw engines flames
-        if((tick % 10) / 3){
-            wattron(game_wnd, COLOR_PAIR(tick % 2 ? 3 : 4));
-            mvwaddch(game_wnd, player1.pos.y + 1, player1.pos.x, ACS_UARROW);
-            mvwaddch(game_wnd, player2.pos.y + 1, player2.pos.x, ACS_UARROW);
-            wattroff(game_wnd, COLOR_PAIR(tick % 2 ? 3 : 4));
-        }
+            // draw engines flames
+            if((tick % 10) / 3){
+                wattron(game_wnd, COLOR_PAIR(tick % 2 ? 3 : 4));
+                mvwaddch(game_wnd, p->getPos().y + 1, p->getPos().x, ACS_UARROW);
+                mvwaddch(game_wnd, p->getPos().y + 1, p->getPos().x, ACS_UARROW);
+                wattroff(game_wnd, COLOR_PAIR(tick % 2 ? 3 : 4));
+            }
 
-        wattroff(game_wnd, A_ALTCHARSET);
+            wattroff(game_wnd, A_ALTCHARSET);}
 
         // draw UI elements
         // energy bar player1
         wmove(main_wnd, 20, 1);
         whline(main_wnd, ' ', 25); // health bar is 25 chars long
         wmove(main_wnd, 20, 1);
-        drawEnergyBar(player1.energy);
+        drawEnergyBar(playership1->getHp());
 
         // energy bar player2
         wmove(main_wnd, 20, 54);
         whline(main_wnd, ' ', 25); // health bar is 25 chars long
         wmove(main_wnd, 20, 54);
-        drawEnergyBar(player2.energy);
+        drawEnergyBar(playership2->getHp());
 
         // draw static string to hold percentage
         mvwprintw(main_wnd, 21, 1, " - P1 E N E R G Y      -");
@@ -328,24 +307,24 @@ void run() {
 
         // draw numeric percentage player 1
         wattron(main_wnd, A_BOLD);
-        if(player1.energy <= 25) {
+        if(playership1->getHp() <= 25) {
             wattron(main_wnd, COLOR_PAIR(4));
             if(tick % 100 < 50)
-                mvwprintw(main_wnd, 21, 19, "%i%%", player1.energy); 
+                mvwprintw(main_wnd, 21, 19, "%i%%", playership1->getHp()); 
             wattroff(main_wnd, COLOR_PAIR(4));
         } else
-            mvwprintw(main_wnd, 21, 19, "%i%%", player1.energy); 
+            mvwprintw(main_wnd, 21, 19, "%i%%", playership1->getHp()); 
         wattroff(main_wnd, A_BOLD);
 
-        // draw numeric percentage player 1
+        // draw numeric percentage player 2
         wattron(main_wnd, A_BOLD);
-        if(player2.energy <= 25) {
+        if(playership2->getHp() <= 25) {
             wattron(main_wnd, COLOR_PAIR(4));
             if(tick % 100 < 50)
-                mvwprintw(main_wnd, 21, 72, "%i%%", player2.energy); 
+                mvwprintw(main_wnd, 21, 72, "%i%%", playership2->getHp()); 
             wattroff(main_wnd, COLOR_PAIR(4));
         } else
-            mvwprintw(main_wnd, 21, 72, "%i%%", player2.energy); 
+            mvwprintw(main_wnd, 21, 72, "%i%%", playership2->getHp()); 
         wattroff(main_wnd, A_BOLD);
 
         //refresh all

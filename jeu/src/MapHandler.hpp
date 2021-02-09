@@ -14,7 +14,7 @@ class MapObject{
 public:
     void virtual move();
     vec2i getPos() const;
-    void setPos(vec2i);
+    void setPos(int x, int y){pos.x = x; pos.y = y;}
     enum type{star,obstacle,ship,projectile,bonus};
     type typ;
 
@@ -37,10 +37,14 @@ public:
 };
 
 class Ship: public MapObject{
+    int hp;
     int damage;
     int fireRate;
 public:
-    Ship(int nx, int ny,int dam,int fire_r) {pos.x = nx; pos.y = ny; damage=dam; fireRate=fire_r;typ=ship;}
+    Ship(){};
+    Ship(int nx, int ny,int dam,int fire_r, int h) {pos.x = nx; pos.y = ny; damage=dam; fireRate=fire_r;typ=ship;hp = h;}
+    void setHp(int h){hp = h;}
+    int getHp(){return hp;}
 };
 
 class Projectile: public MapObject{
