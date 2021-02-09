@@ -23,7 +23,9 @@ class Client{
 
 public:
     //constructor
-    Client(){}
+    Client(){
+        //donnez le pid du process au server via connexion
+    }
 
     //getters/setter
     void sendInput(int currentGameID, int playerID, char input);
