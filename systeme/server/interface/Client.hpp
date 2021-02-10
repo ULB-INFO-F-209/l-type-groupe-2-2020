@@ -28,14 +28,15 @@ public:
     }
 
     //getters/setter
-    void sendInput(int currentGameID, int playerID, char input);
-    // void display(MapObject);
-    void delFriend(char pseudo);
-    void createGame();
-    void signIn();
-    void signUp();
-    void checkLeaderboard();
-    void sendFriendRequest(char *pseudo);
+    bool sendInput(int currentGameID, int playerID, char input);
+    // bool display(MapObject);
+    bool delFriend(char pseudo);
+  
+  
+    bool signIn(char *pseudo, char *pswd);
+    bool signUp(char *pseudo, char *pswd);
+    void checkLeaderboard(char * res);
+    bool sendFriendRequest(char *pseudo);
 
     //state
     bool is_playing(){return _inGame;}
