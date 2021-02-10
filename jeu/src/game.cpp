@@ -26,10 +26,6 @@ rect game_area;
 rect screen_area;
 
 
-
-
-
-
 MapHandler map;
 
 int init() {
@@ -96,18 +92,6 @@ void run() {
     PlayerShip* playership2 = new PlayerShip(50, 5, { { 50 - 1, 5 }, { 3, 2 } }, '1',100);
 
     map.playerInit(playership1,playership2);
-    // init character
-    /*player1.disp_char = '0';
-    player1.pos = {10, 5};
-    player1.bounds = { { player1.pos.x - 1, player1.pos.y }, { 3, 2 } }; // player1 is 3 wide, 2 tall
-    player1.moving = false;
-    player1.energy = 100;
-
-    player2.disp_char = '1';
-    player2.pos = {50, 5};
-    player2.bounds = { { player2.pos.x - 1, player2.pos.y }, { 3, 2 } }; // player2 is 3 wide, 2 tall
-    player2.moving = false;
-    player2.energy = 100;*/
 
     map.setBounds(game_area);
 
