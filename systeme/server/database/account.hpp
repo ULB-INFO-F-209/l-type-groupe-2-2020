@@ -10,11 +10,23 @@ class Account{
     friend class Database;
 public:
     Account() = default;
-    Account(int id, char* pseudo, char* pswd): _id(id){
+    Account(unsigned id, char* pseudo, char* pswd): _id(id){
         strcpy(_pseudo, pseudo);
         strcpy(_pswd, pswd);
     }
     ~Account() = default;
+
+    friend std::ostream& operator<< (std::ostream& out, const Account& obj){
+        out << obj._id << "\n" << obj._pseudo<<"\n"<<obj._pswd<<std::endl;
+        return out;
+    }
+
+    friend std::istream& operator>> (std::istream& in, Account& obj){
+        in >> obj._id;
+        in >> obj._pseudo;
+        in >> obj._pswd;
+        return in;
+    }
 };
 
 #endif // ACCOUNT_HPP
