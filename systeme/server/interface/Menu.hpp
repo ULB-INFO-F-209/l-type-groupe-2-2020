@@ -164,7 +164,9 @@ public:
 				break;
 			case 4: //profile
 				char profile[256];
-				_client.
+				_client.viewProfile(profile);
+				std::cout<< profile;
+				
 
 				break;
 			default: //log out 
