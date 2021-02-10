@@ -2,12 +2,6 @@
 #define GAME_H
 #include <cstdint>
 
-// minimum 16-bit unsigned int 2D vector
-typedef struct {
-    uint_fast16_t x;
-    uint_fast16_t y;
-} vec2ui; //!!
-
 
 // at least 16-bit int 2D vector
 typedef struct {

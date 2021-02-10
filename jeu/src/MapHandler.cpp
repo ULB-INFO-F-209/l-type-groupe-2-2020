@@ -9,7 +9,8 @@ void MapHandler::erase(size_t i, MapObject::type typ) { //1ier elem=index(0)
     }
     else if (typ == MapObject::obstacle) {
         obstacles_set.erase(obstacles_set.begin() + i);
-    }   
+    }
+
 }
 
 std::vector<Star*> MapHandler::getStars() const  { return stars_set; } // renvoyer le vect du map handler
@@ -27,7 +28,13 @@ void Projectile::move() {
     }
 }
 
+void Obstacle::touched(int dam) {hp-=dam;}
+
 vec2i MapObject::getPos() const {return pos;}
+
+void MapObject::touched(int damage) {
+    hp-=damage;
+}
 
 void MapHandler::update(MapObject::type typ, int t) {
     // update existing objects
@@ -60,9 +67,59 @@ void MapHandler::update(MapObject::type typ, int t) {
     if(typ == MapObject::star)
         stars_set.push_back(new Star(rand() % field_bounds.width(), 0));
     else if(typ == MapObject::obstacle && t % 200 == 0)
-        obstacles_set.push_back(new Obstacle(rand() % field_bounds.width(), 0, 10));
+        obstacles_set.push_back(new Obstacle(rand() % field_bounds.width(), 0, 10,10));
    
 }
 void MapHandler::spawnProjectile(int x, int y, int damage, bool type){
     projectiles_set.push_back(new Projectile(x,y,damage,type));
 }
+
+void MapHandler::checkCollision() {
+    //collision player/obstacle ==> seg fault
+
+    for(PlayerShip* p : player_ships_set){
+
+        for(size_t i = 0; i < obstacles_set.size(); i++){
+            if(p->getBounds().contains(obstacles_set.at(i)->getPos())){
+                p->touched(obstacles_set.at(i)->get_damage());
+                obstacles_set.erase(obstacles_set.begin() + i);
+
+            }
+
+        }
+    }
+    // collision projectiles/obstacles ==> out of range
+    for(size_t i = 0; i < obstacles_set.size(); i++){
+        for(size_t j = 0; i < projectiles_set.size(); j++){
+            if(obstacles_set.at(i)->getPos().x == projectiles_set.at(j)->getPos().x && obstacles_set.at(i)->getPos().y == projectiles_set.at(j)->getPos().y){
+                obstacles_set.at(i)->touched(obstacles_set.at(i)->getHp());
+                projectiles_set.erase(projectiles_set.begin() + j);}
+        }
+        if(obstacles_set.at(i)->getHp() <= 0)
+            obstacles_set.erase(obstacles_set.begin() + i);
+
+    }
+
+}
+
+void MapHandler::playerInit(PlayerShip* p1,PlayerShip* p2) {
+    player_ships_set.push_back(p1);
+    player_ships_set.push_back(p2);
+
+
+
+}
+
+void MapHandler::updatePlayerBounds() {
+    for( PlayerShip* p : player_ships_set){
+        p->setBounds({ { p->getPos().x -1, p->getPos().y}, {3, 2}});
+
+    }
+
+}
+
+std::vector<PlayerShip *> MapHandler::getListPlayer() const {
+    return player_ships_set;
+}
+
+

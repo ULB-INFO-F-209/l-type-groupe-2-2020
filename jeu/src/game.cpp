@@ -1,10 +1,10 @@
 /**
  * TODO:
  *  thread pour jouer en même temps
- *  class player
- *  list player
- *  shoot player 2
  *  projectile collision
+ *  ERROR:
+ *  shoot => out of range
+ *  hp doesnt change
  */
 
 #include <unistd.h>
@@ -25,7 +25,6 @@ WINDOW* game_wnd;
 rect game_area;
 rect screen_area;
 
-vec2ui cur_size;
 
 
 
@@ -93,11 +92,10 @@ int init() {
 void run() {
 
     int tick;
-
     PlayerShip* playership1 = new PlayerShip(10, 5, { {10 - 1, 5 }, { 3, 2 } }, '0',100);
     PlayerShip* playership2 = new PlayerShip(50, 5, { { 50 - 1, 5 }, { 3, 2 } }, '1',100);
-    PlayerShip* listPlayers[2] = {playership1, playership2};
 
+    map.playerInit(playership1,playership2);
     // init character
     /*player1.disp_char = '0';
     player1.pos = {10, 5};
@@ -232,19 +230,10 @@ void run() {
         if(tick > 100 && tick %50  == 0)
             map.update(MapObject::obstacle, tick);
             
-        // update player bounds
-        for( PlayerShip* p : listPlayers){
-            p->setBounds({ { p->getPos().x -1, p->getPos().y}, {3, 2}});
-        
-        
-        // remove obstacle if collided
-            for(size_t i = 0; i < map.getObstacles().size(); i++){
-                if(p->getBounds().contains(map.getObstacles().at(i)->getPos())){
-                    p->setHp(p->getHp() - map.getObstacles().at(i)->get_damage());
-                    map.erase(i, MapObject::obstacle);
-                }
-                
-            }}
+
+        map.updatePlayerBounds();     // update player bounds
+        map.checkCollision();
+
 
 
         if (playership1->getHp() <= 0 && playership2->getHp() <= 0)
@@ -266,17 +255,17 @@ void run() {
             mvwaddch(game_wnd, p->getPos().y, p->getPos().x, '#');
         }
 
-        for( PlayerShip* p : listPlayers){
+        for( PlayerShip* p : map.getListPlayer()){
             // draw player body
             wattron(game_wnd, A_BOLD);
             mvwaddch(game_wnd, p->getPos().y, p->getPos().x, p->getChar());
             wattroff(game_wnd, A_BOLD);
-        
+
 
             wattron(game_wnd, A_ALTCHARSET);
             mvwaddch(game_wnd, p->getPos().y, p->getPos().x - 1, ACS_LARROW);
             mvwaddch(game_wnd, p->getPos().y, p->getPos().x + 1, ACS_RARROW);
-        
+
 
             // draw engines flames
             if((tick % 10) / 3){

@@ -1,3 +1,3 @@
-/home/ubuntu/l-type-groupe-2-2020/jeu/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/ubuntu/l-type-groupe-2-2020/jeu/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/ubuntu/l-type-groupe-2-2020/jeu/cmake-build-debug/CMakeFiles/jeu.dir
+/home/jean/l-type-groupe-2-2020/jeu/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/jean/l-type-groupe-2-2020/jeu/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/jean/l-type-groupe-2-2020/jeu/cmake-build-debug/CMakeFiles/jeu.dir
