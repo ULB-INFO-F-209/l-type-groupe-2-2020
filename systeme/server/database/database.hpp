@@ -34,6 +34,7 @@ public:
     //other
     void dbLoad();
     void dbSave();
+	void display();
 
 	//extern
 	friend inline std::ostream& operator<< (std::ostream&, const Database&);

@@ -19,13 +19,13 @@ void Database::dbLoad(){
     struct stat db_stat;
     FILE* f;
     const char* c_path = _path.c_str();
-    if (stat(c_path, &db_stat) != 0){            // check if file _path exists
-        f = fopen(c_path, "w");           // creating it if not
+    /*if (stat(c_path, &db_stat) != 0){            // check if file _path exists
+        f = fopen(c_path, "wb");           // creating it if not
         if (f == nullptr){
             throw "Could not create file!";
         }
         fclose(f);
-    }
+    }*/
     /*
     std::ifstream in_file(_path, std::ios::binary);
     in_file.seekg(0, std::ios::end);
@@ -37,10 +37,11 @@ void Database::dbLoad(){
 
     
    
-    std::ifstream in(_path, std::ios::ate|std::ios::binary);
-    size_t nb_student = in.tellg();
-    nb_student = nb_student/sizeof(Account);
-    std::cout<<"Size of the file is" << " "<< nb_student << std::endl;
+    //std::ifstream in(_path, std::ios::ate|std::ios::binary);
+    f = fopen(c_path, "rb");
+    //size_t nb_student = in.tellg();
+    //nb_student = nb_student/sizeof(Account);
+    //std::cout<<"Size of the file is" << " "<< nb_student << std::endl;
     
     /*
     for (size_t i = 0; i < nb_student; i++){
@@ -51,20 +52,38 @@ void Database::dbLoad(){
         std::cout << "hello" << std::endl;
     }
     */
+   std::cout << "Load \n";
     Account account;
-    while(in>>account){
+    while(fread(&account,sizeof(Account),1,f)){
         add(&account);
-        std::cout << "hello" << std::endl;
+        //std::cout << account << std::endl;
     }
-    in.close();
+     display();
+    fclose(f);
+}
+
+void Database::display(){
+
+    if(_data.size()==0){
+        std::cout << "pas delement \n";
+        return;
+    }
+    for (int i = 0; i < _data.size(); i++){
+        std::cout <<"element : i = "<<i<<std::endl<< _data[i] << std::endl;
+    }
 }
 
 void Database::dbSave(){
     // writing all accounts in _path file
     //fwrite(&_data, sizeof(Account), _size, f);
-    std::ofstream out(_path);
-    for (const auto &e : _data) out << e << "\n";
-    out.close();
+    FILE* out = fopen(_path.c_str(),"wb");
+    for (Account &e : _data){
+        fwrite(&e,sizeof(Account),1,out);
+    }
+    //out << e << "\n";
+    display();
+    fclose(out);
+    std::cout << "\nSAVE RUNNING\n";
 }
 
 void Database::add(Account* account){

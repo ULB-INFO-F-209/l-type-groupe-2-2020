@@ -6,13 +6,16 @@ int main()
 	Database db;
 	db.dbLoad();
     
-	Account helin(11, "helin", "123");
+	/*Account helin(11, "helin", "123");
 	db.add(&helin);
-    /*
-    Account aissa(17, "aissa", "blabla");
-    db.add(&aissa);
     
-*/
+    Account aissa(17, "aissa", "blabla");
+    db.add(&aissa);*/
+
+	/*Account vin(17, "Vin", "toto");
+    db.add(&vin);*/
+
 	db.dbSave();
+	//db.dbLoad();
 	return 0;
 }
