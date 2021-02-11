@@ -5,8 +5,6 @@ __________________SYNTAXE DES REQUÊTES________________________________
 ---------------------
 	Open: 
 		Client : "_pid_t process_client" via le pipe connexion
-		Server : "pid_t processus_server"
-
 	Connexion:
 		Client : "Ma_pseudo_mdp" via pipe pid_t
 		Server : "true"/"false" via le pipe pid_t 

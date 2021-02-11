@@ -36,7 +36,6 @@ class Client{
     char _send_query[20];                       //client repond au serveur
     int _fd_g;                                  //file descriptor for _get_query
     int _fd_s;                                  //file descriptor for _send_query 
-    pid_t _pid_server;
 
 public:
     //constructor

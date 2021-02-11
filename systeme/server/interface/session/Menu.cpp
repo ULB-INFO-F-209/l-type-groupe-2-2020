@@ -69,7 +69,7 @@ void Menu::friends(){
 	int choice = window.print_menu(5, friends_menu);
 	char buffer[256]; //peut_ëtre pas assé
 	std::vector<char*> vect; size_t size;
-	bool accepted; int res; char error[64];
+	bool accepted; int res=0; char error[64];
 	switch(choice){
 		case 1: //Friend list
 			_client->getFriendList(buffer);
@@ -90,17 +90,21 @@ void Menu::friends(){
 			set_ret(FRIENDS);
 			break;
 		case 3: //add friend
-			res = window.get_pseudo(buffer, error);
-			if(not res){
-				res = verify_format(buffer, NULL);
+			while(not res){
+				res = window.get_pseudo(buffer, error); 
 				if(res){
-					res = _client->addFriend(buffer);
+					res = verify_format(buffer, NULL);
+					if(res){
+						res = _client->addFriend(buffer);
+						if(res==0){}
+						else if(res==1)
+						
+					}
 				}
-			}
-			else{ //quit
-				set_ret(FRIENDS);
-				return;
-			}
+				else{ //quit
+					set_ret(FRIENDS);
+					return;
+				}
 			break;
 		case 4: //remove friend
 			break;
