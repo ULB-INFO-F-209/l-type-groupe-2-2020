@@ -44,14 +44,11 @@ public:
 };
 
 class Ship: public MapObject{
-    int hp;
     int damage;
     int fireRate;
 public:
     Ship(){};
     Ship(int nx, int ny,int dam,int fire_r, int h) {pos.x = nx; pos.y = ny; damage=dam; fireRate=fire_r;typ=ship;hp = h;}
-    void setHp(int h){hp = h;}
-    int getHp(){return hp;}
 };
 
 class Projectile: public MapObject{
@@ -61,6 +58,7 @@ class Projectile: public MapObject{
 public:
     void move() override;
     Projectile(int nx, int ny,int dam,bool ship_t) {pos.x = nx; pos.y = ny; damage=dam; shipType=ship_t;typ=projectile;}
+    int getDamage(){return damage;}
 };
 
 class Bonus: public MapObject{

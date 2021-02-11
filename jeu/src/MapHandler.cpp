@@ -28,12 +28,12 @@ void Projectile::move() {
     }
 }
 
-void Obstacle::touched(int dam) {hp-=dam;}
+void Obstacle::touched(int dam) {hp-=dam;} //hp-=damage;
 
 vec2i MapObject::getPos() const {return pos;}
 
-void MapObject::touched(int damage) {
-    hp-=damage;
+void MapObject::touched(int dam) {
+    hp-=dam;
 }
 
 void MapHandler::update(MapObject::type typ, int t) {
@@ -75,7 +75,7 @@ void MapHandler::spawnProjectile(int x, int y, int damage, bool type){
 }
 
 void MapHandler::checkCollision() {
-    //collision player/obstacle ==> seg fault
+    //collision player/obstacle
 
     for(PlayerShip* p : player_ships_set){
 
@@ -89,17 +89,19 @@ void MapHandler::checkCollision() {
         }
     }
     // collision projectiles/obstacles ==> out of range
-    for(size_t i = 0; i < obstacles_set.size(); i++){
-        for(size_t j = 0; i < projectiles_set.size(); j++){
-            if(obstacles_set.at(i)->getPos().x == projectiles_set.at(j)->getPos().x && obstacles_set.at(i)->getPos().y == projectiles_set.at(j)->getPos().y){
-                obstacles_set.at(i)->touched(obstacles_set.at(i)->getHp());
-                projectiles_set.erase(projectiles_set.begin() + j);}
+
+
+    for(size_t obs = 0; obs < obstacles_set.size(); obs++){
+        for(size_t proj = 0; proj < projectiles_set.size(); proj++){
+            if(obstacles_set.at(obs)->getPos().x == projectiles_set.at(proj)->getPos().x && obstacles_set.at(obs)->getPos().y == projectiles_set.at(proj)->getPos().y){
+                obstacles_set.at(obs)->touched(projectiles_set.at(proj)->getDamage());
+                projectiles_set.erase(projectiles_set.begin() + proj);
+            }
+            if(obstacles_set.at(obs)->getHp() <= 0)
+            obstacles_set.erase(obstacles_set.begin() + obs);
+
         }
-        if(obstacles_set.at(i)->getHp() <= 0)
-            obstacles_set.erase(obstacles_set.begin() + i);
-
     }
-
 }
 
 void MapHandler::playerInit(PlayerShip* p1,PlayerShip* p2) {
