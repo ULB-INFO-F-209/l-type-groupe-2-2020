@@ -18,7 +18,13 @@ struct Profile
 
 struct Game_settings
 {
-	
+	int nb_player = 1;
+	char pseudo_hote[20];
+	char pseudo_other[20];
+	float drop_rate;
+	bool ally_shot=false;
+	int nb_lives=5;
+
 };
 
 class Parsing 
