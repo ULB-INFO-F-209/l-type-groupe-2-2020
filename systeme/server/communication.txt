@@ -15,28 +15,33 @@ __________________SYNTAXE DES REQUÊTES________________________________
 		Client : "Mb_pseudo_mdp" via pipe pid_t
 		Server : "true"/"false" via le pipe pid_t 
 
-	CheckleaderBoard: 
-		Client : "Me" via pipe pid_t
-		Server: "le leaderboard formatée" via pipe pid_t
-
 	addfriend:
-		Client : "Mc_Pseudo" via pipe pid_t
-		Server: "erreur"/ "already" / "sent"
+		Client : "Mc_PseudoMe_PseudoF" via pipe pid_t
+		Server: "2=erreur"/ "1=already" / "0=sent" 
 
 	delfriend:
 		Client : "Md_Pseudo" via pipe pid_t
 		Server: "True"/ "False" 
 
-	FriendMenu:
-		friendrequest:
-			Client : "Mg_Pseudo" via pipe pid_t
-			Server: "liste de mes demnade" 
+	CheckleaderBoard: 
+		Client : "Me" via pipe pid_t
+		Server: "pseudo1&score|pseudo2&score|pseudo3&score" via pipe pid_t
 
-			Client: "R_pseudo_Amis" // reponse!
+	Liste_d'amis:
+		Client : "Mf_pseudo" via pipe pid_t
+		Server: "tableau de mes amis avec pseudo | score" 
 
-		Liste_d'amis:
-			Client : "Mf_pseudo" via pipe pid_t
-			Server: "tableau de mes amis avec pseudo | score" 
+	friendrequest:
+		Client : "Mg_Pseudo" via pipe pid_t
+		Server: "pseudo1_pseudo2_pseudo3_pseudo4..." 
+
+	View profile
+		Client : "Mh" via pipe pid_t
+		Server: "Pseudo_Score" via pipe pid_t
+	Log_out:
+		Client : "Mi" via pipe pid_t
+		Server: "Score" via pipe pid_t
+
 
 
 
