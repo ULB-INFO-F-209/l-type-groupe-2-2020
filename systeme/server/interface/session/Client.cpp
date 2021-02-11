@@ -72,6 +72,14 @@ void  Client::getFriendRequest(char *res){
 	communication(buffer);
 	strcpy(res, buffer); //retour res
 }
+
+void  Client::getFriendList(char *res){
+	char buffer[256];
+	sprintf(buffer, "Mf&%s", _pseudo);
+	communication(buffer);
+	strcpy(res, buffer); //retour res
+}
+
 void Client::checkLeaderboard(char * res){
 	char buffer[200] = "Me"; //increase size ! 
 	write(_fd_s, buffer, sizeof(buffer)); 

@@ -48,6 +48,7 @@ public:
     int addFriend(char *pseudo);
     int delFriend(char *pseudo);
     void getFriendRequest(char *res);
+    void getFriendList(char *res);
     void checkLeaderboard(char * res);
     int createGame(char * second_player);
     void log_out();
@@ -57,6 +58,7 @@ public:
 
     //state
     inline bool is_playing(){return _inGame;}
+    inline void set_pseudo(char *pseudo){strcpy(_pseudo, pseudo);};
 
 
     //destructor

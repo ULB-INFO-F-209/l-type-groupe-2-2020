@@ -12,3 +12,5 @@ session : main.cpp
 run:
 	make session
 	./session
+clean:
+	rm *.o

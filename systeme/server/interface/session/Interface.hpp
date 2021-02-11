@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 #include <ncurses.h>
 
 
@@ -56,6 +57,11 @@ public:
 
 		return res;
 	}
+
+	bool get_connexion(char *pseudo, char *pswd, char *error);
+	void print_friends(std::vector<char*> vect);
+	bool print_invitation(char *pseudo);
+	int get_pseudo(char *res, char *error); //recupere le pseudo de l amis a supp ou à ajouter
 
 	
 

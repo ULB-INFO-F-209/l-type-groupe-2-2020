@@ -2,8 +2,14 @@
 	Ajouter:
 		titre aux menu
 		option quitter pour venir au précédent menu
+		option log out dans le menu principale
 	Bugs:
-		Entrez autre chose qu un nombre dans get_user_choice casse la machine!
+		verifier les entrée (user met une lettre dans int ..faut gérer)
+
+	commentaire:
+		Utiliser les thread evite de faire full stack. Sans thread y'aura trop 
+		d'appelle de menu successive sur le stack, et même de la réentrance de code
+
 */
 
 #ifndef Menu_HPP
@@ -11,10 +17,11 @@
 
 #include <iostream>
 #include <sys/types.h>
-#include <pthread.h>  
+#include <thread>   //celui de std
 #include <signal.h>
-#include <semaphore.h>
 #include "Client.hpp"
+#include "Interface.hpp"
+#include "parsing.hpp"
 
 
 
@@ -23,34 +30,36 @@ class Menu{
 	static const int HOME = 0;
 	static const int MAIN  = 1;
 	static const int FRIENDS = 2; 
+
+	//choices
+	std::string connexion_menu[3] = {"Sign in", "Sign up", "Quit"};
+	std::string friends_menu[5] = {"Friends list", "Friends requests", "Add friend",
+								   "Remove friend", "Back"};
+	std::string main_menu[5] = {"New game", "Friends", "Leaderboard",
+								   "Profile", "Log out"};
+	//console
+	Interface window{};
+
+	//thread retour
+	int ret = 0;
+	//parsing function
+	Parsing parse{};
 public:
 	Menu(Client *client):_client(client){}
 
 	//DIFERRENT MENUUU(threads)
-	void *home(void *arg){}
-	void *main(void *arg){}
-	void *friends(void *arg);
-	void start_menu(int menu){
-		switch(menu){
-			case HOME:
-				break;
-			case MAIN:
-				break;
-			case FRIENDS:
-				break;
-			default:
-				break;
-		}
-
-	}
-	void start_session(){
-		start_menu(HOME);
-	}
-
-	//getters & setters
+	void home();
+	void main_m();
+	void friends();
+	void start_session();
 	
 	//destructor
 	~Menu()=default;
+
+private:
+	inline void set_ret(int res){ret = res;}
+	bool verify_format(char *pseudo, char *pswd);
+
 };
 
 
