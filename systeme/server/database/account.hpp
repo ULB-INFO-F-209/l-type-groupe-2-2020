@@ -22,9 +22,7 @@ public:
     }
 
     friend std::istream& operator>> (std::istream& in, Account& obj){
-        in >> obj._id;
-        in >> obj._pseudo;
-        in >> obj._pswd;
+        in >> obj._id; in >> obj._pseudo; in >> obj._pswd;
         return in;
     }
 };

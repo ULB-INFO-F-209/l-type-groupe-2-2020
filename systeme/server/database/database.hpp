@@ -18,13 +18,15 @@ class Database{
 	unsigned _size = 0;
 	void _dsp (std::ostream&) const; //bd
 
+    void add(Account* account);
+
 public:
 	//constructor
-	Database(){};
+	Database() = default;
 	//getters
 	std::string player_info(std::string pseudo); //maybe utiliser dsp
 	ptrdiff_t find(char pseudo[20]);
-	bool verify_login(std::string pseudo, std::string pswd);
+	bool verify_login(char pseudo[20], char pswd[20]);
 	bool is_friend(std::string pseudo);
 
 	//setter
@@ -41,9 +43,6 @@ public:
     friend inline std::ostream& operator<< (std::ostream&, const Account&);
 	//destructors
 	~Database();
-
-//private:
-    void add(Account* account);
 
 	
 };
