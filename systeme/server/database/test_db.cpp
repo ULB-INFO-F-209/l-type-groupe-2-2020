@@ -10,11 +10,12 @@ int main()
 	db.add(&helin);
     
     Account aissa(17, "aissa", "blabla");
-    db.add(&aissa);*/
+    db.add(&aissa);
 
-	/*Account vin(17, "Vin", "toto");
-    db.add(&vin);*/
-
+	Account vin(17, "Vin", "toto");
+    db.add(&vin);
+*/
+	std::cout << db.find("Vin") << std::endl;
 	db.dbSave();
 	//db.dbLoad();
 	return 0;

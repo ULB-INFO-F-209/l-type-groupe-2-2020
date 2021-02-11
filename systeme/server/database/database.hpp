@@ -23,7 +23,7 @@ public:
 	Database(){};
 	//getters
 	std::string player_info(std::string pseudo); //maybe utiliser dsp
-	bool find(std::string pseudo);
+	ptrdiff_t find(char pseudo[20]);
 	bool verify_login(std::string pseudo, std::string pswd);
 	bool is_friend(std::string pseudo);
 
