@@ -33,9 +33,9 @@ public:
 	Parsing()=default;
 
 	//encodage
-	void leader_board_to_str(char *buffer,std::vector<Profile*> prof);
+	void leaderboard_to_str(char *buffer,std::vector<Profile*> prof);
 	void pseudo_list_to_str(char *buffer, std::vector<char*> list); //same for friend request
-	void profil_to_str(char *buffer, Profile *prof);
+	void profils_to_str(char *buffer, Profile *prof);
 	void create_game_to_str(char *buffer, Game_settings * settings);
 
 	//decodage

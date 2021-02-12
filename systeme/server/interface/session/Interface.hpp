@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <ncurses.h>
+#include "parsing.hpp"
 
 
 
@@ -60,9 +61,11 @@ public:
 
 	bool get_connexion(char *pseudo, char *pswd, char *error);
 	void print_friends(std::vector<char*> vect);
-	bool print_invitation(char *pseudo);
+	void print_leaderboard(std::vector<Profile*> vect);
+	void print_profile(Profile *prof);
+	int print_invitation(char *pseudo);
 	int get_pseudo(char *res, char *error); //recupere le pseudo de l amis a supp ou à ajouter
-
+	void print_alert(char *alert);
 	
 
 	~Interface(){

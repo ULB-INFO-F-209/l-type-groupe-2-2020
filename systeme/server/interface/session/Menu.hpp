@@ -17,7 +17,6 @@
 
 #include <iostream>
 #include <sys/types.h>
-#include <thread>   //celui de std
 #include <signal.h>
 #include "Client.hpp"
 #include "Interface.hpp"
@@ -40,25 +39,23 @@ class Menu{
 	//console
 	Interface window{};
 
-	//thread retour
-	int ret = 0;
 	//parsing function
 	Parsing parse{};
 public:
 	Menu(Client *client):_client(client){}
 
 	//DIFERRENT MENUUU(threads)
-	void home();
-	void main_m();
-	void friends();
+	int home();
+	int  main_m();
+	int friends();
 	void start_session();
 	
 	//destructor
 	~Menu()=default;
 
 private:
-	inline void set_ret(int res){ret = res;}
-	bool verify_format(char *pseudo, char *pswd);
+	bool verify_pseudo_format(char *pseudo);
+	bool verify_pswd_format(char*pswd);
 
 };
 

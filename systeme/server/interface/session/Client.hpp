@@ -51,6 +51,7 @@ public:
     void getFriendList(char *res);
     void checkLeaderboard(char * res);
     int createGame(char * second_player);
+    void get_profile(char *res);
     void log_out();
     /*bool sendInput(int currentGameID, int playerID, char input);
     bool display(MapObject);*/
