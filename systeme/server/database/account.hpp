@@ -7,38 +7,31 @@
 #include <vector>
 
 class Account{
+    static const size_t _max_friend_nb = 10;
+    size_t _curr_friend_nb = 0;
     char _pseudo[20];
     char _pswd[20];
     int _bestScore;
-    std::vector<std::string> _friends{};
+    char _friends[_max_friend_nb][20]{};             // 10 amis de 20 char
     friend class Database;
 
 public:
+    // Constructors
     Account() = default;
-    Account(char* pseudo, char* pswd): _bestScore(0){
-        strcpy(_pseudo, pseudo);
-        strcpy(_pswd, pswd);
-    }
-    void addFriend(std::string pseudo){ _friends.push_back(pseudo); }
+    Account(char* pseudo, char* pswd);
+
+    std::ptrdiff_t findFriend(char pseudo[20]);
+
+    // Utilities
+    void removeFriend(char pseudo[20]);
+    void addFriend(char pseudo[20]);
+
+    // Destructor
     ~Account() = default;
 
-    void printFriends(std::ostream& out){
-        out << "[ ";
-        for (int i = 0; i < _friends.size(); i++) {
-            out << _friends.at(i) << ' ';
-        }
-        out << "]";
-    }
-
-    friend std::ostream& operator<< (std::ostream& out, const Account& obj){
-        out << obj._bestScore << "\n" << obj._pseudo << "\n" << obj._pswd << "\n" << obj.printFriends(out) << std::endl;
-        return out;
-    }
-
-    friend std::istream& operator>> (std::istream& in, Account& obj){
-        in >> obj._bestScore; in >> obj._pseudo; in >> obj._pswd;
-        return in;
-    }
+    // Extern
+    friend std::ostream& operator<< (std::ostream& out, const Account& obj);
+    friend std::istream& operator>> (std::istream& in, Account& obj);
 };
 
 #endif // ACCOUNT_HPP
