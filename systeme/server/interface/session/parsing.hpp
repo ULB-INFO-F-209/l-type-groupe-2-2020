@@ -1,7 +1,7 @@
 /*
 	Une sorte d'interface à la java
 	ne represente pas un objet 
-	mais un ensemble d'opération d'encodage et de decoddage!
+	mais un ensemble d'opération d'encodage et de decodage!
 */
 
 #ifndef PARSING_HPP
@@ -27,7 +27,7 @@ struct Game_settings
 
 };
 
-class Parsing 
+class Parsing //retirer la classe 
 {
 public:
 	Parsing()=default;

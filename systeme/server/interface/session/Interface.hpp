@@ -17,45 +17,23 @@ public:
 	Interface(){
 		initscr(); 
         noecho(); //affiche pas les inputs sur le stdout
+        curs_set(0);
         keypad(stdscr,TRUE);
         getmaxyx(stdscr,_yMax,_xMax);
-        _menuWin = newwin(4,2,1,1);
+        _menuWin = newwin(_yMax/2, _xMax/2, _yMax/4, _xMax/4); //hauteur;longueur;y;x
 	}
 
 	int print_menu(size_t size, std::string *choices){
-		int res=0 ;
-		box(_menuWin,10,10); //par defaut autour de win
-		
-		int highlight = 0;
-		while(1){
-			for (int i = 0; i < size; ++i)
-			{
-				if(i==highlight){
-					wattron(_menuWin, A_REVERSE);
-				}
-				mvwprintw(_menuWin, i+1, 1, choices[i].c_str());
-				wattroff(_menuWin, A_REVERSE);
-			}
-			res = wgetch(_menuWin);
-
-			switch(res){
-				case KEY_UP:
-					highlight --;
-					break;
-				case KEY_DOWN:
-					highlight++;
-					break; 
-				default:
-					break;
-			}
-			if(res==10){break;}
+		int res = 0;
+		box(_menuWin,0,0); int x = 25, y=3;
+		for (size_t i = 0; i < size; ++i)
+		{
+			mvwprintw(_menuWin, y,x, choices[i].c_str());
+			y+=3;
 		}
 
+		wgetch(_menuWin);
 		refresh();
-		wrefresh(_menuWin);
-		keypad(_menuWin,true);
-
-
 		return res;
 	}
 

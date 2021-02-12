@@ -6,7 +6,7 @@ flag = -std=c++17 -masm=intel -fcoroutines -fconcepts -pthread \
 		 -Wnoexcept -Wctor-dtor-privacy -Woverloaded-virtual -Wsign-promo -Wzero-as-null-pointer-constant\
 		 -Wsuggest-final-types -Wsuggest-final-methods  -Wsuggest-override -lquadmath
 
-session : main.cpp 
+session : main.cpp  Interface.hpp
 	g++ main.cpp $(flag) -lncurses -o session
 
 run:
