@@ -70,13 +70,19 @@ public:
 class PlayerShip : public Ship{
     rect bounds;
     char disp_char;
+    int killTime;
+    bool isAlive;
 
 
 public:
-    PlayerShip(int x, int y, rect b, char c, int h){pos.x = x; pos.y = y; bounds = b; setHp(h); disp_char = c;}
+    PlayerShip(int x, int y, rect b, char c, int h){pos.x = x; pos.y = y; bounds = b; setHp(h); disp_char = c;isAlive=true;}
     void setBounds(rect b){bounds = b;}
     rect getBounds(){return bounds;}
     char getChar(){return disp_char;}
+    int getKillTime(){return killTime;}
+    bool getIsAlive(){return isAlive;}
+    void setKillTime(int t){killTime=t;}
+    void setisAlive(bool b){isAlive=b;}
     Player check;
 };
 

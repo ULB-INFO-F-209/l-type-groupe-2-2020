@@ -10,6 +10,9 @@ void MapHandler::erase(size_t i, MapObject::type typ) { //1ier elem=index(0)
     else if (typ == MapObject::obstacle) {
         obstacles_set.erase(obstacles_set.begin() + i);
     }
+    else if(typ==MapObject::ship){
+        player_ships_set.erase(player_ships_set.begin()+i);
+    }
 
 }
 
@@ -67,7 +70,7 @@ void MapHandler::update(MapObject::type typ, int t) {
     if(typ == MapObject::star)
         stars_set.push_back(new Star(rand() % field_bounds.width(), 0));
     else if(typ == MapObject::obstacle && t % 200 == 0)
-        obstacles_set.push_back(new Obstacle(rand() % field_bounds.width(), 0, 10,10));
+        obstacles_set.push_back(new Obstacle(20 , 0, 10,10));
    
 }
 void MapHandler::spawnProjectile(int x, int y, int damage, bool type){
@@ -78,9 +81,8 @@ void MapHandler::checkCollision() {
     //collision player/obstacle
 
     for(PlayerShip* p : player_ships_set){
-
         for(size_t i = 0; i < obstacles_set.size(); i++){
-            if(p->getBounds().contains(obstacles_set.at(i)->getPos())){
+            if(p->getBounds().contains(obstacles_set.at(i)->getPos()) && p->getHp()>0){
                 p->touched(obstacles_set.at(i)->get_damage());
                 obstacles_set.erase(obstacles_set.begin() + i);
 
@@ -88,17 +90,17 @@ void MapHandler::checkCollision() {
 
         }
     }
-    // collision projectiles/obstacles ==> out of range
-
-
+    // collision projectiles/obstacles
     for(size_t obs = 0; obs < obstacles_set.size(); obs++){
         for(size_t proj = 0; proj < projectiles_set.size(); proj++){
-            if(obstacles_set.at(obs)->getPos().x == projectiles_set.at(proj)->getPos().x && obstacles_set.at(obs)->getPos().y == projectiles_set.at(proj)->getPos().y){
-                obstacles_set.at(obs)->touched(projectiles_set.at(proj)->getDamage());
-                projectiles_set.erase(projectiles_set.begin() + proj);
+            if(!obstacles_set.empty()){ // sinon out of range
+                if(obstacles_set.at(obs)->getPos().x == projectiles_set.at(proj)->getPos().x && obstacles_set.at(obs)->getPos().y == projectiles_set.at(proj)->getPos().y){
+                    obstacles_set.at(obs)->touched(projectiles_set.at(proj)->getDamage());
+                    projectiles_set.erase(projectiles_set.begin() + proj);
+                }
+                if(obstacles_set.at(obs)->getHp() <= 0)
+                obstacles_set.erase(obstacles_set.begin() + obs);
             }
-            if(obstacles_set.at(obs)->getHp() <= 0)
-            obstacles_set.erase(obstacles_set.begin() + obs);
 
         }
     }

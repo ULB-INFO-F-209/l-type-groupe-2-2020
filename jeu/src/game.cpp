@@ -1,10 +1,14 @@
 /**
  * TODO:
  *  thread pour jouer en même temps
+ *  nombre de vies
+ *  vaisseaux ennemis
+ *  score
+ *  faire des niveaux
  *  enlever static_cast !!
+ *  transformer game.cpp en classe
+ *
  * ERROR:
- *  shoot => out of range
-
  */
 
 #include <unistd.h>
@@ -165,7 +169,8 @@ void run() {
                     playership1->setPos(x1 - 1, y1 + 1);}
                 break;
             case ' ':
-                map.spawnProjectile(playership1->getPos().x, playership1->getPos().y -1, 10, true);
+                if(playership1->getHp()>0)
+                    map.spawnProjectile(playership1->getPos().x, playership1->getPos().y -1, 10, true);
                 break;
 //player2
             case 'f':
@@ -201,7 +206,8 @@ void run() {
                     playership2->setPos(x2 - 1 , y2 + 1);}
                 break;
             case 'm':
-                map.spawnProjectile(playership2->getPos().x, playership2->getPos().y -1, 10, true);
+                if(playership2->getHp()>0)
+                    map.spawnProjectile(playership2->getPos().x, playership2->getPos().y -1, 10, true);
                 break;
             default:
                 break;
@@ -219,6 +225,11 @@ void run() {
         map.checkCollision();
 
 
+        for (size_t i = 0; i < map.getListPlayer().size(); ++i) {
+            if (map.getListPlayer().at(i)->getHp()<=0) {
+
+            }
+        }
 
         if (playership1->getHp() <= 0 && playership2->getHp() <= 0)
             game_over = true;
@@ -250,14 +261,33 @@ void run() {
             mvwaddch(game_wnd, p->getPos().y, p->getPos().x - 1, ACS_LARROW);
             mvwaddch(game_wnd, p->getPos().y, p->getPos().x + 1, ACS_RARROW);
 
+            if(p->getHp()<=0 && p->getIsAlive()){
+                p->setisAlive(false);
+                p->setKillTime(tick);
+            }
+            if(tick==p->getKillTime()+300){
+                p->setisAlive(true);
+                p->setHp(100);
+            }
+
+            if(tick % 100 < 50 && p->getHp()<=0 && tick<p->getKillTime()+300) {
+                wattron(game_wnd, A_BOLD);
+                mvwaddch(game_wnd, p->getPos().y, p->getPos().x, ' ');
+                wattroff(game_wnd, A_BOLD);
+
+                wattron(game_wnd, A_ALTCHARSET);
+                mvwaddch(game_wnd, p->getPos().y, p->getPos().x - 1, ' ');
+                mvwaddch(game_wnd, p->getPos().y, p->getPos().x + 1, ' ');
+            }
 
             // draw engines flames
-            if((tick % 10) / 3){
+            if((tick % 10) / 3 && p->getHp()>0) {
                 wattron(game_wnd, COLOR_PAIR(tick % 2 ? 3 : 4));
                 mvwaddch(game_wnd, p->getPos().y + 1, p->getPos().x, ACS_UARROW);
                 mvwaddch(game_wnd, p->getPos().y + 1, p->getPos().x, ACS_UARROW);
                 wattroff(game_wnd, COLOR_PAIR(tick % 2 ? 3 : 4));
             }
+
 
             wattroff(game_wnd, A_ALTCHARSET);}
 
