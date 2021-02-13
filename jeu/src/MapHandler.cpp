@@ -44,24 +44,27 @@ void MapHandler::update(MapObject::type typ, int t) {
     if (typ == MapObject::star) {
         for(size_t i = 0; i < stars_set.size(); i++) {
             stars_set.at(i)->move();
-            if(stars_set.at(i)->getPos().y > field_bounds.bot())
+            if(stars_set.at(i)->getPos().y > field_bounds.bot() + 1)
                 stars_set.erase(stars_set.begin() + i);
+            
         }
     }
     
     else if (typ == MapObject::obstacle) {
         for(size_t i = 0; i < obstacles_set.size(); i++) {
             obstacles_set.at(i)->move();
-            if(obstacles_set.at(i)->getPos().y > field_bounds.bot())
+            if(obstacles_set.at(i)->getPos().y > field_bounds.bot() + 1)
                 obstacles_set.erase(obstacles_set.begin() + i);
+            
         }
     }
     
     else if (typ == MapObject::projectile) {
         for(size_t i = 0; i < projectiles_set.size(); i++) {
             projectiles_set.at(i)->move();
-            if(projectiles_set.at(i)->getPos().y > field_bounds.bot())
+            if(projectiles_set.at(i)->getPos().y > field_bounds.bot() + 1)
                 projectiles_set.erase(projectiles_set.begin() + i);
+            
         }
     }
 
@@ -70,7 +73,7 @@ void MapHandler::update(MapObject::type typ, int t) {
     if(typ == MapObject::star)
         stars_set.push_back(new Star(rand() % field_bounds.width(), 0));
     else if(typ == MapObject::obstacle && t % 200 == 0)
-        obstacles_set.push_back(new Obstacle(20 , 0, 10,10));
+        obstacles_set.push_back(new Obstacle(rand() % field_bounds.width(), 0, 10,10));
    
 }
 void MapHandler::spawnProjectile(int x, int y, int damage, bool type){

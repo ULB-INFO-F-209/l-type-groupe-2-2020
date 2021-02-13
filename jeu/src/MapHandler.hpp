@@ -72,10 +72,11 @@ class PlayerShip : public Ship{
     char disp_char;
     int killTime;
     bool isAlive;
+    int playerNb;
 
 
 public:
-    PlayerShip(int x, int y, rect b, char c, int h){pos.x = x; pos.y = y; bounds = b; setHp(h); disp_char = c;isAlive=true;}
+    PlayerShip(int x, int y, rect b, char c, int h, int nb){pos.x = x; pos.y = y; bounds = b; setHp(h); disp_char = c;isAlive=true; playerNb = nb;}
     void setBounds(rect b){bounds = b;}
     rect getBounds(){return bounds;}
     char getChar(){return disp_char;}
@@ -83,7 +84,8 @@ public:
     bool getIsAlive(){return isAlive;}
     void setKillTime(int t){killTime=t;}
     void setisAlive(bool b){isAlive=b;}
-    Player check;
+    int getPlayerNb(){return playerNb;}
+    
 };
 
 class MapHandler{

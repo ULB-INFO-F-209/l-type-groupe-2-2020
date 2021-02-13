@@ -7,7 +7,7 @@
  *  faire des niveaux
  *  enlever static_cast !!
  *  transformer game.cpp en classe
- *
+ *  changer vectors en listes
  * ERROR:
  */
 
@@ -92,8 +92,13 @@ int init() {
 void run() {
 
     int tick;
-    PlayerShip* playership1 = new PlayerShip(10, 5, { {10 - 1, 5 }, { 3, 2 } }, '0',100);
-    PlayerShip* playership2 = new PlayerShip(50, 5, { { 50 - 1, 5 }, { 3, 2 } }, '1',100);
+    PlayerShip* playership1 = new PlayerShip(10, 5, { {10 - 1, 5 }, { 3, 2 } }, '0',100, 0);
+    PlayerShip* playership2 = new PlayerShip(50, 5, { { 50 - 1, 5 }, { 3, 2 } }, '1',100, 1);
+    Player* player1 = new Player(3, 0);
+    Player* player2 = new Player(3, 0);
+    std::vector<Player*> listPlayer;
+    listPlayer.push_back(player1);
+    listPlayer.push_back(player2);
 
     map.playerInit(playership1,playership2);
 
@@ -145,7 +150,7 @@ void run() {
                     playership1->setPos(x1, y1 - 1);
                 break;
             case 's':
-                if(y1 < game_area.bot() + 1)
+                if(y1 < game_area.bot())
                     playership1->setPos(x1, y1 + 1);
                 break;
             case 'd':
@@ -161,11 +166,11 @@ void run() {
                     playership1->setPos(x1 + 1, y1 - 1);}
                 break;
             case 'c':
-                if((x1 < game_area.right() - 2) && (y1 < game_area.bot() + 1)){
+                if((x1 < game_area.right() - 2) && (y1 < game_area.bot())){
                     playership1->setPos(x1 + 1, y1 + 1);}
                 break;
             case 'w':
-                if((x1 > game_area.left() + 1) && (y1 < game_area.bot() + 1)){
+                if((x1 > game_area.left() + 1) && (y1 < game_area.bot())){
                     playership1->setPos(x1 - 1, y1 + 1);}
                 break;
             case ' ':
@@ -182,7 +187,7 @@ void run() {
                     playership2->setPos(x2, y2 - 1);;
                 break;
             case 'g':
-                if(y2 < game_area.bot() + 1)
+                if(y2 < game_area.bot())
                     playership2->setPos(x2 , y2 + 1);
                 break;
             case 'h':
@@ -198,11 +203,11 @@ void run() {
                     playership2->setPos(x2 + 1 , y2 - 1);}
                 break;
             case 'n':
-                if((x2 < game_area.right() - 2) && (y2 < game_area.bot() + 1)){
+                if((x2 < game_area.right() - 2) && (y2 < game_area.bot())){
                     playership2->setPos(x2 + 1 , y2 + 1);}
                 break;
             case 'v':
-                if((x2 > game_area.left() + 1) && (y2 < game_area.bot() + 1)){
+                if((x2 > game_area.left() + 1) && (y2 < game_area.bot())){
                     playership2->setPos(x2 - 1 , y2 + 1);}
                 break;
             case 'm':
@@ -220,18 +225,18 @@ void run() {
         if(tick > 100 && tick %50  == 0)
             map.update(MapObject::obstacle, tick);
             
+        /*for (PlayerShip* p : map.getListPlayer()){
+            if(p->getPlayerNb() == 0){
+                map.getListPlayer().at(0).
+            }
+        }*/
 
         map.updatePlayerBounds();     // update player bounds
         map.checkCollision();
 
 
-        for (size_t i = 0; i < map.getListPlayer().size(); ++i) {
-            if (map.getListPlayer().at(i)->getHp()<=0) {
 
-            }
-        }
-
-        if (playership1->getHp() <= 0 && playership2->getHp() <= 0)
+        if (player1->getnLives() < 1 && player2->getnLives() < 1)
             game_over = true;
 
         // draw stars
@@ -252,6 +257,7 @@ void run() {
 
         for( PlayerShip* p : map.getListPlayer()){
             // draw player body
+            
             wattron(game_wnd, A_BOLD);
             mvwaddch(game_wnd, p->getPos().y, p->getPos().x, p->getChar());
             wattroff(game_wnd, A_BOLD);
@@ -260,36 +266,54 @@ void run() {
             wattron(game_wnd, A_ALTCHARSET);
             mvwaddch(game_wnd, p->getPos().y, p->getPos().x - 1, ACS_LARROW);
             mvwaddch(game_wnd, p->getPos().y, p->getPos().x + 1, ACS_RARROW);
-
-            if(p->getHp()<=0 && p->getIsAlive()){
-                p->setisAlive(false);
-                p->setKillTime(tick);
-            }
-            if(tick==p->getKillTime()+300){
-                p->setisAlive(true);
-                p->setHp(100);
-            }
-
-            if(tick % 100 < 50 && p->getHp()<=0 && tick<p->getKillTime()+300) {
-                wattron(game_wnd, A_BOLD);
-                mvwaddch(game_wnd, p->getPos().y, p->getPos().x, ' ');
-                wattroff(game_wnd, A_BOLD);
-
-                wattron(game_wnd, A_ALTCHARSET);
-                mvwaddch(game_wnd, p->getPos().y, p->getPos().x - 1, ' ');
-                mvwaddch(game_wnd, p->getPos().y, p->getPos().x + 1, ' ');
+            if(listPlayer.at(p->getPlayerNb())->getnLives() > 0){
+                if(p->getHp()<=0 && p->getIsAlive()){
+                    p->setisAlive(false);
+                    p->setKillTime(tick);
+                    listPlayer.at(p->getPlayerNb())->setnLives(listPlayer.at(p->getPlayerNb())->getnLives() - 1);
+                    
+                }
+                if(tick==p->getKillTime()+300 && !p->getIsAlive()){
+            
+                    p->setisAlive(true);
+                    p->setHp(100);
+        
+                }
             }
 
-            // draw engines flames
-            if((tick % 10) / 3 && p->getHp()>0) {
-                wattron(game_wnd, COLOR_PAIR(tick % 2 ? 3 : 4));
-                mvwaddch(game_wnd, p->getPos().y + 1, p->getPos().x, ACS_UARROW);
-                mvwaddch(game_wnd, p->getPos().y + 1, p->getPos().x, ACS_UARROW);
-                wattroff(game_wnd, COLOR_PAIR(tick % 2 ? 3 : 4));
+            
+                    
+            
+                
+            
+            if(listPlayer.at(p->getPlayerNb())->getnLives() > 0){
+
+                if(tick % 100 < 50 && p->getHp()<=0 && tick<p->getKillTime()+300) {
+                    wattron(game_wnd, A_BOLD);
+                    mvwaddch(game_wnd, p->getPos().y, p->getPos().x, ' ');
+                    wattroff(game_wnd, A_BOLD);
+
+                    wattron(game_wnd, A_ALTCHARSET);
+                    mvwaddch(game_wnd, p->getPos().y, p->getPos().x - 1, ' ');
+                    mvwaddch(game_wnd, p->getPos().y, p->getPos().x + 1, ' ');
+                }
+
+                // draw engines flames
+                if((tick % 10) / 3 && p->getHp()>0) {
+                    wattron(game_wnd, COLOR_PAIR(tick % 2 ? 3 : 4));
+                    mvwaddch(game_wnd, p->getPos().y + 1, p->getPos().x, ACS_UARROW);
+                    mvwaddch(game_wnd, p->getPos().y + 1, p->getPos().x, ACS_UARROW);
+                    wattroff(game_wnd, COLOR_PAIR(tick % 2 ? 3 : 4));
+                }
             }
 
 
-            wattroff(game_wnd, A_ALTCHARSET);}
+            wattroff(game_wnd, A_ALTCHARSET);
+
+            if(listPlayer.at(p->getPlayerNb())->getnLives() < 1){
+                map.erase(p->getPlayerNb(), MapObject::ship);
+            }  
+        }
 
         // draw UI elements
         // energy bar player1
@@ -305,18 +329,18 @@ void run() {
         drawEnergyBar(playership2->getHp());
 
         // draw static string to hold percentage
-        mvwprintw(main_wnd, 21, 1, " - P1 E N E R G Y      -");
-        mvwprintw(main_wnd, 21, 54, " - P2 E N E R G Y      -");
+        mvwprintw(main_wnd, 21, 1, " - P1 HP      -");
+        mvwprintw(main_wnd, 21, 54, " - P2 HP      -");
 
         // draw numeric percentage player 1
         wattron(main_wnd, A_BOLD);
         if(playership1->getHp() <= 25) {
             wattron(main_wnd, COLOR_PAIR(4));
             if(tick % 100 < 50)
-                mvwprintw(main_wnd, 21, 19, "%i%%", playership1->getHp()); 
+                mvwprintw(main_wnd, 21, 11, "%i%%", playership1->getHp()); 
             wattroff(main_wnd, COLOR_PAIR(4));
         } else
-            mvwprintw(main_wnd, 21, 19, "%i%%", playership1->getHp()); 
+            mvwprintw(main_wnd, 21, 11, "%i%%", playership1->getHp()); 
         wattroff(main_wnd, A_BOLD);
 
         // draw numeric percentage player 2
@@ -324,10 +348,10 @@ void run() {
         if(playership2->getHp() <= 25) {
             wattron(main_wnd, COLOR_PAIR(4));
             if(tick % 100 < 50)
-                mvwprintw(main_wnd, 21, 72, "%i%%", playership2->getHp()); 
+                mvwprintw(main_wnd, 21, 64, "%i%%", playership2->getHp()); 
             wattroff(main_wnd, COLOR_PAIR(4));
         } else
-            mvwprintw(main_wnd, 21, 72, "%i%%", playership2->getHp()); 
+            mvwprintw(main_wnd, 21, 64, "%i%%", playership2->getHp()); 
         wattroff(main_wnd, A_BOLD);
 
         //refresh all

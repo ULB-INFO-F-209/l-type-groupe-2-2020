@@ -6,8 +6,11 @@ class PlayerShip;
 
 class Player{
     int nLives, score;
-    PlayerShip* ship;
-
+    
+    public:
+    int getnLives(){return nLives;}
+    void setnLives(int lives){nLives = lives;}
+    Player( int lives, int s){nLives = lives, score = s;}
 };
 
 #endif
