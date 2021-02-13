@@ -28,6 +28,7 @@ public:
 	// Utilities
 	bool createAccount(char pseudo[20], char pswd[20]);
 	bool updateScore(int score, char pseudo[20]);
+	int friendRequest(char pseudoSrc[20], char pseudoDest[20]);
 	bool addFriend(char pseudo1[20], char pseudo2[20]);
     bool removeFriend(char pseudo1[20], char pseudo2[20]);
 
