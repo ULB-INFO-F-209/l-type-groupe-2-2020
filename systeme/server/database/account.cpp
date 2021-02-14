@@ -51,11 +51,17 @@ int Account::addRequest(char pseudo[20]){
     return res;
 }
 
-void Account::removeFriend(char pseudo[20]){
-    std::ptrdiff_t idx = findFriend(pseudo);
+void Account::removeRequest(char pseudo[20]){
+    std::ptrdiff_t idx = findRequest(pseudo);
     if (idx != -1) {
-        strcpy(_friends[idx], "\0");
-        _curr_friend_nb--;
+        _curr_request_nb--;
+        for (std::ptrdiff_t i = idx; i < _max_request_nb; i++) {
+            if (i == _max_request_nb-1){
+                strcpy(_friend_requests[i], "\0");
+            } else{
+                strcpy(_friend_requests[i], _friend_requests[i+1]);
+            }
+        }
     }else{
         std::cout << pseudo << " was not friends with " << _pseudo << std::endl;
     }
@@ -68,6 +74,22 @@ void Account::addFriend(char pseudo[20]){
         _curr_friend_nb++;
     }else{
         std::cout << pseudo << " is already friends with " << _pseudo << std::endl;
+    }
+}
+
+void Account::removeFriend(char pseudo[20]){
+    std::ptrdiff_t idx = findFriend(pseudo);
+    if (idx != -1) {
+        _curr_friend_nb--;
+        for (std::ptrdiff_t i = idx; i < _max_friend_nb; i++) {
+            if (i == _max_friend_nb-1){
+                strcpy(_friends[i], "\0");
+            } else{
+                strcpy(_friends[i], _friends[i+1]);
+            }
+        }
+    }else{
+        std::cout << pseudo << " was not friends with " << _pseudo << std::endl;
     }
 }
 

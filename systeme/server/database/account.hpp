@@ -29,8 +29,9 @@ public:
 
     // Utilities
     int addRequest(char pseudo[20]);
-    void removeFriend(char pseudo[20]);
+    void removeRequest(char pseudo[20]);
     void addFriend(char pseudo[20]);
+    void removeFriend(char pseudo[20]);
 
     // Destructor
     ~Account() = default;
