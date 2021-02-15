@@ -10,8 +10,11 @@ void MapHandler::erase(size_t i, MapObject::type typ) { //1ier elem=index(0)
     else if (typ == MapObject::obstacle) {
         obstacles_set.erase(obstacles_set.begin() + i);
     }
-    else if(typ==MapObject::ship){
+    else if(typ==MapObject::playership){
         player_ships_set.erase(player_ships_set.begin()+i);
+    }
+    else if(typ==MapObject::enemyship){
+        enemy_ships_set.erase(enemy_ships_set.begin()+i);
     }
 
 }
@@ -67,6 +70,15 @@ void MapHandler::update(MapObject::type typ, int t) {
             
         }
     }
+    else if (typ == MapObject::enemyship) {
+        for(size_t i = 0; i < enemy_ships_set.size(); i++) {
+            enemy_ships_set.at(i)->move();
+            if(enemy_ships_set.at(i)->getPos().y > field_bounds.bot() + 1)
+                enemy_ships_set.erase(enemy_ships_set.begin() + i);
+
+        }
+    }
+
 
     // spawn a new object
     
@@ -74,7 +86,8 @@ void MapHandler::update(MapObject::type typ, int t) {
         stars_set.push_back(new Star(rand() % field_bounds.width(), 0));
     else if(typ == MapObject::obstacle && t % 200 == 0)
         obstacles_set.push_back(new Obstacle(rand() % field_bounds.width(), 0, 10,10));
-   
+    else if (typ == MapObject::enemyship && t%300==0)
+        enemy_ships_set.push_back(new EnemyShip(rand() % (field_bounds.width()-1)+1, 0, { {10 - 1, 5 }, { 3, 2 } }, '%',20,10));
 }
 void MapHandler::spawnProjectile(int x, int y, int damage, bool type){
     projectiles_set.push_back(new Projectile(x,y,damage,type));
@@ -127,6 +140,10 @@ void MapHandler::updatePlayerBounds() {
 
 std::vector<PlayerShip *> MapHandler::getListPlayer() const {
     return player_ships_set;
+}
+
+std::vector<EnemyShip *> MapHandler::getEnemy() const {
+    return enemy_ships_set;
 }
 
 

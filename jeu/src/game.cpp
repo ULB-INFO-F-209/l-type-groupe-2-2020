@@ -1,13 +1,14 @@
 /**
  * TODO:
  *  thread pour jouer en même temps
- *  nombre de vies
  *  vaisseaux ennemis
  *  score
  *  faire des niveaux
  *  enlever static_cast !!
  *  transformer game.cpp en classe
  *  changer vectors en listes
+ *  mettre tous les destructors
+ *  damage version alexandre
  * ERROR:
  */
 
@@ -92,8 +93,8 @@ int init() {
 void run() {
 
     int tick;
-    PlayerShip* playership1 = new PlayerShip(10, 5, { {10 - 1, 5 }, { 3, 2 } }, '0',100, 0);
-    PlayerShip* playership2 = new PlayerShip(50, 5, { { 50 - 1, 5 }, { 3, 2 } }, '1',100, 1);
+    PlayerShip* playership1 = new PlayerShip(10, 5, { {10 - 1, 5 }, { 3, 2 } }, '0',100, 0,10);
+    PlayerShip* playership2 = new PlayerShip(50, 5, { { 50 - 1, 5 }, { 3, 2 } }, '1',100, 1,10);
     Player* player1 = new Player(3, 0);
     Player* player2 = new Player(3, 0);
     std::vector<Player*> listPlayer;
@@ -222,19 +223,18 @@ void run() {
             map.update(MapObject::star, tick);
         if(tick % 7 == 0)
             map.update(MapObject::projectile, tick);
-        if(tick > 100 && tick %50  == 0)
+        if(tick > 100 && tick %50  == 0) {
             map.update(MapObject::obstacle, tick);
-            
-        /*for (PlayerShip* p : map.getListPlayer()){
-            if(p->getPlayerNb() == 0){
-                map.getListPlayer().at(0).
-            }
-        }*/
+        }
+        if (tick > 100 && tick %150 ==0)
+            map.update(MapObject::enemyship, tick);
+
+
+
+
 
         map.updatePlayerBounds();     // update player bounds
         map.checkCollision();
-
-
 
         if (player1->getnLives() < 1 && player2->getnLives() < 1)
             game_over = true;
@@ -243,7 +243,6 @@ void run() {
         for(auto s : map.getStars()){   
             mvwaddch(game_wnd, s->getPos().y, s->getPos().x, '.');        
         }
-
         for(auto o : map.getObstacles()){
                 wattron(game_wnd, A_BOLD);
                 mvwaddch(game_wnd, o->getPos().y, o->getPos().x, '*');
@@ -254,6 +253,19 @@ void run() {
 
             mvwaddch(game_wnd, p->getPos().y, p->getPos().x, '#');
         }
+        // draw ennemies
+        for(auto e :map.getEnemy()){
+            wattron(game_wnd, A_BOLD);
+            mvwaddch(game_wnd, e->getPos().y, e->getPos().x, e->getChar());
+            wattroff(game_wnd, A_BOLD);
+
+
+            wattron(game_wnd, A_ALTCHARSET);
+            mvwaddch(game_wnd, e->getPos().y, e->getPos().x - 1, ACS_LARROW);
+            mvwaddch(game_wnd, e->getPos().y, e->getPos().x + 1, ACS_RARROW);
+            wattroff(game_wnd, A_ALTCHARSET);
+        }
+
 
         for( PlayerShip* p : map.getListPlayer()){
             // draw player body
@@ -281,11 +293,6 @@ void run() {
                 }
             }
 
-            
-                    
-            
-                
-            
             if(listPlayer.at(p->getPlayerNb())->getnLives() > 0){
 
                 if(tick % 100 < 50 && p->getHp()<=0 && tick<p->getKillTime()+300) {
@@ -311,7 +318,7 @@ void run() {
             wattroff(game_wnd, A_ALTCHARSET);
 
             if(listPlayer.at(p->getPlayerNb())->getnLives() < 1){
-                map.erase(p->getPlayerNb(), MapObject::ship);
+                map.erase(p->getPlayerNb(), MapObject::playership);
             }  
         }
 
@@ -329,8 +336,10 @@ void run() {
         drawEnergyBar(playership2->getHp());
 
         // draw static string to hold percentage
-        mvwprintw(main_wnd, 21, 1, " - P1 HP      -");
-        mvwprintw(main_wnd, 21, 54, " - P2 HP      -");
+        mvwprintw(main_wnd, 21, 1, "  - P1 HP     -");
+        mvwprintw(main_wnd, 21, 54, "  - P2 HP     -");
+        mvwprintw(main_wnd, 21, 17, "lives: %i",player1->getnLives());
+        mvwprintw(main_wnd, 21, 70, "lives: %i",player2->getnLives());
 
         // draw numeric percentage player 1
         wattron(main_wnd, A_BOLD);
