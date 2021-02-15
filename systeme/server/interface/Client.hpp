@@ -1,3 +1,16 @@
+/*
+    semaine 1 : 
+        géré comunication client-serveur sans raccorder la game
+    semaine 2:
+        raccorder la game et le menu 
+        relax : il y a une autre semaine en plus si no time
+    Note: 
+        15/02 : tous les communications ont été gérées sauf
+                l'affichage du jeux et la manière d'énvoyer 
+                les inputs du jeu au serveur!
+
+*/
+
 #ifndef PA2_CLIENT_HPP
 #define PA2_CLIENT_HPP
 
@@ -5,44 +18,60 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <errno.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <fcntl.h>
+#include <iostream>
+#include <signal.h>
+#include <cstring>
 
-#define READ 0
-#define WRITE 1
+#include "Constante.hpp"
 
-/* je vais juste gerer les communication client server ici ... */
 class Client{
-    // MapObject positionsBoard;
+    //state
+    char _pseudo[Constante::SIZE_PSEUDO]{};
     int _currentGameID=-1;
     bool _inGame=0;
+    pid_t _pid;
+    //pipes
+    char _pipe_to_server[Constante::SIZE_pipe];
+    char _pipe_from_server[Constante::SIZE_pipe ]; //celui avec pid
 
-    //Menu
-    std::string connexion = "Connexion"; //pipe première connection au server
-    std::string pipe{};  //comm server - client connecté
-    std::string _pseudo{};
-    int _fd[2]{}; //file descriptor
+    //files descriptors
+    int _fd_send_query;
+    int _fd_get_query;
 
 public:
     //constructor
-    Client(){
-        //donnez le pid du process au server via connexion
-    }
+    explicit Client();
 
-    //getters/setter
-    bool sendInput(int currentGameID, int playerID, char input);
-    // bool display(MapObject);
-    bool delFriend(char pseudo);
-    bool createGame();
+    //Communication
     bool signIn(char *pseudo, char *pswd);
     bool signUp(char *pseudo, char *pswd);
+    bool addFriend(char *pseudo);
+    int delFriend(char *pseudo);
+    int sendFriendRequest(char *pseudo);
+    void getFriendRequest(char *res);
+    void getFriendList(char *res);
     void checkLeaderboard(char * res);
-    bool sendFriendRequest(char *pseudo);
+    void get_profile(char *res);
+    void log_out();
 
+    //Game
+    bool checkID(char *pseudo, char*pswd);
+    int createGame(char * game_info);
+    
     //state
-    bool is_playing(){return _inGame;}
-
+    inline bool is_playing(){return _inGame;}
+    inline void get_pseudo(char *res){strcpy(res, _pseudo);}
 
     //destructor
-    ~Client(){ }
+    ~Client();
+
+private:
+    void communication(char *buffer);
+
 
 };
 

@@ -7,3 +7,4 @@ int main(int argc, char const *argv[])
 	win.print_menu(3,choix);
 	return 0;
 }
+

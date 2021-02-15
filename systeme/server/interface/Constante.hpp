@@ -11,7 +11,7 @@
  **/
 namespace Constante{
 
-    const std::size_t CHAR_SIZE = 100;
+    const size_t CHAR_SIZE = 264;
 
     //pipe
     const char PIPE_DE_CONNEXION[] = {"connexion"};
@@ -26,6 +26,11 @@ namespace Constante{
     const char PAS_SECOND_JOUEUR[] = {"Null"};
     constexpr char ACTION_JEU[] = {"J"/* ajouter les touches possibles*/};
     constexpr char DELIMITEUR = '_';
+
+    //client
+    const size_t SIZE_PSEUDO  = 20;
+    const size_t SIZE_pipe =64;
+
     
     
     
