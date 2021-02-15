@@ -73,7 +73,10 @@ void Server::handleIncommingMessages(){
         
         close(fd);
         
-    } 
+    }
+    close(fd);
+    
+    
 
 }
 
@@ -164,6 +167,9 @@ void Server::initConnexions(){
             sprintf(pipe_name,"%s%s",Constante::BASE_PIPE_FILE,proc_id); // constitue le nom du pipe priver entre le serveur et le client
             
             createPipe(pipe_name); // creation de nouveau pipe avec le pid du client
+            close(fd);
+
+
 
 
             /**                            TODO 
@@ -205,7 +211,6 @@ void Server::initConnexions(){
 
 
     }
-    close(fd);
 
 }
             
