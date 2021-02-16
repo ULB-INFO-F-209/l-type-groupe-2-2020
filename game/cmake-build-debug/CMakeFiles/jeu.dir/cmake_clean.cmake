@@ -1,11 +1,10 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/jeu.dir/src/MapHandler.cpp.obj"
-  "CMakeFiles/jeu.dir/src/game.cpp.obj"
-  "CMakeFiles/jeu.dir/src/main.cpp.obj"
-  "jeu.exe"
-  "jeu.exe.manifest"
+  "CMakeFiles/jeu.dir/src/MapHandler.cpp.o"
+  "CMakeFiles/jeu.dir/src/Player.cpp.o"
+  "CMakeFiles/jeu.dir/src/game.cpp.o"
+  "CMakeFiles/jeu.dir/src/main.cpp.o"
+  "jeu"
   "jeu.pdb"
-  "libjeu.dll.a"
 )
 
 # Per-language clean rules from dependency scanning.

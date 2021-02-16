@@ -3,4 +3,4 @@ project(jeu)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(jeu src/main.cpp src/game.cpp src/MapHandler.cpp src/MapHandler.hpp)
+add_executable(jeu src/main.cpp src/game.cpp src/MapHandler.cpp src/MapHandler.hpp src/Player.hpp src/Player.cpp)

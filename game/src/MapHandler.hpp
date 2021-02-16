@@ -9,18 +9,24 @@
 #include <vector>
 #include <cstdint>
 #include <list>
+#include "Player.hpp"
 
 class MapObject{
 public:
-    void virtual move();
+    virtual void move();
     vec2i getPos() const;
-    void setPos(vec2i);
-    enum type{star,obstacle,ship,projectile,bonus};
+    void setPos(int x, int y){pos.x = x; pos.y = y;}
+    enum type{star,obstacle,playership,projectile,bonus,enemyship};
+    virtual void touched(int damage);
     type typ;
+
+    virtual void setHp(int h){hp =h;}
+
+    virtual int getHp(){return hp;}
 
 protected:
     vec2i pos;
-
+    int hp;
 };
 
 class Star: public MapObject{ //background
@@ -32,30 +38,63 @@ class Obstacle: public MapObject{
     int damage;
 public:
 
-    Obstacle(int nx, int ny,int dam) { pos.x = nx; pos.y = ny; damage=dam;typ=obstacle;}
+    Obstacle(int nx, int ny,int dam,int h) {pos.x = nx; pos.y = ny; damage=dam;typ=obstacle;hp=h;}
     int get_damage() {return damage;};
+    void touched(int damage);
 };
 
 class Ship: public MapObject{
     int damage;
     int fireRate;
+    char disp_char;
+    rect bounds;
+
 public:
-    Ship(int nx, int ny,int dam,int fire_r) {pos.x = nx; pos.y = ny; damage=dam; fireRate=fire_r;typ=ship;}
+    Ship(){};
+    char getChar(){return disp_char;}
+    void setChar(char c){disp_char=c;}
+    void setBounds(rect b){bounds = b;}
+    rect getBounds(){return bounds;}
+    void setDammage(int dam){damage=dam;}
+
 };
 
 class Projectile: public MapObject{
     int damage;
     bool shipType;
-    //PlayerShip player;
 public:
     void move() override;
     Projectile(int nx, int ny,int dam,bool ship_t) {pos.x = nx; pos.y = ny; damage=dam; shipType=ship_t;typ=projectile;}
+    int getDamage(){return damage;}
 };
 
 class Bonus: public MapObject{
     int bonusType;
 public:
     Bonus(int nx, int ny,int bonus_t) { pos.x = nx; pos.y = ny; bonusType=bonus_t;typ=bonus;}
+};
+
+class PlayerShip : public Ship{
+    int killTime;
+    bool isAlive;
+    int playerNb;
+
+
+public:
+    PlayerShip(int x, int y, rect b, char c, int h, int nb, int dam){pos.x = x; pos.y = y; setBounds(b); setHp(h); setChar(c);isAlive=true; playerNb = nb; setDammage(dam);}
+    int getKillTime(){return killTime;}
+    bool getIsAlive(){return isAlive;}
+    void setKillTime(int t){killTime=t;}
+    void setisAlive(bool b){isAlive=b;}
+    int getPlayerNb(){return playerNb;}
+    
+};
+
+class EnemyShip : public Ship{
+    double bonusDropProb;
+public:
+    EnemyShip(int x, int y, rect b, char c,int h,int dam){pos.x = x; pos.y = y; setBounds(b); setHp(h); setChar(c); setDammage(dam);}
+
 };
 
 class MapHandler{
@@ -65,16 +104,23 @@ public:
     std::vector<Star*> getStars() const;
     std::vector<Obstacle*> getObstacles() const;
     std::vector<Projectile*> getProjectiles() const;
+    std::vector<EnemyShip*> getEnemy() const;
     void setBounds(rect);
     void spawnProjectile(int, int, int, bool );
-    
+    void checkCollision();
     rect field_bounds;
+    void playerInit(PlayerShip* p1,PlayerShip* p2);
+    void updatePlayerBounds();
+    std::vector<PlayerShip*>  getListPlayer()const;
 private:
     
     
     std::vector<Star*> stars_set;
     std::vector<Obstacle*> obstacles_set;
     std::vector<Projectile*> projectiles_set;
-    
+    std::vector<PlayerShip*> player_ships_set;
+    std::vector<EnemyShip*> enemy_ships_set;
+
+
 };
 #endif //JEU_MAPHANDLER_HPP

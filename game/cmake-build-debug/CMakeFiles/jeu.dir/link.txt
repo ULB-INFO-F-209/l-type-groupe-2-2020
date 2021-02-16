@@ -1,3 +1,1 @@
-"C:\Program Files\JetBrains\CLion 2020.2.3\bin\cmake\win\bin\cmake.exe" -E rm -f CMakeFiles\jeu.dir/objects.a
-C:\PROGRA~2\MINGW-~1\I686-8~1.0-P\mingw32\bin\ar.exe cr CMakeFiles\jeu.dir/objects.a @CMakeFiles\jeu.dir\objects1.rsp
-C:\PROGRA~2\MINGW-~1\I686-8~1.0-P\mingw32\bin\G__~1.EXE -g   -Wl,--whole-archive CMakeFiles\jeu.dir/objects.a -Wl,--no-whole-archive  -o jeu.exe -Wl,--out-implib,libjeu.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\jeu.dir\linklibs.rsp
+/usr/bin/c++  -g   CMakeFiles/jeu.dir/src/main.cpp.o CMakeFiles/jeu.dir/src/game.cpp.o CMakeFiles/jeu.dir/src/MapHandler.cpp.o CMakeFiles/jeu.dir/src/Player.cpp.o  -o jeu 

@@ -1,11 +1,15 @@
 /**
  * TODO:
  *  thread pour jouer en même temps
- *  class player
- *  list player
- *  shoot player 2
- *  projectile collision
- *
+ *  vaisseaux ennemis
+ *  score
+ *  faire des niveaux
+ *  enlever static_cast !!
+ *  transformer game.cpp en classe
+ *  changer vectors en listes
+ *  mettre tous les destructors
+ *  damage version alexandre
+ * ERROR:
  */
 
 #include <unistd.h>
@@ -18,36 +22,13 @@
 #include <vector>
 #include "MapHandler.hpp"
 #include "game.hpp"
+#include "Player.hpp"
 
 WINDOW* main_wnd;
 WINDOW* game_wnd;
 
 rect game_area;
 rect screen_area;
-
-vec2ui cur_size;
-
-
-struct {
-    vec2i pos;
-    vec2i dir;
-    rect bounds;
-    char disp_char;
-    char ship_type;
-    bool moving;
-    int energy;
-} player1;
-
-struct {
-    vec2i pos;
-    vec2i dir;
-    rect bounds;
-    char disp_char;
-    char ship_type;
-    bool moving;
-    int energy;
-} player2;
-
 
 
 MapHandler map;
@@ -68,7 +49,7 @@ int init() {
     // enable color modification
     start_color();
 
-
+    
     // define area for screen (default terminal size)
     screen_area = { {0, 0}, {80, 24}};
 
@@ -82,7 +63,7 @@ int init() {
     main_wnd = newwin(screen_area.height(), screen_area.width(), 0, 0);
 
     // define area for movement
-    game_area = { {0, 0}, {screen_area.width() - 2, screen_area.height() - infopanel_height - 4}};
+    game_area = { {0, 0}, {static_cast<uint_fast16_t>(screen_area.width() - 2), static_cast<uint_fast16_t>(screen_area.height() - infopanel_height - 4)}};
 
     init_pair(1, COLOR_WHITE, COLOR_BLACK);
     init_pair(2, COLOR_GREEN, COLOR_BLACK);
@@ -112,19 +93,15 @@ int init() {
 void run() {
 
     int tick;
+    PlayerShip* playership1 = new PlayerShip(10, 5, { {10 - 1, 5 }, { 3, 2 } }, '0',100, 0,10);
+    PlayerShip* playership2 = new PlayerShip(50, 5, { { 50 - 1, 5 }, { 3, 2 } }, '1',100, 1,10);
+    Player* player1 = new Player(3, 0);
+    Player* player2 = new Player(3, 0);
+    std::vector<Player*> listPlayer;
+    listPlayer.push_back(player1);
+    listPlayer.push_back(player2);
 
-    // init character
-    player1.disp_char = '0';
-    player1.pos = {10, 5};
-    player1.bounds = { { player1.pos.x - 1, player1.pos.y }, { 3, 2 } }; // player1 is 3 wide, 2 tall
-    player1.moving = false;
-    player1.energy = 100;
-
-    player2.disp_char = '1';
-    player2.pos = {50, 5};
-    player2.bounds = { { player2.pos.x - 1, player2.pos.y }, { 3, 2 } }; // player2 is 3 wide, 2 tall
-    player2.moving = false;
-    player2.energy = 100;
+    map.playerInit(playership1,playership2);
 
     map.setBounds(game_area);
 
@@ -157,88 +134,87 @@ void run() {
         in_char = tolower(in_char);
 
         
-
+        uint_fast16_t x1 = playership1->getPos().x;
+        uint_fast16_t y1 = playership1->getPos().y;
+        uint_fast16_t  x2 = playership2->getPos().x;
+        uint_fast16_t y2 = playership2->getPos().y;
         switch(in_char) {
             case 'q':
-                if(player1.pos.x > game_area.left() + 1)
-                    player1.pos.x -= 1;
+                if(x1 > game_area.left() + 1)
+                    playership1->setPos(x1 - 1, y1);
                 break;
             case 'p':
                 exit_requested = true;
                 break;
             case 'z':
-                if(player1.pos.y > game_area.top())
-                    player1.pos.y -= 1;
+                if(y1 > game_area.top())
+                    playership1->setPos(x1, y1 - 1);
                 break;
             case 's':
-                if(player1.pos.y < game_area.bot() + 1)
-                    player1.pos.y += 1;
+                if(y1 < game_area.bot())
+                    playership1->setPos(x1, y1 + 1);
                 break;
             case 'd':
-                if(player1.pos.x < game_area.right() - 2)
-                    player1.pos.x += 1;
+                if(x1 < game_area.right() - 2)
+                    playership1->setPos(x1 + 1, y1);
                 break;
             case 'a':
-                if((player1.pos.x > game_area.left() + 1) && (player1.pos.y > game_area.top())){
-                    player1.pos.x-=1;
-                    player1.pos.y-=1;}
+                if((x1 > game_area.left() + 1) && (y1 > game_area.top())){
+                    playership1->setPos(x1 - 1, y1 - 1);}
                 break;
             case 'e':
-                if((player1.pos.x < game_area.right() - 2) && (player1.pos.y > game_area.top())){
-                    player1.pos.x+=1;
-                    player1.pos.y-=1;}
+                if((x1 < game_area.right() - 2) && (y1 > game_area.top())){
+                    playership1->setPos(x1 + 1, y1 - 1);}
                 break;
             case 'c':
-                if((player1.pos.x < game_area.right() - 2) && (player1.pos.y < game_area.bot() + 1)){
-                    player1.pos.x+=1;
-                    player1.pos.y+=1;}
+                if((x1 < game_area.right() - 2) && (y1 < game_area.bot())){
+                    playership1->setPos(x1 + 1, y1 + 1);}
                 break;
             case 'w':
-                if((player1.pos.x > game_area.left() + 1) && (player1.pos.y < game_area.bot() + 1)){
-                    player1.pos.x-=1;
-                    player1.pos.y+=1;}
+                if((x1 > game_area.left() + 1) && (y1 < game_area.bot())){
+                    playership1->setPos(x1 - 1, y1 + 1);}
                 break;
             case ' ':
-                map.spawnProjectile(player1.pos.x, player1.pos.y -1, 10, true);
+                if(playership1->getHp()>0)
+                    map.spawnProjectile(playership1->getPos().x, playership1->getPos().y -1, 10, true);
                 break;
 //player2
             case 'f':
-                if(player2.pos.x > game_area.left() + 1)
-                    player2.pos.x -= 1;
+                if(x2 > game_area.left() + 1)
+                    playership2->setPos(x2 - 1 , y2);
                 break;
             case 't':
-                if(player2.pos.y > game_area.top())
-                    player2.pos.y -= 1;
+                if(y2 > game_area.top())
+                    playership2->setPos(x2, y2 - 1);;
                 break;
             case 'g':
-                if(player2.pos.y < game_area.bot() + 1)
-                    player2.pos.y += 1;
+                if(y2 < game_area.bot())
+                    playership2->setPos(x2 , y2 + 1);
                 break;
             case 'h':
-                if(player2.pos.x < game_area.right() - 2)
-                    player2.pos.x += 1;
+                if(x2< game_area.right() - 2)
+                    playership2->setPos(x2 + 1 , y2);
                 break;
             case 'r':
-                if((player2.pos.x > game_area.left() + 1) && (player2.pos.y > game_area.top())){
-                    player2.pos.x-=1;
-                    player2.pos.y-=1;}
+                if((x2 > game_area.left() + 1) && (y2 > game_area.top())){
+                    playership2->setPos(x2 - 1 , y2 - 1);}
                 break;
             case 'y':
-                if((player2.pos.x < game_area.right() - 2) && (player2.pos.y > game_area.top())){
-                    player2.pos.x+=1;
-                    player2.pos.y-=1;}
+                if((x2 < game_area.right() - 2) && (y2 > game_area.top())){
+                    playership2->setPos(x2 + 1 , y2 - 1);}
                 break;
             case 'n':
-                if((player2.pos.x < game_area.right() - 2) && (player2.pos.y < game_area.bot() + 1)){
-                    player2.pos.x+=1;
-                    player2.pos.y+=1;}
+                if((x2 < game_area.right() - 2) && (y2 < game_area.bot())){
+                    playership2->setPos(x2 + 1 , y2 + 1);}
                 break;
             case 'v':
-                if((player2.pos.x > game_area.left() + 1) && (player2.pos.y < game_area.bot() + 1)){
-                    player2.pos.x-=1;
-                    player2.pos.y+=1;}
+                if((x2 > game_area.left() + 1) && (y2 < game_area.bot())){
+                    playership2->setPos(x2 - 1 , y2 + 1);}
                 break;
-
+            case 'm':
+                if(playership2->getHp()>0)
+                    map.spawnProjectile(playership2->getPos().x, playership2->getPos().y -1, 10, true);
+                break;
             default:
                 break;
         }
@@ -247,34 +223,26 @@ void run() {
             map.update(MapObject::star, tick);
         if(tick % 7 == 0)
             map.update(MapObject::projectile, tick);
-        if(tick > 100 && tick %50  == 0)
+        if(tick > 100 && tick %50  == 0) {
             map.update(MapObject::obstacle, tick);
-            
-        // update player bounds
-        player1.bounds = { { player1.pos.x -1, player1.pos.y}, {3, 2}};
-        player2.bounds = { { player2.pos.x -1, player2.pos.y}, {3, 2}};
-        
-        // remove obstacle if collided
-        for(size_t i = 0; i < map.getObstacles().size(); i++){
-            if(player1.bounds.contains(map.getObstacles().at(i)->getPos())){
-                player1.energy -= map.getObstacles().at(i)->get_damage();
-                map.erase(i, MapObject::obstacle);
-            }
-            if(player2.bounds.contains(map.getObstacles().at(i)->getPos())){
-                player2.energy -= map.getObstacles().at(i)->get_damage();
-                map.erase(i, MapObject::obstacle);
-            }
         }
+        if (tick > 100 && tick %150 ==0)
+            map.update(MapObject::enemyship, tick);
 
 
-        if (player1.energy <= 0 && player2.energy <= 0)
+
+
+
+        map.updatePlayerBounds();     // update player bounds
+        map.checkCollision();
+
+        if (player1->getnLives() < 1 && player2->getnLives() < 1)
             game_over = true;
 
         // draw stars
         for(auto s : map.getStars()){   
             mvwaddch(game_wnd, s->getPos().y, s->getPos().x, '.');        
         }
-
         for(auto o : map.getObstacles()){
                 wattron(game_wnd, A_BOLD);
                 mvwaddch(game_wnd, o->getPos().y, o->getPos().x, '*');
@@ -285,68 +253,114 @@ void run() {
 
             mvwaddch(game_wnd, p->getPos().y, p->getPos().x, '#');
         }
+        // draw ennemies
+        for(auto e :map.getEnemy()){
+            wattron(game_wnd, A_BOLD);
+            mvwaddch(game_wnd, e->getPos().y, e->getPos().x, e->getChar());
+            wattroff(game_wnd, A_BOLD);
 
-        // draw player body
-        wattron(game_wnd, A_BOLD);
-        mvwaddch(game_wnd, player1.pos.y, player1.pos.x, player1.disp_char);
-        wattroff(game_wnd, A_BOLD);
-        wattron(game_wnd, A_BOLD);
-        mvwaddch(game_wnd, player2.pos.y, player2.pos.x, player2.disp_char);
-        wattroff(game_wnd, A_BOLD);
 
-        wattron(game_wnd, A_ALTCHARSET);
-        mvwaddch(game_wnd, player1.pos.y, player1.pos.x - 1, ACS_LARROW);
-        mvwaddch(game_wnd, player1.pos.y, player1.pos.x + 1, ACS_RARROW);
-        mvwaddch(game_wnd, player2.pos.y, player2.pos.x - 1, ACS_LARROW);
-        mvwaddch(game_wnd, player2.pos.y, player2.pos.x + 1, ACS_RARROW);
-
-        // draw engines flames
-        if((tick % 10) / 3){
-            wattron(game_wnd, COLOR_PAIR(tick % 2 ? 3 : 4));
-            mvwaddch(game_wnd, player1.pos.y + 1, player1.pos.x, ACS_UARROW);
-            mvwaddch(game_wnd, player2.pos.y + 1, player2.pos.x, ACS_UARROW);
-            wattroff(game_wnd, COLOR_PAIR(tick % 2 ? 3 : 4));
+            wattron(game_wnd, A_ALTCHARSET);
+            mvwaddch(game_wnd, e->getPos().y, e->getPos().x - 1, ACS_LARROW);
+            mvwaddch(game_wnd, e->getPos().y, e->getPos().x + 1, ACS_RARROW);
+            wattroff(game_wnd, A_ALTCHARSET);
         }
 
-        wattroff(game_wnd, A_ALTCHARSET);
+
+        for( PlayerShip* p : map.getListPlayer()){
+            // draw player body
+            
+            wattron(game_wnd, A_BOLD);
+            mvwaddch(game_wnd, p->getPos().y, p->getPos().x, p->getChar());
+            wattroff(game_wnd, A_BOLD);
+
+
+            wattron(game_wnd, A_ALTCHARSET);
+            mvwaddch(game_wnd, p->getPos().y, p->getPos().x - 1, ACS_LARROW);
+            mvwaddch(game_wnd, p->getPos().y, p->getPos().x + 1, ACS_RARROW);
+            if(listPlayer.at(p->getPlayerNb())->getnLives() > 0){
+                if(p->getHp()<=0 && p->getIsAlive()){
+                    p->setisAlive(false);
+                    p->setKillTime(tick);
+                    listPlayer.at(p->getPlayerNb())->setnLives(listPlayer.at(p->getPlayerNb())->getnLives() - 1);
+                    
+                }
+                if(tick==p->getKillTime()+300 && !p->getIsAlive()){
+            
+                    p->setisAlive(true);
+                    p->setHp(100);
+        
+                }
+            }
+
+            if(listPlayer.at(p->getPlayerNb())->getnLives() > 0){
+
+                if(tick % 100 < 50 && p->getHp()<=0 && tick<p->getKillTime()+300) {
+                    wattron(game_wnd, A_BOLD);
+                    mvwaddch(game_wnd, p->getPos().y, p->getPos().x, ' ');
+                    wattroff(game_wnd, A_BOLD);
+
+                    wattron(game_wnd, A_ALTCHARSET);
+                    mvwaddch(game_wnd, p->getPos().y, p->getPos().x - 1, ' ');
+                    mvwaddch(game_wnd, p->getPos().y, p->getPos().x + 1, ' ');
+                }
+
+                // draw engines flames
+                if((tick % 10) / 3 && p->getHp()>0) {
+                    wattron(game_wnd, COLOR_PAIR(tick % 2 ? 3 : 4));
+                    mvwaddch(game_wnd, p->getPos().y + 1, p->getPos().x, ACS_UARROW);
+                    mvwaddch(game_wnd, p->getPos().y + 1, p->getPos().x, ACS_UARROW);
+                    wattroff(game_wnd, COLOR_PAIR(tick % 2 ? 3 : 4));
+                }
+            }
+
+
+            wattroff(game_wnd, A_ALTCHARSET);
+
+            if(listPlayer.at(p->getPlayerNb())->getnLives() < 1){
+                map.erase(p->getPlayerNb(), MapObject::playership);
+            }  
+        }
 
         // draw UI elements
         // energy bar player1
         wmove(main_wnd, 20, 1);
         whline(main_wnd, ' ', 25); // health bar is 25 chars long
         wmove(main_wnd, 20, 1);
-        drawEnergyBar(player1.energy);
+        drawEnergyBar(playership1->getHp());
 
         // energy bar player2
         wmove(main_wnd, 20, 54);
         whline(main_wnd, ' ', 25); // health bar is 25 chars long
         wmove(main_wnd, 20, 54);
-        drawEnergyBar(player2.energy);
+        drawEnergyBar(playership2->getHp());
 
         // draw static string to hold percentage
-        mvwprintw(main_wnd, 21, 1, " - P1 E N E R G Y      -");
-        mvwprintw(main_wnd, 21, 54, " - P2 E N E R G Y      -");
+        mvwprintw(main_wnd, 21, 1, "  - P1 HP     -");
+        mvwprintw(main_wnd, 21, 54, "  - P2 HP     -");
+        mvwprintw(main_wnd, 21, 17, "lives: %i",player1->getnLives());
+        mvwprintw(main_wnd, 21, 70, "lives: %i",player2->getnLives());
 
         // draw numeric percentage player 1
         wattron(main_wnd, A_BOLD);
-        if(player1.energy <= 25) {
+        if(playership1->getHp() <= 25) {
             wattron(main_wnd, COLOR_PAIR(4));
             if(tick % 100 < 50)
-                mvwprintw(main_wnd, 21, 19, "%i%%", player1.energy); 
+                mvwprintw(main_wnd, 21, 11, "%i%%", playership1->getHp()); 
             wattroff(main_wnd, COLOR_PAIR(4));
         } else
-            mvwprintw(main_wnd, 21, 19, "%i%%", player1.energy); 
+            mvwprintw(main_wnd, 21, 11, "%i%%", playership1->getHp()); 
         wattroff(main_wnd, A_BOLD);
 
-        // draw numeric percentage player 1
+        // draw numeric percentage player 2
         wattron(main_wnd, A_BOLD);
-        if(player2.energy <= 25) {
+        if(playership2->getHp() <= 25) {
             wattron(main_wnd, COLOR_PAIR(4));
             if(tick % 100 < 50)
-                mvwprintw(main_wnd, 21, 72, "%i%%", player2.energy); 
+                mvwprintw(main_wnd, 21, 64, "%i%%", playership2->getHp()); 
             wattroff(main_wnd, COLOR_PAIR(4));
         } else
-            mvwprintw(main_wnd, 21, 72, "%i%%", player2.energy); 
+            mvwprintw(main_wnd, 21, 64, "%i%%", playership2->getHp()); 
         wattroff(main_wnd, A_BOLD);
 
         //refresh all
