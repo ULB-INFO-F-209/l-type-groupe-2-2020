@@ -9,10 +9,12 @@ bool Server::_is_active = false;
  *  - lance 2 threads independant pour gerer connexion et reponse
  * 
  **/
-Server::Server():_pipe_running()/*,_db()*/{
+Server::Server():_pipe_running() ,_db(){
 
     std::cout << "LANCEMENT DU SERVEUR \n";
     if (!isServerActive()){ // pas actif
+
+        _db.dbLoad();
 
         createPipe(Constante::PIPE_DE_CONNEXION);
         createPipe(Constante::PIPE_DE_REPONSE);
@@ -219,19 +221,40 @@ void Server::sendPositionBoard(){
 }
 
 bool Server::signIn(char* val){
-    return false;
+    /*	Inscription:
+		Client : "Mb_pseudo_mdp" via pipe pid_t
+		Server : "true"/"false" via le pipe pid_t
+     */
+    // parse val ==> pseudo et pswd
+    char pseudo[20], pswd[20];
+    return _db.verifyLogin(pseudo, pswd);
 }
 
 bool Server::signUp(char* val){
-    return false;
+    // parse val ==> pseudo et pswd
+    bool res = false;
+    char pseudo[20], pswd[20];
+    std::ptrdiff_t found = _db.find();
+    if (found == -1){
+        createAccount(pseudo, pswd);
+        res = true;
+    }
+    return res;
 }
 
-bool Server::addFriend(char* val ){
-    return false;
+int Server::sendFriendRequest(char* val){
+    char pseudoSrc[20], pseudoDest[20];
+    return _db.friendRequest(pseudoSrc, pseudoDest);
 }
 
-bool Server::delFriend(char* val ){
-    return false;
+bool Server::addFriend(char* val){
+    char pseudo1[20], pseudo2[20];
+    return _db.addFriend(pseudo1, pseudo2);
+}
+
+bool Server::delFriend(char* val){
+    char pseudo1[20], pseudo2[20];
+    return _db.removeFriend(pseudo1, pseudo2);
 }
 
 void Server::checkleaderboard(char* ){

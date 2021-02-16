@@ -3,7 +3,7 @@
 
 #include <thread>
 #include <vector>
-//#include "database/Database.hpp" //gardons les dossiers
+#include "database/database.hpp" //gardons les dossiers
 //#include "database/interface/Client.hpp" //pour la clarté
 //#include "database/interface/Menu.hpp" //aprés on changera
 
@@ -28,7 +28,7 @@ class Server{
 private:
     static bool _is_active; 
     std::vector<const char *> _pipe_running;    
-    //Database _db; 
+    Database _db;
 
 public:
     Server();
@@ -44,6 +44,7 @@ private:
     void sendPositionBoard();
     bool signIn(char* );
     bool signUp(char* );
+    int sendFriendRequest(char* );
     bool addFriend(char* );
     bool delFriend(char* );
     void checkleaderboard(char* );

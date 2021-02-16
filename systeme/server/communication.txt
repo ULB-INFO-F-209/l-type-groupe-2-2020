@@ -15,10 +15,10 @@ __________________SYNTAXE DES REQUÊTES________________________________
 
 	addfriend:
 		Client : "Mc_PseudoMe_PseudoF" via pipe pid_t
-		Server: "2=erreur"/ "1=already" / "0=sent" 
+		Server: "0=sent"
 
 	delfriend:
-		Client : "Md_Pseudo" via pipe pid_t
+		Client : "Md_Pseudo" via pipe pid_t                     // plutot "Md_PseudoMe_PseudoF"
 		Server: "True"/ "False" 
 
 	CheckleaderBoard: 
@@ -29,7 +29,11 @@ __________________SYNTAXE DES REQUÊTES________________________________
 		Client : "Mf_pseudo" via pipe pid_t
 		Server: "tableau de mes amis avec pseudo | score" 
 
-	friendrequest:
+	sendFriendRequest:
+		Client : "Mc_PseudoMe_PseudoF" via pipe pid_t
+		Server: "2=erreur"/ "1=already" / "0=sent"
+
+	getFriendRequests:
 		Client : "Mg_Pseudo" via pipe pid_t
 		Server: "pseudo1_pseudo2_pseudo3_pseudo4..." 
 
