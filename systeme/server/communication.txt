@@ -65,7 +65,8 @@ ___________________SYNTAXE DES REQUÊTES____________________
 		server : "0" ou "1" => User doesn't exist || User exist
 
 	Cree une partie:
-		Client : "Pp&nb_player&pseudo_hote&other_pseudo&drop_rate&			ally_shot&nb_lives&pid"
+		Client : "Pp&nb_player&pseudo_hote&other_pseudo&drop_rate&
+		ally_shot&nb_lives&pid"
 		Server : "ID" 
 
 	Action: TODO
