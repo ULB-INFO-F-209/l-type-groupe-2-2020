@@ -124,7 +124,7 @@ void MapHandler::checkCollision() {
     for(PlayerShip* p : player_ships_set){
         for(size_t e = 0; e < enemy_ships_set.size(); e++){
             if(p->getBounds().contains(enemy_ships_set.at(e)->getBounds()) && p->getHp()>0){
-                p->touched(100);
+                p->touched(p->getHp());
                 enemy_ships_set.erase(enemy_ships_set.begin() + e);
             }
         }
@@ -132,11 +132,10 @@ void MapHandler::checkCollision() {
 
     // collision player/projectile
     for(PlayerShip* p : player_ships_set){
-        for(size_t i = 0; i < obstacles_set.size(); i++){
-            if(p->getBounds().contains(obstacles_set.at(i)->getPos()) && p->getHp()>0){
-                p->touched(obstacles_set.at(i)->get_damage());
-                obstacles_set.erase(obstacles_set.begin() + i);
-
+        for(size_t proj = 0; proj < projectiles_set.size(); proj++){
+            if(!projectiles_set.at(proj)->getShipType() && p->getBounds().contains(projectiles_set.at(proj)->getPos()) && p->getHp()>0){
+                p->touched(projectiles_set.at(proj)->getDamage());
+                projectiles_set.erase(projectiles_set.begin() + proj);
             }
         }
     }

@@ -67,6 +67,7 @@ public:
     void move() override;
     Projectile(int nx, int ny,int dam,bool ship_t) {pos.x = nx; pos.y = ny; damage=dam; shipType=ship_t;typ=projectile;}
     int getDamage(){return damage;}
+    bool getShipType(){return shipType;}
 };
 
 class Bonus: public MapObject{

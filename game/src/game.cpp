@@ -3,7 +3,6 @@
  *  thread pour jouer en même temps
  *  vaisseaux ennemis
  *  collisions:
- *      player:projectile
  *      projectile:projectile
  *      ennemy:projectile
  *  score
