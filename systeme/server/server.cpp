@@ -74,7 +74,6 @@ void Server::handleIncommingMessages(){
         
         
         close(fd);
-        
     }
     close(fd);
     
@@ -86,31 +85,43 @@ void Server::handleIncommingMessages(){
  * gere les messages client et envoie la reponse au bon client
  * 
  **/
-void Server::catchInput(char * input) {
+void Server::catchInput(char* input) {
 	//char input[Constante::CHAR_SIZE]; //input[0] = M pour menu et J pour jeu
 	bool res = false;
     std::cout << "The Input : " << input <<std::endl;
 	if (input[0] == Constante::ACTION_MENU_PRINCIPAL[0]) {
 		switch(input[1]) {
 			case Constante::ACTION_MENU_PRINCIPAL[1]:
-				res = signIn(input);    //Ma-Pseudo-MDP-PID
+				res = signIn(input);    //Ma_pseudo_mdp
 				break;					//a chaque connexion le server associe un pid a un pseudo
 			case Constante::ACTION_MENU_PRINCIPAL[2]:
-				res = signUp(input);    //Mb-Pseudo-MDP-PID
+				res = signUp(input);    //Mb_pseudo_mdp
 				break;
 			case Constante::ACTION_MENU_PRINCIPAL[3]:
-				res = addFriend(input); //Mc-Pseudo-PID
+				res = addFriend(input); //Mc_PseudoMe_PseudoF
 				break;
 			case Constante::ACTION_MENU_PRINCIPAL[4]:
-				res = delFriend(input); //Md-Pseudo-PID
+				res = delFriend(input); //Md_Pseudo
 				break;
 			case Constante::ACTION_MENU_PRINCIPAL[5]:
-				checkleaderboard(input);//Me-PID
+				checkleaderboard(input); //Me
 				//resClient(processId, ret) avec ret le retour de checkleaderboard
+				break;
+			case Constante::ACTION_MENU_PRINCIPAL[6]:
+				res = friendList(input); //Mf_Pseudo
+				break;
+			case Constante::ACTION_MENU_PRINCIPAL[7]:
+				res = getFriendRequest(input); //Mg_Pseudo
+				break;
+			case Constante::ACTION_MENU_PRINCIPAL[8]:
+				res = sendFriendRequest(input); //Mj_Pseudo
+				break;
+			case Constante::ACTION_MENU_PRINCIPAL[8]:
+				res = viewProfile(input); //Mh_Pseudo
 				break;
 		}
 
-		std::string processId(input); 
+		std::string processId(input);
     	int i = processId.rfind(Constante::DELIMITEUR);
     	processId = processId.substr(i+1,processId.length()); //pour recup le PID
     	//resClient(&processId, res);
@@ -221,45 +232,61 @@ void Server::sendPositionBoard(){
 }
 
 bool Server::signIn(char* val){
-    /*	Inscription:
-		Client : "Mb_pseudo_mdp" via pipe pid_t
-		Server : "true"/"false" via le pipe pid_t
-     */
-    // parse val ==> pseudo et pswd
     char pseudo[20], pswd[20];
+    parsing(val, pseudo, pswd); // need val to be val[100] 
     return _db.verifyLogin(pseudo, pswd);
 }
 
 bool Server::signUp(char* val){
-    // parse val ==> pseudo et pswd
-    bool res = false;
     char pseudo[20], pswd[20];
-    std::ptrdiff_t found = _db.find();
-    if (found == -1){
-        createAccount(pseudo, pswd);
-        res = true;
-    }
-    return res;
+    parsing(val, pseudo, pswd);
+    _db.createAccount(pseudo, pswd);
 }
 
 int Server::sendFriendRequest(char* val){
     char pseudoSrc[20], pseudoDest[20];
+    parsing(val, pseudoSrc, pseudoDest);
     return _db.friendRequest(pseudoSrc, pseudoDest);
 }
 
 bool Server::addFriend(char* val){
     char pseudo1[20], pseudo2[20];
+    parsing(val, pseudo, pseudo2);
     return _db.addFriend(pseudo1, pseudo2);
 }
 
 bool Server::delFriend(char* val){
-    char pseudo1[20], pseudo2[20];
+    char pseudo1[20], pseudo2[20]; 
+    parsing(val, pseudo, pseudo2);
     return _db.removeFriend(pseudo1, pseudo2);
 }
 
 void Server::checkleaderboard(char* ){
     return ;
 }
+/*
+bool friendList(char* val) {
+	char pseudo1[20], pseudo2[20];
+    parsing(val, pseudo1, pseud2);
+    return _db.sendFriendList();
+}
+
+bool getFriendRequest(char* val) {
+	char* pseudo1[20], pseudo2[20];
+	parsing(val, pseudo1, pseud2);
+    return _db.getFriendList();
+}
+bool sendFriendRequest(char* val) {
+	char* pseudo1[20], pseudo2[20];
+	parsing(val, pseudo1, pseud2);
+    return _db.sendFriendList();
+}
+bool viewProfile(char* val) {
+	char* player1[20], player2[20];
+	parsing(val, player1, player2);
+    return _db.getFriendList(player1, player2);
+}
+*/
 
 /**
  * Envoie la réponse au bon client si la réponse est un booléen

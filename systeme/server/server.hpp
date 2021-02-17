@@ -35,19 +35,26 @@ public:
     ~Server()=default;
 
 private:
-
+	//connections
     void initConnexions();
     void createPipe(const char*);
     void resClient(std::string*, bool);
+    //inputs
     void handleIncommingMessages();
     void catchInput(char *); // devrait se nommer handeInput(input)
     void sendPositionBoard();
+    //queries
     bool signIn(char* );
     bool signUp(char* );
-    int sendFriendRequest(char* );
     bool addFriend(char* );
     bool delFriend(char* );
     void checkleaderboard(char* );
+	bool friendList(char* );	
+	bool getFriendRequest(char* );
+    bool sendFriendRequest(char* );
+    bool viewProfile(char* );
+    bool logOut(char* );
+    
     bool static isServerActive() {return _is_active;}
     
 

@@ -21,7 +21,7 @@ namespace Constante{
     const int PIPE_MODE = 0666;
 
     //gestion des messages
-    constexpr char ACTION_MENU_PRINCIPAL[] = {"Mabcdefg"};
+    constexpr char ACTION_MENU_PRINCIPAL[] = {"Mabcdefgij"};
     constexpr char REPONSE_AMI = 'R';
     const char PAS_SECOND_JOUEUR[] = {"Null"};
     constexpr char ACTION_JEU[] = {"J"/* ajouter les touches possibles*/};

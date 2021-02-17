@@ -13,3 +13,4 @@ server.o: server.cpp server.hpp Constante.hpp
 
 clean:
 	rm *.o
+	rm pipefile*
