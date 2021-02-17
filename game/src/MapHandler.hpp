@@ -92,9 +92,11 @@ public:
 
 class EnemyShip : public Ship{
     double bonusDropProb;
+    int shootTime;
 public:
-    EnemyShip(int x, int y, rect b, char c,int h,int dam){pos.x = x; pos.y = y; setBounds(b); setHp(h); setChar(c); setDammage(dam);}
-
+    EnemyShip(int x, int y, rect b, char c,int h,int dam, int t){pos.x = x; pos.y = y; setBounds(b); setHp(h); setChar(c); setDammage(dam);shootTime=t;}
+    void setShootTime(int t){shootTime=t;}
+    int getShootTime(){return shootTime;}
 };
 
 class MapHandler{
@@ -112,9 +114,9 @@ public:
     void playerInit(PlayerShip* p1,PlayerShip* p2);
     void updatePlayerBounds();
     std::vector<PlayerShip*>  getListPlayer()const;
+    void enemyShoot(int tick);
 private:
-    
-    
+
     std::vector<Star*> stars_set;
     std::vector<Obstacle*> obstacles_set;
     std::vector<Projectile*> projectiles_set;

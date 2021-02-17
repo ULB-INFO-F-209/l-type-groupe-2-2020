@@ -2,6 +2,12 @@
  * TODO:
  *  thread pour jouer en même temps
  *  vaisseaux ennemis
+ *  collisions:
+ *      enemy:player
+ *      player:projectile
+ *      projectile:projectile
+ *      ennemy:projectile
+ *
  *  score
  *  faire des niveaux
  *  enlever static_cast !!
@@ -229,9 +235,7 @@ void run() {
         if (tick > 100 && tick %150 ==0)
             map.update(MapObject::enemyship, tick);
 
-
-
-
+        map.enemyShoot(tick);
 
         map.updatePlayerBounds();     // update player bounds
         map.checkCollision();
@@ -243,6 +247,7 @@ void run() {
         for(auto s : map.getStars()){   
             mvwaddch(game_wnd, s->getPos().y, s->getPos().x, '.');        
         }
+        // draw obstacle
         for(auto o : map.getObstacles()){
                 wattron(game_wnd, A_BOLD);
                 mvwaddch(game_wnd, o->getPos().y, o->getPos().x, '*');

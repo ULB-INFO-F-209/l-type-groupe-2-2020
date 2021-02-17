@@ -63,10 +63,10 @@ RM = /snap/clion/139/bin/cmake/linux/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/jean/l-type-groupe-2-2020/jeu
+CMAKE_SOURCE_DIR = /home/jean/l-type-groupe-2-2020/game
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/jean/l-type-groupe-2-2020/jeu/cmake-build-debug
+CMAKE_BINARY_DIR = /home/jean/l-type-groupe-2-2020/game/cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/jeu.dir/depend.make
@@ -79,55 +79,55 @@ include CMakeFiles/jeu.dir/flags.make
 
 CMakeFiles/jeu.dir/src/main.cpp.o: CMakeFiles/jeu.dir/flags.make
 CMakeFiles/jeu.dir/src/main.cpp.o: ../src/main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jean/l-type-groupe-2-2020/jeu/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/jeu.dir/src/main.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/jeu.dir/src/main.cpp.o -c /home/jean/l-type-groupe-2-2020/jeu/src/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jean/l-type-groupe-2-2020/game/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/jeu.dir/src/main.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/jeu.dir/src/main.cpp.o -c /home/jean/l-type-groupe-2-2020/game/src/main.cpp
 
 CMakeFiles/jeu.dir/src/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/jeu.dir/src/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jean/l-type-groupe-2-2020/jeu/src/main.cpp > CMakeFiles/jeu.dir/src/main.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jean/l-type-groupe-2-2020/game/src/main.cpp > CMakeFiles/jeu.dir/src/main.cpp.i
 
 CMakeFiles/jeu.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/jeu.dir/src/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jean/l-type-groupe-2-2020/jeu/src/main.cpp -o CMakeFiles/jeu.dir/src/main.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jean/l-type-groupe-2-2020/game/src/main.cpp -o CMakeFiles/jeu.dir/src/main.cpp.s
 
 CMakeFiles/jeu.dir/src/game.cpp.o: CMakeFiles/jeu.dir/flags.make
 CMakeFiles/jeu.dir/src/game.cpp.o: ../src/game.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jean/l-type-groupe-2-2020/jeu/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/jeu.dir/src/game.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/jeu.dir/src/game.cpp.o -c /home/jean/l-type-groupe-2-2020/jeu/src/game.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jean/l-type-groupe-2-2020/game/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/jeu.dir/src/game.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/jeu.dir/src/game.cpp.o -c /home/jean/l-type-groupe-2-2020/game/src/game.cpp
 
 CMakeFiles/jeu.dir/src/game.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/jeu.dir/src/game.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jean/l-type-groupe-2-2020/jeu/src/game.cpp > CMakeFiles/jeu.dir/src/game.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jean/l-type-groupe-2-2020/game/src/game.cpp > CMakeFiles/jeu.dir/src/game.cpp.i
 
 CMakeFiles/jeu.dir/src/game.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/jeu.dir/src/game.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jean/l-type-groupe-2-2020/jeu/src/game.cpp -o CMakeFiles/jeu.dir/src/game.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jean/l-type-groupe-2-2020/game/src/game.cpp -o CMakeFiles/jeu.dir/src/game.cpp.s
 
 CMakeFiles/jeu.dir/src/MapHandler.cpp.o: CMakeFiles/jeu.dir/flags.make
 CMakeFiles/jeu.dir/src/MapHandler.cpp.o: ../src/MapHandler.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jean/l-type-groupe-2-2020/jeu/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/jeu.dir/src/MapHandler.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/jeu.dir/src/MapHandler.cpp.o -c /home/jean/l-type-groupe-2-2020/jeu/src/MapHandler.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jean/l-type-groupe-2-2020/game/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/jeu.dir/src/MapHandler.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/jeu.dir/src/MapHandler.cpp.o -c /home/jean/l-type-groupe-2-2020/game/src/MapHandler.cpp
 
 CMakeFiles/jeu.dir/src/MapHandler.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/jeu.dir/src/MapHandler.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jean/l-type-groupe-2-2020/jeu/src/MapHandler.cpp > CMakeFiles/jeu.dir/src/MapHandler.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jean/l-type-groupe-2-2020/game/src/MapHandler.cpp > CMakeFiles/jeu.dir/src/MapHandler.cpp.i
 
 CMakeFiles/jeu.dir/src/MapHandler.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/jeu.dir/src/MapHandler.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jean/l-type-groupe-2-2020/jeu/src/MapHandler.cpp -o CMakeFiles/jeu.dir/src/MapHandler.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jean/l-type-groupe-2-2020/game/src/MapHandler.cpp -o CMakeFiles/jeu.dir/src/MapHandler.cpp.s
 
 CMakeFiles/jeu.dir/src/Player.cpp.o: CMakeFiles/jeu.dir/flags.make
 CMakeFiles/jeu.dir/src/Player.cpp.o: ../src/Player.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jean/l-type-groupe-2-2020/jeu/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/jeu.dir/src/Player.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/jeu.dir/src/Player.cpp.o -c /home/jean/l-type-groupe-2-2020/jeu/src/Player.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jean/l-type-groupe-2-2020/game/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/jeu.dir/src/Player.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/jeu.dir/src/Player.cpp.o -c /home/jean/l-type-groupe-2-2020/game/src/Player.cpp
 
 CMakeFiles/jeu.dir/src/Player.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/jeu.dir/src/Player.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jean/l-type-groupe-2-2020/jeu/src/Player.cpp > CMakeFiles/jeu.dir/src/Player.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jean/l-type-groupe-2-2020/game/src/Player.cpp > CMakeFiles/jeu.dir/src/Player.cpp.i
 
 CMakeFiles/jeu.dir/src/Player.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/jeu.dir/src/Player.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jean/l-type-groupe-2-2020/jeu/src/Player.cpp -o CMakeFiles/jeu.dir/src/Player.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jean/l-type-groupe-2-2020/game/src/Player.cpp -o CMakeFiles/jeu.dir/src/Player.cpp.s
 
 # Object files for target jeu
 jeu_OBJECTS = \
@@ -145,7 +145,7 @@ jeu: CMakeFiles/jeu.dir/src/MapHandler.cpp.o
 jeu: CMakeFiles/jeu.dir/src/Player.cpp.o
 jeu: CMakeFiles/jeu.dir/build.make
 jeu: CMakeFiles/jeu.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/jean/l-type-groupe-2-2020/jeu/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable jeu"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/jean/l-type-groupe-2-2020/game/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable jeu"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/jeu.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -158,6 +158,6 @@ CMakeFiles/jeu.dir/clean:
 .PHONY : CMakeFiles/jeu.dir/clean
 
 CMakeFiles/jeu.dir/depend:
-	cd /home/jean/l-type-groupe-2-2020/jeu/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/jean/l-type-groupe-2-2020/jeu /home/jean/l-type-groupe-2-2020/jeu /home/jean/l-type-groupe-2-2020/jeu/cmake-build-debug /home/jean/l-type-groupe-2-2020/jeu/cmake-build-debug /home/jean/l-type-groupe-2-2020/jeu/cmake-build-debug/CMakeFiles/jeu.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/jean/l-type-groupe-2-2020/game/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/jean/l-type-groupe-2-2020/game /home/jean/l-type-groupe-2-2020/game /home/jean/l-type-groupe-2-2020/game/cmake-build-debug /home/jean/l-type-groupe-2-2020/game/cmake-build-debug /home/jean/l-type-groupe-2-2020/game/cmake-build-debug/CMakeFiles/jeu.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/jeu.dir/depend
 
