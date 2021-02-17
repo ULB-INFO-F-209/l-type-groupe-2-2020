@@ -4,7 +4,7 @@
 #include "parsing.hpp"
 
 //encodage
-void Parsing::leader_board_to_str(char *buffer,std::vector<Profile*> prof){
+void Parsing::leaderboard_to_str(char *buffer,std::vector<Profile*> prof){
 	size_t size = prof.size();
 	for (size_t i = 0; i < size; ++i){
 		sprintf(buffer, "%s&%d|", prof[i]->pseudo, prof[i]->score);
@@ -18,7 +18,7 @@ void Parsing::pseudo_list_to_str(char *buffer, std::vector<char*> list){
 	}
 	// buffer -> "pseudo1&pseudo2&pseudo3&pseudo4..." 
 }
-void Parsing::profil_to_str(char *buffer, Profile *prof){
+void Parsing::profile_to_str(char *buffer, Profile *prof){
 	sprintf(buffer, "%s&%d", prof->pseudo, prof->score);
 	//buffer -> "pseudo&score" 
 }

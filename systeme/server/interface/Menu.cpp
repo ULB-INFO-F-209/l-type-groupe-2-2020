@@ -34,7 +34,6 @@ int Menu::home(){ //a decouper en fonction
 				}
 				else{sprintf(error, "Syntaxe error!");}
 			}
-			_client->set_pseudo(pseudo);
 			res = MAIN; //connexion successed
 			break; 
 		case 2: //sign up

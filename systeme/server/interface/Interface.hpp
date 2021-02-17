@@ -38,11 +38,11 @@ public:
 	}
 
 	bool get_connexion(char *pseudo, char *pswd, char *error);
-	void print_friends(std::vector<char*> vect);
+	void print_friends(std::vector<char*> vect); //maybe mieux avec profile
 	void print_leaderboard(std::vector<Profile*> vect);
 	void print_profile(Profile *prof);
 	int print_invitation(char *pseudo);
-	int get_pseudo(char *res, char *error); //recupere le pseudo de l amis a supp ou à ajouter
+	int get_pseudo(char *res, char *error); //for sendrequest/add/del
 	void print_alert(char *alert);
 	
 
