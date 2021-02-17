@@ -12,6 +12,7 @@ void Menu::start_session(){
 		else if(menu==FRIENDS){
 			menu = friends();
 		}
+	//simply quit
 	}
 }
 
@@ -70,13 +71,13 @@ int  Menu::friends(){ //decouper en fonction
 	switch(choice){
 		case 1: //Friend list
 			_client->getFriendList(buffer);
-			parse.pseudo_list_from_str(buffer, vect);
+			pseudo_list_from_str(buffer, vect);
 			window.print_friends(vect);
 			res = FRIENDS; //return to friends menu 
 			break;
 		case 2: //Friend request
 			_client->getFriendRequest(buffer);
-			parse.pseudo_list_from_str(buffer, vect);
+			pseudo_list_from_str(buffer, vect);
 			size = vect.size();
 			for (size_t i = 0; i < size; ++i){
 				accepted = window.print_invitation(vect[i]);
@@ -168,13 +169,13 @@ int  Menu::main_m(){
 			break; 
 		case 3: //leaderboard
 			_client->checkLeaderboard(buffer);
-			parse.leaderboard_from_str(buffer, prof);
+			leaderboard_from_str(buffer, prof);
 			window.print_leaderboard(prof);
 			res = MAIN;
 			break;
 		case 4:  //profils
 			_client->get_profile(buffer);
-			parse.profile_from_str(buffer, &profile);
+			profile_from_str(buffer, &profile);
 			window.print_profile(&profile);
 			res = MAIN;
 			break;

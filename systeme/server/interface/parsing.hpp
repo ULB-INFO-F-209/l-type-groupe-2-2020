@@ -1,7 +1,5 @@
 /*
-	Une sorte d'interface à la java
-	ne represente pas un objet 
-	mais un ensemble d'opération d'encodage et de decodage!
+	ensemble d'opération d'encodage et de decodage!
 */
 
 #ifndef PARSING_HPP

@@ -22,10 +22,14 @@
 #include "Interface.hpp"
 #include "parsing.hpp"
 
-
+using namespace Parsing; //utilities
 
 class Menu{
+
+	//who
 	Client *_client;
+
+	//all menu
 	static const int HOME = 0;
 	static const int MAIN  = 1;
 	static const int FRIENDS = 2; 
@@ -38,9 +42,6 @@ class Menu{
 								   "Profile", "Log out"};
 	//console
 	Interface window{};
-
-	//parsing function
-	Parsing parse{};
 public:
 	Menu(Client *client):_client(client){}
 
@@ -58,8 +59,6 @@ private:
 	bool verify_pswd_format(char*pswd);
 
 };
-
-
 
 
 #endif //MENU_HPP
