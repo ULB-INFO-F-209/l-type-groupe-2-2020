@@ -60,10 +60,9 @@ ___________________SYNTAXE DES REQUÊTES____________________
 	GAME
 ---------------
 
-	CheckID:  //Comme connexion (je te jure!!!!!!!!)
+	CheckID:
 		Client : "Pf&pseudo&pswd&pid"
 		server : "0" ou "1" => User doesn't exist || User exist
-		//verifier s il joue deja ==>refus
 
 	Cree une partie:
 		Client : "Pp&nb_player&pseudo_hote&other_pseudo&drop_rate&			ally_shot&nb_lives&pid"

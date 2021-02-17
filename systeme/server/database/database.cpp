@@ -81,7 +81,7 @@ int Database::friendRequest(char pseudoSrc[20], char pseudoDest[20]){
     if (idxSrc != -1 && idxDest != -1){
         res = _data[idxDest].addRequest(pseudoSrc);     // res=0 if request is sent, res=1 if already friends,
     }                                                   // res=3 if already requested
-    if (idxSrc == -1){std::cout << idxSrc << " does not exist" << std::endl; res = 2;} // res=2 if pseudo doesn't exist
+    if (idxSrc == -1){std::cout << idxSrc << " does not exist" << std::endl; res = 2;}  // res=2 if pseudo doesn't exist
     if (idxDest == -1){std::cout << idxDest << " does not exist" << std::endl; res = 2;}
     return res;
 }
@@ -92,6 +92,7 @@ bool Database::addFriend(char pseudo1[20], char pseudo2[20]){
     bool res = false;
     if (idx1 != -1 && idx2 != -1){
         _data[idx1].addFriend(pseudo2);
+        _data[idx1].removeRequest(pseudo2);             // supprimer la requete de la liste
         _data[idx2].addFriend(pseudo1);
         res = true;
     }
