@@ -11,7 +11,7 @@ typedef struct {
 
 
 // simple integer rectangle type
-typedef struct {
+struct rect {
     vec2i offset;
     vec2i bounds;
 
@@ -25,7 +25,19 @@ typedef struct {
 
     bool contains(vec2i a) { return (a.x >= offset.x && a.x < right()) &&
                                     (a.y >= offset.y && a.y < bot()); }
-} rect;
+    bool contains(rect r){
+        for (uint_fast16_t i = left(); i < right(); ++i) {
+            for (uint_fast16_t j = top(); j < bot(); ++j) {
+                vec2i test;
+                test.x=i;
+                test.y=j;
+                if (r.contains(test))
+                    return true;
+            }
+        }
+        return false;
+    }
+};
 
 
 struct enemy{

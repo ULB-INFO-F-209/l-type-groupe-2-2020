@@ -119,6 +119,28 @@ void MapHandler::checkCollision() {
         if (obstacles_set.at(obs)->getHp() <= 0)
             obstacles_set.erase(obstacles_set.begin() + obs);
     }
+
+    // collision enemy/player
+    for(PlayerShip* p : player_ships_set){
+        for(size_t e = 0; e < enemy_ships_set.size(); e++){
+            if(p->getBounds().contains(enemy_ships_set.at(e)->getBounds()) && p->getHp()>0){
+                p->touched(100);
+                enemy_ships_set.erase(enemy_ships_set.begin() + e);
+            }
+        }
+    }
+
+    // collision player/projectile
+    for(PlayerShip* p : player_ships_set){
+        for(size_t i = 0; i < obstacles_set.size(); i++){
+            if(p->getBounds().contains(obstacles_set.at(i)->getPos()) && p->getHp()>0){
+                p->touched(obstacles_set.at(i)->get_damage());
+                obstacles_set.erase(obstacles_set.begin() + i);
+
+            }
+        }
+    }
+
 }
 
 void MapHandler::playerInit(PlayerShip* p1,PlayerShip* p2) {
@@ -132,7 +154,9 @@ void MapHandler::playerInit(PlayerShip* p1,PlayerShip* p2) {
 void MapHandler::updatePlayerBounds() {
     for( PlayerShip* p : player_ships_set){
         p->setBounds({ { p->getPos().x -1, p->getPos().y}, {3, 2}});
-
+    }
+    for(EnemyShip* e: enemy_ships_set){
+        e->setBounds({{e->getPos().x-1,e->getPos().y},{3,1}});
     }
 
 }

@@ -3,12 +3,11 @@
  *  thread pour jouer en même temps
  *  vaisseaux ennemis
  *  collisions:
- *      enemy:player
  *      player:projectile
  *      projectile:projectile
  *      ennemy:projectile
- *
  *  score
+ *  si vaisseau alié perd une vie tous les ennemis down
  *  faire des niveaux
  *  enlever static_cast !!
  *  transformer game.cpp en classe

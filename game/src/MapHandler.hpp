@@ -56,6 +56,7 @@ public:
     void setBounds(rect b){bounds = b;}
     rect getBounds(){return bounds;}
     void setDammage(int dam){damage=dam;}
+    int getDammage(){return damage;}
 
 };
 
