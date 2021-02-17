@@ -9,6 +9,12 @@
 #include <stdio.h>
 #include "account.hpp"
 
+struct Profile
+{
+	char pseudo[20];
+	int score;	
+};
+
 class Database{
     const std::string _path = "accounts.bin";
     std::vector<Account> _data{};
@@ -42,8 +48,6 @@ public:
 
 	// Destructor
 	~Database();
-
-	
 };
 
 #endif
