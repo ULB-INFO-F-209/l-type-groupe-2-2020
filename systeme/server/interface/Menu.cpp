@@ -16,43 +16,16 @@ void Menu::start_session(){
 	}
 }
 
-int Menu::home(){ //a decouper en fonction
+//MENU
+int Menu::home(){
 	int choice = window.print_menu(3, connexion_menu);
-	char pseudo[20], pswd[20], error[64]; bool success = false; 
-	bool quit = 0; int res; 
+	int res; 
 	switch(choice){
 		case 1: //sign in
-			while(not success){
-				quit = window.get_connexion(pseudo, pswd, error);
-				success = (verify_pseudo_format(pseudo)  and  verify_pswd_format(pswd)); //verify syntax
-				if(quit){
-					res = HOME; //return home
-					success = true; //stop loop
-				 }
-				else if(success){
-					success = _client->signIn(pseudo, pswd); //if user exist!
-					if(not success){sprintf(error, "User doesn't exist!");}
-				}
-				else{sprintf(error, "Syntaxe error!");}
-			}
-			res = MAIN; //connexion successed
+			res = connexion(true);
 			break; 
 		case 2: //sign up
-			while(not success){
-				quit = window.get_connexion(pseudo, pswd, error);
-				success = (verify_pseudo_format(pseudo)  and  verify_pswd_format(pswd)); //verify syntax
-				if(quit){
-					res = HOME; //return home
-					success = true; //stop loop
-				}
-				else if(success){
-					success = _client->signUp(pseudo, pswd); //if user exist!
-					if(not success){sprintf(error, "Pseudo already taked!");}
-				}
-				else{sprintf(error, "Syntaxe error!");}
-			}
-			res = MAIN; //connexion successeed
-			_client->set_pseudo(pseudo); //peut être laisser le client le faire dans sign up
+			res = connexion(false);
 			break;
 		default: //quit programme
 			res = -1;
@@ -65,85 +38,22 @@ int Menu::home(){ //a decouper en fonction
 
 int  Menu::friends(){ //decouper en fonction
 	int choice = window.print_menu(5, friends_menu);
-	char buffer[100]; char msg[164];
-	std::vector<char*> vect; size_t size;
-	int accepted=0; int res; char error[64];
+	int res;
 	switch(choice){
 		case 1: //Friend list
-			_client->getFriendList(buffer);
-			pseudo_list_from_str(buffer, vect);
-			window.print_friends(vect);
+			afficher_friends();
 			res = FRIENDS; //return to friends menu 
 			break;
 		case 2: //Friend request
-			_client->getFriendRequest(buffer);
-			pseudo_list_from_str(buffer, vect);
-			size = vect.size();
-			for (size_t i = 0; i < size; ++i){
-				accepted = window.print_invitation(vect[i]);
-				if(accepted ==1){
-					_client->addFriend(vect[i]);
-				} //le server doit supprimer les demande d'amis tout ceux ajouté ou refusé
-				else if(not accepted){
-					//prevenir le serveur;
-				}
-				else if(accepted == -1){ //quit
-					break;
-				}//quit 
-				//else : pass next elem
-			}
+			request_management();
 			res = FRIENDS; //return to friend menu
 			break;
 		case 3: //add friend
-			while(not accepted){ //recycle variable accepted
-				accepted = window.get_pseudo(buffer, error); 
-				if(accepted){
-					accepted = verify_pseudo_format(buffer);
-					if(accepted){ //client enter a pseudo
-						accepted = _client->addFriend(buffer);
-						if(accepted==0){ //sent
-							sprintf(msg, "Your invitation had been sent to %s ",buffer);
-							accepted = 1;//stop loop
-						}
-						else if(accepted==1){ //already Friends
-							sprintf(msg, "%s and you are already friends. check your friendlist", buffer);
-						}
-						else if(accepted==2){ //user doesn't exist
-							sprintf(msg, "%s doesn't exist. Check your syntaxe", buffer);
-							accepted = 0;//loop
-						}
-						window.print_alert(msg);
-					}
-				}
-				else{ //quit
-					accepted = 1; //stop loop
-				}
-			}
+			add_del_friends(true);
 			res = FRIENDS;
 			break;
 		case 4: //remove friend
-			while(not accepted){ //recycle variable accepted
-				accepted = window.get_pseudo(buffer, error); 
-				if(accepted){
-					accepted = verify_pseudo_format(buffer);
-					if(accepted){ //client enter a pseudo
-						accepted = _client->delFriend(buffer);
-						if(accepted==0){ //deleted
-							sprintf(msg, "You and %s are no more friends.",buffer);
-							accepted = 1;//stop loop
-						}
-						else if(accepted==1){ //already not friends
-							sprintf(msg, "%s and you are notfriends.", buffer);
-						}
-						else if(accepted==2){ //user doesn't exist
-							sprintf(msg, "%s doesn't exist. Check your syntaxe", buffer);
-							accepted = 0;//loop
-						}
-						window.print_alert(msg);
-					}
-				}
-				else{accepted = 1;} //stop loop ==> quit
-			}
+			add_del_friends(false);
 			res = FRIENDS;
 			break;
 		default: //back to main menu
@@ -156,9 +66,9 @@ int  Menu::friends(){ //decouper en fonction
 
 int  Menu::main_m(){
 	int res; char buffer[100];
-	std::vector<Profile*> prof;
-	int choice = window.print_menu(5, friends_menu);
+	std::vector<Profile*> profile_list;
 	Profile profile;
+	int choice = window.print_menu(5, friends_menu);
 	switch(choice){
 		case 1: //new game
 			//later
@@ -169,8 +79,8 @@ int  Menu::main_m(){
 			break; 
 		case 3: //leaderboard
 			_client->checkLeaderboard(buffer);
-			leaderboard_from_str(buffer, prof);
-			window.print_leaderboard(prof);
+			profile_list_from_str(buffer, profile_list);
+			window.print_profile(profile_list);
 			res = MAIN;
 			break;
 		case 4:  //profils
@@ -186,4 +96,103 @@ int  Menu::main_m(){
 	}
 
 	return res;
+}
+
+//home utilities
+int Menu::connexion(bool sign_in){
+	bool success = false, quit = false; 
+	char pseudo[20], pswd[20], error[64];
+	int res = MAIN; //connexion successed
+	while(not success and not quit){
+		quit = window.get_connexion(pseudo, pswd, error);
+		success = verify_pseudo_format(pseudo) and verify_pswd_format(pswd); //verify syntax
+		if(quit){
+			res = HOME; //return home
+		}
+		else if(success and sign_in){ //sign in
+			success = _client->signIn(pseudo, pswd); //if user exist!
+			if(not success){sprintf(error, "User doesn't exist!");}
+		}
+		else if(success and not sign_in){ //sign up
+			success = _client->signUp(pseudo, pswd); //if user exist!
+			if(not success){sprintf(error, "Pseudo already taked!");}
+		}
+		else{sprintf(error, "Syntaxe error!");}
+	}		
+
+	return res;
+}
+
+//Friends utilities
+void Menu::afficher_friends(){
+	char buffer[100];
+	std::vector<Profile*> vect;
+	_client->getFriendList(buffer);
+	profile_list_from_str(buffer, vect); //parsing
+	window.print_profile(vect);
+}
+
+void Menu::request_management(){
+	int accepted; char buffer[100]; 
+	size_t i = 0;
+	std::vector<Profile*> vect;
+	_client->getFriendRequest(buffer);
+	profile_list_from_str(buffer, vect);
+	size_t size = vect.size();
+	while(i < size and accepted != -1){
+		accepted = window.print_invitation(vect[i]); // -1 = quit
+		if(accepted ==1){
+			_client->addFriend(vect[i]->pseudo);
+		} 
+		else if(not accepted){
+			_client->delFriendRequest(vect[i]->pseudo);
+		}
+	}
+}
+
+void Menu::add_del_friends(bool add){
+	char msg[164], buffer[100]; int success=0;
+	while(not success){ 
+		success = window.get_pseudo(buffer, msg); 
+		if(success){
+			success = verify_pseudo_format(buffer);
+			if(success and add){ //client enter a pseudo
+				success = _client->sendFriendRequest(buffer);
+				get_msg(buffer, msg, success,true);
+			}
+			else if(success and not add){
+				success = _client->delFriend(buffer);
+				get_msg(buffer, msg, success,false);
+			}
+			window.print_alert(msg);
+		}
+		else{ //quit
+			break;
+		}
+	}
+}
+
+void Menu::get_msg(char * pseudo, char *res, int msg, bool invitation){
+	if(invitation){
+		if(msg==0){ //sent
+			sprintf(res, "Your invitation had been sent to %s ",pseudo);
+		}
+		else if(msg==1){ //already Friends
+			sprintf(res, "%s and you are already friends. check your friendlist", pseudo);
+		}
+		else if(msg==2){ //user doesn't exist
+			sprintf(res, "%s doesn't exist. Check your syntaxe", pseudo);
+		}
+	}
+	else{ //remove friends
+		if(msg==0){ //sent
+			sprintf(res,  "You and %s are no more friends.",pseudo);
+		}
+		else if(msg==1){ //already Friends
+			sprintf(res, "%s and you are not friends.", pseudo);
+		}
+		else if(msg==2){ //user doesn't exist
+			sprintf(res, "%s doesn't exist. Check your syntaxe", pseudo);
+		}
+	}
 }

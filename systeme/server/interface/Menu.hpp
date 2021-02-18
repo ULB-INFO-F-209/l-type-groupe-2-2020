@@ -55,8 +55,18 @@ public:
 	~Menu()=default;
 
 private:
+	//format
 	bool verify_pseudo_format(char *pseudo);
 	bool verify_pswd_format(char*pswd);
+
+	//Home utilities
+	int connexion(bool sign_in=true);
+
+	//Friends utilities
+	void afficher_friends();
+	void request_management();
+	void add_del_friends(bool add=true);
+	void get_msg(char * pseudo, char *res,int msg, bool invitation);
 
 };
 

@@ -7,6 +7,7 @@
 #include <ncurses.h>
 #include "parsing.hpp"
 
+using namespace Parsing;
 
 
 class Interface final
@@ -38,12 +39,11 @@ public:
 	}
 
 	bool get_connexion(char *pseudo, char *pswd, char *error);
-	void print_friends(std::vector<char*> vect); //maybe mieux avec profile
-	void print_leaderboard(std::vector<Profile*> vect);
+	void print_profile(std::vector<Profile*> vect); //n oublie pas le titre
 	void print_profile(Profile *prof);
-	int print_invitation(char *pseudo);
+	int print_invitation(Profile *pseudo);
 	int get_pseudo(char *res, char *error); //for sendrequest/add/del
-	void print_alert(char *alert);
+	void print_alert(char *alert); //signaux
 	
 
 	~Interface(){

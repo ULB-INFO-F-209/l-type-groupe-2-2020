@@ -14,20 +14,17 @@ namespace Parsing{
 	struct Game_settings;
 
 	//encodage
-	void leaderboard_to_str(char *buffer,std::vector<Profile*> prof);
-	void pseudo_list_to_str(char *buffer, std::vector<char*> list); //same for friend request
+	void profile_list_to_str(char *buffer,std::vector<Profile*> prof);
 	void profile_to_str(char *buffer, Profile *prof);
 	void create_game_to_str(char *buffer, Game_settings * settings);
 
 	//decodage
-	void leaderboard_from_str(char *buffer,std::vector<Profile*> prof);
-	void pseudo_list_from_str(char *buffer, std::vector<char*> list);
+	void profile_list_from_str(char *buffer,std::vector<Profile*> prof);
 	void profile_from_str(char *buffer, Profile *prof);
 	void create_game_from_str(char *buffer, Game_settings * settings);
 }
 
 //Les structures
-
 struct Parsing::Profile
 {
 	char pseudo[20];

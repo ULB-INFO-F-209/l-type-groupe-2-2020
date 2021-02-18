@@ -4,19 +4,12 @@
 #include "parsing.hpp"
 
 //encodage
-void Parsing::leaderboard_to_str(char *buffer,std::vector<Profile*> prof){
-	size_t size = prof.size();
-	for (size_t i = 0; i < size; ++i){
-		sprintf(buffer, "%s&%d|", prof[i]->pseudo, prof[i]->score);
-	}
-	//buffer -> pseudo1&score|pseudo2&score|pseudo3&score|
-}
-void Parsing::pseudo_list_to_str(char *buffer, std::vector<char*> list){
+void Parsing::profile_list_to_str(char *buffer, std::vector<Profile*> list){
 	size_t size = list.size();
 	for (size_t i = 0; i < size; ++i){
-		sprintf(buffer, "%s&", list[i]);
+		sprintf(buffer, "%s|%d&", list[i]->pseudo,list[i]->score);
 	}
-	// buffer -> "pseudo1&pseudo2&pseudo3&pseudo4..." 
+	// buffer -> "pseudo1|score&pseudo2|score&pseudo3|score..." 
 }
 void Parsing::profile_to_str(char *buffer, Profile *prof){
 	sprintf(buffer, "%s&%d", prof->pseudo, prof->score);
@@ -33,7 +26,7 @@ void Parsing::create_game_to_str(char *buffer, Game_settings * settings){
 }
 
 //decodage
-void Parsing::leaderboard_from_str(char *buffer,std::vector<Profile*> prof){
+void Parsing::profile_list_from_str(char *buffer,std::vector<Profile*> prof){
 	std::string cpp_str_buffer(buffer);
 	const char delimiteur_score = '&';
 	const char delimiteur_nom = '|';
@@ -51,17 +44,7 @@ void Parsing::leaderboard_from_str(char *buffer,std::vector<Profile*> prof){
 	}
 
 }
-void Parsing::pseudo_list_from_str(char *buffer, std::vector<char*> list){
-	// buffer -> "pseudo1&pseudo2&pseudo3&pseudo4..."
-	std::string cpp_str_buffer(buffer);
-	const char delimiteur_nom = '&';
-	while(std::size_t index = cpp_str_buffer.find(delimiteur_nom) != cpp_str_buffer.npos){
-		std::string name = cpp_str_buffer.substr(0,index);
-		cpp_str_buffer = cpp_str_buffer.substr(index,cpp_str_buffer.size());
-		list.push_back(name);
-	}
-	
-}
+
 void Parsing::profile_from_str(char *buffer, Profile *prof){
 	//
 

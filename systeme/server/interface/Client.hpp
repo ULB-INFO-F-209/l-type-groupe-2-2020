@@ -53,6 +53,7 @@ public:
     int delFriend(char *pseudo);
     int sendFriendRequest(char *pseudo);
     void getFriendRequest(char *res);
+    bool delFriendRequest(char *pseudo); //!!new!!
     void getFriendList(char *res);
     void checkLeaderboard(char * res);
     void get_profile(char *res);
