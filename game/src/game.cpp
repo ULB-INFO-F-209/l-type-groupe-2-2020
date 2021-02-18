@@ -1,10 +1,6 @@
 /**
  * TODO:
  *  thread pour jouer en même temps
- *  vaisseaux ennemis
- *  collisions:
- *      projectile:projectile
- *      ennemy:projectile
  *  score
  *  si vaisseau alié perd une vie tous les ennemis down
  *  faire des niveaux
@@ -97,10 +93,11 @@ int init() {
 void run() {
 
     int tick;
-    PlayerShip* playership1 = new PlayerShip(10, 5, { {10 - 1, 5 }, { 3, 2 } }, '0',100, 0,10);
-    PlayerShip* playership2 = new PlayerShip(50, 5, { { 50 - 1, 5 }, { 3, 2 } }, '1',100, 1,10);
-    Player* player1 = new Player(3, 0);
-    Player* player2 = new Player(3, 0);
+    int finalScore1, finalScore2;
+    PlayerShip* playership1 = new PlayerShip(10, 5, { {10 - 1, 5 }, { 3, 2 } }, '0',100, 0,100,0);
+    PlayerShip* playership2 = new PlayerShip(50, 5, { { 50 - 1, 5 }, { 3, 2 } }, '1',100, 1,100,0);
+    Player* player1 = new Player(3);
+    Player* player2 = new Player(3);
     std::vector<Player*> listPlayer;
     listPlayer.push_back(player1);
     listPlayer.push_back(player2);
@@ -180,7 +177,7 @@ void run() {
                 break;
             case ' ':
                 if(playership1->getHp()>0)
-                    map.spawnProjectile(playership1->getPos().x, playership1->getPos().y -1, 10, true);
+                    map.spawnProjectile(playership1->getPos().x, playership1->getPos().y -1, 10, true, 10, 1);
                 break;
 //player2
             case 'f':
@@ -217,7 +214,7 @@ void run() {
                 break;
             case 'm':
                 if(playership2->getHp()>0)
-                    map.spawnProjectile(playership2->getPos().x, playership2->getPos().y -1, 10, true);
+                    map.spawnProjectile(playership2->getPos().x, playership2->getPos().y -1, 10, true, 10, 2);
                 break;
             default:
                 break;
@@ -320,9 +317,17 @@ void run() {
 
             wattroff(game_wnd, A_ALTCHARSET);
 
+             
+        }
+        
+        
+        for( PlayerShip* p : map.getListPlayer()){
+            //final score save
+            if(p->getPlayerNb() == 0)finalScore1 = p->getScore();
+            if(p->getPlayerNb() == 1)finalScore2 = p->getScore();
             if(listPlayer.at(p->getPlayerNb())->getnLives() < 1){
                 map.erase(p->getPlayerNb(), MapObject::playership);
-            }  
+            } 
         }
 
         // draw UI elements
@@ -338,21 +343,25 @@ void run() {
         wmove(main_wnd, 20, 54);
         drawEnergyBar(playership2->getHp());
 
+        //score
+        mvwprintw(main_wnd, 22, 1, "  score: %i", finalScore1);
+        mvwprintw(main_wnd, 22, 54, "  score: %i", finalScore2);
+
         // draw static string to hold percentage
-        mvwprintw(main_wnd, 21, 1, "  - P1 HP     -");
-        mvwprintw(main_wnd, 21, 54, "  - P2 HP     -");
-        mvwprintw(main_wnd, 21, 17, "lives: %i",player1->getnLives());
-        mvwprintw(main_wnd, 21, 70, "lives: %i",player2->getnLives());
+        mvwprintw(main_wnd, 21, 1, "- P1 HP                -");
+        mvwprintw(main_wnd, 21, 54, "- P2 HP                -");
+        mvwprintw(main_wnd, 21, 15, "lives: %i",player1->getnLives());
+        mvwprintw(main_wnd, 21, 68, "lives: %i",player2->getnLives());
 
         // draw numeric percentage player 1
         wattron(main_wnd, A_BOLD);
         if(playership1->getHp() <= 25) {
             wattron(main_wnd, COLOR_PAIR(4));
             if(tick % 100 < 50)
-                mvwprintw(main_wnd, 21, 11, "%i%%", playership1->getHp()); 
+                mvwprintw(main_wnd, 21, 9, "%i%%", playership1->getHp()); 
             wattroff(main_wnd, COLOR_PAIR(4));
         } else
-            mvwprintw(main_wnd, 21, 11, "%i%%", playership1->getHp()); 
+            mvwprintw(main_wnd, 21, 9, "%i%%", playership1->getHp()); 
         wattroff(main_wnd, A_BOLD);
 
         // draw numeric percentage player 2
@@ -360,10 +369,10 @@ void run() {
         if(playership2->getHp() <= 25) {
             wattron(main_wnd, COLOR_PAIR(4));
             if(tick % 100 < 50)
-                mvwprintw(main_wnd, 21, 64, "%i%%", playership2->getHp()); 
+                mvwprintw(main_wnd, 21, 62, "%i%%", playership2->getHp()); 
             wattroff(main_wnd, COLOR_PAIR(4));
         } else
-            mvwprintw(main_wnd, 21, 64, "%i%%", playership2->getHp()); 
+            mvwprintw(main_wnd, 21, 62, "%i%%", playership2->getHp()); 
         wattroff(main_wnd, A_BOLD);
 
         //refresh all

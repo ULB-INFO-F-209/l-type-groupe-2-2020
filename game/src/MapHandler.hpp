@@ -63,11 +63,13 @@ public:
 class Projectile: public MapObject{
     int damage;
     bool shipType;
+    int player;   // 0 = enemy; 1 = player1; 2 = player2
 public:
     void move() override;
-    Projectile(int nx, int ny,int dam,bool ship_t) {pos.x = nx; pos.y = ny; damage=dam; shipType=ship_t;typ=projectile;}
+    Projectile(int nx, int ny,int dam,bool ship_t, int h, int p) {pos.x = nx; pos.y = ny; damage=dam; shipType=ship_t;typ=projectile; hp = h; player = p;}
     int getDamage(){return damage;}
     bool getShipType(){return shipType;}
+    int getPlayer(){return player;}
 };
 
 class Bonus: public MapObject{
@@ -80,15 +82,17 @@ class PlayerShip : public Ship{
     int killTime;
     bool isAlive;
     int playerNb;
-
+    int score;
 
 public:
-    PlayerShip(int x, int y, rect b, char c, int h, int nb, int dam){pos.x = x; pos.y = y; setBounds(b); setHp(h); setChar(c);isAlive=true; playerNb = nb; setDammage(dam);}
+    PlayerShip(int x, int y, rect b, char c, int h, int nb, int dam, int s){pos.x = x; pos.y = y; setBounds(b); setHp(h); setChar(c);isAlive=true; playerNb = nb; setDammage(dam); score = s;}
     int getKillTime(){return killTime;}
     bool getIsAlive(){return isAlive;}
     void setKillTime(int t){killTime=t;}
     void setisAlive(bool b){isAlive=b;}
     int getPlayerNb(){return playerNb;}
+    int getScore(){return score;}
+    void setScore(int s){score = s;}
     
 };
 
@@ -110,7 +114,7 @@ public:
     std::vector<Projectile*> getProjectiles() const;
     std::vector<EnemyShip*> getEnemy() const;
     void setBounds(rect);
-    void spawnProjectile(int, int, int, bool );
+    void spawnProjectile(int, int, int, bool, int, int);
     void checkCollision();
     rect field_bounds;
     void playerInit(PlayerShip* p1,PlayerShip* p2);
