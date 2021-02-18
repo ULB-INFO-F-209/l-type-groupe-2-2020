@@ -71,14 +71,9 @@ void Server::handleIncommingMessages(){
             std::thread t1(&Server::catchInput,this,message); // thread de reponse 
             t1.detach();
         }
-        
-        
         close(fd);
     }
     close(fd);
-    
-    
-
 }
 
 /**
@@ -125,12 +120,9 @@ void Server::catchInput(char* input) {
     	int i = processId.rfind(Constante::DELIMITEUR);
     	processId = processId.substr(i+1,processId.length()); //pour recup le PID
     	//resClient(&processId, res);
-	}
-	
-	else if (input[0] == Constante::ACTION_JEU[0]){
+	} else if (input[0] == Constante::ACTION_JEU[0]){
 		//similaire a M mais on a besoin de connaitre les input du jeu
-	}
-	else {
+	} else {
 		std::cerr << "[ERROR IN INPUT]" << std::endl;
 		exit(1);
 	}
@@ -261,30 +253,26 @@ bool Server::delFriend(char* val){
     return _db.removeFriend(pseudo1, pseudo2);
 }
 
-void Server::checkleaderboard(char* ){
+void Server::checkleaderboard(char* ){ //only need a pid
     return ;
 }
 /*
 bool friendList(char* val) {
-	char pseudo1[20], pseudo2[20];
-    parsing(val, pseudo1, pseud2);
-    return _db.sendFriendList();
+	char pseudo[20];
+    parsing_pseudo(pseudo);
+    return _db.sendFriendList(pseudo);
 }
 
 bool getFriendRequest(char* val) {
-	char* pseudo1[20], pseudo2[20];
-	parsing(val, pseudo1, pseud2);
-    return _db.getFriendList();
+	char* pseudo[20];
+	parsing_pseudo(pseudo);
+    return _db.getFriendRequest(pseudo);
 }
-bool sendFriendRequest(char* val) {
-	char* pseudo1[20], pseudo2[20];
-	parsing(val, pseudo1, pseud2);
-    return _db.sendFriendList();
-}
-bool viewProfile(char* val) {
+
+bool viewProfile(char* val) {  //only need a pid ? the name ?
 	char* player1[20], player2[20];
 	parsing(val, player1, player2);
-    return _db.getFriendList(player1, player2);
+    return _db.viewProfile(player1, player2);
 }
 */
 
