@@ -257,7 +257,7 @@ void Server::checkleaderboard(char* ){ //only need a pid
     return ;
 }
 /*
-bool friendList(char* val) {
+bool getfriendList(char* val) {
 	char pseudo[20];
     parsing_pseudo(pseudo);
     return _db.sendFriendList(pseudo);
@@ -270,9 +270,9 @@ bool getFriendRequest(char* val) {
 }
 
 bool viewProfile(char* val) {  //only need a pid ? the name ?
-	char* player1[20], player2[20];
-	parsing(val, player1, player2);
-    return _db.viewProfile(player1, player2);
+	char* player[20];
+	parsing(val, player);
+    return _db.viewProfile(player);
 }
 */
 

@@ -1,6 +1,6 @@
 #include "parsing.hpp"
 
-void parsing(char str[100], char token1[20], char token2[20]) {
+void parsing(char str[100], char token1[20], char token2[20] = {0}) {
 	//str has the correct structure i.e "Mb_MYPSEUDO_MYPASSWORD"
 	int i = 0;
     char *token = strtok(str, "&");

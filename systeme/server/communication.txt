@@ -14,7 +14,7 @@ ___________________SYNTAXE DES REQUÊTES____________________
 		Client : "pid" via le pipe connexion
 
 	SignIn:
-		Client : "Ma&pseudo&mdp&pid"  
+		Client : "Ma&pseudo&mdp&pid"
 		Server : "0" ou "1" => User doesn't exist || Connected
 
 	SignUp: 
@@ -49,9 +49,10 @@ ___________________SYNTAXE DES REQUÊTES____________________
 		Client : "Mi" 
 		Server: "Pseudo&Score&pid" 
 
-	Log&out:
+	Exit:
 		Client : "Mj&pseudo&pid" 
 		Server: "0" 
+		
 	delFriendRequest:
 		Client : "Mk&pseudo&pseudoF&pid" 
 		Server:  "0"=deleted
