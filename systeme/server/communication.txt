@@ -35,7 +35,7 @@ ___________________SYNTAXE DES REQUÊTES____________________
 					"2" = already Friend || "3"= error pseudo
 	getFriendRequest:
 		Client : "Mf&pseudo&pid" 
-		Server: "pseudo1&pseudo2&pseudo3&pseudo4..." 
+		Server: pseudo1|score&pseudo2|score&pseudo3|score..." 
 
 	getFriendList:
 		Client : "Mg&pseudo&pid" 
@@ -45,15 +45,16 @@ ___________________SYNTAXE DES REQUÊTES____________________
 		Client : "Mh&pid" 
 		Server: "pseudo1|score&pseudo2|score&pseudo|score...." 
 
-	View profile
+	View profile:
 		Client : "Mi" 
 		Server: "Pseudo&Score&pid" 
 
 	Log&out:
 		Client : "Mj&pseudo&pid" 
 		Server: "0" 
-
-
+	delFriendRequest:
+		Client : "Mk&pseudo&pseudoF&pid" 
+		Server:  "0"=deleted
 
 
 ---------------
