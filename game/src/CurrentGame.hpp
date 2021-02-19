@@ -15,6 +15,7 @@
 #include <vector>
 #include "MapHandler.hpp"
 #include "Player.hpp"
+#include "Interface.hpp"
 
 
 // at least 16-bit int 2D vector
@@ -53,7 +54,6 @@ struct rect {
     }
 };
 
-
 class CurrentGame {
     WINDOW* main_wnd;
     WINDOW* game_wnd;
@@ -65,6 +65,8 @@ class CurrentGame {
 
     int tick=0;
     int finalScore1, finalScore2;
+    class MapHandler{};
+
     PlayerShip* playership1 = new PlayerShip(10, 5, { {10 - 1, 5 }, { 3, 2 } }, '0',100, 0,100,0);
     PlayerShip* playership2 = new PlayerShip(50, 5, { { 50 - 1, 5 }, { 3, 2 } }, '1',100, 1,100,0);
     Player* player1 = new Player(1);

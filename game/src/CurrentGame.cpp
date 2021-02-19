@@ -127,12 +127,14 @@ void CurrentGame::saveScore(){      //final score save
 //===================================================================================================
 
 void CurrentGame::run() {
+
     listPlayer.push_back(player1);
     listPlayer.push_back(player2);
-
+    Interface anInterface;
+    anInterface.init();
     map.playerInit(playership1,playership2);
     map.setBounds(game_area);
-
+    anInterface.initialDraw()
     while(1) {
         
         // get input
@@ -176,8 +178,8 @@ void CurrentGame::run() {
         if(exit_requested || game_over) break;
 
         tick++;
-        usleep(10000); // 10 ms
+        anInterface.display(&map,tick,listPlayer,&playership1,&playership2,&player1,&player2,finalScore1,finalScore2);
 
-        refresh();
     }
+    anInterface.close();
 }
