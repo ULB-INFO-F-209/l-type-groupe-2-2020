@@ -155,8 +155,14 @@ void MapHandler::checkCollision() {
         for(size_t proj = 0; proj < projectiles_set.size(); proj++){
             if(projectiles_set.at(proj)->getShipType() && e->getBounds().contains(projectiles_set.at(proj)->getPos()) && e->getHp()>0){
                 e->touched(projectiles_set.at(proj)->getDamage());
-                player_ships_set.at(projectiles_set.at(proj)->getPlayer()-1)->setScore(player_ships_set.at(projectiles_set.at(proj)->getPlayer()-1)->getScore() + 10);
+                //player_ships_set.at(projectiles_set.at(proj)->getPlayer()-1)->setScore(player_ships_set.at(projectiles_set.at(proj)->getPlayer()-1)->getScore() + 10);
                 projectiles_set.at(proj)->touched(projectiles_set.at(proj)->getHp());
+                if(player_ships_set.size() == 2){
+                    player_ships_set.at(projectiles_set.at(proj)->getPlayer()-1)->setScore(player_ships_set.at(projectiles_set.at(proj)->getPlayer()-1)->getScore() + 10);
+                }
+                else if (player_ships_set.size() == 1) { 
+                    player_ships_set.at(0)->setScore(player_ships_set.at(0)->getScore() + 10);
+                }
             }
         }
     }
@@ -186,10 +192,10 @@ void MapHandler::playerInit(PlayerShip* p1,PlayerShip* p2) {
 
 void MapHandler::updatePlayerBounds() {
     for( PlayerShip* p : player_ships_set){
-        p->setBounds({ { p->getPos().x -1, p->getPos().y}, {3, 2}});
+        p->setBounds({ { static_cast<uint_fast16_t>(p->getPos().x -1), p->getPos().y}, {3, 2}});
     }
     for(EnemyShip* e: enemy_ships_set){
-        e->setBounds({{e->getPos().x-1,e->getPos().y},{3,1}});
+        e->setBounds({{static_cast<uint_fast16_t>(e->getPos().x-1), e->getPos().y},{3,1}});
     }
 
 }

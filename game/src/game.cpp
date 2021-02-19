@@ -96,8 +96,8 @@ void run() {
     int finalScore1, finalScore2;
     PlayerShip* playership1 = new PlayerShip(10, 5, { {10 - 1, 5 }, { 3, 2 } }, '0',100, 0,100,0);
     PlayerShip* playership2 = new PlayerShip(50, 5, { { 50 - 1, 5 }, { 3, 2 } }, '1',100, 1,100,0);
-    Player* player1 = new Player(3);
-    Player* player2 = new Player(3);
+    Player* player1 = new Player(1);
+    Player* player2 = new Player(1);
     std::vector<Player*> listPlayer;
     listPlayer.push_back(player1);
     listPlayer.push_back(player2);
@@ -326,7 +326,12 @@ void run() {
             if(p->getPlayerNb() == 0)finalScore1 = p->getScore();
             if(p->getPlayerNb() == 1)finalScore2 = p->getScore();
             if(listPlayer.at(p->getPlayerNb())->getnLives() < 1){
-                map.erase(p->getPlayerNb(), MapObject::playership);
+                if (map.getListPlayer().size() == 2) {
+                    map.erase(p->getPlayerNb(), MapObject::playership);
+                }
+                else {
+                    map.erase(0, MapObject::playership);
+                }
             } 
         }
 
