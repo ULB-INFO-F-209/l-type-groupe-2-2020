@@ -42,11 +42,11 @@ int Account::addRequest(char pseudo[20]){
             res = 0;
         } else {
             std::cout << pseudo << " is already in friend requests of " << _pseudo << std::endl;
-            res = 3;
+            res = 1;
         }
     }else{
         std::cout << pseudo << " is already friends with " << _pseudo << std::endl;
-        res = 1;
+        res = 2;
     }
     return res;
 }

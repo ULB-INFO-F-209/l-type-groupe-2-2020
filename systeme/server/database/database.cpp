@@ -20,12 +20,63 @@ bool Database::verifyLogin(char pseudo[20], char pswd[20]){
     std::ptrdiff_t idx = find(pseudo);
     bool res = false;
     if (idx == -1){
-        std::cout << "this account does not exist" << std::endl;
+        std::cout << pseudo << " does not exist" << std::endl;
     } else{
         res = strcmp(pseudo, _data[idx]._pseudo) == 0 && strcmp(pswd, _data[idx]._pswd) == 0;
         if (!res){ std::cout << "incorrect password" << std::endl; }
     }
     return res;
+}
+
+Profile Database::getProfile(char pseudo[20]){
+    std::ptrdiff_t idx = find(pseudo);
+    Profile res;
+    if (idx == -1){
+        std::cout << pseudo << " does not exist" << std::endl;
+    } else{
+        res = {_data[idx]._pseudo, _data[idx]._bestScore};
+    }
+    return res;
+}
+
+std::vector<char*> Database::getFriendRequest(char pseudo[20]){
+    std::vector<char*> requests;
+    std::ptrdiff_t idx = find(pseudo);
+    if (idx == -1){
+        std::cout << pseudo << " does not exist" << std::endl;
+    } else{
+        for (char* req : _data[idx]._friend_requests){
+            requests.push_back(req);
+        }
+    }
+    return requests;
+}
+
+std::vector<char*> Database::getFriendList(char pseudo[20]){
+    std::vector<char*> friends;
+    std::ptrdiff_t idx = find(pseudo);
+    if (idx == -1){
+        std::cout << pseudo << " does not exist" << std::endl;
+    } else{
+        for (char* frnd : _data[idx]._friends){
+            friends.push_back(frnd);
+        }
+    }
+    return friends;
+}
+
+std::vector<Profile> Database::checkLeaderboard(){
+    _profiles.clear();
+    for (Account &acc : _data){
+        _profiles.push_back(Profile{acc._pseudo, acc._bestScore});
+    }
+    std::sort(_profiles.begin(), _profiles.end(), [](Profile a, Profile b) {
+        return a.score > b.score;
+    });
+    for (auto x : _profiles)
+        std::cout << x.pseudo << " -> " << x.score << std::endl;
+    std::cout << "-----------------" << std::endl;
+    return _profiles;
 }
 
 /*
@@ -79,10 +130,10 @@ int Database::friendRequest(char pseudoSrc[20], char pseudoDest[20]){
     std::ptrdiff_t idxSrc = find(pseudoSrc);
     std::ptrdiff_t idxDest = find(pseudoDest);
     if (idxSrc != -1 && idxDest != -1){
-        res = _data[idxDest].addRequest(pseudoSrc);     // res=0 if request is sent, res=1 if already friends,
-    }                                                   // res=3 if already requested
-    if (idxSrc == -1){std::cout << idxSrc << " does not exist" << std::endl; res = 2;}  // res=2 if pseudo doesn't exist
-    if (idxDest == -1){std::cout << idxDest << " does not exist" << std::endl; res = 2;}
+        res = _data[idxDest].addRequest(pseudoSrc);     // res=0 if request is sent, res=1 if already requested
+    }                                                   // res=2 if already friends
+    if (idxSrc == -1){std::cout << idxSrc << " does not exist" << std::endl; res = 3;}  // res=3 if pseudo doesn't exist
+    if (idxDest == -1){std::cout << idxDest << " does not exist" << std::endl; res = 3;}
     return res;
 }
 
@@ -147,8 +198,8 @@ void Database::dbSave(){
     // writing all accounts in _path file
     std::cout << "\n------------Save------------\n\n";
     FILE* out = fopen(_path.c_str(),"wb");
-    for (Account &e : _data){
-        fwrite(&e,sizeof(Account),1,out);
+    for (Account &acc : _data){
+        fwrite(&acc,sizeof(Account),1,out);
     }
     display();
     fclose(out);
@@ -161,7 +212,7 @@ void Database::display(){
         return;
     }
     for (int i = 0; i < _data.size(); i++){
-        std::cout <<"element : i = "<<i<<std::endl<< _data[i] << std::endl;
+        std::cout << _data[i] << std::endl;
     }
 }
 

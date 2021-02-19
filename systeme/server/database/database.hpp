@@ -4,6 +4,7 @@
 #include <iostream>
 #include <ostream>
 #include <vector>
+#include <algorithm>
 #include <sys/stat.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -11,14 +12,15 @@
 
 struct Profile
 {
-	char pseudo[20];
-	int score;	
+	char* pseudo;
+	int score;
 };
 
 class Database{
     const std::string _path = "accounts.bin";
     std::vector<Account> _data{};
 	unsigned _size = 0;
+	std::vector<Profile> _profiles{};
 
     void add(Account* account);
 
@@ -29,6 +31,10 @@ public:
 	// Getters
 	std::ptrdiff_t find(char pseudo[20]);
 	bool verifyLogin(char pseudo[20], char pswd[20]);
+	Profile getProfile(char pseudo[20]);
+    std::vector<char*> getFriendRequest(char pseudo[20]);
+    std::vector<char*> getFriendList(char pseudo[20]);
+	std::vector<Profile> checkLeaderboard();
     //bool areFriends(char pseudo1[20], char pseudo2[20]);
 
 	// Utilities
