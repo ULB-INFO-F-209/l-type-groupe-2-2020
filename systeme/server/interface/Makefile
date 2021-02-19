@@ -6,11 +6,14 @@ flag = -std=c++17 -masm=intel -fcoroutines -fconcepts -pthread \
 		 -Wnoexcept -Wctor-dtor-privacy -Woverloaded-virtual -Wsign-promo -Wzero-as-null-pointer-constant\
 		 -Wsuggest-final-types -Wsuggest-final-methods  -Wsuggest-override -lquadmath
 
-session : main.cpp  Interface.hpp
-	g++ main.cpp $(flag) -lncurses -o session
-
+session : main.cpp  interface.o Interface.hpp
+	g++ main.cpp interface.o $(flag) -lncurses -o session
+interface.o: Interface.cpp Interface.hpp
+	g++  -c Interface.cpp $(flag) -lncurses -o interface.o
 run:
+	make clean
 	make session
 	./session
 clean:
 	rm *.o
+	rm session

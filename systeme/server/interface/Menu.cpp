@@ -12,14 +12,14 @@ void Menu::start_session(){
 		else if(menu==FRIENDS){
 			menu = friends();
 		}
-	//simply quit
 	}
+	_client->exit();
 }
 
 //MENU
 int Menu::home(){
-	int choice = window.print_menu(3, connexion_menu);
 	int res; 
+	int choice = window.print_menu(SIZE_HOME, connexion_menu);
 	switch(choice){
 		case 1: //sign in
 			res = connexion(true);
@@ -37,8 +37,8 @@ int Menu::home(){
 
 
 int  Menu::friends(){ //decouper en fonction
-	int choice = window.print_menu(5, friends_menu);
 	int res;
+	int choice = window.print_menu(SIZE_FRIENDS_MENU, friends_menu);
 	switch(choice){
 		case 1: //Friend list
 			afficher_friends();
@@ -68,7 +68,7 @@ int  Menu::main_m(){
 	int res; char buffer[100];
 	std::vector<Profile*> profile_list;
 	Profile profile;
-	int choice = window.print_menu(5, friends_menu);
+	int choice = window.print_menu(SIZE_FRIENDS_MENU, friends_menu);
 	switch(choice){
 		case 1: //new game
 			//later

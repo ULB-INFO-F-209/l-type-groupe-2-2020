@@ -34,6 +34,7 @@ class Client{
     int _currentGameID=-1;
     bool _inGame=0;
     pid_t _pid;
+    
     //pipes
     char _pipe_to_server[Constante::SIZE_pipe];
     char _pipe_from_server[Constante::SIZE_pipe ]; //celui avec pid
@@ -53,11 +54,11 @@ public:
     int delFriend(char *pseudo);
     int sendFriendRequest(char *pseudo);
     void getFriendRequest(char *res);
-    bool delFriendRequest(char *pseudo); //!!new!!
+    void delFriendRequest(char *pseudo); //!!new!!
     void getFriendList(char *res);
     void checkLeaderboard(char * res);
     void get_profile(char *res);
-    void log_out();
+    void exit();
 
     //Game
     bool checkID(char *pseudo, char*pswd);

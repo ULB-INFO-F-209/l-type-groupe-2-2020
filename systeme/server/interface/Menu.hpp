@@ -21,6 +21,7 @@
 #include "Client.hpp"
 #include "Interface.hpp"
 #include "parsing.hpp"
+#include "namespaceMenu.hpp"
 
 using namespace Parsing; //utilities
 
@@ -34,27 +35,33 @@ class Menu{
 	static const int MAIN  = 1;
 	static const int FRIENDS = 2; 
 
+	//size menu
+	static const size_t SIZE_HOME = 3;
+	static const size_t SIZE_FRIENDS_MENU = 5; 
+	static const size_t SIZE_MAIN_MENU = 5;
+
 	//choices
-	std::string connexion_menu[3] = {"Sign in", "Sign up", "Quit"};
-	std::string friends_menu[5] = {"Friends list", "Friends requests", "Add friend",
+	std::string connexion_menu[SIZE_HOME] = {"Sign in", "Sign up", "Quit"};
+	std::string friends_menu[SIZE_FRIENDS_MENU] = {"Friends list", "Friends requests", "Add friend",
 								   "Remove friend", "Back"};
-	std::string main_menu[5] = {"New game", "Friends", "Leaderboard",
+	std::string main_menu[ SIZE_MAIN_MENU] = {"New game", "Friends", "Leaderboard",
 								   "Profile", "Log out"};
 	//console
 	Interface window{};
 public:
 	Menu(Client *client):_client(client){}
 
-	//DIFERRENT MENUUU(threads)
-	int home();
-	int  main_m();
-	int friends();
 	void start_session();
 	
 	//destructor
 	~Menu()=default;
 
 private:
+	//all menu
+	int home();
+	int  main_m();
+	int friends();
+
 	//format
 	bool verify_pseudo_format(char *pseudo);
 	bool verify_pswd_format(char*pswd);

@@ -88,6 +88,12 @@ void  Client::getFriendRequest(char *res){
 	strcpy(res, buffer); //retour res
 }
 
+void Client::delFriendRequest(char *pseudo){
+	char buffer[Constante::CHAR_SIZE];
+	sprintf(buffer, "Mf&%s&%d", _pseudo, _pid);
+	communication(buffer);
+}
+
 void Client::getFriendList(char *res){
 	char buffer[Constante::CHAR_SIZE];
 	sprintf(buffer, "Mg&%s&%d", _pseudo, _pid);
@@ -109,9 +115,9 @@ void Client::get_profile(char *res){
 	strcpy(res, buffer); //pseudo1&score
 }
 
-void Client::log_out(){
+void Client::exit(){
 	char buffer[Constante::CHAR_SIZE];
-	sprintf(buffer, "Mj&%s&%d", _pseudo, _pid);
+	sprintf(buffer, "Mj&%d",_pid);
 	communication(buffer); //server return exit code 0
 	//the server should delete all pipe we used!
 	//and destruct my game if I was playing
@@ -141,5 +147,5 @@ int  Client::createGame(char *game_info){
 
 //destructor
 Client::~Client(){
-	log_out();
+	exit(); //kill process
 }
