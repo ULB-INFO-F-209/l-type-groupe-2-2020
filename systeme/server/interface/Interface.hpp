@@ -2,7 +2,7 @@
 #define INTERFACE_HPP
 
 #include <iostream>
-#include <string>
+#include <cstring>
 #include <vector>
 #include <ncurses.h>
 #include "parsing.hpp"
@@ -12,8 +12,14 @@ using namespace Parsing;
 
 class Interface final
 {
-	int _yMax, _xMax; //taille terminal
+	//Terminale state
+	int _yMax, _xMax; //size
+	int WIN_HEIGHT, WIN_WIDTH, WIN_Y, WIN_X;
+
+	//different window
 	WINDOW *_menuWin;
+	WINDOW* _pseudoWin;
+	WINDOW*_mdpWin;
 public:
 	//constructor
 	Interface();
@@ -29,7 +35,9 @@ public:
 
 	//destructor
 	~Interface();
-	
+private:
+	void update_menu(size_t size,  std::string *choices, int highlight);
+	bool verify_cara(char *c);
 };
 
 

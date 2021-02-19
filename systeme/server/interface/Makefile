@@ -11,7 +11,6 @@ session : main.cpp  interface.o Interface.hpp
 interface.o: Interface.cpp Interface.hpp
 	g++  -c Interface.cpp $(flag) -lncurses -o interface.o
 run:
-	make clean
 	make session
 	./session
 clean:
