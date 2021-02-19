@@ -134,7 +134,7 @@ void CurrentGame::run() {
     anInterface.init();
     map.playerInit(playership1,playership2);
     map.setBounds(game_area);
-    anInterface.initialDraw()
+    anInterface.initialDraw();
     while(1) {
         
         // get input
@@ -178,7 +178,7 @@ void CurrentGame::run() {
         if(exit_requested || game_over) break;
 
         tick++;
-        anInterface.display(&map,tick,listPlayer,&playership1,&playership2,&player1,&player2,finalScore1,finalScore2);
+        anInterface.display(&map,tick,&listPlayer,playership1,playership2,player1,player2,finalScore1,finalScore2);
 
     }
     anInterface.close();

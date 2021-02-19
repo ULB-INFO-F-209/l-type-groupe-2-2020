@@ -7,13 +7,18 @@
 #include <unistd.h>
 #include <ncurses.h>
 
-#include <cstdint>
+//#include <cstdint>
 #include <string>
 #include <stdlib.h>
-#include <time.h>
+//#include <time.h>
 #include <vector>
+
+#include "Rect.hpp"
+#include "Player.hpp"
 #include "MapHandler.hpp"
 
+//class MapHandler;
+//class PlayerShip;
 
 class Interface  {
     WINDOW* main_wnd;
@@ -24,15 +29,14 @@ class Interface  {
 public:
     Interface();
     int init();
-    void erase();
     void initialDraw();
-    void display(MapHandler* m,int tick, std::vector<Player *> *listPlayer);
+    void display(MapHandler *m,int tick, std::vector<Player *> *listPlayer,PlayerShip* playership1,PlayerShip* playership2, Player* player1,Player* player2,int score1, int score2);
     void drawStar(MapHandler* m);
     void drawObstacle(MapHandler* m);
     void drawEnemy(MapHandler* m);
     void drawProjectile(MapHandler* m);
     void drawPlayer(MapHandler* m,int tick,std::vector<Player*>* listPlayer);
-    void drawUI(MapHandler *m,PlayerShip* playership1,PlayerShip* playership2, Player* player1,Player* player2,int score1, int score2);
+    void drawUI(MapHandler *m,PlayerShip* playership1,PlayerShip* playership2, Player* player1,Player* player2,int score1, int score2,int tick);
     void refresh_wnd();
     void close();
     void drawEnergyBar(int);

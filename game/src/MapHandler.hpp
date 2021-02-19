@@ -4,12 +4,15 @@
 
 #ifndef JEU_MAPHANDLER_HPP
 #define JEU_MAPHANDLER_HPP
-#include "game.hpp"
+//#include "game.hpp"
 #include <cstdlib>
 #include <vector>
 #include <cstdint>
 #include <list>
 #include "Player.hpp"
+#include "InternGameObject.hpp"
+#include "Rect.hpp"
+
 
 class MapObject{
 public:
@@ -107,6 +110,7 @@ public:
 
 class MapHandler{
 public:
+    MapHandler() =default;
     void update(MapObject::type, int);
     void erase(size_t, MapObject::type);
     std::vector<Star*> getStars() const;
