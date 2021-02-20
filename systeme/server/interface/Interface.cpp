@@ -11,8 +11,9 @@ Interface::Interface(){
     WIN_Y = _yMax/7;
     WIN_X = _xMax/8;
     _menuWin = newwin(WIN_HEIGHT, WIN_WIDTH, WIN_Y, WIN_X); //hauteur;longueur;y;x
-    _pseudoWin = newwin(WIN_HEIGHT/5, (WIN_WIDTH/2)+5, WIN_Y+3, WIN_X+5);
-    _mdpWin = newwin(WIN_HEIGHT/5, (WIN_WIDTH/2)+5, WIN_Y+10, WIN_X+5);
+    _pseudoWin = newwin(WIN_HEIGHT/5, (WIN_WIDTH/2)+10, WIN_Y*4, (WIN_X*2)+3);
+    _mdpWin = newwin(WIN_HEIGHT/5, (WIN_WIDTH/2)+10, WIN_Y*6, (WIN_X*2)+3);
+    _msgWin = newwin(WIN_HEIGHT/4, (WIN_WIDTH), WIN_Y, WIN_X);
 
 }
 
@@ -63,17 +64,43 @@ void Interface::update_menu(size_t size,  std::string *choices, int highlight){
 }
 
 bool Interface::get_connexion(char *pseudo, char *pswd, char *error){
-	bool res = false; int cara=1, focus=0;
     keypad(stdscr,TRUE); //all windows not only pseudo or mdp
+    box(_menuWin,0,0);
+    box(_msgWin,0,0);
 	box(_pseudoWin,0,0);
 	box(_mdpWin,0,0);
 	refresh();
+	wrefresh(_menuWin);
+	wrefresh(_msgWin);
 	wrefresh(_pseudoWin);
 	wrefresh(_mdpWin);
 
-	while(cara){
-		cara = getch();
-		switch(cara){
+	//legends
+	char title[] = "SIGN IN";
+	char id[] = "PSEUDO :";
+	char mdp[] = "PASSWORD :";
+
+	wattron(_msgWin, A_BOLD);
+	mvwprintw(_msgWin, WIN_Y /2, (WIN_X*3), title);
+	wattroff(_msgWin, A_BOLD);
+	wrefresh(_msgWin);
+
+	wattron(_pseudoWin, A_BOLD);
+	mvwprintw(_pseudoWin, WIN_Y /2, 5, id);
+	wattroff(_pseudoWin, A_BOLD);
+	wrefresh(_pseudoWin);
+
+	wattron(_mdpWin, A_BOLD);
+	mvwprintw(_mdpWin, WIN_Y /2, 5, mdp);
+	wattroff(_mdpWin, A_BOLD);
+	wrefresh(_mdpWin);
+
+	bool res = false; char cara; int choice = 1,  focus=0;
+	int py = (WIN_Y /2), px = 15, my=(WIN_Y /2), mx=15;
+	int nbp = 0, nbm=0;
+	while(choice){
+		choice = getch();
+		switch(choice){
 			case KEY_UP:
 				if(focus > 0){focus--;}
 				break;
@@ -82,23 +109,24 @@ bool Interface::get_connexion(char *pseudo, char *pswd, char *error){
 				break;
 			case KEY_RIGHT: //enter 
 				break;
-			case KEY_LEFT: //retour
+			case KEY_LEFT: //retour |  
 				break;
 			default:
-    			echo(); //affiche pas les inputs sur le stdout
-    			keypad(stdscr,FALSE); //all windows not only pseudo or mdp
-				if(focus){
-					keypad(_pseudoWin,TRUE); 
-					wgetstr(_pseudoWin, pseudo);
-					keypad(_pseudoWin,FALSE); 
+				cara = static_cast<char>(choice);
+				echo();
+				if(focus and nbp < 15 and verify_cara(&cara)){
+					wattron(_pseudoWin, A_BOLD);
+					mvwprintw(_pseudoWin, py, px++, &cara);
+					wrefresh(_pseudoWin);
+					wattroff(_pseudoWin, A_BOLD);
 				}
-				else{
-    				keypad(_mdpWin,TRUE);
-					wgetstr(_mdpWin, pswd);
-    				keypad(_mdpWin,FALSE);
+				else if(not focus and nbm < 15 and verify_cara(&cara)){
+					wattron(_mdpWin, A_BOLD);
+    				//mvwprintw(_mdpWin, my, mx++, &cara);
+					wrefresh(_mdpWin);
+					wattroff(_mdpWin, A_BOLD);
 				}
-    			noecho(); //affiche pas les inputs sur le stdout
-    			keypad(stdscr,FALSE); //all windows not only pseudo or mdp
+				noecho();
 				break;
     			//keypad(stdscr,FALSE); //all windows not only pseudo or mdp
 		}

@@ -20,6 +20,7 @@ class Interface final
 	WINDOW *_menuWin;
 	WINDOW* _pseudoWin;
 	WINDOW*_mdpWin;
+	WINDOW*_msgWin;
 public:
 	//constructor
 	Interface();
