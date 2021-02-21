@@ -32,7 +32,7 @@ void Parsing::profile_list_from_str(char *buffer,std::vector<Profile*> prof){
 	const char delimiteur_nom = '|';
 	Profile * Player_profile=nullptr;
 
-	// TOTEST !!!
+	// TO  TEST !!!
 	while(std::size_t index = cpp_str_buffer.find(delimiteur_nom) != cpp_str_buffer.npos){ // pas sur pour le npos
 		std::string name_and_score = cpp_str_buffer.substr(0,index);
 		cpp_str_buffer = cpp_str_buffer.substr(index,cpp_str_buffer.size());
@@ -85,4 +85,23 @@ void Parsing::create_game_from_str(char *buffer, Game_settings * settings){
 	cpp_str_buffer = cpp_str_buffer.substr(index,cpp_str_buffer.size());
 	settings->nb_lives = atoi(option);
 
+}
+///parsing to withdraw the user's info
+void Parsing::parsing(char* str, char* token1, char* token2) {
+
+	std::string token(str);
+	token.push_back('&');
+	const char del = '&';
+	std::size_t index = 0;
+	std::string var;
+	int i = 0;
+	
+	while(!token.empty()) {
+		index = token.find(del);
+		var = token.substr(0, index);
+		token = token.erase(0, index+1);
+		if (i == 2) { strcpy(token1, var.c_str()); }
+		else if (i == 3) { strcpy(token2, var.c_str()); }
+		i++;
+	}
 }
