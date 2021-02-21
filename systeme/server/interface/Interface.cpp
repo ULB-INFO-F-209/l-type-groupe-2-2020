@@ -4,6 +4,7 @@
 	- Proportionaliser tous les dimensions
 	- Lancer un thread d'ecoute en cas de 
 		changement de la taille du terminale
+	-Arranger le code et les fênetre
 *******************************************/
 
 Interface::Interface(){
@@ -74,7 +75,14 @@ bool Interface::get_connexion(char pseudo[20], char pswd[20], char *error){
 	int nbp = 0, nbm=0; 
 	bool res = false; //si tu met vrai , il affiche qqchose . WHYYYY?
 
+	std::string msg1= "Your pseudo and password must be at least 7 characters long";
+	std::string msg2 = "and maximum 15. Only letters, numbers and the";
+	std::string msg3= "underscore character are allowed.";
+	std::string msg[] = {msg1,msg2,msg3};
 	init_connexion();
+	print_message(_menuWin, 3,msg, WIN_X, (WIN_Y*2)-1);
+	if(error)
+		print_error(_menuWin, error,WIN_X+4, (WIN_Y*4)+1);
 	move_cursor(_pseudoWin, px, py);
 	while(choice){
 		choice = getch();
@@ -93,11 +101,25 @@ bool Interface::get_connexion(char pseudo[20], char pswd[20], char *error){
 					move_cursor(_mdpWin, mx, my);
 				}
 				break;
-			case KEY_ENTER: //enter
-				choice = 0;
+			case 10: //enter
+				if(nbp < 6 and nbm < 6){
+					char e[] = "Your pseudo and password are too short!";
+					print_error(_menuWin, e,WIN_X+4, (WIN_Y*4)+1);
+				}
+				else if(nbm < 6){
+					char e[] = "Your password is too short!";
+					print_error(_menuWin, e,WIN_X+4, (WIN_Y*4)+1);
+				}
+				else if(nbp < 6){
+					char e[] = "Your pseudo is too short!";
+					print_error(_menuWin, e,WIN_X+4, (WIN_Y*4)+1);
+				}
+				else{
+					choice = 0;
+				}
 				break;
 			case KEY_LEFT: //retour | 
-				choice = 0;
+				choice = 0; 
 				res = true; 
 				break;
 			case KEY_BACKSPACE:
@@ -131,10 +153,23 @@ bool Interface::get_connexion(char pseudo[20], char pswd[20], char *error){
 				break;
 		}
 	}
-	//verif 
-	print_cara(_menuWin, pseudo, WIN_X*2, WIN_Y*2);
-	print_cara(_menuWin, pswd, WIN_X*2, (WIN_Y*2)+5); //verif
 	return not res;
+}
+
+void Interface::print_error(WINDOW *win, char *error , int x, int y){
+	start_color();
+	init_pair(2, COLOR_RED, COLOR_BLACK);
+	wattron(win, COLOR_PAIR(2));
+	print_cara(win, error,x,y);
+	wattroff(win, COLOR_PAIR(2));
+	wrefresh(win);
+}
+
+void Interface::print_message(WINDOW *win, size_t size, std::string *tab, int x, int y){
+	for(size_t i=0; i < size; i++){
+		print_cara(_menuWin, tab[i].c_str(),x,y);
+		y++;
+	}
 }
 
 void Interface::init_connexion(){
@@ -159,7 +194,7 @@ void Interface::init_connexion(){
 	print_cara(_mdpWin, mdp, 5, WIN_Y /2);
 }
 
-void Interface::print_cara(WINDOW *win , char *c, int x, int y){
+void Interface::print_cara(WINDOW *win , const char *c, int x, int y){
 	wattron(win, A_BOLD);
     mvwprintw(win, y, x, c);
 	wrefresh(win);
@@ -192,9 +227,45 @@ bool Interface::verify_cara(char *c){
 	return isNum || isMaj || isMin || isSpecial;
 }
 
+void Interface::print_profile(Profile *prof){
+	keypad(stdscr,TRUE);
+    box(_menuWin,0,0);
+    box(_msgWin,0,0);
+	refresh();
+	wrefresh(_menuWin);
+	wrefresh(_msgWin);
+	char title[] = "    YOUR PROFILE   ";
+	char proverbe[] = "BE PROUD OF YOUR SCORE!";
+	print_cara(_msgWin, title, (WIN_X*3)-7, WIN_Y /2); 
+	print_cara(_msgWin, proverbe, (WIN_X*3)-8, (WIN_Y /2)+2); 
+	char name[30];
+	char score[30];
+	sprintf(name,  "Pseudo : %s", prof->pseudo);
+	sprintf(score, "Score : %d", prof->score);
+	print_cara(_menuWin,name, WIN_X+4, WIN_Y*4);
+	print_cara(_menuWin,score, WIN_X+4, (WIN_Y*4)+3);
+}
+
+void Interface::print_profile(std::vector<Profile*> vect){
+	keypad(stdscr,TRUE);
+    box(_menuWin,0,0);
+    box(_msgWin,0,0);
+	refresh();
+	wrefresh(_menuWin);
+	wrefresh(_msgWin);
+	char title[] = "    YOUR FRIENDS  ";
+	char proverbe[] = "Making new friends shouldn't mean losing old ones.";
+	char regle[64];
+	sprintf(regle, "But you can only have 100 friends, you have already %lu!",vect.size());
+	print_cara(_msgWin, title, (WIN_X*3)-7, WIN_Y /2); 
+	print_cara(_msgWin, proverbe, (WIN_X*2)-15, (WIN_Y /2)+1);
+	print_cara(_msgWin, regle, (WIN_X*2)-15, (WIN_Y /2)+2);
+
+}
+
 
 Interface::~Interface(){
 		getch();
 		endwin();
-	}
+}
 

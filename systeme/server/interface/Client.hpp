@@ -4,8 +4,9 @@
     semaine 2:
         raccorder la game et le menu 
         relax : il y a une autre semaine en plus si no time
+        (c'était ecrit il y a une semaine ...plus de relax)
     Note: 
-        15/02 : tous les communications ont été gérées sauf
+        15/02 : toutes les communications ont été gérées sauf
                 l'affichage du jeux et la manière d'énvoyer 
                 les inputs du jeu au serveur!
 

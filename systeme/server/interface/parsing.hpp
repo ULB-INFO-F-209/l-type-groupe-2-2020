@@ -29,6 +29,7 @@ struct Parsing::Profile
 {
 	char pseudo[20];
 	int score;	
+	Profile(char *p, int s){sprintf(pseudo,"%s", p); score=s;}
 };
 
 struct Parsing::Game_settings

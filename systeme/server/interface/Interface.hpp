@@ -39,9 +39,11 @@ public:
 private:
 	void update_menu(size_t size,  std::string *choices, int highlight);
 	bool verify_cara(char *c);
-	void print_cara(WINDOW *win , char *c, int x, int y);
+	void print_cara(WINDOW *win , const char *c, int x, int y);
 	void move_cursor(WINDOW *win, int x, int y, bool invisible=false);
 	void init_connexion();
+	void print_message(WINDOW *win, size_t size, std::string *tab, int x, int y);
+	void print_error(WINDOW *win, char *error , int x, int y);
 };
 
 
