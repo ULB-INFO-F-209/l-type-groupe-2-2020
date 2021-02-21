@@ -87,7 +87,7 @@ void Parsing::create_game_from_str(char *buffer, Game_settings * settings){
 
 }
 ///parsing to withdraw the user's info
-void Parsing::parsing(char* str, char* token1, char* token2) {
+void Parsing::parsing(char* str, char* token1, char* token2 = nullptr) {
 
 	std::string token(str);
 	token.push_back('&');
@@ -101,7 +101,7 @@ void Parsing::parsing(char* str, char* token1, char* token2) {
 		var = token.substr(0, index);
 		token = token.erase(0, index+1);
 		if (i == 2) { strcpy(token1, var.c_str()); }
-		else if (i == 3) { strcpy(token2, var.c_str()); }
+		else if (i == 3 && token2) { strcpy(token2, var.c_str()); }
 		i++;
 	}
 }

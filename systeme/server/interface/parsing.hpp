@@ -22,7 +22,7 @@ namespace Parsing{
 	void profile_list_from_str(char *buffer,std::vector<Profile*> prof);
 	void profile_from_str(char *buffer, Profile *prof);
 	void create_game_from_str(char *buffer, Game_settings * settings);
-	void parsing(char* str, char* token1, char* token2);
+	void parsing(char* str, char* token1, char* token2 = nullptr);
 }
 
 //Les structures
