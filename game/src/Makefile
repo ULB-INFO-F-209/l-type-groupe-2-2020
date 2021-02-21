@@ -1,7 +1,7 @@
 CFLAGS = -std=c++11 -Wall -pedantic
 
-main: main.cpp	CurrentGame.o MapHandler.o MapHandler.o Interface.o Player.o
-	g++ -g  -o main main.cpp CurrentGame.o MapHandler.o MapHandler.o Interface.o Player.o $(CFLAGS) -lncurses
+main: main.cpp	CurrentGame.o MapHandler.o Interface.o Player.o
+	g++ -g  -o main main.cpp CurrentGame.o MapHandler.o Interface.o Player.o $(CFLAGS) -lncurses
 
 Interface.o: Interface.cpp MapHandler.hpp Player.hpp CurrentGame.hpp 
 	g++ -g -c -o Interface.o Interface.cpp $(CFLAGS)
