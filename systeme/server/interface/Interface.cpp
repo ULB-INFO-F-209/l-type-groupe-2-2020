@@ -1,5 +1,10 @@
 #include "Interface.hpp"
 
+/*********NOTES*****************************
+	- Proportionaliser tous les dimensions
+	- Lancer un thread d'ecoute en cas de 
+		changement de la taille du terminale
+*******************************************/
 
 Interface::Interface(){
 	initscr(); 
@@ -63,8 +68,77 @@ void Interface::update_menu(size_t size,  std::string *choices, int highlight){
 	wattroff(_menuWin, COLOR_PAIR(1));
 }
 
-bool Interface::get_connexion(char *pseudo, char *pswd, char *error){
-    keypad(stdscr,TRUE); //all windows not only pseudo or mdp
+bool Interface::get_connexion(char pseudo[20], char pswd[20], char *error){
+	char mask = '*'; char cara; int choice = 1,  focus=0;
+	int py = (WIN_Y /2), px = 15, my=(WIN_Y /2), mx=15;
+	int nbp = 0, nbm=0; 
+	bool res = false; //si tu met vrai , il affiche qqchose . WHYYYY?
+
+	init_connexion();
+	move_cursor(_pseudoWin, px, py);
+	while(choice){
+		choice = getch();
+		switch(choice){
+			case KEY_UP:
+				if(focus > 0){
+					focus--;
+					move_cursor(_mdpWin, mx, my, true);
+					move_cursor(_pseudoWin, px, py);
+				}
+				break;
+			case KEY_DOWN:
+				if(focus < 1){
+					focus++;
+					move_cursor(_pseudoWin, px, py, true);
+					move_cursor(_mdpWin, mx, my);
+				}
+				break;
+			case KEY_ENTER: //enter
+				choice = 0;
+				break;
+			case KEY_LEFT: //retour | 
+				choice = 0;
+				res = true; 
+				break;
+			case KEY_BACKSPACE:
+				if(focus and nbm > 0){ //mdp_zone
+					move_cursor(_mdpWin, mx, my, true); //rendre invsible le curseur
+					move_cursor(_mdpWin, --mx, my); //reculer le cursor
+					nbm--;
+					pswd[nbm] = '\0';
+				}
+				else if(not focus and nbp > 0){
+					move_cursor(_pseudoWin, px, py, true);
+					move_cursor(_pseudoWin, --px, py);
+					nbp--;
+					pseudo[nbp] = '\0'; //fin de ligne
+				}
+				break;
+			default:
+				cara = static_cast<char>(choice);
+				if(not focus and nbp < 15 and verify_cara(&cara)){
+					print_cara(_pseudoWin, &cara, px, py);
+					move_cursor(_pseudoWin, ++px, py);
+					pseudo[nbp] = cara;
+					nbp ++;
+				}
+				else if(focus and nbm < 15 and verify_cara(&cara)){
+					print_cara(_mdpWin, &mask, mx, my);
+					move_cursor(_mdpWin, ++mx, my);
+					pswd[nbm] = cara;
+					nbm++;
+				}
+				break;
+		}
+	}
+	//verif 
+	print_cara(_menuWin, pseudo, WIN_X*2, WIN_Y*2);
+	print_cara(_menuWin, pswd, WIN_X*2, (WIN_Y*2)+5); //verif
+	return not res;
+}
+
+void Interface::init_connexion(){
+	keypad(stdscr,TRUE); //all windows not only pseudo or mdp
     box(_menuWin,0,0);
     box(_msgWin,0,0);
 	box(_pseudoWin,0,0);
@@ -80,60 +154,33 @@ bool Interface::get_connexion(char *pseudo, char *pswd, char *error){
 	char id[] = "PSEUDO :";
 	char mdp[] = "PASSWORD :";
 
-	wattron(_msgWin, A_BOLD);
-	mvwprintw(_msgWin, WIN_Y /2, (WIN_X*3), title);
-	wattroff(_msgWin, A_BOLD);
-	wrefresh(_msgWin);
+	print_cara(_msgWin, title, (WIN_X*3), WIN_Y /2); 
+	print_cara(_pseudoWin, id, 5, WIN_Y /2);
+	print_cara(_mdpWin, mdp, 5, WIN_Y /2);
+}
 
-	wattron(_pseudoWin, A_BOLD);
-	mvwprintw(_pseudoWin, WIN_Y /2, 5, id);
-	wattroff(_pseudoWin, A_BOLD);
-	wrefresh(_pseudoWin);
+void Interface::print_cara(WINDOW *win , char *c, int x, int y){
+	wattron(win, A_BOLD);
+    mvwprintw(win, y, x, c);
+	wrefresh(win);
+	wattroff(win, A_BOLD);
+}
 
-	wattron(_mdpWin, A_BOLD);
-	mvwprintw(_mdpWin, WIN_Y /2, 5, mdp);
-	wattroff(_mdpWin, A_BOLD);
-	wrefresh(_mdpWin);
-
-	bool res = false; char cara; int choice = 1,  focus=0;
-	int py = (WIN_Y /2), px = 15, my=(WIN_Y /2), mx=15;
-	int nbp = 0, nbm=0;
-	while(choice){
-		choice = getch();
-		switch(choice){
-			case KEY_UP:
-				if(focus > 0){focus--;}
-				break;
-			case KEY_DOWN:
-				if(focus < 1){focus++;}
-				break;
-			case KEY_RIGHT: //enter 
-				break;
-			case KEY_LEFT: //retour |  
-				break;
-			default:
-				cara = static_cast<char>(choice);
-				echo();
-				if(focus and nbp < 15 and verify_cara(&cara)){
-					wattron(_pseudoWin, A_BOLD);
-					mvwprintw(_pseudoWin, py, px++, &cara);
-					wrefresh(_pseudoWin);
-					wattroff(_pseudoWin, A_BOLD);
-				}
-				else if(not focus and nbm < 15 and verify_cara(&cara)){
-					wattron(_mdpWin, A_BOLD);
-    				//mvwprintw(_mdpWin, my, mx++, &cara);
-					wrefresh(_mdpWin);
-					wattroff(_mdpWin, A_BOLD);
-				}
-				noecho();
-				break;
-    			//keypad(stdscr,FALSE); //all windows not only pseudo or mdp
-		}
+void Interface::move_cursor(WINDOW *win, int x, int y, bool invisible){
+	char cursor = '|';
+	if(invisible){
+		wattron(win, A_INVIS);
+		mvwprintw(win, y, x, &cursor);
+		wrefresh(win);
+		wattroff(win, A_INVIS);
 	}
-
-
-	return res;
+	else{
+		wattron(win, A_BLINK | A_BOLD);
+		mvwprintw(win, y, x, &cursor);
+		wrefresh(win);
+		wattroff(win, A_BLINK | A_BOLD);
+	}
+	
 }
 
 bool Interface::verify_cara(char *c){
