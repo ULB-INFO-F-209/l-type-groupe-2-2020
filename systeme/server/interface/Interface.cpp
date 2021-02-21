@@ -263,6 +263,21 @@ void Interface::print_profile(std::vector<Profile*> vect){
 
 }
 
+void print_friends(WINDOW *win, std::vector<Profile*> vect, int highlight){
+	size_t size = vect.size();
+
+	for (size_t i = 0; i < size; ++i)
+	{
+		if(i== static_cast<size_t>(highlight)){
+
+		}
+		else{
+
+		}
+	}
+}
+
+
 
 Interface::~Interface(){
 		getch();
