@@ -4,15 +4,14 @@
 
 #ifndef JEU_MAPHANDLER_HPP
 #define JEU_MAPHANDLER_HPP
-//#include "game.hpp"
+#include "game.hpp"
 #include <cstdlib>
 #include <vector>
 #include <cstdint>
 #include <list>
 #include "Player.hpp"
-#include "InternGameObject.hpp"
-#include "Rect.hpp"
 
+enum bonusType{damageUp, tripleShot, bigShot, minigun};
 
 class MapObject{
 public:
@@ -47,10 +46,11 @@ public:
 };
 
 class Ship: public MapObject{
-    int damage;
+    int collisionDamage;
     int fireRate;
     char disp_char;
     rect bounds;
+    int shootDamage;
 
 public:
     Ship(){};
@@ -58,8 +58,10 @@ public:
     void setChar(char c){disp_char=c;}
     void setBounds(rect b){bounds = b;}
     rect getBounds(){return bounds;}
-    void setDammage(int dam){damage=dam;}
-    int getDammage(){return damage;}
+    void setDammage(int dam){collisionDamage=dam;} //change name
+    int getDammage(){return collisionDamage;}   //change name
+    void setShootDamage(int s_dam){shootDamage=s_dam;}
+    int getShootDamage(){return shootDamage;}
 
 };
 
@@ -76,9 +78,10 @@ public:
 };
 
 class Bonus: public MapObject{
-    int bonusType;
+
+    bonusType bonustype;
 public:
-    Bonus(int nx, int ny,int bonus_t) { pos.x = nx; pos.y = ny; bonusType=bonus_t;typ=bonus;}
+    Bonus(int nx, int ny,bonusType bonus_t) :bonustype(bonus_t)  {pos.x = nx; pos.y = ny;};
 };
 
 class PlayerShip : public Ship{
@@ -86,6 +89,7 @@ class PlayerShip : public Ship{
     bool isAlive;
     int playerNb;
     int score;
+
 
 public:
     PlayerShip(int x, int y, rect b, char c, int h, int nb, int dam, int s){pos.x = x; pos.y = y; setBounds(b); setHp(h); setChar(c);isAlive=true; playerNb = nb; setDammage(dam); score = s;}
@@ -108,15 +112,16 @@ public:
     int getShootTime(){return shootTime;}
 };
 
+
 class MapHandler{
 public:
-    MapHandler() =default;
     void update(MapObject::type, int);
     void erase(size_t, MapObject::type);
     std::vector<Star*> getStars() const;
     std::vector<Obstacle*> getObstacles() const;
     std::vector<Projectile*> getProjectiles() const;
     std::vector<EnemyShip*> getEnemy() const;
+    std::vector<Bonus*> getBonus() const;
     void setBounds(rect);
     void spawnProjectile(int, int, int, bool, int, int);
     void checkCollision();
@@ -125,6 +130,8 @@ public:
     void updatePlayerBounds();
     std::vector<PlayerShip*>  getListPlayer()const;
     void enemyShoot(int tick);
+    void explosion();
+    void spawnBonuses(int x, int y);
 private:
 
     std::vector<Star*> stars_set;
@@ -132,7 +139,11 @@ private:
     std::vector<Projectile*> projectiles_set;
     std::vector<PlayerShip*> player_ships_set;
     std::vector<EnemyShip*> enemy_ships_set;
+    std::vector<Bonus*> bonuses_set;
 
 
 };
+
+
+
 #endif //JEU_MAPHANDLER_HPP

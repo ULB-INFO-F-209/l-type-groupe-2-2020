@@ -88,7 +88,6 @@ void MapHandler::update(MapObject::type typ, int t) {
     else if (typ == MapObject::enemyship && t%300==0)
         enemy_ships_set.push_back(new EnemyShip(rand() % (field_bounds.width()-1)+1, 0, { {10 - 1, 5 }, { 3, 2 } }, '%',30,10,t+rand()%100));
 }
-
 void MapHandler::spawnProjectile(int x, int y, int damage, bool type, int hp, int player){
     projectiles_set.push_back(new Projectile(x,y,damage,type,hp, player));
 }
@@ -128,7 +127,14 @@ void MapHandler::checkCollision() {
     }
     //erase enemy
     for(size_t e = 0; e < enemy_ships_set.size(); e++){
-        if(enemy_ships_set.at(e)->getHp() <= 0)enemy_ships_set.erase(enemy_ships_set.begin() + e);
+        if(enemy_ships_set.at(e)->getHp() <= 0) {
+            spawnBonuses(enemy_ships_set.at(e)->getPos().x, enemy_ships_set.at(e)->getPos().y);
+            enemy_ships_set.erase(enemy_ships_set.begin() + e);
+            //ajouter proba
+            
+        }
+        
+        
     }
 
     // collision player/projectile
@@ -209,6 +215,11 @@ std::vector<EnemyShip *> MapHandler::getEnemy() const {
     return enemy_ships_set;
 }
 
+std::vector<Bonus*> MapHandler::getBonus() const {
+    return bonuses_set;
+}
+
+
 void MapHandler::enemyShoot(int tick) {
     for (auto & i : enemy_ships_set) {
         if (tick== i->getShootTime()+100){
@@ -218,3 +229,13 @@ void MapHandler::enemyShoot(int tick) {
     }
 }
 
+void MapHandler::explosion() {
+    for (auto & i : enemy_ships_set) {
+        i->touched(20);
+    }
+}
+
+void MapHandler::spawnBonuses(int x, int y) {
+    bonusType  bonusT = bonusType(rand()%4); // à changer si nombre de bonus change
+    bonuses_set.push_back(new Bonus(x, y, bonusT ));
+}

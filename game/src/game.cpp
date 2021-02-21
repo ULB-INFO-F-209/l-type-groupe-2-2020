@@ -1,14 +1,18 @@
 /**
  * TODO:
  *  thread pour jouer en même temps
- *  score
- *  si vaisseau alié perd une vie tous les ennemis down
  *  faire des niveaux
  *  enlever static_cast !!
  *  transformer game.cpp en classe
  *  changer vectors en listes
  *  mettre tous les destructors
  *  damage version alexandre
+ *  bonus
+ *      minigun (tir auto)
+ *      tripleShot(tir diagonaux)
+ *      Damage++(dégats x2 ?)
+ *      bigShot(gros missiles 3x plus large)
+ * ajouter effet explosion
  * ERROR:
  */
 
@@ -266,6 +270,11 @@ void run() {
             wattroff(game_wnd, A_ALTCHARSET);
         }
 
+        for(auto b : map.getBonus()) {
+            wattron(game_wnd, A_BOLD);
+            mvwaddch(game_wnd, b->getPos().y, b->getPos().x, '+');
+            wattroff(game_wnd, A_BOLD);
+        }
 
         for( PlayerShip* p : map.getListPlayer()){
             // draw player body
@@ -283,7 +292,7 @@ void run() {
                     p->setisAlive(false);
                     p->setKillTime(tick);
                     listPlayer.at(p->getPlayerNb())->setnLives(listPlayer.at(p->getPlayerNb())->getnLives() - 1);
-                    
+                    map.explosion();
                 }
                 if(tick==p->getKillTime()+300 && !p->getIsAlive()){
             
