@@ -51,7 +51,7 @@ private:
     void checkleaderboard(char* );
 	bool friendList(char* );	
 	bool getFriendRequest(char* );
-    bool sendFriendRequest(char* );
+    int sendFriendRequest(char* );
     bool viewProfile(char* );
     bool logOut(char* );
     

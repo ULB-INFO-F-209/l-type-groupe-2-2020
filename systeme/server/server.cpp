@@ -1,5 +1,6 @@
 #include "server.hpp"
 #include "Constante.hpp"
+#include "parsing.hpp"
 
 bool Server::_is_active = false;
 
@@ -111,7 +112,7 @@ void Server::catchInput(char* input) {
 			case Constante::ACTION_MENU_PRINCIPAL[8]:
 				res = sendFriendRequest(input); //Mj_Pseudo
 				break;
-			case Constante::ACTION_MENU_PRINCIPAL[8]:
+			case Constante::ACTION_MENU_PRINCIPAL[9]:
 				res = viewProfile(input); //Mh_Pseudo
 				break;
 		}
@@ -225,54 +226,54 @@ void Server::sendPositionBoard(){
 
 bool Server::signIn(char* val){
     char pseudo[20], pswd[20];
-    parsing(val, pseudo, pswd); // need val to be val[100] 
+    Parsing::parsing(val, pseudo, pswd); // need val to be val[100] 
     return _db.verifyLogin(pseudo, pswd);
 }
 
 bool Server::signUp(char* val){
     char pseudo[20], pswd[20];
-    parsing(val, pseudo, pswd);
-    _db.createAccount(pseudo, pswd);
+    Parsing::parsing(val, pseudo, pswd);
+    return _db.createAccount(pseudo, pswd);
 }
 
 int Server::sendFriendRequest(char* val){
     char pseudoSrc[20], pseudoDest[20];
-    parsing(val, pseudoSrc, pseudoDest);
+    Parsing::parsing(val, pseudoSrc, pseudoDest);
     return _db.friendRequest(pseudoSrc, pseudoDest);
 }
 
 bool Server::addFriend(char* val){
     char pseudo1[20], pseudo2[20];
-    parsing(val, pseudo, pseudo2);
+    Parsing::parsing(val, pseudo1, pseudo2);
     return _db.addFriend(pseudo1, pseudo2);
 }
 
 bool Server::delFriend(char* val){
     char pseudo1[20], pseudo2[20]; 
-    parsing(val, pseudo, pseudo2);
+    Parsing::parsing(val, pseudo1, pseudo2);
     return _db.removeFriend(pseudo1, pseudo2);
 }
 
 void Server::checkleaderboard(char* ){ //only need a pid
     return ;
 }
+
 /*
 bool getfriendList(char* val) {
 	char pseudo[20];
-    parsing_pseudo(pseudo);
-    return _db.sendFriendList(pseudo);
+    Parsing::parsing_pseudo(pseudo);
+    return _db.getFriendList(pseudo);
 }
 
 bool getFriendRequest(char* val) {
 	char* pseudo[20];
-	parsing_pseudo(pseudo);
+	Parsing::parsing_pseudo(pseudo);
     return _db.getFriendRequest(pseudo);
 }
-
 bool viewProfile(char* val) {  //only need a pid ? the name ?
 	char* player[20];
-	parsing(val, player);
-    return _db.viewProfile(player);
+	Parsing::parsing(val, player);
+    return _db.getProfile(player);
 }
 */
 
