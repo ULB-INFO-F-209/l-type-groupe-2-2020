@@ -174,41 +174,6 @@ void Server::initConnexions(){
             
             createPipe(pipe_name); // creation de nouveau pipe avec le pid du client
             close(fd);
-
-
-
-
-            /**                            TODO 
-             * mettre tout ce qu'il y en dessous dans un thread sinon ce thread est bloqué ... 
-             *
-             * ci dessous : envoie le pid du serveur au client pour que le client puisse envoyer 
-             * des signaux au serveur pour le prevenir d'un message ... ajout future de cette option :(
-             *
-            char pipe_path[Constante::CHAR_SIZE*3];
-            sprintf(pipe_path,"%s%s",Constante::PIPE_PATH,pipe_name);
-
-            // ecire le pid du serveur sur le pipe connexion
-            sprintf(message,"%d",_SERVER_PID);
-            //sleep(1);
-
-            int fd2 = open(pipe_path,O_WRONLY);
-            if (fd2 < 0){
-                std::cout << "Probleme a louverture du pipe : " << pipe_path <<std::endl;
-            }
-            else{
-                std::cout << "Ouverture du pipe " << pipe_path << " fait correctement" << std::endl;
-            }
-
-            //while (true)
-            {
-                
-                if (int tmp_val = write(fd2,message,strlen(message)+1) >= 0){
-                    printf("Jai ecris mon pid  : %d sur %s\n",_SERVER_PID,pipe_path);
-                    break;
-                }
-                
-            }
-            close(fd2);*/
             
         }
         else{
@@ -231,6 +196,7 @@ bool Server::signIn(char* val){
 }
 
 bool Server::signUp(char* val){
+    std::cout << "hello\n"; 
     char pseudo[20], pswd[20];
     Parsing::parsing(val, pseudo, pswd);
     return _db.createAccount(pseudo, pswd);
@@ -254,28 +220,33 @@ bool Server::delFriend(char* val){
     return _db.removeFriend(pseudo1, pseudo2);
 }
 
-void Server::checkleaderboard(char* ){ //only need a pid
+void Server::checkleaderboard(char* val){ //only need a pid
+    std::vector<Profile> leaderboard = _db.checkLeaderboard();
     return ;
 }
 
-/*
-bool getfriendList(char* val) {
+
+bool Server::friendList(char* val) {
 	char pseudo[20];
-    Parsing::parsing_pseudo(pseudo);
-    return _db.getFriendList(pseudo);
+    Parsing::parsing(val, pseudo);
+    std::vector<char*> friends = _db.getFriendList(pseudo);
+    return true;
 }
 
-bool getFriendRequest(char* val) {
-	char* pseudo[20];
-	Parsing::parsing_pseudo(pseudo);
-    return _db.getFriendRequest(pseudo);
+bool Server::getFriendRequest(char* val) {
+	char pseudo[20];
+	Parsing::parsing(val, pseudo);
+    std::vector<char*> requests = _db.getFriendRequest(pseudo);
+    return true;
 }
-bool viewProfile(char* val) {  //only need a pid ? the name ?
-	char* player[20];
+
+bool Server::viewProfile(char* val) {  //only need a pid ? the name ?
+	char player[20];
 	Parsing::parsing(val, player);
-    return _db.getProfile(player);
+    Profile prof = _db.getProfile(player);
+    return true;
 }
-*/
+
 
 /**
  * Envoie la réponse au bon client si la réponse est un booléen

@@ -33,12 +33,12 @@ void Parsing::profile_list_from_str(char *buffer,std::vector<Profile*> prof){
 	Profile * Player_profile=nullptr;
 
 	// TO  TEST !!!
-	while(std::size_t index = cpp_str_buffer.find(delimiteur_nom) != cpp_str_buffer.npos){ // pas sur pour le npos
+	while(std::size_t index = cpp_str_buffer.find(delimiteur_nom) != cpp_str_buffer.empty()){ // pas sur pour le npos
 		std::string name_and_score = cpp_str_buffer.substr(0,index);
 		cpp_str_buffer = cpp_str_buffer.substr(index,cpp_str_buffer.size());
 
 		index = name_and_score.find(delimiteur_score);
-		Player_profile->pseudo = (name_and_score.substr(0,index)).c_str();
+		strcpy(Player_profile->pseudo, (name_and_score.substr(0,index)).c_str());
 		Player_profile->score = atoi((name_and_score.substr(index+1,name_and_score.size()).c_str()));
 		prof.push_back(Player_profile);
 	}
@@ -53,41 +53,51 @@ void Parsing::create_game_from_str(char *buffer, Game_settings * settings){
 	//buffer -> "nb_player&pseudo_hote&other_pseudo&drop_rate&ally_shot&nb_lives"
 	std::string cpp_str_buffer(buffer);
 	const char delimiteur_score = '&';
-	std::size_t index = cpp_str_buffer.find(delimiteur_nom);
+	std::size_t index = cpp_str_buffer.find(delimiteur_score);
 
 	//nb player
 	std::string option = cpp_str_buffer.substr(0,index);
 	cpp_str_buffer = cpp_str_buffer.substr(index,cpp_str_buffer.size());
-	settings->nb_lives = atoi(option);
+	settings->nb_player = atoi(option.c_str());
+	option = option.substr(index, option.length());
 
 	//pseudo_hote
+	index = cpp_str_buffer.find(delimiteur_score);
 	option = cpp_str_buffer.substr(0,index);
 	cpp_str_buffer = cpp_str_buffer.substr(index,cpp_str_buffer.size());
-	settings->nb_lives =option.c_str();
+	strcpy(settings->pseudo_hote, option.c_str());
 
 	//pseudo_other
+	index = cpp_str_buffer.find(delimiteur_score);
+	option = option.substr(index, option.length());
 	option = cpp_str_buffer.substr(0,index);
 	cpp_str_buffer = cpp_str_buffer.substr(index,cpp_str_buffer.size());
-	settings->nb_lives =option.c_str();
+	strcpy(settings->pseudo_other, option.c_str());
 
 	//drop_rate
+	index = cpp_str_buffer.find(delimiteur_score);
+	option = option.substr(index, option.length());
 	option = cpp_str_buffer.substr(0,index);
 	cpp_str_buffer = cpp_str_buffer.substr(index,cpp_str_buffer.size());
-	settings->nb_lives = atoi(option); // TODO drop_rate est un float trouvé un equivalente de atoi pour float
+	settings->drop_rate = std::atof(option.c_str()); // TODO drop_rate est un float trouvé un equivalente de atoi pour float
 
 	//ally_shot
+	index = cpp_str_buffer.find(delimiteur_score);
+	option = option.substr(index, option.length());
 	option = cpp_str_buffer.substr(0,index);
 	cpp_str_buffer = cpp_str_buffer.substr(index,cpp_str_buffer.size());
-	settings->nb_lives = atoi(option); //TODO changer le false en un nb 0 ou 1 plus simple pour la convertion
+	settings->ally_shot = atoi(option.c_str()); //TODO changer le false en un nb 0 ou 1 plus simple pour la convertion
 
 	//nb_lives
+	index = cpp_str_buffer.find(delimiteur_score);
+	option = option.substr(index, option.length());
 	option = cpp_str_buffer.substr(0,index);
 	cpp_str_buffer = cpp_str_buffer.substr(index,cpp_str_buffer.size());
-	settings->nb_lives = atoi(option);
+	settings->nb_lives = atoi(option.c_str());
 
 }
 ///parsing to withdraw the user's info
-void Parsing::parsing(char* str, char* token1, char* token2 = nullptr) {
+void Parsing::parsing(char* str, char* token1, char* token2) {
 
 	std::string token(str);
 	token.push_back('&');

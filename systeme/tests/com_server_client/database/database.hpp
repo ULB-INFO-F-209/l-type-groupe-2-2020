@@ -29,20 +29,20 @@ public:
 	Database() = default;
 
 	// Getters
-	std::ptrdiff_t find(char pseudo[20]);
-	bool verifyLogin(char pseudo[20], char pswd[20]);
-	Profile getProfile(char pseudo[20]);
-    std::vector<char*> getFriendRequest(char pseudo[20]);
-    std::vector<char*> getFriendList(char pseudo[20]);
+	std::ptrdiff_t find(char* pseudo);
+	bool verifyLogin(char* pseudo, char* pswd);
+	Profile getProfile(char* pseudo);
+    std::vector<char*> getFriendRequest(char* pseudo);
+    std::vector<char*> getFriendList(char* pseudo);
 	std::vector<Profile> checkLeaderboard();
-    //bool areFriends(char pseudo1[20], char pseudo2[20]);
+    //bool areFriends(char *pseudo1, char *pseudo2);
 
 	// Utilities
-	bool createAccount(char pseudo[20], char pswd[20]);
-	bool updateScore(int score, char pseudo[20]);
-	int friendRequest(char pseudoSrc[20], char pseudoDest[20]);
-	bool addFriend(char pseudo1[20], char pseudo2[20]);
-    bool removeFriend(char pseudo1[20], char pseudo2[20]);
+	bool createAccount(char* pseudo, char* pswd);
+	bool updateScore(int score, char* pseudo);
+	int friendRequest(char* pseudoSrc, char* pseudoDest);
+	bool addFriend(char *pseudo1, char *pseudo2);
+    bool removeFriend(char *pseudo1, char *pseudo2);
 
     // File management
     void dbLoad();

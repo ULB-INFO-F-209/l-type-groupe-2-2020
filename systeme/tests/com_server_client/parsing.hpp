@@ -5,6 +5,7 @@
 #ifndef PARSING_HPP
 #define PARSING_HPP
 
+#include <cstring>
 #include <vector>
 #include <iostream>
 #include <string>
