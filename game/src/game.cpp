@@ -7,13 +7,8 @@
  *  changer vectors en listes
  *  mettre tous les destructors 
  *  damage version alexandre
- *  bonus (faire clignoter)
- *      minigun (tir auto)
- *      tripleShot(tir diagonaux)
- *      Damage++(dégats x2 ?)
- *      bigShot(gros missiles 3x plus large)
- *      (+1 life)
- * ajouter effet explosion
+ *  couleur
+ *  ajouter effet explosion
  * ERROR:
  */
 
@@ -179,7 +174,7 @@ void run() {
                     playership1->setPos(x1 - 1, y1 + 1);}
                 break;
             case ' ':
-                if(playership1->getHp()>0)
+                if(playership1->getHp()>0 && playership1->getCurrentBonus()!=lifeSteal)
                     map.spawnProjectile(playership1->getPos().x, playership1->getPos().y, playership1->getShootDamage(), true, 10, 1);
                 break;
 //player2
@@ -216,8 +211,8 @@ void run() {
                     playership2->setPos(x2 - 1 , y2 + 1);}
                 break;
             case 'm':
-                if(playership2->getHp()>0)
-                    map.spawnProjectile(playership2->getPos().x, playership2->getPos().y -1, playership1->getShootDamage(), true, 10, 2);
+                if(playership2->getHp()>0 && playership1->getCurrentBonus()!=lifeSteal)
+                    map.spawnProjectile(playership2->getPos().x, playership2->getPos().y, playership1->getShootDamage(), true, 10, 2);
                 break;
             default:
                 break;
@@ -237,6 +232,10 @@ void run() {
             map.update(MapObject::bonus, tick);
         }
 
+        for( PlayerShip* p : map.getListPlayer()){
+            if (p->getCurrentBonus()==minigun && p->getHp()>0 && tick % 7 == 0)
+                map.spawnProjectile(p->getPos().x, p->getPos().y, p->getShootDamage(), true, 10, p->getPlayerNb()+1);
+        }
         map.enemyShoot(tick);
         map.updatePlayerBounds();     // update player bounds
         map.checkCollision();
@@ -246,24 +245,23 @@ void run() {
 
         // draw stars
         for(auto s : map.getStars()){   
-            mvwaddch(game_wnd, s->getPos().y, s->getPos().x, '.');        
+            mvwaddch(game_wnd, s->getPos().y, s->getPos().x, '.');
         }
         // draw obstacle
         for(auto o : map.getObstacles()){
                 wattron(game_wnd, A_BOLD);
-                mvwaddch(game_wnd, o->getPos().y, o->getPos().x, '*');
+                mvwaddch(game_wnd, o->getPos().y, o->getPos().x, ACS_DIAMOND);
                 wattroff(game_wnd, A_BOLD);
-
         }
         for(auto p : map.getProjectiles()){
 
-            mvwaddch(game_wnd, p->getPos().y, p->getPos().x, '#');
+            mvwaddch(game_wnd, p->getPos().y, p->getPos().x, '*');
         }
         // draw ennemies
         for(auto e :map.getEnemy()){
-            wattron(game_wnd, A_BOLD);
+            wattron(game_wnd, COLOR_PAIR(4));
             mvwaddch(game_wnd, e->getPos().y, e->getPos().x, e->getChar());
-            wattroff(game_wnd, A_BOLD);
+            wattroff(game_wnd, COLOR_PAIR(4));
 
 
             wattron(game_wnd, A_ALTCHARSET);
@@ -274,8 +272,8 @@ void run() {
         // draw Bonus
         for(auto b : map.getBonus()) {
             wattron(game_wnd, A_BOLD);
-            if(b->getBonusType()==rocket){
-                mvwaddch(game_wnd, b->getPos().y, b->getPos().x, 'R');
+            if(b->getBonusType()==lifeSteal){
+                mvwaddch(game_wnd, b->getPos().y, b->getPos().x, 'L');
             }
             else if(b->getBonusType()==minigun){
                 mvwaddch(game_wnd, b->getPos().y, b->getPos().x, 'M');

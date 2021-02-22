@@ -11,7 +11,7 @@
 #include <list>
 #include "Player.hpp"
 
-enum bonusType{damageUp, tripleShot, rocket, minigun,noBonus};
+enum bonusType{damageUp, tripleShot, lifeSteal, minigun,noBonus};
 
 class MapObject{
 public:
@@ -81,7 +81,7 @@ public:
 class Bonus: public MapObject{
     bonusType bonustype;
 public:
-    Bonus(int nx, int ny,bonusType bonus_t) :bonustype(bonus_t)  {pos.x = nx; pos.y = ny;};
+    Bonus(int nx, int ny,bonusType bonus_t) :bonustype(bonus_t)  {pos.x = nx; pos.y = ny; hp=10;};
     bonusType getBonusType() const{return bonustype;}
 };
 
