@@ -87,15 +87,16 @@ void MapHandler::update(MapObject::type typ, int t) {
         }
     }
 
-
     // spawn a new object
     
     if(typ == MapObject::star)
         stars_set.push_back(new Star(rand() % field_bounds.width(), 0));
     else if(typ == MapObject::obstacle && t % 200 == 0)
         obstacles_set.push_back(new Obstacle(rand() % (field_bounds.width()-1)+1, 0, 10,10));
-    else if (typ == MapObject::enemyship && t%300==0)
-        enemy_ships_set.push_back(new EnemyShip(rand() % (field_bounds.width()-1)+1, 0, { {10 - 1, 5 }, { 3, 2 } }, '%',30,10,t+rand()%100));
+    else if (typ == MapObject::enemyship && t%300==0) {
+        enemy_ships_set.push_back(new EnemyShip(rand() % (field_bounds.width() - 1) + 1, 0, {{10 - 1, 5},{3,      2}}, '%', 30, 10,t + rand() % 100));
+
+    }
 }
 void MapHandler::spawnProjectile(int x, int y, int damage, bool type, int hp, int player){
     if(player!=0) {
@@ -232,8 +233,8 @@ void MapHandler::checkCollision() {
     //erase enemy
     for(size_t e = 0; e < enemy_ships_set.size(); e++){
         if(enemy_ships_set.at(e)->getHp() <= 0){
-            //proba
-            spawnBonuses(enemy_ships_set.at(e)->getPos().x, enemy_ships_set.at(e)->getPos().y);
+            if (rand()%100<=probaBonus)
+                spawnBonuses(enemy_ships_set.at(e)->getPos().x, enemy_ships_set.at(e)->getPos().y);
             enemy_ships_set.erase(enemy_ships_set.begin() + e);
 
         }
@@ -297,7 +298,7 @@ void MapHandler::explosion() {
 }
 
 void MapHandler::spawnBonuses(int x, int y) {
-    auto bonusT = minigun ;//bonusType(rand()%4); // à changer si nombre de bonus change
+    auto bonusT = bonusType(rand()%4); // à changer si nombre de bonus change
     bonuses_set.push_back(new Bonus(x, y, bonusT ));
 }
 

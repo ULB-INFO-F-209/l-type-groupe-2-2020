@@ -119,7 +119,15 @@ public:
 
 
 class MapHandler{
+    int probaBonus;
+    std::vector<Star*> stars_set;
+    std::vector<Obstacle*> obstacles_set;
+    std::vector<Projectile*> projectiles_set;
+    std::vector<PlayerShip*> player_ships_set;
+    std::vector<EnemyShip*> enemy_ships_set;
+    std::vector<Bonus*> bonuses_set;
 public:
+    MapHandler(float p){probaBonus=p;};
     void update(MapObject::type, int);
     void erase(size_t, MapObject::type);
     std::vector<Star*> getStars() const;
@@ -138,14 +146,7 @@ public:
     void explosion();
     void spawnBonuses(int x, int y);
     ~MapHandler()= default;
-private:
 
-    std::vector<Star*> stars_set;
-    std::vector<Obstacle*> obstacles_set;
-    std::vector<Projectile*> projectiles_set;
-    std::vector<PlayerShip*> player_ships_set;
-    std::vector<EnemyShip*> enemy_ships_set;
-    std::vector<Bonus*> bonuses_set;
 
 
 };

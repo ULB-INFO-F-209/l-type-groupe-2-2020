@@ -29,7 +29,7 @@ WINDOW* game_wnd;
 rect game_area;
 rect screen_area;
 
-MapHandler map;
+MapHandler map(25); //passé en param par le client
 
 int init() {
 
@@ -92,6 +92,8 @@ void run() {
 
     int tick;
     int finalScore1, finalScore2;
+    int currentLevel;
+    int dificulty;
     PlayerShip* playership1 = new PlayerShip(10, 5, { {10 - 1, 5 }, { 3, 2 } }, '0',100, 0,100,0);
     PlayerShip* playership2 = new PlayerShip(50, 5, { { 50 - 1, 5 }, { 3, 2 } }, '1',100, 1,100,0);
     Player* player1 = new Player(1);
