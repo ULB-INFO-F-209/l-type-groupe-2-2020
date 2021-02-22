@@ -185,7 +185,7 @@ void Interface::init_connexion(){
 	wrefresh(_mdpWin);
 
 	//legends
-	char title[] = "SIGN IN";
+	char title[] = "SIGN IN"; 
 	char id[] = "PSEUDO :";
 	char mdp[] = "PASSWORD :";
 
@@ -248,10 +248,50 @@ void Interface::print_profile(Profile *prof){
 
 void Interface::print_profile(std::vector<Profile*> vect){
 	keypad(stdscr,TRUE);
-    box(_menuWin,0,0);
+	int choice = 1;
+	int MIN = 0,  MAX = vect.size() -1;
+	int focus = 0; int nb_elem = 12; //on peut afficher que 12 
+	int idx_min = 0, idx_max;
+	if(MAX < 12){idx_max = MAX;}
+	else{idx_max = idx_min + nb_elem;}
+	while(choice){
+		print_friends(_menuWin, vect, focus, idx_min, idx_max);
+		choice = getch();
+		switch(choice){
+			case KEY_UP:
+				if(focus > MIN){
+					if(focus == idx_min){
+						idx_min --;
+						idx_max--;
+					}
+					focus--;
+				}
+				break;
+			case KEY_DOWN:
+				if(focus < MAX){
+					if(focus == idx_max-1){
+						idx_min++;
+						idx_max++;
+					}
+					focus++;
+				}
+				break;
+			case KEY_RIGHT: //retour?
+				break;
+			default:
+				break;
+		}
+	}
+
+
+}
+
+void Interface::print_friends(WINDOW *win, std::vector<Profile*> vect, int highlight, int min, int max){
+	wclear(win);
+    box(win,0,0);
     box(_msgWin,0,0);
 	refresh();
-	wrefresh(_menuWin);
+	wrefresh(win);
 	wrefresh(_msgWin);
 	char title[] = "    YOUR FRIENDS  ";
 	char proverbe[] = "Making new friends shouldn't mean losing old ones.";
@@ -260,24 +300,94 @@ void Interface::print_profile(std::vector<Profile*> vect){
 	print_cara(_msgWin, title, (WIN_X*3)-7, WIN_Y /2); 
 	print_cara(_msgWin, proverbe, (WIN_X*2)-15, (WIN_Y /2)+1);
 	print_cara(_msgWin, regle, (WIN_X*2)-15, (WIN_Y /2)+2);
-
-}
-
-void print_friends(WINDOW *win, std::vector<Profile*> vect, int highlight){
-	size_t size = vect.size();
-
-	for (size_t i = 0; i < size; ++i)
-	{
-		if(i== static_cast<size_t>(highlight)){
-
+	int x = (WIN_X*2)-15, y = (WIN_Y /2)+7;
+	char score[10]; char pseudo[30];
+	char titre_pseudo[20] = "Pseudo", titre_score[] = "Score";
+	print_cara(_menuWin, titre_pseudo, (WIN_X*2)-15,(WIN_Y /2)+5);
+	print_cara(_menuWin, titre_score, ((WIN_X*2)-15)*6,(WIN_Y /2)+5);
+	for (int i = min; i < max; ++i){
+		sprintf(score, "%d",vect[i]->score);
+		sprintf(pseudo, "%s", vect[i]->pseudo);
+		int x_prime = x*6;
+		if(i == highlight)
+		{
+			wattron(win, A_REVERSE);
+			print_cara(win,pseudo,x,y);
+			print_cara(win, score,x_prime,y);
+			wattroff(win, A_REVERSE);
 		}
 		else{
-
+			print_cara(win, pseudo,x,y);
+			print_cara(win, score,x_prime,y);
 		}
+		y++;
 	}
 }
 
+int Interface::get_pseudo(char *res, char *error){
+	int ret=0;
+	box(_menuWin,0,0);
+    box(_msgWin,0,0);
+	box(_pseudoWin,0,0);
 
+	refresh();
+	wrefresh(_menuWin);
+	wrefresh(_msgWin);
+	wrefresh(_pseudoWin);
+	char id[] = "PSEUDO :";
+	print_cara(_pseudoWin, id, 5, WIN_Y /2);
+	char title[] = "    ADD FRIEND ";
+	char proverbe[] = "Making new friends shouldn't mean losing old ones.";
+	char regle[64];
+	sprintf(regle, "But you can only have 100 friends, you have already");
+	print_cara(_msgWin, title, (WIN_X*3)-7, WIN_Y /2); 
+	print_cara(_msgWin, proverbe, (WIN_X*2)-15, (WIN_Y /2)+1);
+	print_cara(_msgWin, regle, (WIN_X*2)-15, (WIN_Y /2)+2);
+
+	int py = (WIN_Y /2), px = 15, choice=1, nbp=0;
+	char cara;
+
+	if(error)
+		print_error(_menuWin, error,WIN_X+4, (WIN_Y*4)+1);
+	move_cursor(_pseudoWin, px, py);
+
+	while(choice){
+		choice = getch();
+		switch(choice){
+			case 10: //enter
+				if(nbp < 6){
+					char e[] = "Pseudo is too short!";
+					print_error(_menuWin, e,WIN_X+4, (WIN_Y*4)+1);
+				}
+				else{
+					choice = 0;
+				}
+				break;
+			case KEY_LEFT: //retour | 
+				choice = 0; 
+				ret = 1; 
+				break;
+			case KEY_BACKSPACE:
+				if(nbp > 0){
+					move_cursor(_pseudoWin, px, py, true);
+					move_cursor(_pseudoWin, --px, py);
+					nbp--;
+					res[nbp] = '\0'; //fin de ligne
+				}
+				break;
+			default:
+				cara = static_cast<char>(choice);
+				if(nbp < 15 and verify_cara(&cara)){
+					print_cara(_pseudoWin, &cara, px, py);
+					move_cursor(_pseudoWin, ++px, py);
+					res[nbp] = cara;
+					nbp ++;
+				}
+				break;
+		}
+	}
+	return ret;
+}
 
 Interface::~Interface(){
 		getch();

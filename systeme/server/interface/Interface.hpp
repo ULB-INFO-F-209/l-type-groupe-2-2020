@@ -44,6 +44,7 @@ private:
 	void init_connexion();
 	void print_message(WINDOW *win, size_t size, std::string *tab, int x, int y);
 	void print_error(WINDOW *win, char *error , int x, int y);
+	void print_friends(WINDOW *win, std::vector<Profile*> vect, int highlight, int min, int max);
 };
 
 
