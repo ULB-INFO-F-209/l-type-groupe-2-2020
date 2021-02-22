@@ -326,7 +326,6 @@ void Interface::print_friends(WINDOW *win, std::vector<Profile*> vect, int highl
 
 int Interface::get_pseudo(char *res, char *error){
 	int ret=0;
-	keypad(stdscr, TRUE);
 	box(_menuWin,0,0);
     box(_msgWin,0,0);
 	box(_pseudoWin,0,0);
@@ -346,7 +345,7 @@ int Interface::get_pseudo(char *res, char *error){
 	print_cara(_msgWin, regle, (WIN_X*2)-15, (WIN_Y /2)+2);
 
 	int py = (WIN_Y /2), px = 15, choice=1, nbp=0;
-	char cara; 
+	char cara;
 
 	if(error)
 		print_error(_menuWin, error,WIN_X+4, (WIN_Y*4)+1);
@@ -385,7 +384,6 @@ int Interface::get_pseudo(char *res, char *error){
 				break;
 		}
 	}
-	print_error(_menuWin, res,WIN_X+4, (WIN_Y*4)+1);
 	return ret;
 }
 

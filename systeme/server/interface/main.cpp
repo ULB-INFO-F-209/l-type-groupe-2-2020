@@ -25,7 +25,10 @@ int main(int argc, char const *argv[])
 	std::vector<Profile*> v = {&prof, &prof2, &prof3, &prof4,&prof5, &prof6,
 							&prof7,&prof8,&prof9,&prof10,&prof11,&prof12,&prof13,
 							&prof14, &prof15,&prof16};
-	win.print_profile(v);
+	//win.print_profile(v);
+	win.get_pseudo(p,NULL);
 
 	return 0;
 }
+
+
