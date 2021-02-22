@@ -143,6 +143,60 @@ jeu/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/jeu.dir/build.make CMakeFiles/jeu.dir/build
 .PHONY : jeu/fast
 
+src/InputHandler.o: src/InputHandler.cpp.o
+
+.PHONY : src/InputHandler.o
+
+# target to build an object file
+src/InputHandler.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jeu.dir/build.make CMakeFiles/jeu.dir/src/InputHandler.cpp.o
+.PHONY : src/InputHandler.cpp.o
+
+src/InputHandler.i: src/InputHandler.cpp.i
+
+.PHONY : src/InputHandler.i
+
+# target to preprocess a source file
+src/InputHandler.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jeu.dir/build.make CMakeFiles/jeu.dir/src/InputHandler.cpp.i
+.PHONY : src/InputHandler.cpp.i
+
+src/InputHandler.s: src/InputHandler.cpp.s
+
+.PHONY : src/InputHandler.s
+
+# target to generate assembly for a file
+src/InputHandler.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jeu.dir/build.make CMakeFiles/jeu.dir/src/InputHandler.cpp.s
+.PHONY : src/InputHandler.cpp.s
+
+src/Interface.o: src/Interface.cpp.o
+
+.PHONY : src/Interface.o
+
+# target to build an object file
+src/Interface.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jeu.dir/build.make CMakeFiles/jeu.dir/src/Interface.cpp.o
+.PHONY : src/Interface.cpp.o
+
+src/Interface.i: src/Interface.cpp.i
+
+.PHONY : src/Interface.i
+
+# target to preprocess a source file
+src/Interface.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jeu.dir/build.make CMakeFiles/jeu.dir/src/Interface.cpp.i
+.PHONY : src/Interface.cpp.i
+
+src/Interface.s: src/Interface.cpp.s
+
+.PHONY : src/Interface.s
+
+# target to generate assembly for a file
+src/Interface.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jeu.dir/build.make CMakeFiles/jeu.dir/src/Interface.cpp.s
+.PHONY : src/Interface.cpp.s
+
 src/MapHandler.o: src/MapHandler.cpp.o
 
 .PHONY : src/MapHandler.o
@@ -260,6 +314,12 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... jeu"
+	@echo "... src/InputHandler.o"
+	@echo "... src/InputHandler.i"
+	@echo "... src/InputHandler.s"
+	@echo "... src/Interface.o"
+	@echo "... src/Interface.i"
+	@echo "... src/Interface.s"
 	@echo "... src/MapHandler.o"
 	@echo "... src/MapHandler.i"
 	@echo "... src/MapHandler.s"

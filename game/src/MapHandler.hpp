@@ -41,8 +41,8 @@ class Obstacle: public MapObject{
 public:
 
     Obstacle(int nx, int ny,int dam,int h) {pos.x = nx; pos.y = ny; damage=dam;typ=obstacle;hp=h;}
-    int get_damage() {return damage;};
-    void touched(int damage);
+    int get_damage() const {return damage;};
+    void touched(int damage) override;
 };
 
 class Ship: public MapObject{
@@ -54,14 +54,14 @@ class Ship: public MapObject{
 
 public:
     Ship(){};
-    char getChar(){return disp_char;}
+    char getChar() const{return disp_char;}
     void setChar(char c){disp_char=c;}
     void setBounds(rect b){bounds = b;}
     rect getBounds(){return bounds;}
     void setDammage(int dam){collisionDamage=dam;} //change name
-    int getDammage(){return collisionDamage;}   //change name
+    int getDammage() const{return collisionDamage;}   //change name
     void setShootDamage(int s_dam){shootDamage=s_dam;}
-    int getShootDamage(){return shootDamage;}
+    int getShootDamage() const{return shootDamage;}
 
 };
 
@@ -72,9 +72,9 @@ class Projectile: public MapObject{
 public:
     void move() override;
     Projectile(int nx, int ny,int dam,bool ship_t, int h, int p) {pos.x = nx; pos.y = ny; damage=dam; shipType=ship_t;typ=projectile; hp = h; player = p;}
-    int getDamage(){return damage;}
-    bool getShipType(){return shipType;}
-    int getPlayer(){return player;}
+    int getDamage() const{return damage;}
+    bool getShipType() const{return shipType;}
+    int getPlayer() const{return player;}
 };
 
 class Bonus: public MapObject{
@@ -93,12 +93,12 @@ class PlayerShip : public Ship{
 
 public:
     PlayerShip(int x, int y, rect b, char c, int h, int nb, int dam, int s){pos.x = x; pos.y = y; setBounds(b); setHp(h); setChar(c);isAlive=true; playerNb = nb; setDammage(dam); score = s;}
-    int getKillTime(){return killTime;}
-    bool getIsAlive(){return isAlive;}
+    int getKillTime() const{return killTime;}
+    bool getIsAlive() const{return isAlive;}
     void setKillTime(int t){killTime=t;}
     void setisAlive(bool b){isAlive=b;}
-    int getPlayerNb(){return playerNb;}
-    int getScore(){return score;}
+    int getPlayerNb() const{return playerNb;}
+    int getScore() const{return score;}
     void setScore(int s){score = s;}
     
 };
@@ -109,7 +109,7 @@ class EnemyShip : public Ship{
 public:
     EnemyShip(int x, int y, rect b, char c,int h,int dam, int t){pos.x = x; pos.y = y; setBounds(b); setHp(h); setChar(c); setDammage(dam);shootTime=t;}
     void setShootTime(int t){shootTime=t;}
-    int getShootTime(){return shootTime;}
+    int getShootTime() const{return shootTime;}
 };
 
 

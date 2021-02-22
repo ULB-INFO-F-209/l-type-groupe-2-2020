@@ -15,17 +15,17 @@ struct rect {
     vec2i offset;
     vec2i bounds;
 
-    uint_fast16_t top() { return offset.y; }
-    uint_fast16_t bot() { return offset.y + bounds.y; }
-    uint_fast16_t left() { return offset.x; }
-    uint_fast16_t right() { return offset.x + bounds.x; }
+    uint_fast16_t top() const { return offset.y; }
+    uint_fast16_t bot() const { return offset.y + bounds.y; }
+    uint_fast16_t left() const { return offset.x; }
+    uint_fast16_t right() const { return offset.x + bounds.x; }
 
-    uint_fast16_t width() { return bounds.x; }
-    uint_fast16_t height() { return bounds.y; }
+    uint_fast16_t width() const { return bounds.x; }
+    uint_fast16_t height() const { return bounds.y; }
 
-    bool contains(vec2i a) { return (a.x >= offset.x && a.x < right()) &&
+    bool contains(vec2i a) const { return (a.x >= offset.x && a.x < right()) &&
                                     (a.y >= offset.y && a.y < bot()); }
-    bool contains(rect r){
+    bool contains(rect r) const{
         for (uint_fast16_t i = left(); i < right(); ++i) {
             for (uint_fast16_t j = top(); j < bot(); ++j) {
                 vec2i test;

@@ -82,6 +82,18 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/home/jean/l-type-groupe-2-2020/game/src/InputHandler.cpp">
+			<Option target="jeu"/>
+		</Unit>
+		<Unit filename="/home/jean/l-type-groupe-2-2020/game/src/InputHandler.h">
+			<Option target="jeu"/>
+		</Unit>
+		<Unit filename="/home/jean/l-type-groupe-2-2020/game/src/Interface.cpp">
+			<Option target="jeu"/>
+		</Unit>
+		<Unit filename="/home/jean/l-type-groupe-2-2020/game/src/Interface.hpp">
+			<Option target="jeu"/>
+		</Unit>
 		<Unit filename="/home/jean/l-type-groupe-2-2020/game/src/MapHandler.cpp">
 			<Option target="jeu"/>
 		</Unit>

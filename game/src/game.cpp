@@ -283,7 +283,6 @@ void run() {
             mvwaddch(game_wnd, p->getPos().y, p->getPos().x, p->getChar());
             wattroff(game_wnd, A_BOLD);
 
-
             wattron(game_wnd, A_ALTCHARSET);
             mvwaddch(game_wnd, p->getPos().y, p->getPos().x - 1, ACS_LARROW);
             mvwaddch(game_wnd, p->getPos().y, p->getPos().x + 1, ACS_RARROW);
@@ -323,13 +322,10 @@ void run() {
                 }
             }
 
-
             wattroff(game_wnd, A_ALTCHARSET);
-
              
         }
-        
-        
+
         for( PlayerShip* p : map.getListPlayer()){
             //final score save
             if(p->getPlayerNb() == 0)finalScore1 = p->getScore();
