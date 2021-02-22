@@ -25,7 +25,7 @@ public:
     virtual void setHp(int h){hp =h;}
 
     virtual int getHp(){return hp;}
-
+    virtual ~MapObject()= default; // faut-il avoir un destructeur pour chaque sous classe ?
 protected:
     vec2i pos;
     int hp;
@@ -78,7 +78,6 @@ public:
 };
 
 class Bonus: public MapObject{
-
     bonusType bonustype;
 public:
     Bonus(int nx, int ny,bonusType bonus_t) :bonustype(bonus_t)  {pos.x = nx; pos.y = ny;};
@@ -132,6 +131,7 @@ public:
     void enemyShoot(int tick);
     void explosion();
     void spawnBonuses(int x, int y);
+    ~MapHandler()= default;
 private:
 
     std::vector<Star*> stars_set;

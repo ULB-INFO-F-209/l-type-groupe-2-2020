@@ -39,14 +39,6 @@ struct rect {
     }
 };
 
-
-struct enemy{
-    vec2i pos;
-};
-
-struct star {
-    vec2i pos;
-};
 int init();
 void run();
 void close();

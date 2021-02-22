@@ -5,9 +5,9 @@
  *  enlever static_cast !!
  *  transformer game.cpp en classe
  *  changer vectors en listes
- *  mettre tous les destructors
+ *  mettre tous les destructors 
  *  damage version alexandre
- *  bonus
+ *  bonus (faire clignoter)
  *      minigun (tir auto)
  *      tripleShot(tir diagonaux)
  *      Damage++(dégats x2 ?)
