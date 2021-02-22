@@ -1,5 +1,6 @@
 #include "server.hpp"
 #include "Constante.hpp"
+#include "parsing.hpp"
 
 bool Server::_is_active = false;
 
@@ -9,10 +10,12 @@ bool Server::_is_active = false;
  *  - lance 2 threads independant pour gerer connexion et reponse
  * 
  **/
-Server::Server():_pipe_running()/*,_db()*/{
+Server::Server():_pipe_running() ,_db(){
 
     std::cout << "LANCEMENT DU SERVEUR \n";
     if (!isServerActive()){ // pas actif
+
+        _db.dbLoad();
 
         createPipe(Constante::PIPE_DE_CONNEXION);
         createPipe(Constante::PIPE_DE_REPONSE);
@@ -69,55 +72,58 @@ void Server::handleIncommingMessages(){
             std::thread t1(&Server::catchInput,this,message); // thread de reponse 
             t1.detach();
         }
-        
-        
         close(fd);
-        
     }
     close(fd);
-    
-    
-
 }
 
 /**
  * gere les messages client et envoie la reponse au bon client
  * 
  **/
-void Server::catchInput(char * input) {
+void Server::catchInput(char* input) {
 	//char input[Constante::CHAR_SIZE]; //input[0] = M pour menu et J pour jeu
 	bool res = false;
     std::cout << "The Input : " << input <<std::endl;
 	if (input[0] == Constante::ACTION_MENU_PRINCIPAL[0]) {
 		switch(input[1]) {
 			case Constante::ACTION_MENU_PRINCIPAL[1]:
-				res = signIn(input);    //Ma-Pseudo-MDP-PID
+				res = signIn(input);    //Ma_pseudo_mdp
 				break;					//a chaque connexion le server associe un pid a un pseudo
 			case Constante::ACTION_MENU_PRINCIPAL[2]:
-				res = signUp(input);    //Mb-Pseudo-MDP-PID
+				res = signUp(input);    //Mb_pseudo_mdp
 				break;
 			case Constante::ACTION_MENU_PRINCIPAL[3]:
-				res = addFriend(input); //Mc-Pseudo-PID
+				res = addFriend(input); //Mc_PseudoMe_PseudoF
 				break;
 			case Constante::ACTION_MENU_PRINCIPAL[4]:
-				res = delFriend(input); //Md-Pseudo-PID
+				res = delFriend(input); //Md_Pseudo
 				break;
 			case Constante::ACTION_MENU_PRINCIPAL[5]:
-				checkleaderboard(input);//Me-PID
+				checkleaderboard(input); //Me
 				//resClient(processId, ret) avec ret le retour de checkleaderboard
+				break;
+			case Constante::ACTION_MENU_PRINCIPAL[6]:
+				res = friendList(input); //Mf_Pseudo
+				break;
+			case Constante::ACTION_MENU_PRINCIPAL[7]:
+				res = getFriendRequest(input); //Mg_Pseudo
+				break;
+			case Constante::ACTION_MENU_PRINCIPAL[8]:
+				res = sendFriendRequest(input); //Mj_Pseudo
+				break;
+			case Constante::ACTION_MENU_PRINCIPAL[9]:
+				res = viewProfile(input); //Mh_Pseudo
 				break;
 		}
 
-		std::string processId(input); 
+		std::string processId(input);
     	int i = processId.rfind(Constante::DELIMITEUR);
     	processId = processId.substr(i+1,processId.length()); //pour recup le PID
     	//resClient(&processId, res);
-	}
-	
-	else if (input[0] == Constante::ACTION_JEU[0]){
+	} else if (input[0] == Constante::ACTION_JEU[0]){
 		//similaire a M mais on a besoin de connaitre les input du jeu
-	}
-	else {
+	} else {
 		std::cerr << "[ERROR IN INPUT]" << std::endl;
 		exit(1);
 	}
@@ -219,24 +225,57 @@ void Server::sendPositionBoard(){
 }
 
 bool Server::signIn(char* val){
-    return false;
+    char pseudo[20], pswd[20];
+    Parsing::parsing(val, pseudo, pswd); // need val to be val[100] 
+    return _db.verifyLogin(pseudo, pswd);
 }
 
 bool Server::signUp(char* val){
-    return false;
+    char pseudo[20], pswd[20];
+    Parsing::parsing(val, pseudo, pswd);
+    return _db.createAccount(pseudo, pswd);
 }
 
-bool Server::addFriend(char* val ){
-    return false;
+int Server::sendFriendRequest(char* val){
+    char pseudoSrc[20], pseudoDest[20];
+    Parsing::parsing(val, pseudoSrc, pseudoDest);
+    return _db.friendRequest(pseudoSrc, pseudoDest);
 }
 
-bool Server::delFriend(char* val ){
-    return false;
+bool Server::addFriend(char* val){
+    char pseudo1[20], pseudo2[20];
+    Parsing::parsing(val, pseudo1, pseudo2);
+    return _db.addFriend(pseudo1, pseudo2);
 }
 
-void Server::checkleaderboard(char* ){
+bool Server::delFriend(char* val){
+    char pseudo1[20], pseudo2[20]; 
+    Parsing::parsing(val, pseudo1, pseudo2);
+    return _db.removeFriend(pseudo1, pseudo2);
+}
+
+void Server::checkleaderboard(char* ){ //only need a pid
     return ;
 }
+
+/*
+bool getfriendList(char* val) {
+	char pseudo[20];
+    Parsing::parsing_pseudo(pseudo);
+    return _db.getFriendList(pseudo);
+}
+
+bool getFriendRequest(char* val) {
+	char* pseudo[20];
+	Parsing::parsing_pseudo(pseudo);
+    return _db.getFriendRequest(pseudo);
+}
+bool viewProfile(char* val) {  //only need a pid ? the name ?
+	char* player[20];
+	Parsing::parsing(val, player);
+    return _db.getProfile(player);
+}
+*/
 
 /**
  * Envoie la réponse au bon client si la réponse est un booléen
