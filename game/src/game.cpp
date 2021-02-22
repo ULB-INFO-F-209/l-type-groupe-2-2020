@@ -29,7 +29,7 @@ WINDOW* game_wnd;
 rect game_area;
 rect screen_area;
 
-MapHandler map(25); //passé en param par le client
+MapHandler map(80); //passé en param par le client
 
 int init() {
 
@@ -68,6 +68,7 @@ int init() {
     init_pair(3, COLOR_YELLOW, COLOR_BLACK);
     init_pair(4, COLOR_RED, COLOR_BLACK);
     init_pair(5, COLOR_BLUE, COLOR_BLACK);
+    init_pair(6,COLOR_WHITE,COLOR_BLACK);
 
     // enable function keys
     keypad(main_wnd, true);
@@ -251,13 +252,29 @@ void run() {
         }
         // draw obstacle
         for(auto o : map.getObstacles()){
-                wattron(game_wnd, A_BOLD);
+                wattron(game_wnd, COLOR_PAIR(6));
                 mvwaddch(game_wnd, o->getPos().y, o->getPos().x, ACS_DIAMOND);
-                wattroff(game_wnd, A_BOLD);
+                wattroff(game_wnd, COLOR_PAIR(6));
         }
         for(auto p : map.getProjectiles()){
+            if (p->getShipType()) {
+                if (p->getPlayer()==1) {
+                    wattron(game_wnd, COLOR_PAIR(5));
+                    mvwaddch(game_wnd, p->getPos().y, p->getPos().x, '*');
+                    wattroff(game_wnd, COLOR_PAIR(5));
+                }
+                else{
+                    wattron(game_wnd, COLOR_PAIR(2));
+                    mvwaddch(game_wnd, p->getPos().y, p->getPos().x, '*');
+                    wattroff(game_wnd, COLOR_PAIR(2));
+                }
+            }
+            else{
+                wattron(game_wnd, COLOR_PAIR(4));
+                mvwaddch(game_wnd, p->getPos().y, p->getPos().x, '*');
+                wattroff(game_wnd, COLOR_PAIR(4));
 
-            mvwaddch(game_wnd, p->getPos().y, p->getPos().x, '*');
+            }
         }
         // draw ennemies
         for(auto e :map.getEnemy()){
@@ -292,10 +309,14 @@ void run() {
 
         for( PlayerShip* p : map.getListPlayer()){
             // draw player body
-            
-            wattron(game_wnd, A_BOLD);
+            int player_color;
+            if (p->getPlayerNb()==1){
+                player_color=2;
+            }
+            else player_color=5;
+            wattron(game_wnd, COLOR_PAIR(player_color));
             mvwaddch(game_wnd, p->getPos().y, p->getPos().x, p->getChar());
-            wattroff(game_wnd, A_BOLD);
+            wattroff(game_wnd, COLOR_PAIR(player_color));
 
             wattron(game_wnd, A_ALTCHARSET);
             mvwaddch(game_wnd, p->getPos().y, p->getPos().x - 1, ACS_LARROW);
@@ -308,19 +329,19 @@ void run() {
                     map.explosion();
                 }
                 if(tick==p->getKillTime()+300 && !p->getIsAlive()){
-            
+
                     p->setisAlive(true);
                     p->setHp(100);
-        
+
                 }
             }
 
             if(listPlayer.at(p->getPlayerNb())->getnLives() > 0){
 
                 if(tick % 100 < 50 && p->getHp()<=0 && tick<p->getKillTime()+300) {
-                    wattron(game_wnd, A_BOLD);
+                    wattron(game_wnd, COLOR_PAIR(player_color));
                     mvwaddch(game_wnd, p->getPos().y, p->getPos().x, ' ');
-                    wattroff(game_wnd, A_BOLD);
+                    wattroff(game_wnd, COLOR_PAIR(player_color));
 
                     wattron(game_wnd, A_ALTCHARSET);
                     mvwaddch(game_wnd, p->getPos().y, p->getPos().x - 1, ' ');
