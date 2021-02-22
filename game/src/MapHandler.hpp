@@ -11,7 +11,7 @@
 #include <list>
 #include "Player.hpp"
 
-enum bonusType{damageUp, tripleShot, bigShot, minigun};
+enum bonusType{damageUp, tripleShot, rocket, minigun,noBonus};
 
 class MapObject{
 public:
@@ -46,6 +46,7 @@ public:
 };
 
 class Ship: public MapObject{
+protected:
     int collisionDamage;
     int fireRate;
     char disp_char;
@@ -81,6 +82,7 @@ class Bonus: public MapObject{
     bonusType bonustype;
 public:
     Bonus(int nx, int ny,bonusType bonus_t) :bonustype(bonus_t)  {pos.x = nx; pos.y = ny;};
+    bonusType getBonusType() const{return bonustype;}
 };
 
 class PlayerShip : public Ship{
@@ -88,10 +90,11 @@ class PlayerShip : public Ship{
     bool isAlive;
     int playerNb;
     int score;
+    bonusType currentBonus;
 
 
 public:
-    PlayerShip(int x, int y, rect b, char c, int h, int nb, int dam, int s){pos.x = x; pos.y = y; setBounds(b); setHp(h); setChar(c);isAlive=true; playerNb = nb; setDammage(dam); score = s;}
+    PlayerShip(int x, int y, rect b, char c, int h, int nb, int dam, int s){pos.x = x; pos.y = y; bounds=b; hp=h; disp_char=c;isAlive=true; playerNb = nb; collisionDamage=dam; score = s;currentBonus=noBonus;shootDamage=10;}
     int getKillTime() const{return killTime;}
     bool getIsAlive() const{return isAlive;}
     void setKillTime(int t){killTime=t;}
@@ -99,7 +102,10 @@ public:
     int getPlayerNb() const{return playerNb;}
     int getScore() const{return score;}
     void setScore(int s){score = s;}
-    
+    void catchBonus (const Bonus* b);
+    bonusType getCurrentBonus(){return currentBonus;}
+    void setCurrentBonus(bonusType b){currentBonus=b;}
+
 };
 
 class EnemyShip : public Ship{
@@ -122,7 +128,7 @@ public:
     std::vector<EnemyShip*> getEnemy() const;
     std::vector<Bonus*> getBonus() const;
     void setBounds(rect);
-    void spawnProjectile(int, int, int, bool, int, int);
+    void spawnProjectile(int x, int y, int damage, bool type, int hp, int player);
     void checkCollision();
     rect field_bounds;
     void playerInit(PlayerShip* p1,PlayerShip* p2);

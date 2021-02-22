@@ -78,6 +78,15 @@ void MapHandler::update(MapObject::type typ, int t) {
         }
     }
 
+    else if (typ == MapObject::bonus) {
+        for(size_t i = 0; i < bonuses_set.size(); i++) {
+            bonuses_set.at(i)->move();
+            if(bonuses_set.at(i)->getPos().y > field_bounds.bot() + 1)
+                bonuses_set.erase(bonuses_set.begin() + i);
+
+        }
+    }
+
 
     // spawn a new object
     
@@ -89,7 +98,46 @@ void MapHandler::update(MapObject::type typ, int t) {
         enemy_ships_set.push_back(new EnemyShip(rand() % (field_bounds.width()-1)+1, 0, { {10 - 1, 5 }, { 3, 2 } }, '%',30,10,t+rand()%100));
 }
 void MapHandler::spawnProjectile(int x, int y, int damage, bool type, int hp, int player){
-    projectiles_set.push_back(new Projectile(x,y,damage,type,hp, player));
+    if(player!=0) {
+        if (player_ships_set.size() == 2) {
+            if (player_ships_set.at(player - 1)->getCurrentBonus() == tripleShot) {
+                projectiles_set.push_back(new Projectile(x - 1, y - 1, damage, type, hp, player));
+                projectiles_set.push_back(new Projectile(x + 1, y - 1, damage, type, hp, player));
+                projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
+            } else if (player_ships_set.at(player - 1)->getCurrentBonus() == rocket) {
+                projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp * 10, player));
+            } else if (player_ships_set.at(player - 1)->getCurrentBonus() == minigun) {
+                projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
+            } else if (player_ships_set.at(player - 1)->getCurrentBonus() == noBonus) {
+                projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
+            } else if (player_ships_set.at(player - 1)->getCurrentBonus() == damageUp) {
+                if (player_ships_set.at(player - 1)->getShootDamage() != 20)
+                    player_ships_set.at(player - 1)->setShootDamage(20);
+                projectiles_set.push_back(
+                        new Projectile(x, y - 1, player_ships_set.at(player - 1)->getShootDamage(), type, hp, player));
+            }
+        }
+        else {
+            if (player_ships_set.at(0)->getCurrentBonus() == tripleShot) {
+                projectiles_set.push_back(new Projectile(x - 1, y - 1, damage, type, hp, player));
+                projectiles_set.push_back(new Projectile(x + 1, y - 1, damage, type, hp, player));
+                projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
+            } else if (player_ships_set.at(0)->getCurrentBonus() == rocket) {
+                projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp * 10, player));
+            } else if (player_ships_set.at(0)->getCurrentBonus() == minigun) {
+                projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
+            } else if (player_ships_set.at(0)->getCurrentBonus() == noBonus) {
+                projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
+            }
+            else if (player_ships_set.at(0)->getCurrentBonus() == damageUp) {
+                if (player_ships_set.at(0)->getShootDamage() != 20)
+                    player_ships_set.at(0)->setShootDamage(20);
+                projectiles_set.push_back(
+                        new Projectile(x, y - 1, player_ships_set.at(0)->getShootDamage(), type, hp, player));
+            }
+        }
+    }
+    else projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
 }
 
 void MapHandler::checkCollision() {
@@ -99,7 +147,6 @@ void MapHandler::checkCollision() {
             if(p->getBounds().contains(i->getPos()) && p->getHp()>0){
                 p->touched(i->get_damage());
                 i->touched(i->getHp());
-
             }
         }
     }
@@ -116,7 +163,6 @@ void MapHandler::checkCollision() {
         }
     }
 
-
     // collision enemy/player
     for(PlayerShip* p : player_ships_set){
         for(auto & e : enemy_ships_set){
@@ -124,14 +170,6 @@ void MapHandler::checkCollision() {
                 p->touched(p->getHp());
                 e->touched(p->getDammage());
             }
-        }
-    }
-    //erase enemy
-    for(size_t e = 0; e < enemy_ships_set.size(); e++){
-        if(enemy_ships_set.at(e)->getHp() <= 0) {
-            spawnBonuses(enemy_ships_set.at(e)->getPos().x, enemy_ships_set.at(e)->getPos().y);
-            enemy_ships_set.erase(enemy_ships_set.begin() + e);
-            //ajouter proba
         }
     }
 
@@ -162,7 +200,7 @@ void MapHandler::checkCollision() {
             if(proj->getShipType() && e->getBounds().contains(proj->getPos()) && e->getHp()>0){
                 e->touched(proj->getDamage());
                 //player_ships_set.at(projectiles_set.at(proj)->getPlayer()-1)->setScore(player_ships_set.at(projectiles_set.at(proj)->getPlayer()-1)->getScore() + 10);
-                proj->touched(proj->getHp());
+                proj->touched(e->getDammage());
                 if(player_ships_set.size() == 2){
                     player_ships_set.at(proj->getPlayer()-1)->setScore(player_ships_set.at(proj->getPlayer()-1)->getScore() + 10);
                 }
@@ -172,9 +210,26 @@ void MapHandler::checkCollision() {
             }
         }
     }
+
+    //collison player/bonus
+    for(PlayerShip* p : player_ships_set){
+        for(auto & b : bonuses_set){
+            if(p->getBounds().contains(b->getPos()) && p->getHp()>0){
+                p->catchBonus(b);
+                b->touched(b->getHp());
+            }
+        }
+    }
+
+
     //erase enemy
     for(size_t e = 0; e < enemy_ships_set.size(); e++){
-        if(enemy_ships_set.at(e)->getHp() <= 0)enemy_ships_set.erase(enemy_ships_set.begin() + e);
+        if(enemy_ships_set.at(e)->getHp() <= 0){
+            //proba
+            spawnBonuses(enemy_ships_set.at(e)->getPos().x, enemy_ships_set.at(e)->getPos().y);
+            enemy_ships_set.erase(enemy_ships_set.begin() + e);
+
+        }
     }
 
     //erase obstacle
@@ -232,6 +287,10 @@ void MapHandler::explosion() {
 }
 
 void MapHandler::spawnBonuses(int x, int y) {
-    bonusType  bonusT = bonusType(rand()%4); // à changer si nombre de bonus change
+    auto bonusT = bonusType(rand()%4); // à changer si nombre de bonus change
     bonuses_set.push_back(new Bonus(x, y, bonusT ));
+}
+
+void PlayerShip::catchBonus(const Bonus* b) {
+        this->setCurrentBonus(b->getBonusType());
 }

@@ -12,17 +12,17 @@
  *      tripleShot(tir diagonaux)
  *      Damage++(dégats x2 ?)
  *      bigShot(gros missiles 3x plus large)
+ *      (+1 life)
  * ajouter effet explosion
  * ERROR:
  */
 
 #include <unistd.h>
 #include <ncurses.h>
-
 #include <cstdint>
 #include <string>
-#include <stdlib.h>
-#include <time.h>
+#include <cstdlib>
+#include <ctime>
 #include <vector>
 #include "MapHandler.hpp"
 #include "game.hpp"
@@ -33,7 +33,6 @@ WINDOW* game_wnd;
 
 rect game_area;
 rect screen_area;
-
 
 MapHandler map;
 
@@ -181,7 +180,7 @@ void run() {
                 break;
             case ' ':
                 if(playership1->getHp()>0)
-                    map.spawnProjectile(playership1->getPos().x, playership1->getPos().y -1, 10, true, 10, 1);
+                    map.spawnProjectile(playership1->getPos().x, playership1->getPos().y, playership1->getShootDamage(), true, 10, 1);
                 break;
 //player2
             case 'f':
@@ -218,7 +217,7 @@ void run() {
                 break;
             case 'm':
                 if(playership2->getHp()>0)
-                    map.spawnProjectile(playership2->getPos().x, playership2->getPos().y -1, 10, true, 10, 2);
+                    map.spawnProjectile(playership2->getPos().x, playership2->getPos().y -1, playership1->getShootDamage(), true, 10, 2);
                 break;
             default:
                 break;
@@ -228,14 +227,17 @@ void run() {
             map.update(MapObject::star, tick);
         if(tick % 7 == 0)
             map.update(MapObject::projectile, tick);
+
         if(tick > 100 && tick %50  == 0) {
             map.update(MapObject::obstacle, tick);
         }
         if (tick > 100 && tick %150 ==0)
             map.update(MapObject::enemyship, tick);
+        if(tick %50  == 0) {
+            map.update(MapObject::bonus, tick);
+        }
 
         map.enemyShoot(tick);
-
         map.updatePlayerBounds();     // update player bounds
         map.checkCollision();
 
@@ -269,11 +271,23 @@ void run() {
             mvwaddch(game_wnd, e->getPos().y, e->getPos().x + 1, ACS_RARROW);
             wattroff(game_wnd, A_ALTCHARSET);
         }
-
+        // draw Bonus
         for(auto b : map.getBonus()) {
             wattron(game_wnd, A_BOLD);
-            mvwaddch(game_wnd, b->getPos().y, b->getPos().x, '+');
+            if(b->getBonusType()==rocket){
+                mvwaddch(game_wnd, b->getPos().y, b->getPos().x, 'R');
+            }
+            else if(b->getBonusType()==minigun){
+                mvwaddch(game_wnd, b->getPos().y, b->getPos().x, 'M');
+            }
+            else if(b->getBonusType()==damageUp){
+                mvwaddch(game_wnd, b->getPos().y, b->getPos().x, 'D');
+            }
+            else if(b->getBonusType()==tripleShot){
+                mvwaddch(game_wnd, b->getPos().y, b->getPos().x, 'T');
+            }
             wattroff(game_wnd, A_BOLD);
+
         }
 
         for( PlayerShip* p : map.getListPlayer()){
