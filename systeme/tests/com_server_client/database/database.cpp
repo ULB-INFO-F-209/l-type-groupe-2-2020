@@ -129,6 +129,7 @@ bool Database::addFriend(char* pseudo1, char* pseudo2){
     }
     if (idx1 == -1){std::cout << pseudo1 << " does not exist" << std::endl;}
     if (idx2 == -1){std::cout << pseudo2 << " does not exist" << std::endl;}
+    std::cout << res << std::endl;
     return res;
 }
 

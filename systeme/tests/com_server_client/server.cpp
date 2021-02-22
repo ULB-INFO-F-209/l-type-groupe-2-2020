@@ -167,6 +167,11 @@ void Server::initConnexions(){
         fd =open(connex_pipe_path, O_RDONLY);
         if (fd != -1){
             int val = read(fd,proc_id,Constante::CHAR_SIZE); // TODO verification de val 
+            if (val == -1)
+            {
+                std::cout << "connexion echouée" <<proc_id<<std::endl;
+            }
+            else{
             std::cout << "connexion du processus :" <<proc_id<<std::endl;
 
             char pipe_name[Constante::CHAR_SIZE*2];
@@ -174,7 +179,8 @@ void Server::initConnexions(){
             
             createPipe(pipe_name); // creation de nouveau pipe avec le pid du client
             close(fd);
-            
+            }
+    
         }
         else{
             std::cerr << "[ERROR PIPE CONNEXION]" <<std::endl;
@@ -196,9 +202,10 @@ bool Server::signIn(char* val){
 }
 
 bool Server::signUp(char* val){
-    std::cout << "hello\n"; 
     char pseudo[20], pswd[20];
+    std::cout << "before:" << val << std::endl;
     Parsing::parsing(val, pseudo, pswd);
+    std::cout << " after: " << val << " , " << pseudo << " , " << pswd << std::endl;
     return _db.createAccount(pseudo, pswd);
 }
 

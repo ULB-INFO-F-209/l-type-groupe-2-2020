@@ -11,11 +11,13 @@
 Client::Client(){
 	pid_t pid_process = getpid();
 	_pid = pid_process;
-	sprintf(_pipe_from_server,"%s%s%d",Constante::PIPE_PATH,Constante::BASE_PIPE_FILE, pid_process); //nom a lire
-	strcpy(_pipe_to_server,Constante::PIPE_DE_REPONSE); //pipe où écrire
+	sprintf(_pipe_from_server,"%s%s%d", Constante::PIPE_PATH,Constante::BASE_PIPE_FILE, pid_process); //nom a lire
+	sprintf(_pipe_to_server, "%s%s", Constante::PIPE_PATH, Constante::PIPE_DE_REPONSE); //pipe où écrire
+	char test[100];
+	sprintf(test,"%s%s",Constante::PIPE_PATH,Constante::PIPE_DE_CONNEXION); //nom a lire
 
 	//sending process pid : mandatory to do the first connexion;
-	_fd_send_query= open(Constante::PIPE_DE_CONNEXION, O_WRONLY); 
+	_fd_send_query= open(test, O_WRONLY); 
 	char buffer[Constante::CHAR_SIZE]; 
 	sprintf(buffer,"%d", pid_process);
 	write(_fd_send_query, buffer, sizeof(buffer)); 
@@ -25,11 +27,13 @@ Client::Client(){
 //utilities
 void Client::communication(char *buffer){
 	_fd_send_query =  open(_pipe_to_server, O_WRONLY); 
-	write(_fd_send_query, buffer, sizeof(buffer)); //sending query
+	write(_fd_send_query, buffer, Constante::CHAR_SIZE); //sending query
+	std::cout << buffer << std::endl;
 	close(_fd_send_query);
 	_fd_get_query = open(_pipe_from_server, O_WRONLY);
 	read(_fd_get_query, buffer,  sizeof(buffer)); //getting feedback
 	close(_fd_get_query);
+	std::cout << buffer << std::endl;
 }
 
 //Communication
@@ -147,5 +151,5 @@ int  Client::createGame(char *game_info){
 
 //destructor
 Client::~Client(){
-	exit(); //kill process
+	//exit(); //kill process
 }

@@ -110,8 +110,8 @@ void Parsing::parsing(char* str, char* token1, char* token2) {
 		index = token.find(del);
 		var = token.substr(0, index);
 		token = token.erase(0, index+1);
-		if (i == 2) { strcpy(token1, var.c_str()); }
-		else if (i == 3 && token2) { strcpy(token2, var.c_str()); }
+		if (i == 1) { strcpy(token1, var.c_str()); }
+		else if (i == 2 && token2) { strcpy(token2, var.c_str()); }
 		i++;
 	}
 }

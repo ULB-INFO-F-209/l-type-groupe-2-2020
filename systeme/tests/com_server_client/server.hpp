@@ -32,7 +32,7 @@ private:
 
 public:
     Server();
-    ~Server()=default;
+    ~Server(){_db.dbSave();};
 
 private:
 	//connections
