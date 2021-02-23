@@ -1,11 +1,8 @@
 /**
  * TODO:
- *  thread pour jouer en même temps
- *  faire des niveaux
+ *  thread pour jouer en même temps (Aïssa)
  *  enlever static_cast !!
  *  transformer game.cpp en classe
- *  changer vectors en listes
- *  mettre tous les destructors 
  *  damage version alexandre
  *  couleur
  *  ajouter effet explosion
@@ -135,7 +132,6 @@ void run() {
         in_char = wgetch(main_wnd);
         in_char = tolower(in_char);
 
-        
         uint_fast16_t x1 = playership1->getPos().x;
         uint_fast16_t y1 = playership1->getPos().y;
         uint_fast16_t  x2 = playership2->getPos().x;
@@ -214,7 +210,7 @@ void run() {
                     playership2->setPos(x2 - 1 , y2 + 1);}
                 break;
             case 'm':
-                if(playership2->getHp()>0 && playership1->getCurrentBonus()!=minigun)
+                if(playership2->getHp()>0 && playership2->getCurrentBonus()!=minigun)
                     map.spawnProjectile(playership2->getPos().x, playership2->getPos().y, playership1->getShootDamage(), true, 10, 2);
                 break;
             default:
@@ -377,6 +373,7 @@ void run() {
         //draw new level
         if(map.getLevelTick() != 0 && tick <= map.getLevelTick() + 600 && tick > map.getLevelTick()+100){
             mvwprintw(game_wnd, 8, 35, "level %i", map.getCurrentLevel());
+            map.changeLevel();
             if(tick == map.getLevelTick() + 600)
                 map.setChangingLevel(false);
         }

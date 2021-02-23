@@ -67,7 +67,7 @@ void MapHandler::update(MapObject::type typ, int t) {
         for(size_t i = 0; i < enemy_ships_set.size(); i++) {
             if(enemy_ships_set.at(i)->getPos().y > field_bounds.bot() + 1){
                 enemy_ships_set.erase(enemy_ships_set.begin() + i);
-                if(enemyCount == 5 && changingLevel && enemy_ships_set.size() == 0){
+                if(enemyCount == enemyLimit && changingLevel && enemy_ships_set.empty()){
                 levelTick = t;
                 enemyCount = 0;
                 }
@@ -93,20 +93,20 @@ void MapHandler::update(MapObject::type typ, int t) {
     }
     
     else if (typ == MapObject::obstacle) {
-        for(size_t i = 0; i < obstacles_set.size(); i++) {
-            obstacles_set.at(i)->move();            
+        for(auto & i : obstacles_set) {
+            i->move();
         }
     }
     
     else if (typ == MapObject::projectile) {
-        for(size_t i = 0; i < projectiles_set.size(); i++) {
-            projectiles_set.at(i)->move();
+        for(auto & i : projectiles_set) {
+            i->move();
             
         }
     }
     else if (typ == MapObject::enemyship) {
-        for(size_t i = 0; i < enemy_ships_set.size(); i++) {
-            enemy_ships_set.at(i)->move();
+        for(auto & i : enemy_ships_set) {
+            i->move();
             
         }
     }
@@ -129,7 +129,7 @@ void MapHandler::update(MapObject::type typ, int t) {
     else if (typ == MapObject::enemyship && t%300==0 && !changingLevel) {
         enemy_ships_set.push_back(new EnemyShip(rand() % (field_bounds.width() - 1) + 1, 0, {{10 - 1, 5},{3,      2}}, '%', enemyStartHp,t + rand() % 100, enemyStartProjectileDamage));
         enemyCount++;
-        if(enemyCount >= 5){
+        if(enemyCount >= enemyLimit){
             changingLevel = true;
             currentLevel++;
         }
@@ -274,7 +274,7 @@ void MapHandler::checkCollision(int t) {
             if (rand()%100<=probaBonus)
                 spawnBonuses(enemy_ships_set.at(e)->getPos().x, enemy_ships_set.at(e)->getPos().y);
             enemy_ships_set.erase(enemy_ships_set.begin() + e);
-            if(enemyCount == 5 && changingLevel && enemy_ships_set.size() == 0){
+            if(enemyCount == enemyLimit && changingLevel && enemy_ships_set.empty()){
                 levelTick = t;
                 enemyCount = 0;
             }
@@ -341,6 +341,32 @@ void MapHandler::explosion() {
 void MapHandler::spawnBonuses(int x, int y) {
     auto bonusT = bonusType(rand()%4); // à changer si nombre de bonus change
     bonuses_set.push_back(new Bonus(x, y, bonusT ));
+}
+
+void MapHandler::changeLevel() {
+    if(currentLevel==2){
+        enemyLimit=10;
+        enemyStartHp=40;
+        enemyStartProjectileDamage=15;
+    }
+    else if(currentLevel==3){
+        enemyLimit=20;
+        enemyStartHp=40;
+        enemyStartProjectileDamage=15;
+    }
+    else if(currentLevel==4){
+        enemyLimit=20;
+        enemyStartHp=50;
+        enemyStartProjectileDamage=20;
+    }
+    else if(currentLevel==5){
+        enemyLimit=30;
+        enemyStartHp=50;
+        enemyStartProjectileDamage=20;
+        obstacleStartHp=20;
+        obstacleStartDamage=20;
+    }
+
 }
 
 void PlayerShip::catchBonus(const Bonus* b) {

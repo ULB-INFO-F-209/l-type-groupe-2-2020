@@ -25,7 +25,7 @@ public:
     virtual void setHp(int h){hp =h;}
 
     virtual int getHp(){return hp;}
-    virtual ~MapObject()= default; // faut-il avoir un destructeur pour chaque sous classe ?
+    virtual ~MapObject()= default;
 protected:
     vec2i pos;
     int hp;
@@ -126,6 +126,7 @@ class MapHandler{
     int levelTick = 0;
     bool changingLevel = false;
     int enemyCount = 0;
+    int enemyLimit=5;
     int enemyStartHp = 30;
     int enemyStartProjectileDamage = 10;
     int obstacleStartHp = 10;
@@ -161,6 +162,7 @@ public:
     void enemyShoot(int tick);
     void explosion();
     void spawnBonuses(int x, int y);
+    void changeLevel();
     ~MapHandler()= default;
 
 
