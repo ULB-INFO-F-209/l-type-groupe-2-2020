@@ -6,10 +6,9 @@
 #include <vector>
 #include <ncurses.h>
 #include "parsing.hpp"
+#include "screen.hpp"
 
-using namespace Parsing;
-
-
+using namespace Screen;
 class Interface final
 {
 	//Terminale state
@@ -37,20 +36,19 @@ class Interface final
 public:
 	//constructor
 	Interface();
-
+	void resize_win();
 	//communication with screen
 	int print_menu(size_t size, std::string *choices);
 	bool get_connexion(char *pseudo, char *pswd, char *error);
-	void print_profile(std::vector<Profile*> vect); //n oublie pas le titre
-	void print_profile(Profile *prof);
-	int print_invitation(Profile *pseudo);
+	void print_profile(std::vector<Parsing::Profile*> vect); //n oublie pas le titre
+	void print_profile(Parsing::Profile *prof);
+	int print_invitation(Parsing::Profile *pseudo);
 	int get_pseudo(char *res, char *error); //for sendrequest|add|del
 	void print_alert(char *alert); //signaux
 
 	//destructor
 	~Interface();
-private:
-	void resize_win();
+	void set_screen(char *title, int nb_saying, char*saying1, char*saying2=NULL, char*saying3=NULL);
 	void update_menu(size_t size,  std::string *choices, int highlight);
 	bool verify_cara(char *c);
 	void print_cara(WINDOW *win , const char *c, int x, int y);
@@ -58,7 +56,7 @@ private:
 	void init_connexion();
 	void print_message(WINDOW *win, size_t size, std::string *tab, int x, int y);
 	void print_error(WINDOW *win, char *error , int x, int y);
-	void print_friends(WINDOW *win, std::vector<Profile*> vect, int highlight, int min, int max);
+	void print_friends(WINDOW *win, std::vector<Parsing::Profile*> vect, int highlight, int min, int max);
 };
 
 

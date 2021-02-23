@@ -11,26 +11,66 @@ Interface::Interface(){
 	initscr(); 
     noecho(); //affiche pas les inputs sur le stdout
     curs_set(0);
-    getmaxyx(stdscr,_yMax,_xMax);
-    WIN_HEIGHT = _yMax-(_yMax/4);
-    WIN_WIDTH = _xMax-(_xMax/5);
-    WIN_Y = _yMax/7;
-    WIN_X = _xMax/8;
-    _menuWin = newwin(WIN_HEIGHT, WIN_WIDTH, WIN_Y, WIN_X); //hauteur;longueur;y;x
-    _pseudoWin = newwin(WIN_HEIGHT/5, (WIN_WIDTH/2)+10, WIN_Y*4, (WIN_X*2)+3);
-    _mdpWin = newwin(WIN_HEIGHT/5, (WIN_WIDTH/2)+10, WIN_Y*6, (WIN_X*2)+3);
-    _msgWin = newwin(WIN_HEIGHT/4, (WIN_WIDTH), WIN_Y, WIN_X);
-
+    resize_win();
 }
 
+void Interface::resize_win(){
+
+    getmaxyx(stdscr,YMAX,XMAX);
+
+    //size and positions
+    WIN_HEIGHT = YMAX-(YMAX/4);
+    WIN_WIDTH = XMAX-(XMAX/5);
+    WIN_Y = YMAX/7;
+    WIN_X = XMAX/8;
+    PS_HEIGHT = WIN_HEIGHT/5;
+    PS_WIDTH = (WIN_WIDTH/2)+10;
+    PS_Y = WIN_Y*4;
+    PS_X = (WIN_X*2)+3;
+    PA_HEIGHT = WIN_HEIGHT/5;
+    PA_WIDTH = (WIN_WIDTH/2)+10;
+    PA_Y = WIN_Y*6;
+    PA_X = (WIN_X*2)+3;
+    S_HEIGHT =  WIN_HEIGHT/4;
+    S_WIDTH = WIN_WIDTH;
+    S_Y = WIN_Y;
+    S_X = WIN_X ;
+
+    //other postions (a readapater selon la fenetre)
+    _menu_x = WIN_WIDTH/4;
+	_menu_y =  WIN_HEIGHT/3;
+	_title_x = (WIN_X*3)-7;
+	_title_y =  WIN_Y /2;
+	_ps_x = 15;  //pas la legende
+	_ps_y = (WIN_Y /2); //readapatation
+	_pa_x = 15;
+	_pa_y =(WIN_Y /2);
+	_saying_x =  WIN_X;
+	_saying_y = (WIN_Y*2)-1;
+	_error_x = WIN_X+4;
+	_error_y= (WIN_Y*4)+1;
+	_prof_x = WIN_X+4; //afficher ton profile
+	_prof_p_y = WIN_Y*4;
+	_prof_s_y = (WIN_Y*4)+3;
+ 
+    _main_win = newwin(WIN_HEIGHT, WIN_WIDTH, WIN_Y, WIN_X); //hauteur;longueur;y;x
+    _pseudo_win = newwin(PS_HEIGHT, PS_WIDTH, PS_Y, PS_X);
+    _pass_win = newwin(PA_HEIGHT, PA_WIDTH, PA_Y, PA_X);
+    _saying_win = newwin(S_HEIGHT, S_WIDTH, S_Y, S_X);
+
+    wrefresh(_main_win);
+    wrefresh(_pseudo_win);
+    wrefresh(_pass_win);
+    wrefresh(_saying_win);
+}
 int Interface::print_menu(size_t size, std::string *choices){
 		int res = 0, choice=1;
-		keypad(_menuWin,TRUE); //active clavier
-		box(_menuWin,0,0);
-		wrefresh(_menuWin);
+		keypad(_main_win,TRUE); //active clavier
+		box(_main_win,0,0);
+		wrefresh(_main_win);
 		while(choice){
 			update_menu(size,choices,res);
-			choice = wgetch(_menuWin);
+			choice = wgetch(_main_win);
 			switch(choice){
 				case KEY_UP:
 					if(res > 0){res--;} //tu peux monter plus haut que le ciel
@@ -45,7 +85,7 @@ int Interface::print_menu(size_t size, std::string *choices){
 					break;
 			}
 		}
-		wrefresh(_menuWin);
+		wrefresh(_main_win);
 		return res;
 }
 
@@ -54,19 +94,19 @@ void Interface::update_menu(size_t size,  std::string *choices, int highlight){
 	int x = WIN_WIDTH/4, y= WIN_HEIGHT/(size);
 	start_color();
 	init_pair(1, COLOR_CYAN, COLOR_BLACK);
-	wattron(_menuWin, COLOR_PAIR(1));
+	wattron(_main_win, COLOR_PAIR(1));
 	for(size_t i = 0; i < size; ++i){
 		if(i  == static_cast<size_t>(highlight)){
-			wattron(_menuWin, A_BLINK);
-			wattron(_menuWin, A_REVERSE);
-			mvwprintw(_menuWin, y, x, choices[i].c_str());
-			wattroff(_menuWin, A_REVERSE);
-			wattroff(_menuWin, A_BLINK);
+			wattron(_main_win, A_BLINK);
+			wattron(_main_win, A_REVERSE);
+			mvwprintw(_main_win, y, x, choices[i].c_str());
+			wattroff(_main_win, A_REVERSE);
+			wattroff(_main_win, A_BLINK);
 		}
-		else{mvwprintw(_menuWin, y, x, choices[i].c_str());}
+		else{mvwprintw(_main_win, y, x, choices[i].c_str());}
 		y+=3;
 	}
-	wattroff(_menuWin, COLOR_PAIR(1));
+	wattroff(_main_win, COLOR_PAIR(1));
 }
 
 bool Interface::get_connexion(char pseudo[20], char pswd[20], char *error){
@@ -80,39 +120,39 @@ bool Interface::get_connexion(char pseudo[20], char pswd[20], char *error){
 	std::string msg3= "underscore character are allowed.";
 	std::string msg[] = {msg1,msg2,msg3};
 	init_connexion();
-	print_message(_menuWin, 3,msg, WIN_X, (WIN_Y*2)-1);
+	print_message(_main_win, 3,msg, WIN_X, (WIN_Y*2)-1);
 	if(error)
-		print_error(_menuWin, error,WIN_X+4, (WIN_Y*4)+1);
-	move_cursor(_pseudoWin, px, py);
+		print_error(_main_win, error,WIN_X+4, (WIN_Y*4)+1);
+	move_cursor(_pseudo_win, px, py);
 	while(choice){
 		choice = getch();
 		switch(choice){
 			case KEY_UP:
 				if(focus > 0){
 					focus--;
-					move_cursor(_mdpWin, mx, my, true);
-					move_cursor(_pseudoWin, px, py);
+					move_cursor(_pass_win, mx, my, true);
+					move_cursor(_pseudo_win, px, py);
 				}
 				break;
 			case KEY_DOWN:
 				if(focus < 1){
 					focus++;
-					move_cursor(_pseudoWin, px, py, true);
-					move_cursor(_mdpWin, mx, my);
+					move_cursor(_pseudo_win, px, py, true);
+					move_cursor(_pass_win, mx, my);
 				}
 				break;
 			case 10: //enter
 				if(nbp < 6 and nbm < 6){
 					char e[] = "Your pseudo and password are too short!";
-					print_error(_menuWin, e,WIN_X+4, (WIN_Y*4)+1);
+					print_error(_main_win, e,WIN_X+4, (WIN_Y*4)+1);
 				}
 				else if(nbm < 6){
 					char e[] = "Your password is too short!";
-					print_error(_menuWin, e,WIN_X+4, (WIN_Y*4)+1);
+					print_error(_main_win, e,WIN_X+4, (WIN_Y*4)+1);
 				}
 				else if(nbp < 6){
 					char e[] = "Your pseudo is too short!";
-					print_error(_menuWin, e,WIN_X+4, (WIN_Y*4)+1);
+					print_error(_main_win, e,WIN_X+4, (WIN_Y*4)+1);
 				}
 				else{
 					choice = 0;
@@ -124,14 +164,14 @@ bool Interface::get_connexion(char pseudo[20], char pswd[20], char *error){
 				break;
 			case KEY_BACKSPACE:
 				if(focus and nbm > 0){ //mdp_zone
-					move_cursor(_mdpWin, mx, my, true); //rendre invsible le curseur
-					move_cursor(_mdpWin, --mx, my); //reculer le cursor
+					move_cursor(_pass_win, mx, my, true); //rendre invsible le curseur
+					move_cursor(_pass_win, --mx, my); //reculer le cursor
 					nbm--;
 					pswd[nbm] = '\0';
 				}
 				else if(not focus and nbp > 0){
-					move_cursor(_pseudoWin, px, py, true);
-					move_cursor(_pseudoWin, --px, py);
+					move_cursor(_pseudo_win, px, py, true);
+					move_cursor(_pseudo_win, --px, py);
 					nbp--;
 					pseudo[nbp] = '\0'; //fin de ligne
 				}
@@ -139,14 +179,14 @@ bool Interface::get_connexion(char pseudo[20], char pswd[20], char *error){
 			default:
 				cara = static_cast<char>(choice);
 				if(not focus and nbp < 15 and verify_cara(&cara)){
-					print_cara(_pseudoWin, &cara, px, py);
-					move_cursor(_pseudoWin, ++px, py);
+					print_cara(_pseudo_win, &cara, px, py);
+					move_cursor(_pseudo_win, ++px, py);
 					pseudo[nbp] = cara;
 					nbp ++;
 				}
 				else if(focus and nbm < 15 and verify_cara(&cara)){
-					print_cara(_mdpWin, &mask, mx, my);
-					move_cursor(_mdpWin, ++mx, my);
+					print_cara(_pass_win, &mask, mx, my);
+					move_cursor(_pass_win, ++mx, my);
 					pswd[nbm] = cara;
 					nbm++;
 				}
@@ -167,31 +207,31 @@ void Interface::print_error(WINDOW *win, char *error , int x, int y){
 
 void Interface::print_message(WINDOW *win, size_t size, std::string *tab, int x, int y){
 	for(size_t i=0; i < size; i++){
-		print_cara(_menuWin, tab[i].c_str(),x,y);
+		print_cara(_main_win, tab[i].c_str(),x,y);
 		y++;
 	}
 }
 
 void Interface::init_connexion(){
 	keypad(stdscr,TRUE); //all windows not only pseudo or mdp
-    box(_menuWin,0,0);
-    box(_msgWin,0,0);
-	box(_pseudoWin,0,0);
-	box(_mdpWin,0,0);
+    box(_main_win,0,0);
+    box(_saying_win,0,0);
+	box(_pseudo_win,0,0);
+	box(_pass_win,0,0);
 	refresh();
-	wrefresh(_menuWin);
-	wrefresh(_msgWin);
-	wrefresh(_pseudoWin);
-	wrefresh(_mdpWin);
+	wrefresh(_main_win);
+	wrefresh(_saying_win);
+	wrefresh(_pseudo_win);
+	wrefresh(_pass_win);
 
 	//legends
 	char title[] = "SIGN IN"; 
 	char id[] = "PSEUDO :";
 	char mdp[] = "PASSWORD :";
 
-	print_cara(_msgWin, title, (WIN_X*3), WIN_Y /2); 
-	print_cara(_pseudoWin, id, 5, WIN_Y /2);
-	print_cara(_mdpWin, mdp, 5, WIN_Y /2);
+	print_cara(_saying_win, title, (WIN_X*3), WIN_Y /2); 
+	print_cara(_pseudo_win, id, 5, WIN_Y /2);
+	print_cara(_pass_win, mdp, 5, WIN_Y /2);
 }
 
 void Interface::print_cara(WINDOW *win , const char *c, int x, int y){
@@ -229,21 +269,21 @@ bool Interface::verify_cara(char *c){
 
 void Interface::print_profile(Profile *prof){
 	keypad(stdscr,TRUE);
-    box(_menuWin,0,0);
-    box(_msgWin,0,0);
+    box(_main_win,0,0);
+    box(_saying_win,0,0);
 	refresh();
-	wrefresh(_menuWin);
-	wrefresh(_msgWin);
+	wrefresh(_main_win);
+	wrefresh(_saying_win);
 	char title[] = "    YOUR PROFILE   ";
 	char proverbe[] = "BE PROUD OF YOUR SCORE!";
-	print_cara(_msgWin, title, (WIN_X*3)-7, WIN_Y /2); 
-	print_cara(_msgWin, proverbe, (WIN_X*3)-8, (WIN_Y /2)+2); 
+	print_cara(_saying_win, title, (WIN_X*3)-7, WIN_Y /2); 
+	print_cara(_saying_win, proverbe, (WIN_X*3)-8, (WIN_Y /2)+2); 
 	char name[30];
 	char score[30];
 	sprintf(name,  "Pseudo : %s", prof->pseudo);
 	sprintf(score, "Score : %d", prof->score);
-	print_cara(_menuWin,name, WIN_X+4, WIN_Y*4);
-	print_cara(_menuWin,score, WIN_X+4, (WIN_Y*4)+3);
+	print_cara(_main_win,name, WIN_X+4, WIN_Y*4);
+	print_cara(_main_win,score, WIN_X+4, (WIN_Y*4)+3);
 }
 
 void Interface::print_profile(std::vector<Profile*> vect){
@@ -255,7 +295,7 @@ void Interface::print_profile(std::vector<Profile*> vect){
 	if(MAX < 12){idx_max = MAX;}
 	else{idx_max = idx_min + nb_elem;}
 	while(choice){
-		print_friends(_menuWin, vect, focus, idx_min, idx_max);
+		print_friends(_main_win, vect, focus, idx_min, idx_max);
 		choice = getch();
 		switch(choice){
 			case KEY_UP:
@@ -289,22 +329,22 @@ void Interface::print_profile(std::vector<Profile*> vect){
 void Interface::print_friends(WINDOW *win, std::vector<Profile*> vect, int highlight, int min, int max){
 	wclear(win);
     box(win,0,0);
-    box(_msgWin,0,0);
+    box(_saying_win,0,0);
 	refresh();
 	wrefresh(win);
-	wrefresh(_msgWin);
+	wrefresh(_saying_win);
 	char title[] = "    YOUR FRIENDS  ";
 	char proverbe[] = "Making new friends shouldn't mean losing old ones.";
 	char regle[64];
 	sprintf(regle, "But you can only have 100 friends, you have already %lu!",vect.size());
-	print_cara(_msgWin, title, (WIN_X*3)-7, WIN_Y /2); 
-	print_cara(_msgWin, proverbe, (WIN_X*2)-15, (WIN_Y /2)+1);
-	print_cara(_msgWin, regle, (WIN_X*2)-15, (WIN_Y /2)+2);
+	print_cara(_saying_win, title, (WIN_X*3)-7, WIN_Y /2); 
+	print_cara(_saying_win, proverbe, (WIN_X*2)-15, (WIN_Y /2)+1);
+	print_cara(_saying_win, regle, (WIN_X*2)-15, (WIN_Y /2)+2);
 	int x = (WIN_X*2)-15, y = (WIN_Y /2)+7;
 	char score[10]; char pseudo[30];
 	char titre_pseudo[20] = "Pseudo", titre_score[] = "Score";
-	print_cara(_menuWin, titre_pseudo, (WIN_X*2)-15,(WIN_Y /2)+5);
-	print_cara(_menuWin, titre_score, ((WIN_X*2)-15)*6,(WIN_Y /2)+5);
+	print_cara(_main_win, titre_pseudo, (WIN_X*2)-15,(WIN_Y /2)+5);
+	print_cara(_main_win, titre_score, ((WIN_X*2)-15)*6,(WIN_Y /2)+5);
 	for (int i = min; i < max; ++i){
 		sprintf(score, "%d",vect[i]->score);
 		sprintf(pseudo, "%s", vect[i]->pseudo);
@@ -327,30 +367,30 @@ void Interface::print_friends(WINDOW *win, std::vector<Profile*> vect, int highl
 int Interface::get_pseudo(char *res, char *error){
 	int ret=0;
 	keypad(stdscr, TRUE);
-	box(_menuWin,0,0);
-    box(_msgWin,0,0);
-	box(_pseudoWin,0,0);
+	box(_main_win,0,0);
+    box(_saying_win,0,0);
+	box(_pseudo_win,0,0);
 
 	refresh();
-	wrefresh(_menuWin);
-	wrefresh(_msgWin);
-	wrefresh(_pseudoWin);
+	wrefresh(_main_win);
+	wrefresh(_saying_win);
+	wrefresh(_pseudo_win);
 	char id[] = "PSEUDO :";
-	print_cara(_pseudoWin, id, 5, WIN_Y /2);
+	print_cara(_pseudo_win, id, 5, WIN_Y /2);
 	char title[] = "    ADD FRIEND ";
 	char proverbe[] = "Making new friends shouldn't mean losing old ones.";
 	char regle[64];
 	sprintf(regle, "But you can only have 100 friends, you have already");
-	print_cara(_msgWin, title, (WIN_X*3)-7, WIN_Y /2); 
-	print_cara(_msgWin, proverbe, (WIN_X*2)-15, (WIN_Y /2)+1);
-	print_cara(_msgWin, regle, (WIN_X*2)-15, (WIN_Y /2)+2);
+	print_cara(_saying_win, title, (WIN_X*3)-7, WIN_Y /2); 
+	print_cara(_saying_win, proverbe, (WIN_X*2)-15, (WIN_Y /2)+1);
+	print_cara(_saying_win, regle, (WIN_X*2)-15, (WIN_Y /2)+2);
 
 	int py = (WIN_Y /2), px = 15, choice=1, nbp=0;
 	char cara; 
 
 	if(error)
-		print_error(_menuWin, error,WIN_X+4, (WIN_Y*4)+1);
-	move_cursor(_pseudoWin, px, py);
+		print_error(_main_win, error,WIN_X+4, (WIN_Y*4)+1);
+	move_cursor(_pseudo_win, px, py);
 
 	while(choice){
 		choice = getch();
@@ -358,7 +398,7 @@ int Interface::get_pseudo(char *res, char *error){
 			case 10: //enter
 				if(nbp < 6){
 					char e[] = "Pseudo is too short!";
-					print_error(_menuWin, e,WIN_X+4, (WIN_Y*4)+1);
+					print_error(_main_win, e,WIN_X+4, (WIN_Y*4)+1);
 				}
 				else{choice = 0;}
 				break;
@@ -368,8 +408,8 @@ int Interface::get_pseudo(char *res, char *error){
 				break;
 			case KEY_BACKSPACE:
 				if(nbp > 0){
-					move_cursor(_pseudoWin, px, py, true);
-					move_cursor(_pseudoWin, --px, py);
+					move_cursor(_pseudo_win, px, py, true);
+					move_cursor(_pseudo_win, --px, py);
 					nbp--;
 					res[nbp] = '\0'; //fin de ligne
 				}
@@ -377,15 +417,15 @@ int Interface::get_pseudo(char *res, char *error){
 			default:
 				cara = static_cast<char>(choice);
 				if(nbp < 15 and verify_cara(&cara)){
-					print_cara(_pseudoWin, &cara, px, py);
-					move_cursor(_pseudoWin, ++px, py);
+					print_cara(_pseudo_win, &cara, px, py);
+					move_cursor(_pseudo_win, ++px, py);
 					res[nbp] = cara;
 					nbp ++;
 				}
 				break;
 		}
 	}
-	print_error(_menuWin, res,WIN_X+4, (WIN_Y*4)+1);
+	print_error(_main_win, res,WIN_X+4, (WIN_Y*4)+1);
 	return ret;
 }
 

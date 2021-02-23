@@ -50,7 +50,7 @@ ___________________SYNTAXE DES REQUÊTES____________________
 		Server: "Pseudo&Score&pid" 
 
 	Exit:
-		Client : "Mj&pseudo&pid" 
+		Client : "Mj&pid" 
 		Server: "0" 
 		
 	delFriendRequest:
