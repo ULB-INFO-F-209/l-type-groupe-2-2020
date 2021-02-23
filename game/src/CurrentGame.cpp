@@ -1,7 +1,19 @@
 //
 // Created by jean on 19/02/2021.
 //
-
+/**
+ * TODO:
+ *  thread pour jouer en même temps (Aïssa)
+ *  enlever static_cast !!
+ *  transformer game.cpp en classe
+ *  damage version alexandre
+ *  couleur
+ *  ajouter effet explosion
+ * ERROR:
+ * quand J1 à 10% et que l'autre meurt, J1 meurt aussi
+ * collisions projectiles
+ * 
+ */
 #include "CurrentGame.hpp"
 
 
@@ -43,8 +55,8 @@ void CurrentGame::execInput(int in_char, uint_fast16_t x1, uint_fast16_t y1, uin
                 playership1->setPos(x1 - 1, y1 + 1);}
             break;
         case ' ':
-            if(playership1->getHp()>0)
-                map.spawnProjectile(playership1->getPos().x, playership1->getPos().y -1, 10, true, 10, 1);
+            if(playership1->getHp()>0 && playership1->getCurrentBonus()!=minigun)
+                map.spawnProjectile(playership1->getPos().x, playership1->getPos().y, playership1->getShootDamage(), true, 10, 1);
             break;
 //player2
         case 'f':
@@ -80,8 +92,8 @@ void CurrentGame::execInput(int in_char, uint_fast16_t x1, uint_fast16_t y1, uin
                 playership2->setPos(x2 - 1 , y2 + 1);}
             break;
         case 'm':
-            if(playership2->getHp()>0)
-                map.spawnProjectile(playership2->getPos().x, playership2->getPos().y -1, 10, true, 10, 2);
+            if(playership2->getHp()>0 && playership2->getCurrentBonus()!=minigun)
+                map.spawnProjectile(playership2->getPos().x, playership2->getPos().y, playership1->getShootDamage(), true, 10, 2);
             break;
         default:
             break;
@@ -91,19 +103,19 @@ void CurrentGame::execInput(int in_char, uint_fast16_t x1, uint_fast16_t y1, uin
 //===================================================================================================
 
 void CurrentGame::heal() {      // remet hp du player à 100 si encore vies
-    for( PlayerShip* p : map.getListPlayer()){   
+    for( PlayerShip* p : map.getListPlayer()){
         if(listPlayer.at(p->getPlayerNb())->getnLives() > 0){
             if(p->getHp()<=0 && p->getIsAlive()){
                 p->setisAlive(false);
                 p->setKillTime(tick);
                 listPlayer.at(p->getPlayerNb())->setnLives(listPlayer.at(p->getPlayerNb())->getnLives() - 1);
-                
+
             }
             if(tick==p->getKillTime()+300 && !p->getIsAlive()){
                 p->setisAlive(true);
                 p->setHp(100);
             }
-        }             
+        }
     }
 }
 
@@ -120,32 +132,35 @@ void CurrentGame::saveScore(){      //final score save
             else {
                 map.erase(0, MapObject::playership);
             }
-        } 
+        }
     }
 }
 
 //===================================================================================================
 
 void CurrentGame::run() {
-
+    tick = 0;
     listPlayer.push_back(player1);
     listPlayer.push_back(player2);
     Interface anInterface;
     anInterface.init();
     map.playerInit(playership1,playership2);
-    map.setBounds(game_area);
+    map.setBounds(anInterface.get_game_area());
     anInterface.initialDraw();
+    game_area = anInterface.get_game_area();
+    screen_area = anInterface.get_screen_area();
     while(1) {
-        
+
         // get input
-        in_char = wgetch(main_wnd);
+        in_char = wgetch(anInterface.get_main_window());
         in_char = tolower(in_char);
-        
-        
+
+
         uint_fast16_t x1 = playership1->getPos().x;
         uint_fast16_t y1 = playership1->getPos().y;
         uint_fast16_t  x2 = playership2->getPos().x;
         uint_fast16_t y2 = playership2->getPos().y;
+
 
         // fonction du switch
         execInput(in_char, x1, y1, x2, y2);    // peut changer le exit_requested
@@ -156,30 +171,43 @@ void CurrentGame::run() {
             map.update(MapObject::star, tick);
         if(tick % 7 == 0)
             map.update(MapObject::projectile, tick);
+
         if(tick > 100 && tick %50  == 0) {
             map.update(MapObject::obstacle, tick);
         }
         if (tick > 100 && tick %150 ==0)
             map.update(MapObject::enemyship, tick);
+        if(tick %50  == 0) {
+            map.update(MapObject::bonus, tick);
+        }
 
-
+        for( PlayerShip* p : map.getListPlayer()){
+            if (p->getCurrentBonus()==minigun && p->getHp()>0 && tick % 7 == 0)
+                map.spawnProjectile(p->getPos().x, p->getPos().y, p->getShootDamage(), true, 10, p->getPlayerNb()+1);
+        }
         map.enemyShoot(tick);
         map.updatePlayerBounds();     // update player bounds
-        map.checkCollision();
+        map.checkCollision(tick);
 
 
         if (player1->getnLives() < 1 && player2->getnLives() < 1)
             game_over = true;
 
         heal(); // remet hp du player à 100 si encore vies
-        
+
+        anInterface.display(&map,tick,&listPlayer,playership1,playership2,player1,player2,finalScore1,finalScore2);
+
         saveScore(); // sauvegarde le score     FIXME: devons nous le faire à chaque tick ?
 
         if(exit_requested || game_over) break;
 
         tick++;
-        anInterface.display(&map,tick,&listPlayer,playership1,playership2,player1,player2,finalScore1,finalScore2);
 
     }
     anInterface.close();
 }
+//
+// Created by jean on 19/02/2021.
+//
+
+

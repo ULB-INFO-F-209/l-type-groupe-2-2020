@@ -11,3 +11,4 @@ public:
     void setShootTime(int t){shootTime=t;}
     int getShootTime(){return shootTime;}
 };
+#endif

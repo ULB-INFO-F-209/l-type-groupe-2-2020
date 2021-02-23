@@ -4,12 +4,13 @@
 
 #ifndef JEU_MAPHANDLER_HPP
 #define JEU_MAPHANDLER_HPP
-#include "game.hpp"
 #include <cstdlib>
 #include <vector>
 #include <cstdint>
 #include <list>
 #include "Player.hpp"
+#include "InternGameObject.hpp"
+#include "Rect.hpp"
 
 enum bonusType{damageUp, tripleShot, lifeSteal, minigun,noBonus};
 
@@ -138,6 +139,7 @@ class MapHandler{
     std::vector<EnemyShip*> enemy_ships_set;
     std::vector<Bonus*> bonuses_set;
 public:
+    MapHandler()=default;
     MapHandler(float p){probaBonus=p;};
     int getCurrentLevel(){return currentLevel;}
     void setCurrentLevel(int l){currentLevel = l;}

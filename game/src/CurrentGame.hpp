@@ -13,37 +13,37 @@
 //#include <time.h>
 #include "MapHandler.hpp"
 #include "Interface.hpp"
+#include "InternGameObject.hpp"
 //class Interface;
 
 class CurrentGame {
-    WINDOW* main_wnd;
-    WINDOW* game_wnd;
 
     rect game_area;
     rect screen_area;
 
-    MapHandler map;
+    MapHandler map{80};
 
     int tick=0;
-    int finalScore1, finalScore2;
+    int finalScore1{};
+    int finalScore2{};
 
     PlayerShip* playership1 = new PlayerShip(10, 5, { {10 - 1, 5 }, { 3, 2 } }, '0',100, 0,100,0);
     PlayerShip* playership2 = new PlayerShip(50, 5, { { 50 - 1, 5 }, { 3, 2 } }, '1',100, 1,100,0);
     Player* player1 = new Player(1);
     Player* player2 = new Player(1);
-    std::vector<Player*> listPlayer;
+    std::vector<Player*> listPlayer=std::vector<Player*>();
 
     int in_char = 0;
     bool exit_requested = false;
     bool game_over = false;
 
-    
+
     // méthodes privées
     void execInput(int in_char, uint_fast16_t x1, uint_fast16_t y1, uint_fast16_t x2, uint_fast16_t y2);
     void heal();
     void saveScore();
 
-    public:
+public:
     CurrentGame()=default;
     int getInput(){return in_char;}
 

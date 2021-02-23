@@ -23,6 +23,7 @@ int Interface::init() {
     // define area for screen (default terminal size)
     screen_area = { {0, 0}, {80, 24}};
 
+    wresize(main_wnd, screen_area.height(), screen_area.width());
     // initialize window areas
     int infopanel_height = 4;
     game_wnd = newwin( screen_area.height() - infopanel_height - 2,
@@ -74,8 +75,8 @@ void Interface::initialDraw(){
     wrefresh(game_wnd);
 }
 
-Interface::Interface() {
-    
+Interface::Interface(): main_wnd(),game_wnd(), game_area(), screen_area() {
+
 }
 
 void Interface::display(MapHandler *m,int tick, std::vector<Player *> *listPlayer,PlayerShip* playership1,PlayerShip* playership2, Player* player1,Player* player2,int score1, int score2) {
@@ -85,6 +86,8 @@ void Interface::display(MapHandler *m,int tick, std::vector<Player *> *listPlaye
     drawObstacle(m);
     drawProjectile(m);
     drawEnemy(m);
+    drawBonus(m);
+    drawNewLevel(m,tick);
     drawPlayer(m,tick,listPlayer);
     drawUI(m,playership1,playership2,player1,player2,score1,score2,tick);
     refresh_wnd();
@@ -99,18 +102,19 @@ void Interface::drawStar(MapHandler *m) {
 
 void Interface::drawObstacle(MapHandler *m) {
     for(auto o : m->getObstacles()){
-        wattron(game_wnd, A_BOLD);
-        mvwaddch(game_wnd, o->getPos().y, o->getPos().x, '*');
-        wattroff(game_wnd, A_BOLD);
+        wattron(game_wnd, COLOR_PAIR(6));
+        mvwaddch(game_wnd, o->getPos().y, o->getPos().x, ACS_DIAMOND);
+        wattroff(game_wnd, COLOR_PAIR(6));
 
     }
 }
 
 void Interface::drawEnemy(MapHandler *m) {
     for(auto e :m->getEnemy()){
-        wattron(game_wnd, A_BOLD);
+        wattron(game_wnd, COLOR_PAIR(4));
         mvwaddch(game_wnd, e->getPos().y, e->getPos().x, e->getChar());
-        wattroff(game_wnd, A_BOLD);
+        wattroff(game_wnd, COLOR_PAIR(4));
+
 
         wattron(game_wnd, A_ALTCHARSET);
         mvwaddch(game_wnd, e->getPos().y, e->getPos().x - 1, ACS_LARROW);
@@ -122,28 +126,49 @@ void Interface::drawEnemy(MapHandler *m) {
 
 void Interface::drawProjectile(MapHandler *m) {
     for(auto p : m->getProjectiles()){
-        mvwaddch(game_wnd, p->getPos().y, p->getPos().x, '#');
+        if (p->getShipType()) {
+            if (p->getPlayer()==1) {
+                wattron(game_wnd, COLOR_PAIR(5));
+                mvwaddch(game_wnd, p->getPos().y, p->getPos().x, '*');
+                wattroff(game_wnd, COLOR_PAIR(5));
+            }
+            else{
+                wattron(game_wnd, COLOR_PAIR(2));
+                mvwaddch(game_wnd, p->getPos().y, p->getPos().x, '*');
+                wattroff(game_wnd, COLOR_PAIR(2));
+            }
+        }
+        else{
+            wattron(game_wnd, COLOR_PAIR(4));
+            mvwaddch(game_wnd, p->getPos().y, p->getPos().x, '*');
+            wattroff(game_wnd, COLOR_PAIR(4));
+        }
     }
 }
 
 void Interface::drawPlayer(MapHandler *m, int tick, std::vector<Player *> *listPlayer) {
     for( PlayerShip* p : m->getListPlayer()) {
         // draw player body
-        wattron(game_wnd, A_BOLD);
+        int player_color;
+        if (p->getPlayerNb()==1){
+            player_color=2;
+        }
+        else player_color=5;
+        wattron(game_wnd, COLOR_PAIR(player_color));
         mvwaddch(game_wnd, p->getPos().y, p->getPos().x, p->getChar());
-        wattroff(game_wnd, A_BOLD);
+        wattroff(game_wnd, COLOR_PAIR(player_color));
 
         wattron(game_wnd, A_ALTCHARSET);
         mvwaddch(game_wnd, p->getPos().y, p->getPos().x - 1, ACS_LARROW);
         mvwaddch(game_wnd, p->getPos().y, p->getPos().x + 1, ACS_RARROW);
-        if (listPlayer->at(p->getPlayerNb())->getnLives() > 0) {
-            if (p->getHp() <= 0 && p->getIsAlive()) {
+        if(listPlayer->at(p->getPlayerNb())->getnLives() > 0){
+            if(p->getHp()<=0 && p->getIsAlive()){
                 p->setisAlive(false);
                 p->setKillTime(tick);
                 listPlayer->at(p->getPlayerNb())->setnLives(listPlayer->at(p->getPlayerNb())->getnLives() - 1);
-
+                m->explosion();
             }
-            if (tick == p->getKillTime() + 300 && !p->getIsAlive()) {
+            if(tick==p->getKillTime()+300 && !p->getIsAlive()){
 
                 p->setisAlive(true);
                 p->setHp(100);
@@ -151,12 +176,12 @@ void Interface::drawPlayer(MapHandler *m, int tick, std::vector<Player *> *listP
             }
         }
 
-        if (listPlayer->at(p->getPlayerNb())->getnLives() > 0) {
+        if(listPlayer->at(p->getPlayerNb())->getnLives() > 0){
 
-            if (tick % 100 < 50 && p->getHp() <= 0 && tick < p->getKillTime() + 300) {
-                wattron(game_wnd, A_BOLD);
+            if(tick % 100 < 50 && p->getHp()<=0 && tick<p->getKillTime()+300) {
+                wattron(game_wnd, COLOR_PAIR(player_color));
                 mvwaddch(game_wnd, p->getPos().y, p->getPos().x, ' ');
-                wattroff(game_wnd, A_BOLD);
+                wattroff(game_wnd, COLOR_PAIR(player_color));
 
                 wattron(game_wnd, A_ALTCHARSET);
                 mvwaddch(game_wnd, p->getPos().y, p->getPos().x - 1, ' ');
@@ -164,7 +189,7 @@ void Interface::drawPlayer(MapHandler *m, int tick, std::vector<Player *> *listP
             }
 
             // draw engines flames
-            if ((tick % 10) / 3 && p->getHp() > 0) {
+            if((tick % 10) / 3 && p->getHp()>0) {
                 wattron(game_wnd, COLOR_PAIR(tick % 2 ? 3 : 4));
                 mvwaddch(game_wnd, p->getPos().y + 1, p->getPos().x, ACS_UARROW);
                 mvwaddch(game_wnd, p->getPos().y + 1, p->getPos().x, ACS_UARROW);
@@ -172,8 +197,8 @@ void Interface::drawPlayer(MapHandler *m, int tick, std::vector<Player *> *listP
             }
         }
 
-
         wattroff(game_wnd, A_ALTCHARSET);
+
     }
 
 
@@ -181,6 +206,7 @@ void Interface::drawPlayer(MapHandler *m, int tick, std::vector<Player *> *listP
 }
 
 void Interface::drawUI(MapHandler *m,PlayerShip* playership1,PlayerShip* playership2, Player* player1,Player* player2,int score1, int score2,int tick) {
+    // energy bar player1
     wmove(main_wnd, 20, 1);
     whline(main_wnd, ' ', 25); // health bar is 25 chars long
     wmove(main_wnd, 20, 1);
@@ -223,6 +249,27 @@ void Interface::drawUI(MapHandler *m,PlayerShip* playership1,PlayerShip* players
     } else
         mvwprintw(main_wnd, 21, 62, "%i%%", playership2->getHp());
     wattroff(main_wnd, A_BOLD);
+    //draw bonus type
+    int x,y ;
+    for( PlayerShip* p : m->getListPlayer()) {
+        if (p->getPlayerNb() == 0) {
+            y = 22;
+            x = 25;
+        } else {
+            y = 22;
+            x = 40;
+        }
+        if (p->getCurrentBonus() == minigun)
+            mvwprintw(main_wnd, y, x, "  B%d:minigun",p->getPlayerNb()+1);
+        else if (p->getCurrentBonus() == damageUp)
+            mvwprintw(main_wnd, y, x, "  B%d:damageUp",p->getPlayerNb()+1);
+        else if (p->getCurrentBonus() == tripleShot)
+            mvwprintw(main_wnd, y, x, "  B%d:tripleShot",p->getPlayerNb()+1);
+        else if (p->getCurrentBonus() == lifeSteal)
+            mvwprintw(main_wnd, y, x, "  B%d:lifeSteal",p->getPlayerNb()+1);
+        else if (p->getCurrentBonus() == noBonus)
+            mvwprintw(main_wnd, y, x, "  B%d: ",p->getPlayerNb()+1);
+    }
 
 }
 
@@ -259,6 +306,36 @@ void Interface::drawEnergyBar(int a) {
         waddch(main_wnd, '/');
         wattroff(main_wnd, A_BOLD);
         wattroff(main_wnd, COLOR_PAIR(col_pair));
+    }
+}
+
+void Interface::drawBonus(MapHandler *m) {
+    for(auto b : m->getBonus()) {
+        wattron(game_wnd, A_BOLD);
+        if(b->getBonusType()==lifeSteal){
+            mvwaddch(game_wnd, b->getPos().y, b->getPos().x, 'L');
+        }
+        else if(b->getBonusType()==minigun){
+            mvwaddch(game_wnd, b->getPos().y, b->getPos().x, 'M');
+        }
+        else if(b->getBonusType()==damageUp){
+            mvwaddch(game_wnd, b->getPos().y, b->getPos().x, 'D');
+        }
+        else if(b->getBonusType()==tripleShot){
+            mvwaddch(game_wnd, b->getPos().y, b->getPos().x, 'T');
+        }
+        wattroff(game_wnd, A_BOLD);
+
+    }
+
+}
+
+void Interface::drawNewLevel(MapHandler *m,int tick) {
+    if(m->getLevelTick() != 0 && tick <= m->getLevelTick() + 600 && tick > m->getLevelTick()+100){
+        mvwprintw(game_wnd, 8, 35, "level %i", m->getCurrentLevel());
+        m->changeLevel();
+        if(tick == m->getLevelTick() + 600)
+            m->setChangingLevel(false);
     }
 }
 

@@ -5,13 +5,11 @@
 
 class Player{
     int nLives;
-    
-    public:
-    int getnLives() const{return nLives;}
-    void setnLives(int lives){nLives = lives;}
-    explicit Player( int lives){nLives = lives;}
-    ~Player()= default;
 
+public:
+    int getnLives(){return nLives;}
+    void setnLives(int lives){nLives = lives;}
+    Player( int lives){nLives = lives;}
 };
 
 #endif

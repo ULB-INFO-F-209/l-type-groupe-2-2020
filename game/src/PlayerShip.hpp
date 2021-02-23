@@ -22,6 +22,6 @@ public:
     int getPlayerNb(){return playerNb;}
     int getScore(){return score;}
     void setScore(int s){score = s;}
-    
+
 };
 
