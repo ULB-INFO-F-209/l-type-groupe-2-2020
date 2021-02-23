@@ -26,6 +26,8 @@
 #include <iostream>
 #include <signal.h>
 #include <cstring>
+#include <fstream>
+#include <thread>
 
 #include "Constante.hpp"
 

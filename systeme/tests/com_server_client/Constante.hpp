@@ -25,7 +25,7 @@ namespace Constante{
     constexpr char REPONSE_AMI = 'R';
     const char PAS_SECOND_JOUEUR[] = {"Null"};
     constexpr char ACTION_JEU[] = {"J"/* ajouter les touches possibles*/};
-    constexpr char DELIMITEUR = '_';
+    constexpr char DELIMITEUR = '&';
 
     //client
     const size_t SIZE_PSEUDO  = 20;

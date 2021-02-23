@@ -31,4 +31,4 @@ parsing.o: parsing.hpp parsing.cpp
 	g++ ${FLAGS} -c parsing.cpp -o parsing.o
 
 clean:
-	rm *.o process_server process_client
+	rm *.o process_server process_client /tmp/pipefile* /tmp/connexion /tmp/reponse

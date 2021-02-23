@@ -22,18 +22,46 @@ Client::Client(){
 	sprintf(buffer,"%d", pid_process);
 	write(_fd_send_query, buffer, sizeof(buffer)); 
 	close(_fd_send_query);
+	std::cout << "nom pipe = " << _pipe_from_server << std::endl;
+	std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 }
 
 //utilities
 void Client::communication(char *buffer){
 	_fd_send_query =  open(_pipe_to_server, O_WRONLY); 
 	write(_fd_send_query, buffer, Constante::CHAR_SIZE); //sending query
-	std::cout << buffer << std::endl;
 	close(_fd_send_query);
-	_fd_get_query = open(_pipe_from_server, O_WRONLY);
-	read(_fd_get_query, buffer,  sizeof(buffer)); //getting feedback
-	close(_fd_get_query);
-	std::cout << buffer << std::endl;
+	//char response[Constante::CHAR_SIZE];
+	//sprintf(response, "%s%s%d", Constante::PIPE_PATH, Constante::BASE_PIPE_FILE, getpid());
+	//mkfifo(response, Constante::PIPE_MODE);
+	int ret = open(_pipe_from_server, O_RDONLY);
+	/*
+	while (ret != EEXIST)
+	{
+		std::cout << "nexiste pas" << std::endl;
+		ret = open(_pipe_from_server, O_RDONLY);
+	}
+	*/
+	std::cout << _pipe_from_server << std::endl;
+	if (ret != -1)
+	{
+		char buff[Constante::CHAR_SIZE];
+		std::cout << "je rentre"<<std::endl;
+		while(true){
+			int res = read(ret, buff, Constante::CHAR_SIZE);
+			if (res == -1)
+            {
+                std::cout << "connexion echouée"<<std::endl;
+            }
+            else{
+            	int aissa = atoi(buff);
+            	std::cout << "connexion du processus :" << aissa <<std::endl;
+            	break;
+			}
+		}
+		std::cout << buffer << std::endl;
+	}
+	close(ret);
 }
 
 //Communication

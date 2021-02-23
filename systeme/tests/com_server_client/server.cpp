@@ -88,7 +88,7 @@ void Server::catchInput(char* input) {
 	if (input[0] == Constante::ACTION_MENU_PRINCIPAL[0]) {
 		switch(input[1]) {
 			case Constante::ACTION_MENU_PRINCIPAL[1]:
-				res = signIn(input);    //Ma_pseudo_mdp
+				//res = signIn(input);    //Ma_pseudo_mdp
 				break;					//a chaque connexion le server associe un pid a un pseudo
 			case Constante::ACTION_MENU_PRINCIPAL[2]:
 				res = signUp(input);    //Mb_pseudo_mdp
@@ -97,30 +97,30 @@ void Server::catchInput(char* input) {
 				res = addFriend(input); //Mc_PseudoMe_PseudoF
 				break;
 			case Constante::ACTION_MENU_PRINCIPAL[4]:
-				res = delFriend(input); //Md_Pseudo
+				//res = delFriend(input); //Md_Pseudo
 				break;
 			case Constante::ACTION_MENU_PRINCIPAL[5]:
 				checkleaderboard(input); //Me
 				//resClient(processId, ret) avec ret le retour de checkleaderboard
 				break;
 			case Constante::ACTION_MENU_PRINCIPAL[6]:
-				res = friendList(input); //Mf_Pseudo
+				//res = friendList(input); //Mf_Pseudo
 				break;
 			case Constante::ACTION_MENU_PRINCIPAL[7]:
-				res = getFriendRequest(input); //Mg_Pseudo
+				//res = getFriendRequest(input); //Mg_Pseudo
 				break;
 			case Constante::ACTION_MENU_PRINCIPAL[8]:
-				res = sendFriendRequest(input); //Mj_Pseudo
+				//res = sendFriendRequest(input); //Mj_Pseudo
 				break;
 			case Constante::ACTION_MENU_PRINCIPAL[9]:
-				res = viewProfile(input); //Mh_Pseudo
+				//res = viewProfile(input); //Mh_Pseudo
 				break;
 		}
 
 		std::string processId(input);
     	int i = processId.rfind(Constante::DELIMITEUR);
     	processId = processId.substr(i+1,processId.length()); //pour recup le PID
-    	//resClient(&processId, res);
+    	resClient(&processId, res);
 	} else if (input[0] == Constante::ACTION_JEU[0]){
 		//similaire a M mais on a besoin de connaitre les input du jeu
 	} else {
@@ -139,9 +139,14 @@ void Server::createPipe(const char *name){
 
     char path[Constante::CHAR_SIZE];
     sprintf(path,"%s%s",Constante::PIPE_PATH,name);
+    std::cout << "nom pipe = " << path << std::endl;
+    int ret_val = mkfifo(path,Constante::PIPE_MODE);
+    std::cout << "ret_val : " << ret_val << std::endl;
 
-    if (int ret_val = mkfifo(path,Constante::PIPE_MODE) > 1 ){ //cree le pipe
-
+    if (errno == EEXIST ){ //cree le pipe
+        std::cout << "pipe " << path << " existe deja" << std::endl;
+    }
+    else if(ret_val == -1){
         std::cerr << "[ERROR PIPE ("<< ret_val <<")] " << std::endl;
         exit(1);
     }
@@ -203,7 +208,6 @@ bool Server::signIn(char* val){
 
 bool Server::signUp(char* val){
     char pseudo[20], pswd[20];
-    std::cout << "before:" << val << std::endl;
     Parsing::parsing(val, pseudo, pswd);
     std::cout << " after: " << val << " , " << pseudo << " , " << pswd << std::endl;
     return _db.createAccount(pseudo, pswd);
@@ -260,16 +264,18 @@ bool Server::viewProfile(char* val) {  //only need a pid ? the name ?
  * 
  **/ 
 void Server::resClient(std::string* processId, bool res) {
-	char message;int fd;
-    message = res;
+	char message[Constante::CHAR_SIZE];int fd;
+    sprintf(message, "%d", res);
 	
+    std::cout << "res " << message << std::endl; 
     char pipe_name[Constante::CHAR_SIZE];
-    sprintf(pipe_name,"%s%s",Constante::BASE_PIPE_FILE,(*processId).c_str());
+    sprintf(pipe_name,"%s%s%s", Constante::PIPE_PATH, Constante::BASE_PIPE_FILE,(*processId).c_str());
 
+    std::cout << pipe_name << std::endl;
 	fd = open(pipe_name,O_WRONLY);
 
     if (fd != -1){
-        write(fd,&message,strlen(&message)+1);
+        write(fd, &message, Constante::CHAR_SIZE);
     }
     else{
         printf("pas de connexion\n");
