@@ -73,9 +73,7 @@ void initConnexion(){
 
 }
 
-
 void sendInput(){
-
     int fd;
     char pipe_name[100] = {"/tmp/reponse"};
     //sprintf(pipe_name,"",getpid());
@@ -87,10 +85,8 @@ void sendInput(){
     if (fd != -1){
         write(fd,message,strlen(message)+1);
         printf("Input fait  \n");
-    }
-    else{
+    } else{
         printf("pas de send Input\n");
-
     }
     close(fd);
 }
@@ -107,11 +103,8 @@ void receiveInput(){
             std::cout << "reponse du message  :" <<message<<std::endl;
             close(fd); 
             break;
-            
         }
-        
     }
-
 }
 
 int main(){

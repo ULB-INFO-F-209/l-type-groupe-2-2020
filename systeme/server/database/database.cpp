@@ -6,7 +6,7 @@ void Database::add(Account* account){
 }
 
 //getters
-std::ptrdiff_t Database::find(char pseudo[20]){
+std::ptrdiff_t Database::find(char* pseudo){
     std::ptrdiff_t idx = 0;
 	bool continuer = true;
 	while(idx < _data.size() && continuer){
@@ -16,7 +16,7 @@ std::ptrdiff_t Database::find(char pseudo[20]){
  	return !continuer ? idx : -1;       // -1 if not found, idx in db if found
 }
 
-bool Database::verifyLogin(char pseudo[20], char pswd[20]){
+bool Database::verifyLogin(char* pseudo, char* pswd){
     std::ptrdiff_t idx = find(pseudo);
     bool res = false;
     if (idx == -1){
@@ -28,7 +28,7 @@ bool Database::verifyLogin(char pseudo[20], char pswd[20]){
     return res;
 }
 
-Profile Database::getProfile(char pseudo[20]){
+Profile Database::getProfile(char* pseudo){
     std::ptrdiff_t idx = find(pseudo);
     Profile res;
     if (idx == -1){
@@ -39,7 +39,7 @@ Profile Database::getProfile(char pseudo[20]){
     return res;
 }
 
-std::vector<char*> Database::getFriendRequest(char pseudo[20]){
+std::vector<char*> Database::getFriendRequest(char* pseudo){
     std::vector<char*> requests;
     std::ptrdiff_t idx = find(pseudo);
     if (idx == -1){
@@ -52,7 +52,7 @@ std::vector<char*> Database::getFriendRequest(char pseudo[20]){
     return requests;
 }
 
-std::vector<char*> Database::getFriendList(char pseudo[20]){
+std::vector<char*> Database::getFriendList(char* pseudo){
     std::vector<char*> friends;
     std::ptrdiff_t idx = find(pseudo);
     if (idx == -1){
@@ -79,28 +79,8 @@ std::vector<Profile> Database::checkLeaderboard(){
     return _profiles;
 }
 
-/*
-bool Database::areFriends(char pseudo1[20], char pseudo2[20]){
-    std::ptrdiff_t idx1 = find(pseudo1);
-    std::ptrdiff_t idx2 = find(pseudo2);
-    bool res = false;
-    if (idx1 != -1 && idx2 != -1){
-        std::ptrdiff_t idx_pseudo2 = _data[idx1].findFriend(pseudo2);
-        std::ptrdiff_t idx_pseudo1 = _data[idx2].findFriend(pseudo1);
-        if (idx_pseudo2 != -1 && idx_pseudo1 != -1){
-            res = true;
-        }
-        if (idx_pseudo2 == -1){std::cout << pseudo1 << " is not friends with " << pseudo2 << std::endl;}
-        if (idx_pseudo1 == -1){std::cout << pseudo2 << " is not friends with " << pseudo1 << std::endl;}
-    }
-    if (idx1 == -1){std::cout << pseudo1 << " does not exist" << std::endl;}
-    if (idx2 == -1){std::cout << pseudo2 << " does not exist" << std::endl;}
-    return res;
-}
- */
-
 //setter
-bool Database::createAccount(char pseudo[20], char pswd[20]){
+bool Database::createAccount(char* pseudo, char* pswd){
     std::ptrdiff_t exists = find(pseudo);
     bool res = false;
     if (exists == -1){
@@ -113,7 +93,7 @@ bool Database::createAccount(char pseudo[20], char pswd[20]){
     return res;
 }
 
-bool Database::updateScore(int score, char pseudo[20]){
+bool Database::updateScore(int score, char* pseudo){
     std::ptrdiff_t idx = find(pseudo);
     bool res = false;
     if (idx == -1){
@@ -125,7 +105,7 @@ bool Database::updateScore(int score, char pseudo[20]){
     return res;
 }
 
-int Database::friendRequest(char pseudoSrc[20], char pseudoDest[20]){
+int Database::friendRequest(char* pseudoSrc, char* pseudoDest){
     int res;
     std::ptrdiff_t idxSrc = find(pseudoSrc);
     std::ptrdiff_t idxDest = find(pseudoDest);
@@ -137,7 +117,7 @@ int Database::friendRequest(char pseudoSrc[20], char pseudoDest[20]){
     return res;
 }
 
-bool Database::addFriend(char pseudo1[20], char pseudo2[20]){
+bool Database::addFriend(char* pseudo1, char* pseudo2){
     std::ptrdiff_t idx1 = find(pseudo1);
     std::ptrdiff_t idx2 = find(pseudo2);
     bool res = false;
@@ -149,10 +129,11 @@ bool Database::addFriend(char pseudo1[20], char pseudo2[20]){
     }
     if (idx1 == -1){std::cout << pseudo1 << " does not exist" << std::endl;}
     if (idx2 == -1){std::cout << pseudo2 << " does not exist" << std::endl;}
+    std::cout << res << std::endl;
     return res;
 }
 
-bool Database::removeFriend(char pseudo1[20], char pseudo2[20]){
+bool Database::removeFriend(char* pseudo1, char* pseudo2){
     std::ptrdiff_t idx1 = find(pseudo1);
     std::ptrdiff_t idx2 = find(pseudo2);
     bool res = false;
