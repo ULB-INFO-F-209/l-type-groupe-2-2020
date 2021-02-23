@@ -52,6 +52,7 @@ protected:
     char disp_char;
     rect bounds;
     int shootDamage;
+    int projectileHp;
 
 public:
     Ship(){};
@@ -63,7 +64,8 @@ public:
     int getDammage() const{return collisionDamage;}   //change name
     void setShootDamage(int s_dam){shootDamage=s_dam;}
     int getShootDamage() const{return shootDamage;}
-
+    void setProjectileHp(int p_hp){projectileHp = p_hp;}
+    int getProjectileHp() const{return projectileHp;}
 };
 
 class Projectile: public MapObject{
@@ -94,7 +96,7 @@ class PlayerShip : public Ship{
 
 
 public:
-    PlayerShip(int x, int y, rect b, char c, int h, int nb, int dam, int s){pos.x = x; pos.y = y; bounds=b; hp=h; disp_char=c;isAlive=true; playerNb = nb; collisionDamage=dam; score = s;currentBonus=noBonus;shootDamage=10;}
+    PlayerShip(int x, int y, rect b, char c, int h, int nb, int dam, int s){pos.x = x; pos.y = y; bounds=b; hp=h; disp_char=c;isAlive=true; playerNb = nb; collisionDamage=dam; score = s;currentBonus=noBonus;shootDamage=10; projectileHp = 10;}
     int getKillTime() const{return killTime;}
     bool getIsAlive() const{return isAlive;}
     void setKillTime(int t){killTime=t;}
@@ -112,7 +114,7 @@ class EnemyShip : public Ship{
     double bonusDropProb;
     int shootTime;
 public:
-    EnemyShip(int x, int y, rect b, char c,int h,int dam, int t){pos.x = x; pos.y = y; setBounds(b); setHp(h); setChar(c); setDammage(dam);shootTime=t;}
+    EnemyShip(int x, int y, rect b, char c,int h, int t, int shootDam){pos.x = x; pos.y = y; setBounds(b); setHp(h); setChar(c); setDammage(10);shootTime=t; shootDamage = shootDam; projectileHp = 10;}
     void setShootTime(int t){shootTime=t;}
     int getShootTime() const{return shootTime;}
 };
@@ -120,6 +122,14 @@ public:
 
 class MapHandler{
     int probaBonus;
+    int currentLevel = 1;
+    int levelTick = 0;
+    bool changingLevel = false;
+    int enemyCount = 0;
+    int enemyStartHp = 30;
+    int enemyStartProjectileDamage = 10;
+    int obstacleStartHp = 10;
+    int obstacleStartDamage = 10;
     std::vector<Star*> stars_set;
     std::vector<Obstacle*> obstacles_set;
     std::vector<Projectile*> projectiles_set;
@@ -128,6 +138,12 @@ class MapHandler{
     std::vector<Bonus*> bonuses_set;
 public:
     MapHandler(float p){probaBonus=p;};
+    int getCurrentLevel(){return currentLevel;}
+    void setCurrentLevel(int l){currentLevel = l;}
+    int getLevelTick(){return levelTick;}
+    void setLevelTick(int t){levelTick = t;}
+    bool getChangingLevel(){return changingLevel;}
+    void setChangingLevel(bool c){changingLevel = c;}
     void update(MapObject::type, int);
     void erase(size_t, MapObject::type);
     std::vector<Star*> getStars() const;
@@ -137,7 +153,7 @@ public:
     std::vector<Bonus*> getBonus() const;
     void setBounds(rect);
     void spawnProjectile(int x, int y, int damage, bool type, int hp, int player);
-    void checkCollision();
+    void checkCollision(int t);
     rect field_bounds;
     void playerInit(PlayerShip* p1,PlayerShip* p2);
     void updatePlayerBounds();

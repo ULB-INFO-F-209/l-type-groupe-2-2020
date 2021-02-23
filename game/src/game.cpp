@@ -47,9 +47,11 @@ int init() {
     // enable color modification
     start_color();
 
-    
+
     // define area for screen (default terminal size)
     screen_area = { {0, 0}, {80, 24}};
+
+    wresize(main_wnd, screen_area.height(), screen_area.width());
 
     // initialize window areas
     int infopanel_height = 4;
@@ -93,8 +95,6 @@ void run() {
 
     int tick;
     int finalScore1, finalScore2;
-    int currentLevel;
-    int dificulty;
     PlayerShip* playership1 = new PlayerShip(10, 5, { {10 - 1, 5 }, { 3, 2 } }, '0',100, 0,100,0);
     PlayerShip* playership2 = new PlayerShip(50, 5, { { 50 - 1, 5 }, { 3, 2 } }, '1',100, 1,100,0);
     Player* player1 = new Player(1);
@@ -177,7 +177,7 @@ void run() {
                     playership1->setPos(x1 - 1, y1 + 1);}
                 break;
             case ' ':
-                if(playership1->getHp()>0 && playership1->getCurrentBonus()!=lifeSteal)
+                if(playership1->getHp()>0 && playership1->getCurrentBonus()!=minigun)
                     map.spawnProjectile(playership1->getPos().x, playership1->getPos().y, playership1->getShootDamage(), true, 10, 1);
                 break;
 //player2
@@ -214,7 +214,7 @@ void run() {
                     playership2->setPos(x2 - 1 , y2 + 1);}
                 break;
             case 'm':
-                if(playership2->getHp()>0 && playership1->getCurrentBonus()!=lifeSteal)
+                if(playership2->getHp()>0 && playership1->getCurrentBonus()!=minigun)
                     map.spawnProjectile(playership2->getPos().x, playership2->getPos().y, playership1->getShootDamage(), true, 10, 2);
                 break;
             default:
@@ -241,7 +241,7 @@ void run() {
         }
         map.enemyShoot(tick);
         map.updatePlayerBounds();     // update player bounds
-        map.checkCollision();
+        map.checkCollision(tick);
 
         if (player1->getnLives() < 1 && player2->getnLives() < 1)
             game_over = true;
@@ -374,7 +374,13 @@ void run() {
                 }
             } 
         }
-
+        //draw new level
+        if(map.getLevelTick() != 0 && tick <= map.getLevelTick() + 600 && tick > map.getLevelTick()+100){
+            mvwprintw(game_wnd, 8, 35, "level %i", map.getCurrentLevel());
+            if(tick == map.getLevelTick() + 600)
+                map.setChangingLevel(false);
+        }
+        
         // draw UI elements
         // energy bar player1
         wmove(main_wnd, 20, 1);

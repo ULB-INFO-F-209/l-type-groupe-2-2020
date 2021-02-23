@@ -43,6 +43,45 @@ void MapObject::touched(int dam) {
 }
 
 void MapHandler::update(MapObject::type typ, int t) {
+    if (typ == MapObject::star) {
+        for(size_t i = 0; i < stars_set.size(); i++) {
+            if(stars_set.at(i)->getPos().y > field_bounds.bot() + 1)
+                stars_set.erase(stars_set.begin() + i);
+            
+        }
+    }
+    else if (typ == MapObject::obstacle) {
+        for(size_t i = 0; i < obstacles_set.size(); i++) {
+            if(obstacles_set.at(i)->getPos().y > field_bounds.bot() + 1)
+                obstacles_set.erase(obstacles_set.begin() + i);
+            
+        }
+    }
+    else if (typ == MapObject::projectile) {
+        for(size_t i = 0; i < projectiles_set.size(); i++) {
+            if(projectiles_set.at(i)->getPos().y > field_bounds.bot() + 1)
+                projectiles_set.erase(projectiles_set.begin() + i);
+            
+        }
+    }else if (typ == MapObject::enemyship) {
+        for(size_t i = 0; i < enemy_ships_set.size(); i++) {
+            if(enemy_ships_set.at(i)->getPos().y > field_bounds.bot() + 1){
+                enemy_ships_set.erase(enemy_ships_set.begin() + i);
+                if(enemyCount == 5 && changingLevel && enemy_ships_set.size() == 0){
+                levelTick = t;
+                enemyCount = 0;
+                }
+            }
+
+
+        }
+    }else if (typ == MapObject::bonus) {
+        for(size_t i = 0; i < bonuses_set.size(); i++) {
+            if(bonuses_set.at(i)->getPos().y > field_bounds.bot() + 1)
+                bonuses_set.erase(bonuses_set.begin() + i);
+
+        }
+    }
     // update existing objects
     if (typ == MapObject::star) {
         for(size_t i = 0; i < stars_set.size(); i++) {
@@ -55,26 +94,20 @@ void MapHandler::update(MapObject::type typ, int t) {
     
     else if (typ == MapObject::obstacle) {
         for(size_t i = 0; i < obstacles_set.size(); i++) {
-            obstacles_set.at(i)->move();
-            if(obstacles_set.at(i)->getPos().y > field_bounds.bot() + 1)
-                obstacles_set.erase(obstacles_set.begin() + i);
-            
+            obstacles_set.at(i)->move();            
         }
     }
     
     else if (typ == MapObject::projectile) {
         for(size_t i = 0; i < projectiles_set.size(); i++) {
             projectiles_set.at(i)->move();
-            if(projectiles_set.at(i)->getPos().y > field_bounds.bot() + 1)
-                projectiles_set.erase(projectiles_set.begin() + i);
+            
         }
     }
     else if (typ == MapObject::enemyship) {
         for(size_t i = 0; i < enemy_ships_set.size(); i++) {
             enemy_ships_set.at(i)->move();
-            if(enemy_ships_set.at(i)->getPos().y > field_bounds.bot() + 1)
-                enemy_ships_set.erase(enemy_ships_set.begin() + i);
-
+            
         }
     }
 
@@ -91,20 +124,25 @@ void MapHandler::update(MapObject::type typ, int t) {
     
     if(typ == MapObject::star)
         stars_set.push_back(new Star(rand() % field_bounds.width(), 0));
-    else if(typ == MapObject::obstacle && t % 200 == 0)
-        obstacles_set.push_back(new Obstacle(rand() % (field_bounds.width()-1)+1, 0, 10,10));
-    else if (typ == MapObject::enemyship && t%300==0) {
-        enemy_ships_set.push_back(new EnemyShip(rand() % (field_bounds.width() - 1) + 1, 0, {{10 - 1, 5},{3,      2}}, '%', 30, 10,t + rand() % 100));
-
+    else if(typ == MapObject::obstacle && t % 200 == 0 && !changingLevel)
+        obstacles_set.push_back(new Obstacle(rand() % (field_bounds.width()-1)+1, 0, obstacleStartDamage,obstacleStartHp));
+    else if (typ == MapObject::enemyship && t%300==0 && !changingLevel) {
+        enemy_ships_set.push_back(new EnemyShip(rand() % (field_bounds.width() - 1) + 1, 0, {{10 - 1, 5},{3,      2}}, '%', enemyStartHp,t + rand() % 100, enemyStartProjectileDamage));
+        enemyCount++;
+        if(enemyCount >= 5){
+            changingLevel = true;
+            currentLevel++;
+        }
     }
 }
 void MapHandler::spawnProjectile(int x, int y, int damage, bool type, int hp, int player){
     if(player!=0) {
         if (player_ships_set.size() == 2) {
             if (player_ships_set.at(player - 1)->getCurrentBonus() == tripleShot) {
+                projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
                 projectiles_set.push_back(new Projectile(x - 1, y - 1, damage, type, hp, player));
                 projectiles_set.push_back(new Projectile(x + 1, y - 1, damage, type, hp, player));
-                projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
+                
             } else if (player_ships_set.at(player - 1)->getCurrentBonus() == lifeSteal) {
                 projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
             }
@@ -144,7 +182,7 @@ void MapHandler::spawnProjectile(int x, int y, int damage, bool type, int hp, in
     else projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
 }
 
-void MapHandler::checkCollision() {
+void MapHandler::checkCollision(int t) {
     //collision player/obstacle
     for(PlayerShip* p : player_ships_set){
         for(auto & i : obstacles_set){
@@ -236,7 +274,10 @@ void MapHandler::checkCollision() {
             if (rand()%100<=probaBonus)
                 spawnBonuses(enemy_ships_set.at(e)->getPos().x, enemy_ships_set.at(e)->getPos().y);
             enemy_ships_set.erase(enemy_ships_set.begin() + e);
-
+            if(enemyCount == 5 && changingLevel && enemy_ships_set.size() == 0){
+                levelTick = t;
+                enemyCount = 0;
+            }
         }
     }
     for(size_t bon = 0; bon < bonuses_set.size(); bon++){
@@ -285,7 +326,7 @@ std::vector<Bonus*> MapHandler::getBonus() const {
 void MapHandler::enemyShoot(int tick) {
     for (auto & i : enemy_ships_set) {
         if (tick== i->getShootTime()+100){
-            spawnProjectile(i->getPos().x,i->getPos().y+1,10,false,10,0);
+            spawnProjectile(i->getPos().x,i->getPos().y+1,i->getShootDamage(),false,i->getProjectileHp(),0);
             i->setShootTime(tick);
         }
     }
