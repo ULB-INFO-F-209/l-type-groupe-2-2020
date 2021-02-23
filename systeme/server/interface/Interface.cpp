@@ -425,7 +425,7 @@ int Interface::get_pseudo(char *res, char *error){
 				break;
 		}
 	}
-	print_error(_main_win, res,WIN_X+4, (WIN_Y*4)+1);
+	//print_error(_main_win, res,WIN_X+4, (WIN_Y*4)+1);
 	return ret;
 }
 

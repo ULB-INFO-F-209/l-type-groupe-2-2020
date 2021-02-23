@@ -6,9 +6,6 @@
 #include <vector>
 #include <ncurses.h>
 #include "parsing.hpp"
-#include "screen.hpp"
-
-using namespace Screen;
 class Interface final
 {
 	//Terminale state
@@ -48,7 +45,7 @@ public:
 
 	//destructor
 	~Interface();
-	void set_screen(char *title, int nb_saying, char*saying1, char*saying2=NULL, char*saying3=NULL);
+	void set_screen(std::string *title,std::string *saying1, std::string *saying2, std::string *saying3);
 	void update_menu(size_t size,  std::string *choices, int highlight);
 	bool verify_cara(char *c);
 	void print_cara(WINDOW *win , const char *c, int x, int y);

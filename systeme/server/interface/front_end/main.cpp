@@ -3,13 +3,14 @@
 #include "screen.hpp"
 
 using namespace Parsing;
+s
 
 int main(int argc, char const *argv[])
 {
 	Interface win{};
 	std::string choix[3] ={"Aissa", "Helin", "Imane"};
 	char p[20]; char m[20];
-	char e[] = "Your pseudo is already taked!";
+	char e[] = "Your pseudo is already taken!";
 	char pseudo[] = "Aissa2024",p2[] = "H3LIN_92",p3[] = "UMLx34D",
 		p4[] = "la_blgs_du_78", p5[] = "4Junior4", p6[]="lalaMSP",
 		p7[] = "Derboise", p8[] = "Bob_eponge", p9[] = "ZaNiLiA",
@@ -26,8 +27,9 @@ int main(int argc, char const *argv[])
 							&prof7,&prof8,&prof9,&prof10,&prof11,&prof12,&prof13,
 							&prof14, &prof15,&prof16};
 	//win.print_profile(v);
-	win.set_screen(Screen::HOME_TITLE,1, Screen::HOME_SAYING);
+	//win.set_screen(&HOME_TITLE,&HOME_SAYING, nullptr, nullptr);
 
+	win.init_connexion();					
 	return 0;
 }
 

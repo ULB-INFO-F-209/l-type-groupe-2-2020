@@ -23,30 +23,42 @@ void Interface::resize_win(){
     WIN_WIDTH = XMAX-(XMAX/5);
     WIN_Y = YMAX/7;
     WIN_X = XMAX/8;
-    PS_HEIGHT = WIN_HEIGHT/5;
-    PS_WIDTH = (WIN_WIDTH/2)+10;
-    PS_Y = WIN_Y*4;
-    PS_X = (WIN_X*2)+3;
-    PA_HEIGHT = WIN_HEIGHT/5;
-    PA_WIDTH = (WIN_WIDTH/2)+10;
-    PA_Y = WIN_Y*6;
-    PA_X = (WIN_X*2)+3;
-    S_HEIGHT =  WIN_HEIGHT/4;
+
+    //Saying
+    S_HEIGHT =  WIN_HEIGHT/3;
     S_WIDTH = WIN_WIDTH;
     S_Y = WIN_Y;
     S_X = WIN_X ;
 
+    PS_HEIGHT = WIN_HEIGHT/5;
+    PS_WIDTH = (WIN_WIDTH/5)*3;
+
+    PS_Y = WIN_Y + (WIN_HEIGHT/3) + (WIN_HEIGHT-S_HEIGHT)/6;
+    PS_X = (WIN_WIDTH/2) - (PS_WIDTH/4);
+
+
+    PA_HEIGHT = WIN_HEIGHT/5;
+    PA_WIDTH = PS_WIDTH;
+    PA_Y = PS_Y + 3*PS_HEIGHT/2;
+    PA_X = PS_X;
+
+    
+
     //other postions (a readapater selon la fenetre)
     _menu_x = WIN_WIDTH/4;
 	_menu_y =  WIN_HEIGHT/3;
-	_title_x = (WIN_X*3)-7;
-	_title_y =  WIN_Y /2;
+
+	_title_x = WIN_WIDTH/2;			//(WIN_X*3)-7;
+	_title_y =  (WIN_Y /2) +1;
+
 	_ps_x = 15;  //pas la legende
 	_ps_y = (WIN_Y /2); //readapatation
 	_pa_x = 15;
 	_pa_y =(WIN_Y /2);
-	_saying_x =  WIN_X;
-	_saying_y = (WIN_Y*2)-1;
+
+	_saying_x =  _title_x;
+	_saying_y = _title_y+1;
+
 	_error_x = WIN_X+4;
 	_error_y= (WIN_Y*4)+1;
 	_prof_x = WIN_X+4; //afficher ton profile
@@ -67,7 +79,7 @@ void Interface::resize_win(){
 // PUBLIC METHODES
 
 //PRIVATE METHODES 
-void Interface::set_screen(char *title, int nb_saying,char*saying1, char*saying2, char*saying3){
+void Interface::set_screen(std::string *title,std::string *saying1, std::string *saying2, std::string *saying3){
 	clear();
 	resize_win(); //maybe do the resize only if terminal change
 	box(_main_win,0,0);
@@ -75,14 +87,32 @@ void Interface::set_screen(char *title, int nb_saying,char*saying1, char*saying2
     refresh();
 	wrefresh(_main_win);
 	wrefresh(_saying_win);
-	print_cara(_saying_win, title, _title_x, _title_y); 
-	print_cara(_saying_win, saying1, _saying_x, _saying_y);
-	if(nb_saying > 1){
-		print_cara(_saying_win, saying2, _saying_x, _saying_y+1);
-		if(nb_saying > 2){
-			print_cara(_saying_win, saying3, _saying_x, _saying_y+2);
-		}
+	int t_x =_title_x - (title->size() / 2);
+	int s_x;
+	print_cara(_saying_win, title->c_str(), t_x, _title_y);
+ 
+	if(saying1 != nullptr){
+		s_x = _saying_x - (saying1->size()/2);
+		print_cara(_saying_win, saying1->c_str(),s_x, _saying_y);
 	}
+	if(saying2 != nullptr){
+		s_x = _saying_x - (saying2->size()/2);
+		print_cara(_saying_win, saying2->c_str(), s_x, _saying_y+1);
+	}
+	if(saying3 != nullptr){
+		s_x = _saying_x - (saying3->size()/2);
+		print_cara(_saying_win, saying3->c_str(), s_x, _saying_y+2);
+	}
+}
+
+void Interface::init_connexion(){
+	set_screen(&HOME_TITLE, nullptr, &HOME_SAYING, nullptr);
+	box(_pseudo_win,0,0);
+	box(_pass_win,0,0);
+	refresh();
+	wrefresh(_pseudo_win);
+	wrefresh(_pass_win);
+
 }
 
 

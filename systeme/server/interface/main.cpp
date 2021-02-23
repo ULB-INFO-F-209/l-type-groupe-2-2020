@@ -1,6 +1,7 @@
 #include "Interface.hpp"
 #include "parsing.hpp"
 
+
 using namespace Parsing;
 
 
@@ -26,7 +27,7 @@ int main(int argc, char const *argv[])
 							&prof7,&prof8,&prof9,&prof10,&prof11,&prof12,&prof13,
 							&prof14, &prof15,&prof16};
 	//win.print_profile(v);
-	win.get_pseudo(p,NULL);
+	win.print_profile(v);
 
 	return 0;
 }
