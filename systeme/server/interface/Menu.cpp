@@ -101,23 +101,23 @@ int  Menu::main_m(){
 //home utilities
 int Menu::connexion(bool sign_in){
 	bool success = false, quit = false; 
-	char pseudo[20], pswd[20], error[64];
-	int res = MAIN; //connexion successed
+	char pseudo[20], pswd[20];
+	int res = MAIN, error=NO_ERROR; //connexion successed
 	while(not success and not quit){
-		quit = window.get_connexion(pseudo, pswd, error);
-		success = verify_pseudo_format(pseudo) and verify_pswd_format(pswd); //verify syntax
-		if(quit){
+		if(S_IN)
+
+			quit = window.get_connexion(pseudo, pswd, error,S_IN);
+		if(not quit){
 			res = HOME; //return home
 		}
-		else if(success and sign_in){ //sign in
+		else if(sign_in){ //sign in
 			success = _client->signIn(pseudo, pswd); //if user exist!
-			if(not success){sprintf(error, "User doesn't exist!");}
+			if(not success){error = NO_USER;}
 		}
-		else if(success and not sign_in){ //sign up
+		else if(not sign_in){ //sign up
 			success = _client->signUp(pseudo, pswd); //if user exist!
-			if(not success){sprintf(error, "Pseudo already taked!");}
+			if(not success){error = TAKEN_PSEUDO;}
 		}
-		else{sprintf(error, "Syntaxe error!");}
 	}		
 
 	return res;
