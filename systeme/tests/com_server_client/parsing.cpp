@@ -24,11 +24,16 @@ void Parsing::create_game_to_str(char *buffer, Game_settings * settings){
 										 settings->nb_lives);
 	//buffer -> "nb_player&pseudo_hote&other_pseudo&drop_rate&ally_shot&nb_lives"
 }
-void Parsing::profile_list_to_str(char* buffer, std::vector<char*> *list){
+void Parsing::profile_list_to_str(char* buffer, std::vector<std::string> *list){
 	size_t size = list->size();
+	std::string buff;
 	for (size_t i = 0; i < size; ++i){
-		sprintf(buffer, "%s&", list->at(i));
+		std::string tmp = list->at(i);
+		buff.append(tmp);
+		buff.push_back('&');
+		//sprintf(buffer, "%s&", list->at(i));
 	}
+	strcpy(buffer,buff.c_str());
 }
 
 //decodage
