@@ -5,6 +5,7 @@
 #include <ostream>
 #include <cstring>
 #include <vector>
+#include <random>
 
 class Account{
     static const size_t _max_friend_nb = 10;
@@ -24,6 +25,8 @@ public:
     Account(char* pseudo, char* pswd);
 
     // Getter
+    void getPseudo(char* buff){strcpy(buff, _pseudo);};
+    int getScore(){return _bestScore;};
     std::ptrdiff_t findFriend(char pseudo[20]);
     std::ptrdiff_t findRequest(char pseudo[20]);
 

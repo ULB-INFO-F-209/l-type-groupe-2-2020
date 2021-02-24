@@ -120,14 +120,15 @@ void Client::getFriendList(char *res){
 
 void Client::checkLeaderboard(char * res){
 	char buffer[Constante::CHAR_SIZE];
-	sprintf(buffer, "Mh&%d",_pid);
+	sprintf(buffer, "Mh&%s&%d", _pseudo, _pid);
 	communication(buffer); 
 	strcpy(res, buffer); //pseudo1|score&pseudo2|score&pseudo|score....
 }
 
 void Client::get_profile(char *res){
 	char buffer[Constante::CHAR_SIZE];
-	sprintf(buffer, "Mi&%s&%d",_pseudo,_pid);
+	std::cout << _pseudo << std::endl;
+	sprintf(buffer, "Mi&%s&%d", _pseudo,_pid);
 	communication(buffer); 
 	strcpy(res, buffer); //pseudo1&score
 }

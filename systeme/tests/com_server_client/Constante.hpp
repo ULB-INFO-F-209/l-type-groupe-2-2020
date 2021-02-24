@@ -32,9 +32,8 @@ namespace Constante{
     const size_t SIZE_pipe =64;
 
     //server
-    const int SERVER_SAVE_TIME = 30;
+    const int SERVER_SAVE_TIME = 90;
 
-    
     constexpr char J1_LEFT = 'q';
     constexpr char GAME_QUIT = 'p';
     constexpr char J1_UP = 'z';
@@ -56,13 +55,6 @@ namespace Constante{
     constexpr char J2_DIAG_DOWN_RIGHT = 'n';
     constexpr char J2_DIAG_DOWN_LEFT = 'v';
     constexpr char J2_SHOOT = 'm';
-
-    constexpr char GAME_QUIT = 'p';
-
-    
- 
 }
-
-
 
 #endif // CONSTANTE_HPP

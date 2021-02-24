@@ -120,7 +120,8 @@ void Server::catchInput(char* input) {
 				//res = getFriendRequest(input); //Mg_Pseudo
 				break;
 			case Constante::ACTION_MENU_PRINCIPAL[8]:
-				 //Mj_Pseudo
+                checkleaderboard(input); //Mh_ checkLeaderboard
+                resClient(&processId,input);
 				break;
 			case Constante::ACTION_MENU_PRINCIPAL[9]:
 				viewProfile(input); //Mi&pseudo  // input change il contient mtn le res de viewProfile
@@ -252,20 +253,20 @@ bool Server::delFriend(char* val){
 
 void Server::checkleaderboard(char* val){ //only need a pid
     std::vector<Profile> leaderboard = _db.checkLeaderboard();
-    return ;
+    Parsing::profile_list_to_str(val, &leaderboard);
 }
 
 void Server::friendList(char* val) {
 	char pseudo[20];
     Parsing::parsing(val, pseudo);
-    std::vector<std::string> friends(_db.getFriendList(pseudo));
+    std::vector<Profile> friends(_db.getFriendList(pseudo));
     Parsing::profile_list_to_str(val,&friends);
 }
 
 void Server::getFriendRequest(char* val) {
 	char pseudo[20];
 	Parsing::parsing(val, pseudo);
-    std::vector<std::string> friends(_db.getFriendRequest(pseudo));;
+    std::vector<Profile> friends(_db.getFriendRequest(pseudo));;
     Parsing::profile_list_to_str(val,&friends);
 }
 
@@ -273,7 +274,7 @@ void Server::viewProfile(char* val) {
 	char player[20];
 	Parsing::parsing(val, player);
     Parsing::Profile prof = _db.getProfile(player);
-    Parsing::profile_to_str(val,&prof);
+    Parsing::profile_to_str(val,prof);
 }
 
 bool Server::delFriendRequest(char* val){
@@ -342,7 +343,7 @@ void Server::resClient(std::string* processId, int res) {
 
 void Server::launch_db_save(){
     while(true){
-        std::this_thread::sleep_for(std::chrono::seconds(30));
+        std::this_thread::sleep_for(std::chrono::seconds(Constante::SERVER_SAVE_TIME));
         mtx.lock();
         _db.dbSave(); 
         mtx.unlock(); 

@@ -40,6 +40,7 @@ int main()
     db.updateScore(47, "poubelle");
     leaderboard = db.checkLeaderboard();
 
+/*
     std::vector<char*> amis = db.getFriendList("helin");
     for (auto x : amis)
         std::cout << "amis de helin" << " -> " << x << " : " << strlen(x) << std::endl;
@@ -57,6 +58,7 @@ int main()
 
     Profile hel = db.getProfile("helin");
     std::cout << hel.pseudo << " " << hel.score << std::endl;
+    */
 
 	db.dbSave();
 	return 0;
