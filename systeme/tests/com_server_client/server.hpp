@@ -19,7 +19,9 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <iostream>
-#include <signal.h>
+#include <csignal>
+#include <mutex>
+#include "Constante.hpp"
 
 
 
@@ -28,11 +30,14 @@ class Server{
 private:
     static bool _is_active; 
     std::vector<const char *> _pipe_running;    
-    Database _db;
+    static  Database _db;
+    static std::mutex mtx;
+
 
 public:
     Server();
     ~Server(){_db.dbSave();};
+    static void close_me(int sig){mtx.lock(); _db.dbSave(); mtx.unlock(); }
 
 private:
 	//connections
@@ -49,12 +54,15 @@ private:
     bool addFriend(char* );
     bool delFriend(char* );
     void checkleaderboard(char* );
-	char* friendList(char* );	
-	bool getFriendRequest(char* );
+	void friendList(char* );	
+	void getFriendRequest(char* );
+    bool delFriendRequest(char*);
     int sendFriendRequest(char* );
-    bool viewProfile(char* );
+    void viewProfile(char* );
     bool logOut(char* );
     void resClient(std::string* processId, char* res);
+    void resClient(std::string* processId, int res);
+    static void launch_db_save();
     
     bool static isServerActive() {return _is_active;}
     

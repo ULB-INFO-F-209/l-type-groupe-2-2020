@@ -29,37 +29,45 @@ bool Database::verifyLogin(char* pseudo, char* pswd){
 }
 
 Profile Database::getProfile(char* pseudo){
+    std::cout <<"HELLo  "<< pseudo << std::endl;
     std::ptrdiff_t idx = find(pseudo);
     Profile res;
     if (idx == -1){
         std::cout << pseudo << " does not exist" << std::endl;
     } else{
-        res = {_data[idx]._pseudo, _data[idx]._bestScore};
+        Profile ret_val {_data[idx]._pseudo, _data[idx]._bestScore};
+        res = ret_val;
     }
     return res;
 }
 
-std::vector<char*> Database::getFriendRequest(char* pseudo){
-    std::vector<char*> requests;
+std::vector<std::string> Database::getFriendRequest(char* pseudo){
+    std::vector<std::string> requests;
     std::ptrdiff_t idx = find(pseudo);
     if (idx == -1){
         std::cout << pseudo << " does not exist" << std::endl;
     } else{
         for (char* req : _data[idx]._friend_requests){
-            requests.push_back(req);
+            if(req[0] != '\0'){
+                std::string tmp(req);
+                requests.push_back(tmp);
+            }
         }
     }
     return requests;
 }
 
-std::vector<char*> Database::getFriendList(char* pseudo){
-    std::vector<char*> friends;
+std::vector<std::string> Database::getFriendList(char* pseudo){
+    std::vector<std::string> friends;
     std::ptrdiff_t idx = find(pseudo);
     if (idx == -1){
         std::cout << pseudo << " does not exist" << std::endl;
-    } else{
-        for (char* frnd : _data[idx]._friends){
-            friends.push_back(frnd);
+    } else{ 
+        for (char* frnd : _data[idx]._friends){ 
+            if (frnd[0] != '\0'){
+                std::string f(frnd);
+                friends.push_back(f);
+            }
         }
     }
     return friends;
@@ -133,6 +141,20 @@ bool Database::addFriend(char* pseudo1, char* pseudo2){
     return res;
 }
 
+bool Database::delFriendRequest(char *pseudo1, char *pseudo2){
+    // supprime dans la liste des requete de pseudo1 le pseudo numero 2
+    std::ptrdiff_t idx1 = find(pseudo1);
+    std::ptrdiff_t idx2 = find(pseudo2);
+    bool res = false;
+    if (idx1 != -1 && idx2 != -1){
+        _data[idx1].removeRequest(pseudo2);
+        res = true;
+    }
+    if (idx1 == -1){std::cout << pseudo1 << " does not exist" << std::endl;}
+    if (idx2 == -1){std::cout << pseudo2 << " does not exist" << std::endl;}
+    return res;
+}
+
 bool Database::removeFriend(char* pseudo1, char* pseudo2){
     std::ptrdiff_t idx1 = find(pseudo1);
     std::ptrdiff_t idx2 = find(pseudo2);
@@ -177,14 +199,14 @@ void Database::dbLoad(){
 
 void Database::dbSave(){
     // writing all accounts in _path file
-    std::cout << "\n------------Save------------\n\n";
+    std::cout << "\n------------Save------------\n";
     FILE* out = fopen(_path.c_str(),"wb");
     for (Account &acc : _data){
         fwrite(&acc,sizeof(Account),1,out);
     }
     display();
     fclose(out);
-    std::cout << "\nSAVE RUNNING\n";
+    std::cout << "\nSAVE FINNISH\n";
 }
 
 void Database::display(){

@@ -1,7 +1,16 @@
 #include "Client.hpp"
 
+void test1();
+
 int main()
 {
+	test1();
+	//Client Django{}, Imene{},zanilia{};;
+	
+	return 0;
+}
+
+void test1(){
 	int a = 0;
 	Client zanilia{};
 	char res[Constante::CHAR_SIZE];
@@ -44,7 +53,7 @@ int main()
 	std::cout << "Add friend finis" << std::endl<<std::endl;
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
-	Django.delFriendRequest("Imene");
+	/*Django.delFriendRequest("Imene");
 	std::cout << "Del friend Requeste finis" << std::endl<<std::endl;
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	
@@ -78,11 +87,5 @@ int main()
 
 	zanilia.getFriendList(res);
 	std::cout << "GetFriend List finis" << std::endl<<std::endl;
-	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-
-	/*
-	zanilia.addFriend("helin");
-	*/
-	
-	return 0;
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000));*/
 }

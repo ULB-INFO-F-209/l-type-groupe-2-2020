@@ -9,9 +9,10 @@
 #include <vector>
 #include <iostream>
 #include <string>
+#include "database/database.hpp"
 
 namespace Parsing{
-	struct Profile;
+	using Profile = Profile;
 	struct Game_settings;
 
 	//encodage
@@ -28,13 +29,13 @@ namespace Parsing{
 }
 
 //Les structures
-struct Parsing::Profile
+/*struct Parsing::Profile
 {
 	char pseudo[20];
 	int score;	
 	Profile(char *p, int s){sprintf(pseudo,"%s", p); score=s;}
 };
-
+*/
 struct Parsing::Game_settings
 {
 	int nb_player = 1;

@@ -15,7 +15,7 @@ namespace Constante{
 
     //pipe
     const char PIPE_DE_CONNEXION[] = {"connexion"};
-    const char PIPE_DE_REPONSE[] = {"reponse"};
+    const char PIPE_DE_REPONSE[] = {"getrequest"};
     const char BASE_PIPE_FILE[] = {"pipefile_"};
     const char PIPE_PATH[] = {"/tmp/"};
     const int PIPE_MODE = 0666;
@@ -31,9 +31,11 @@ namespace Constante{
     const size_t SIZE_PSEUDO  = 20;
     const size_t SIZE_pipe =64;
 
+    //server
+    const int SERVER_SAVE_TIME = 30;
+
     
-    
-    
+ 
 }
 
 

@@ -127,7 +127,7 @@ void Client::checkLeaderboard(char * res){
 
 void Client::get_profile(char *res){
 	char buffer[Constante::CHAR_SIZE];
-	sprintf(buffer, "Mi&%d",_pid);
+	sprintf(buffer, "Mi&%s&%d",_pseudo,_pid);
 	communication(buffer); 
 	strcpy(res, buffer); //pseudo1&score
 }
