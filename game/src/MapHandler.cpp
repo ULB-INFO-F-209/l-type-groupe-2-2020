@@ -34,12 +34,11 @@ void Projectile::move() {
     }
 }
 
-void Obstacle::touched(int dam) {hp-=dam;} //hp-=damage;
-
 vec2i MapObject::getPos() const {return pos;}
 
 void MapObject::touched(int dam) {
-    hp-=dam;
+    if ((hp - dam) < 0 ) hp = 0;
+    else hp-=dam;
 }
 
 void MapHandler::update(MapObject::type typ, int t) {
@@ -225,11 +224,13 @@ void MapHandler::checkCollision(int t) {
         }
     }
 
-    // collision projectil/projectile
+    // collision projectil/projectile   (TODO avoir 2 sets de proj)
     for(size_t proj1 = 0; proj1 < projectiles_set.size(); proj1++){
         for(size_t proj2 = 0; proj2 < projectiles_set.size(); proj2++){
-            //add condition to check if player is alive after shooting
-            if(projectiles_set.at(proj1) != projectiles_set.at(proj2) && projectiles_set.at(proj1)->getPos().x == projectiles_set.at(proj2)->getPos().x && projectiles_set.at(proj1)->getPos().y == projectiles_set.at(proj2)->getPos().y){  
+            if(projectiles_set.at(proj1) != projectiles_set.at(proj2) 
+            && projectiles_set.at(proj1)->getPos().x == projectiles_set.at(proj2)->getPos().x 
+            && (projectiles_set.at(proj1)->getPos().y == projectiles_set.at(proj2)->getPos().y
+            || (projectiles_set.at(proj1)->getPos().y+1 == projectiles_set.at(proj2)->getPos().y && projectiles_set.at(proj1)->getShipType()))){  
                 projectiles_set.at(proj1)->touched(projectiles_set.at(proj1)->getDamage());
                 projectiles_set.at(proj2)->touched(projectiles_set.at(proj2)->getDamage());
             }
@@ -244,8 +245,12 @@ void MapHandler::checkCollision(int t) {
                 proj->touched(e->getDammage());
                 if(player_ships_set.size() == 2){
                     player_ships_set.at(proj->getPlayer()-1)->setScore(player_ships_set.at(proj->getPlayer()-1)->getScore() + 10);
-                    if(e->getHp()==0 && player_ships_set.at(proj->getPlayer()-1)->getCurrentBonus()==lifeSteal && player_ships_set.at(proj->getPlayer()-1)->getHp()<100)
-                        player_ships_set.at(proj->getPlayer()-1)->setHp(player_ships_set.at(proj->getPlayer()-1)->getHp()+10);
+                    if(e->getHp()==0 && player_ships_set.at(proj->getPlayer()-1)->getCurrentBonus()==lifeSteal && player_ships_set.at(proj->getPlayer()-1)->getHp()<100){
+                        if ((player_ships_set.at(proj->getPlayer()-1)->getHp()+10) <= 100)
+                            player_ships_set.at(proj->getPlayer()-1)->setHp(player_ships_set.at(proj->getPlayer()-1)->getHp()+10);
+                        else player_ships_set.at(proj->getPlayer()-1)->setHp(100);
+                    }
+                        
                 }
                 else if (player_ships_set.size() == 1) { 
                     player_ships_set.at(0)->setScore(player_ships_set.at(0)->getScore() + 10);

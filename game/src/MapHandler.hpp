@@ -43,7 +43,6 @@ public:
 
     Obstacle(int nx, int ny,int dam,int h) {pos.x = nx; pos.y = ny; damage=dam;typ=obstacle;hp=h;}
     int get_damage() const {return damage;};
-    void touched(int damage) override;
 };
 
 class Ship: public MapObject{

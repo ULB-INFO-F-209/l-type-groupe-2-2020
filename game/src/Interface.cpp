@@ -83,11 +83,11 @@ void Interface::display(MapHandler *m,int tick, std::vector<Player *> *listPlaye
     werase(game_wnd);
     // l'affichage à chaque tour de boucle (server->game->server->client)
     drawStar(m);
-    drawObstacle(m);
     drawProjectile(m);
     drawEnemy(m);
+    drawNewLevel(m, tick);
+    drawObstacle(m);
     drawBonus(m);
-    drawNewLevel(m,tick);
     drawPlayer(m,tick,listPlayer);
     drawUI(m,playership1,playership2,player1,player2,score1,score2,tick);
     refresh_wnd();
@@ -102,9 +102,9 @@ void Interface::drawStar(MapHandler *m) {
 
 void Interface::drawObstacle(MapHandler *m) {
     for(auto o : m->getObstacles()){
-        wattron(game_wnd, COLOR_PAIR(6));
-        mvwaddch(game_wnd, o->getPos().y, o->getPos().x, ACS_DIAMOND);
-        wattroff(game_wnd, COLOR_PAIR(6));
+        wattron(game_wnd, COLOR_PAIR(1));
+        mvwaddch(game_wnd, o->getPos().y, o->getPos().x, '#');
+        wattroff(game_wnd, COLOR_PAIR(1));
 
     }
 }
@@ -330,12 +330,13 @@ void Interface::drawBonus(MapHandler *m) {
 
 }
 
-void Interface::drawNewLevel(MapHandler *m,int tick) {
-    if(m->getLevelTick() != 0 && tick <= m->getLevelTick() + 600 && tick > m->getLevelTick()+100){
-        mvwprintw(game_wnd, 8, 35, "level %i", m->getCurrentLevel());
-        m->changeLevel();
-        if(tick == m->getLevelTick() + 600)
-            m->setChangingLevel(false);
-    }
+void Interface::drawNewLevel(MapHandler *map, int tick) {
+
+    if(map->getLevelTick() != 0 && tick <= map->getLevelTick() + 600 && tick > map->getLevelTick()+100){
+            mvwprintw(game_wnd, 8, 35, "level %i", map->getCurrentLevel());
+            map->changeLevel();
+            if(tick == map->getLevelTick() + 600)
+                map->setChangingLevel(false);
+        }
 }
 

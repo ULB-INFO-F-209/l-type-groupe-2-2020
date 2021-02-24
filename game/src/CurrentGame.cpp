@@ -3,15 +3,14 @@
 //
 /**
  * TODO:
+ *  Gérer fin du jeu
  *  thread pour jouer en même temps (Aïssa)
  *  enlever static_cast !!
- *  transformer game.cpp en classe
- *  damage version alexandre
- *  couleur
  *  ajouter effet explosion
+ * séparer proj_set en 2
  * ERROR:
- * quand J1 à 10% et que l'autre meurt, J1 meurt aussi
- * collisions projectiles
+ * quand J1 à 10% et que l'autre meurt, J1 meurt aussi ???
+ * 
  * 
  */
 #include "CurrentGame.hpp"
@@ -196,6 +195,7 @@ void CurrentGame::run() {
         heal(); // remet hp du player à 100 si encore vies
 
         anInterface.display(&map,tick,&listPlayer,playership1,playership2,player1,player2,finalScore1,finalScore2);
+        
 
         saveScore(); // sauvegarde le score     FIXME: devons nous le faire à chaque tick ?
 
