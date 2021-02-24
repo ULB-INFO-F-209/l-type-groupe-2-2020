@@ -35,6 +35,31 @@ namespace Constante{
     const int SERVER_SAVE_TIME = 30;
 
     
+    constexpr char J1_LEFT = 'q';
+    constexpr char GAME_QUIT = 'p';
+    constexpr char J1_UP = 'z';
+    constexpr char J1_DOWN = 's';
+    constexpr char J1_RIGHT = 'd';
+    constexpr char J1_DIAG_UP_LEFT = 'z';
+    constexpr char J1_DIAG_UP_RIGHT = 'e';
+    constexpr char J1_DIAG_DOWN_RIGHT = 'c';
+    constexpr char J1_DIAG_DOWN_LEFT = 'w';
+    constexpr char J1_SHOOT = ' ';
+
+    //J2
+    constexpr char J2_LEFT = 'f';
+    constexpr char J2_UP = 't';
+    constexpr char J2_DOWN = 'g';
+    constexpr char J2_RIGHT = 'h';
+    constexpr char J2_DIAG_UP_LEFT = 'r';
+    constexpr char J2_DIAG_UP_RIGHT = 'y';
+    constexpr char J2_DIAG_DOWN_RIGHT = 'n';
+    constexpr char J2_DIAG_DOWN_LEFT = 'v';
+    constexpr char J2_SHOOT = 'm';
+
+    constexpr char GAME_QUIT = 'p';
+
+    
  
 }
 
