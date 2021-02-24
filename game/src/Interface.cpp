@@ -81,17 +81,16 @@ Interface::Interface(): main_wnd(),game_wnd(), game_area(), screen_area() {
 }
 
 void Interface::display(MapHandler *m,int tick, std::vector<Player *> *listPlayer,PlayerShip* playership1,PlayerShip* playership2, Player* player1,Player* player2,int score1, int score2) {
-    werase(game_wnd);
+    
     // l'affichage à chaque tour de boucle (server->game->server->client)
     drawStar(m);
     drawProjectile(m);
     drawEnemy(m);
-    drawNewLevel(m, tick);
     drawObstacle(m);
     drawBonus(m);
     drawPlayer(m,tick,listPlayer);
     drawUI(m,playership1,playership2,player1,player2,score1,score2,tick);
-    refresh_wnd();
+    
 }
 
 void Interface::drawStar(MapHandler *m) {
@@ -163,20 +162,7 @@ void Interface::drawPlayer(MapHandler *m, int tick, std::vector<Player *> *listP
         wattron(game_wnd, A_ALTCHARSET);
         mvwaddch(game_wnd, p->getPos().y, p->getPos().x - 1, ACS_LARROW);
         mvwaddch(game_wnd, p->getPos().y, p->getPos().x + 1, ACS_RARROW);
-        if(listPlayer->at(p->getPlayerNb())->getnLives() > 0){
-            if(p->getHp()<=0 && p->getIsAlive()){
-                p->setisAlive(false);
-                p->setKillTime(tick);
-                listPlayer->at(p->getPlayerNb())->setnLives(listPlayer->at(p->getPlayerNb())->getnLives() - 1);
-                m->explosion();
-            }
-            if(tick==p->getKillTime()+300 && !p->getIsAlive()){
 
-                p->setisAlive(true);
-                p->setHp(100);
-
-            }
-        }
 
         if(listPlayer->at(p->getPlayerNb())->getnLives() > 0){
 
@@ -188,6 +174,8 @@ void Interface::drawPlayer(MapHandler *m, int tick, std::vector<Player *> *listP
                 wattron(game_wnd, A_ALTCHARSET);
                 mvwaddch(game_wnd, p->getPos().y, p->getPos().x - 1, ' ');
                 mvwaddch(game_wnd, p->getPos().y, p->getPos().x + 1, ' ');
+                wattroff(game_wnd, COLOR_PAIR(player_color));
+
             }
 
             // draw engines flames
@@ -333,12 +321,7 @@ void Interface::drawBonus(MapHandler *m) {
 }
 
 void Interface::drawNewLevel(MapHandler *map, int tick) {
-
-    if(map->getLevelTick() != 0 && tick <= map->getLevelTick() + 600 && tick > map->getLevelTick()+100){
-            mvwprintw(game_wnd, 8, 35, "level %i", map->getCurrentLevel());
-            map->changeLevel();
-            if(tick == map->getLevelTick() + 600)
-                map->setChangingLevel(false);
-        }
+    mvwprintw(game_wnd, 8, 35, "level %i", map->getCurrentLevel());
+    
 }
 

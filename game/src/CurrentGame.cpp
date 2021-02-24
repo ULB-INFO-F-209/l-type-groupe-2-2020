@@ -106,6 +106,7 @@ void CurrentGame::heal() {      // remet hp du player à 100 si encore vies
     for( PlayerShip* p : map.getListPlayer()){
         if(listPlayer.at(p->getPlayerNb())->getnLives() > 0){
             if(p->getHp()<=0 && p->getIsAlive()){
+                map.explosion();
                 p->setisAlive(false);
                 p->setKillTime(tick);
                 listPlayer.at(p->getPlayerNb())->setnLives(listPlayer.at(p->getPlayerNb())->getnLives() - 1);
@@ -195,8 +196,18 @@ void CurrentGame::run() {
 
         heal(); // remet hp du player à 100 si encore vies
 
+        werase(anInterface.get_game_window());
         anInterface.display(&map,tick,&listPlayer,playership1,playership2,player1,player2,finalScore1,finalScore2);
         
+        if(map.getLevelTick() != 0 && tick <= map.getLevelTick() + 600 && tick > map.getLevelTick()+100){
+            anInterface.drawNewLevel(&map, tick);
+            
+            if(tick == map.getLevelTick() + 600) {
+                map.changeLevel();
+                map.setChangingLevel(false);
+            }
+        }
+        anInterface.refresh_wnd();
 
         saveScore(); // sauvegarde le score     FIXME: devons nous le faire à chaque tick ?
 
