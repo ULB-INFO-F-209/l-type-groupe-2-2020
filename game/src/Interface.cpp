@@ -23,7 +23,8 @@ int Interface::init() {
     // define area for screen (default terminal size)
     screen_area = { {0, 0}, {80, 24}};
 
-    wresize(main_wnd, screen_area.height(), screen_area.width());
+    //wresize(main_wnd, screen_area.height(), screen_area.width());     Ne sert à rien
+
     // initialize window areas
     int infopanel_height = 4;
     game_wnd = newwin( screen_area.height() - infopanel_height - 2,
@@ -126,25 +127,26 @@ void Interface::drawEnemy(MapHandler *m) {
 
 void Interface::drawProjectile(MapHandler *m) {
     for(auto p : m->getProjectiles()){
-        if (p->getShipType()) {
-            if (p->getPlayer()==1) {
-                wattron(game_wnd, COLOR_PAIR(5));
-                mvwaddch(game_wnd, p->getPos().y, p->getPos().x, '*');
-                wattroff(game_wnd, COLOR_PAIR(5));
-            }
-            else{
-                wattron(game_wnd, COLOR_PAIR(2));
-                mvwaddch(game_wnd, p->getPos().y, p->getPos().x, '*');
-                wattroff(game_wnd, COLOR_PAIR(2));
-            }
+        if (p->getPlayer()==1) {
+            wattron(game_wnd, COLOR_PAIR(5));
+            mvwaddch(game_wnd, p->getPos().y, p->getPos().x, '*');
+            wattroff(game_wnd, COLOR_PAIR(5));
         }
         else{
-            wattron(game_wnd, COLOR_PAIR(4));
+            wattron(game_wnd, COLOR_PAIR(2));
             mvwaddch(game_wnd, p->getPos().y, p->getPos().x, '*');
-            wattroff(game_wnd, COLOR_PAIR(4));
+            wattroff(game_wnd, COLOR_PAIR(2));
         }
     }
+    for(auto pE : m->getProjectilesEnemy()){
+        wattron(game_wnd, COLOR_PAIR(4));
+        mvwaddch(game_wnd, pE->getPos().y, pE->getPos().x, '*');
+        wattroff(game_wnd, COLOR_PAIR(4));
+    }
+        
 }
+
+
 
 void Interface::drawPlayer(MapHandler *m, int tick, std::vector<Player *> *listPlayer) {
     for( PlayerShip* p : m->getListPlayer()) {

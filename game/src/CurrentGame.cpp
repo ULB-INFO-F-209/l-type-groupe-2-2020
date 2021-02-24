@@ -8,6 +8,7 @@
  *  enlever static_cast !!
  *  ajouter effet explosion
  * séparer proj_set en 2
+ *  ajouter la condition pour les tirs alliés
  * ERROR:
  * quand J1 à 10% et que l'autre meurt, J1 meurt aussi ???
  * 

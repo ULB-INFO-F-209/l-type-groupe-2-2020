@@ -134,6 +134,7 @@ class MapHandler{
     std::vector<Star*> stars_set;
     std::vector<Obstacle*> obstacles_set;
     std::vector<Projectile*> projectiles_set;
+    std::vector<Projectile*> projectilesEnemy_set;
     std::vector<PlayerShip*> player_ships_set;
     std::vector<EnemyShip*> enemy_ships_set;
     std::vector<Bonus*> bonuses_set;
@@ -151,6 +152,7 @@ public:
     std::vector<Star*> getStars() const;
     std::vector<Obstacle*> getObstacles() const;
     std::vector<Projectile*> getProjectiles() const;
+    std::vector<Projectile*> getProjectilesEnemy() const;
     std::vector<EnemyShip*> getEnemy() const;
     std::vector<Bonus*> getBonus() const;
     void setBounds(rect);

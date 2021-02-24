@@ -22,6 +22,7 @@ void MapHandler::erase(size_t i, MapObject::type typ) { //1ier elem=index(0)
 std::vector<Star*> MapHandler::getStars() const  { return stars_set; } // renvoyer le vect du map handler
 std::vector<Obstacle*> MapHandler::getObstacles() const  { return obstacles_set; }
 std::vector<Projectile*> MapHandler::getProjectiles() const {return projectiles_set;}
+std::vector<Projectile*> MapHandler::getProjectilesEnemy() const {return projectilesEnemy_set;}
 void MapHandler::setBounds(rect a) { field_bounds = a; }
 
 void MapObject::move() {pos.y += 1;}
@@ -62,6 +63,12 @@ void MapHandler::update(MapObject::type typ, int t) {
                 projectiles_set.erase(projectiles_set.begin() + i);
             
         }
+        for(size_t e = 0; e < projectilesEnemy_set.size(); e++) {
+            if(projectilesEnemy_set.at(e)->getPos().y > field_bounds.bot() + 1)
+                projectilesEnemy_set.erase(projectilesEnemy_set.begin() + e);
+            
+        }
+
     }else if (typ == MapObject::enemyship) {
         for(size_t i = 0; i < enemy_ships_set.size(); i++) {
             if(enemy_ships_set.at(i)->getPos().y > field_bounds.bot() + 1){
@@ -100,7 +107,9 @@ void MapHandler::update(MapObject::type typ, int t) {
     else if (typ == MapObject::projectile) {
         for(auto & i : projectiles_set) {
             i->move();
-            
+        }
+        for(auto & e : projectilesEnemy_set) {
+            e->move();
         }
     }
     else if (typ == MapObject::enemyship) {
@@ -178,7 +187,7 @@ void MapHandler::spawnProjectile(int x, int y, int damage, bool type, int hp, in
             }
         }
     }
-    else projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
+    else projectilesEnemy_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
 }
 
 void MapHandler::checkCollision(int t) {
@@ -202,6 +211,14 @@ void MapHandler::checkCollision(int t) {
                 }
             }
         }
+        for (auto & projE : projectilesEnemy_set){
+            if(!obstacles_set.empty() && !projectilesEnemy_set.empty()){ // sinon out of range
+                if(obs->getPos().x == projE->getPos().x && obs->getPos().y == projE->getPos().y){
+                    obs->touched(projE->getDamage());
+                    projE->touched(obs->get_damage());
+                }
+            }
+        }
     }
 
     // collision enemy/player
@@ -216,8 +233,8 @@ void MapHandler::checkCollision(int t) {
 
     // collision player/projectile
     for(PlayerShip* p : player_ships_set){
-        for(auto & proj : projectiles_set){
-            if(!proj->getShipType() && p->getBounds().contains(proj->getPos()) && p->getHp()>0){
+        for(auto & proj : projectilesEnemy_set){
+            if(p->getBounds().contains(proj->getPos()) && p->getHp()>0){
                 p->touched(proj->getDamage());
                 proj->touched(proj->getHp());
             }
@@ -225,6 +242,7 @@ void MapHandler::checkCollision(int t) {
     }
 
     // collision projectil/projectile   (TODO avoir 2 sets de proj)
+    /*
     for(size_t proj1 = 0; proj1 < projectiles_set.size(); proj1++){
         for(size_t proj2 = 0; proj2 < projectiles_set.size(); proj2++){
             if(projectiles_set.at(proj1) != projectiles_set.at(proj2) 
@@ -236,11 +254,22 @@ void MapHandler::checkCollision(int t) {
             }
         }
     }
+    */
+    for(size_t projA = 0; projA < projectiles_set.size(); projA++){
+        for(size_t projE = 0; projE < projectilesEnemy_set.size(); projE++){
+            if (projectiles_set.at(projA)->getPos().x == projectilesEnemy_set.at(projE)->getPos().x 
+            && (projectiles_set.at(projA)->getPos().y == projectilesEnemy_set.at(projE)->getPos().y
+            || projectiles_set.at(projA)->getPos().y+1 == projectilesEnemy_set.at(projE)->getPos().y)) {
+                projectiles_set.at(projA)->touched(projectiles_set.at(projA)->getHp());
+                projectilesEnemy_set.at(projE)->touched(projectilesEnemy_set.at(projE)->getHp());
+            }
+        }
+    }
     
     //collision enemy/projectile
     for(EnemyShip* e : enemy_ships_set){
         for(auto & proj : projectiles_set){
-            if(proj->getShipType() && e->getBounds().contains(proj->getPos()) && e->getHp()>0){
+            if(e->getBounds().contains(proj->getPos()) && e->getHp()>0){
                 e->touched(proj->getDamage());
                 proj->touched(e->getDammage());
                 if(player_ships_set.size() == 2){
@@ -297,6 +326,11 @@ void MapHandler::checkCollision(int t) {
     //erase projectiles
     for(size_t proj = 0; proj < projectiles_set.size(); proj++){
         if(projectiles_set.at(proj)->getHp() <= 0)projectiles_set.erase(projectiles_set.begin() + proj);
+    }
+
+    //erase enemy projectiles
+    for(size_t projE = 0; projE < projectilesEnemy_set.size(); projE++){
+        if(projectilesEnemy_set.at(projE)->getHp() <= 0)projectilesEnemy_set.erase(projectilesEnemy_set.begin() + projE);
     }
 }
 
