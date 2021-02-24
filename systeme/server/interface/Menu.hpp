@@ -21,9 +21,9 @@
 #include "Client.hpp"
 #include "Interface.hpp"
 #include "parsing.hpp"
-#include "namespaceMenu.hpp"
 
 using namespace Parsing; //utilities
+using namespace Screen;
 
 class Menu{
 
@@ -49,6 +49,7 @@ class Menu{
 	//console
 	Interface window{};
 public:
+	Menu()=default;
 	Menu(Client *client):_client(client){}
 
 	void start_session();
@@ -56,7 +57,7 @@ public:
 	//destructor
 	~Menu()=default;
 
-private:
+//private:
 	//all menu
 	int home();
 	int  main_m();

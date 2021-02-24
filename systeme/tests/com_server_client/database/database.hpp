@@ -16,6 +16,7 @@ struct Profile
 	int score;
 	Profile()=default;
 	Profile(char *p, int s){sprintf(pseudo,"%s", p); score=s;}
+	Profile(Account acc){acc.getPseudo(pseudo); score = acc.getScore();}
 };
 
 class Database{
@@ -34,11 +35,10 @@ public:
 	std::ptrdiff_t find(char* pseudo);
 	bool verifyLogin(char* pseudo, char* pswd);
 	Profile getProfile(char* pseudo);
-    std::vector<std::string> getFriendRequest(char* pseudo);
+    std::vector<Profile> getFriendRequest(char* pseudo);
 	bool delFriendRequest(char *pseudo1, char *pseudo2);
-    std::vector<std::string> getFriendList(char* pseudo);
+    std::vector<Profile> getFriendList(char* pseudo);
 	std::vector<Profile> checkLeaderboard();
-    //bool areFriends(char *pseudo1, char *pseudo2);
 
 	// Utilities
 	bool createAccount(char* pseudo, char* pswd);

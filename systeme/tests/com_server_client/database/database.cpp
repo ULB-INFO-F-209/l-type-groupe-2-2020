@@ -29,43 +29,44 @@ bool Database::verifyLogin(char* pseudo, char* pswd){
 }
 
 Profile Database::getProfile(char* pseudo){
-    std::cout <<"HELLo  "<< pseudo << std::endl;
     std::ptrdiff_t idx = find(pseudo);
     Profile res;
     if (idx == -1){
         std::cout << pseudo << " does not exist" << std::endl;
     } else{
-        Profile ret_val {_data[idx]._pseudo, _data[idx]._bestScore};
+        Profile ret_val {_data[idx]};
         res = ret_val;
     }
     return res;
 }
 
-std::vector<std::string> Database::getFriendRequest(char* pseudo){
-    std::vector<std::string> requests;
+std::vector<Profile> Database::getFriendRequest(char* pseudo){
+    std::vector<Profile> requests;
     std::ptrdiff_t idx = find(pseudo);
     if (idx == -1){
         std::cout << pseudo << " does not exist" << std::endl;
     } else{
         for (char* req : _data[idx]._friend_requests){
             if(req[0] != '\0'){
-                std::string tmp(req);
-                requests.push_back(tmp);
+                idx = find(req);
+                Profile prof{_data[idx]};
+                requests.push_back(prof);
             }
         }
     }
     return requests;
 }
 
-std::vector<std::string> Database::getFriendList(char* pseudo){
-    std::vector<std::string> friends;
+std::vector<Profile> Database::getFriendList(char* pseudo){
+    std::vector<Profile> friends;
     std::ptrdiff_t idx = find(pseudo);
     if (idx == -1){
         std::cout << pseudo << " does not exist" << std::endl;
     } else{ 
-        for (char* frnd : _data[idx]._friends){ 
+        for (auto frnd : _data[idx]._friends){
             if (frnd[0] != '\0'){
-                std::string f(frnd);
+                idx = find(frnd);
+                Profile f{_data[idx]};
                 friends.push_back(f);
             }
         }
