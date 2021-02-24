@@ -23,7 +23,7 @@ Server::Server():_pipe_running() ,_db(){
         //_server_instance.push_back(this);
         //signal(SIGUSR1,handleSignalCall);
 
-        std::cout << "Serveur connecter ... \n";
+        std::cout << "\nServeur connecter ... \n";
         _is_active = true;
         std::thread t1(&Server::initConnexions,this); // thread d'ecoute (deamon)
         t1.detach(); //TODO verifier le comportement de ca 
@@ -46,7 +46,6 @@ Server::Server():_pipe_running() ,_db(){
 void Server::handleIncommingMessages(){
     
 
-    std::cout << "Lancement de l'ecoute des requetes" <<std::endl;
     char response_pipe_path[Constante::CHAR_SIZE],message[Constante::CHAR_SIZE];
     sprintf(response_pipe_path,"%s%s",Constante::PIPE_PATH,Constante::PIPE_DE_REPONSE);
 
@@ -83,18 +82,21 @@ void Server::handleIncommingMessages(){
  **/
 void Server::catchInput(char* input) {
 	//char input[Constante::CHAR_SIZE]; //input[0] = M pour menu et J pour jeu
-	bool res = false;
-    std::cout << "The Input : " << input <<std::endl;
+    std::string processId(input);
+    int i = processId.rfind(Constante::DELIMITEUR);
+    processId = processId.substr(i+1,processId.length());
+
+    std::cout << "Input recu : " << input <<std::endl;
 	if (input[0] == Constante::ACTION_MENU_PRINCIPAL[0]) {
 		switch(input[1]) {
 			case Constante::ACTION_MENU_PRINCIPAL[1]:
-				//res = signIn(input);    //Ma_pseudo_mdp
+				resClient(&processId, signIn(input));    //Ma_pseudo_mdp
 				break;					//a chaque connexion le server associe un pid a un pseudo
 			case Constante::ACTION_MENU_PRINCIPAL[2]:
-				res = signUp(input);    //Mb_pseudo_mdp
+				resClient(&processId, signUp(input));    //Mb_pseudo_mdp
 				break;
 			case Constante::ACTION_MENU_PRINCIPAL[3]:
-				res = addFriend(input); //Mc_PseudoMe_PseudoF
+				resClient(&processId, addFriend(input)); //Mc_PseudoMe_PseudoF
 				break;
 			case Constante::ACTION_MENU_PRINCIPAL[4]:
 				//res = delFriend(input); //Md_Pseudo
@@ -104,7 +106,7 @@ void Server::catchInput(char* input) {
 				//resClient(processId, ret) avec ret le retour de checkleaderboard
 				break;
 			case Constante::ACTION_MENU_PRINCIPAL[6]:
-				//res = friendList(input); //Mf_Pseudo
+				resClient(&processId,friendList(input)); //Mf_Pseudo
 				break;
 			case Constante::ACTION_MENU_PRINCIPAL[7]:
 				//res = getFriendRequest(input); //Mg_Pseudo
@@ -117,10 +119,7 @@ void Server::catchInput(char* input) {
 				break;
 		}
 
-		std::string processId(input);
-    	int i = processId.rfind(Constante::DELIMITEUR);
-    	processId = processId.substr(i+1,processId.length()); //pour recup le PID
-    	resClient(&processId, res);
+		
 	} else if (input[0] == Constante::ACTION_JEU[0]){
 		//similaire a M mais on a besoin de connaitre les input du jeu
 	} else {
@@ -136,15 +135,14 @@ void Server::catchInput(char* input) {
  * format du pipe : /tmp/pipefile_name
  **/
 void Server::createPipe(const char *name){
-
     char path[Constante::CHAR_SIZE];
     sprintf(path,"%s%s",Constante::PIPE_PATH,name);
-    std::cout << "nom pipe = " << path << std::endl;
     int ret_val = mkfifo(path,Constante::PIPE_MODE);
-    std::cout << "ret_val : " << ret_val << std::endl;
-
+    std::cout << "nom pipe = " << path<<" ("<<ret_val<<"),  ";
+    
     if (errno == EEXIST ){ //cree le pipe
         std::cout << "pipe " << path << " existe deja" << std::endl;
+        
     }
     else if(ret_val == -1){
         std::cerr << "[ERROR PIPE ("<< ret_val <<")] " << std::endl;
@@ -209,7 +207,6 @@ bool Server::signIn(char* val){
 bool Server::signUp(char* val){
     char pseudo[20], pswd[20];
     Parsing::parsing(val, pseudo, pswd);
-    std::cout << " after: " << val << " , " << pseudo << " , " << pswd << std::endl;
     return _db.createAccount(pseudo, pswd);
 }
 
@@ -237,11 +234,13 @@ void Server::checkleaderboard(char* val){ //only need a pid
 }
 
 
-bool Server::friendList(char* val) {
-	char pseudo[20];
+char* Server::friendList(char* val) {
+	char pseudo[20],buffer[Constante::CHAR_SIZE];
     Parsing::parsing(val, pseudo);
     std::vector<char*> friends = _db.getFriendList(pseudo);
-    return true;
+    Parsing::profile_list_to_str(buffer,&friends);
+    std::cout << "tema : " << buffer <<std::endl;
+    return buffer;
 }
 
 bool Server::getFriendRequest(char* val) {
@@ -266,21 +265,34 @@ bool Server::viewProfile(char* val) {  //only need a pid ? the name ?
 void Server::resClient(std::string* processId, bool res) {
 	char message[Constante::CHAR_SIZE];int fd;
     sprintf(message, "%d", res);
-	
-    std::cout << "res " << message << std::endl; 
+
     char pipe_name[Constante::CHAR_SIZE];
     sprintf(pipe_name,"%s%s%s", Constante::PIPE_PATH, Constante::BASE_PIPE_FILE,(*processId).c_str());
 
-    std::cout << pipe_name << std::endl;
-	fd = open(pipe_name,O_WRONLY);
+    std::cout << "resultat requete : " << message <<" sur le pipe "<<pipe_name << std::endl; 
 
-    if (fd != -1){
-        write(fd, &message, Constante::CHAR_SIZE);
-    }
-    else{
-        printf("pas de connexion\n");
-    }
+	fd = open(pipe_name,O_WRONLY);
+    if (fd != -1) write(fd, &message, Constante::CHAR_SIZE);
+    else std::cout << "[ERROR] requete non ecrite " << std::endl;
+    
     close(fd);
+    std::cout <<std::endl;
+}
+
+void Server::resClient(std::string* processId, char* res) {
+	int fd;
+
+    char pipe_name[Constante::CHAR_SIZE];
+    sprintf(pipe_name,"%s%s%s", Constante::PIPE_PATH, Constante::BASE_PIPE_FILE,(*processId).c_str());
+
+    std::cout << "resultat requete : " << res <<" sur le pipe "<<pipe_name << std::endl; 
+
+	fd = open(pipe_name,O_WRONLY);
+    if (fd != -1) write(fd, res, Constante::CHAR_SIZE);
+    else std::cout << "[ERROR] requete non ecrite " << std::endl;
+    
+    close(fd);
+    std::cout <<std::endl;
 }
 
 

@@ -4,10 +4,10 @@
 #include "parsing.hpp"
 
 //encodage
-void Parsing::profile_list_to_str(char *buffer, std::vector<Profile*> list){
-	size_t size = list.size();
+void Parsing::profile_list_to_str(char *buffer, std::vector<Profile*>* list){
+	size_t size = list->size();
 	for (size_t i = 0; i < size; ++i){
-		sprintf(buffer, "%s|%d&", list[i]->pseudo,list[i]->score);
+		sprintf(buffer, "%s|%d&", list->at(i)->pseudo,list->at(i)->score);
 	}
 	// buffer -> "pseudo1|score&pseudo2|score&pseudo3|score..." 
 }
@@ -23,6 +23,12 @@ void Parsing::create_game_to_str(char *buffer, Game_settings * settings){
 										 settings->ally_shot,
 										 settings->nb_lives);
 	//buffer -> "nb_player&pseudo_hote&other_pseudo&drop_rate&ally_shot&nb_lives"
+}
+void Parsing::profile_list_to_str(char* buffer, std::vector<char*> *list){
+	size_t size = list->size();
+	for (size_t i = 0; i < size; ++i){
+		sprintf(buffer, "%s&", list->at(i));
+	}
 }
 
 //decodage

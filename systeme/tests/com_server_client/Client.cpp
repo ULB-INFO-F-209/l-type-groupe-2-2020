@@ -8,10 +8,9 @@
 */
 
 //constructor
-Client::Client(){
-	pid_t pid_process = getpid();
-	_pid = pid_process;
-	sprintf(_pipe_from_server,"%s%s%d", Constante::PIPE_PATH,Constante::BASE_PIPE_FILE, pid_process); //nom a lire
+Client::Client():_pid(getpid()){
+	
+	sprintf(_pipe_from_server,"%s%s%d", Constante::PIPE_PATH,Constante::BASE_PIPE_FILE, _pid); //nom a lire
 	sprintf(_pipe_to_server, "%s%s", Constante::PIPE_PATH, Constante::PIPE_DE_REPONSE); //pipe où écrire
 	char test[100];
 	sprintf(test,"%s%s",Constante::PIPE_PATH,Constante::PIPE_DE_CONNEXION); //nom a lire
@@ -19,11 +18,10 @@ Client::Client(){
 	//sending process pid : mandatory to do the first connexion;
 	_fd_send_query= open(test, O_WRONLY); 
 	char buffer[Constante::CHAR_SIZE]; 
-	sprintf(buffer,"%d", pid_process);
+	sprintf(buffer,"%d", _pid);
 	write(_fd_send_query, buffer, sizeof(buffer)); 
 	close(_fd_send_query);
-	std::cout << "nom pipe = " << _pipe_from_server << std::endl;
-	std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+	std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 }
 
 //utilities
@@ -31,35 +29,22 @@ void Client::communication(char *buffer){
 	_fd_send_query =  open(_pipe_to_server, O_WRONLY); 
 	write(_fd_send_query, buffer, Constante::CHAR_SIZE); //sending query
 	close(_fd_send_query);
-	//char response[Constante::CHAR_SIZE];
-	//sprintf(response, "%s%s%d", Constante::PIPE_PATH, Constante::BASE_PIPE_FILE, getpid());
-	//mkfifo(response, Constante::PIPE_MODE);
+
 	int ret = open(_pipe_from_server, O_RDONLY);
-	/*
-	while (ret != EEXIST)
-	{
-		std::cout << "nexiste pas" << std::endl;
-		ret = open(_pipe_from_server, O_RDONLY);
-	}
-	*/
-	std::cout << _pipe_from_server << std::endl;
-	if (ret != -1)
-	{
-		char buff[Constante::CHAR_SIZE];
-		std::cout << "je rentre"<<std::endl;
+	if (ret != -1){
+		//char buff[Constante::CHAR_SIZE];
 		while(true){
-			int res = read(ret, buff, Constante::CHAR_SIZE);
-			if (res == -1)
-            {
-                std::cout << "connexion echouée"<<std::endl;
+			int res = read(ret, buffer, Constante::CHAR_SIZE);
+			if (res == -1){
+                std::cout << "[ERROR] " <<_pid << "n'a pas reussit a lire"<<std::endl;
             }
             else{
-            	int aissa = atoi(buff);
-            	std::cout << "connexion du processus :" << aissa <<std::endl;
+            	
+            	std::cout <<_pid  <<" ==> reponse de la requete :" << buffer <<std::endl<<std::endl;
+				//strcpy(buffer,buff);
             	break;
 			}
 		}
-		std::cout << buffer << std::endl;
 	}
 	close(ret);
 }

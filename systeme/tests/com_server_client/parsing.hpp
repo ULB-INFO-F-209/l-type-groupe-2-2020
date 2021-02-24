@@ -15,9 +15,10 @@ namespace Parsing{
 	struct Game_settings;
 
 	//encodage
-	void profile_list_to_str(char *buffer,std::vector<Profile*> prof);
+	void profile_list_to_str(char *buffer,std::vector<Profile*> *prof);
 	void profile_to_str(char *buffer, Profile *prof);
 	void create_game_to_str(char *buffer, Game_settings * settings);
+	void profile_list_to_str(char* buffer, std::vector<char*> *list);
 
 	//decodage
 	void profile_list_from_str(char *buffer,std::vector<Profile*> prof);

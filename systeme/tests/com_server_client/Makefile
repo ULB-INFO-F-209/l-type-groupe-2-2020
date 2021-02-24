@@ -1,4 +1,4 @@
-FLAGS = -std=c++17 -masm=intel -fcoroutines -fconcepts -pthread \
+FLAGS = -std=c++17 -masm=intel -fconcepts -pthread \
 		-fopenacc -fopenmp -ggdb3 -Wpedantic -Wall -Wextra -Wconversion \
 		-Winline -Wsign-conversion -Weffc++ -Wstrict-null-sentinel -Wold-style-cast\
 		 -Wnoexcept -Wctor-dtor-privacy -Woverloaded-virtual -Wsign-promo -Wzero-as-null-pointer-constant\
@@ -29,6 +29,11 @@ account.o: database/account.hpp database/account.cpp
 
 parsing.o: parsing.hpp parsing.cpp
 	g++ ${FLAGS} -c parsing.cpp -o parsing.o
+
+run_server:
+	./process_server
+run_client:
+	./process_client
 
 clean:
 	rm *.o process_server process_client /tmp/pipefile* /tmp/connexion /tmp/reponse

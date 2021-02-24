@@ -1,6 +1,6 @@
 #include "server.hpp"
 
-int main(int argc, char const *argv[])
+int main()
 {
 	Server server{};
 	return 0;

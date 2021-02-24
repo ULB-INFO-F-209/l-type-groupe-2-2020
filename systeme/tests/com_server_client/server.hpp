@@ -49,11 +49,12 @@ private:
     bool addFriend(char* );
     bool delFriend(char* );
     void checkleaderboard(char* );
-	bool friendList(char* );	
+	char* friendList(char* );	
 	bool getFriendRequest(char* );
     int sendFriendRequest(char* );
     bool viewProfile(char* );
     bool logOut(char* );
+    void resClient(std::string* processId, char* res);
     
     bool static isServerActive() {return _is_active;}
     
