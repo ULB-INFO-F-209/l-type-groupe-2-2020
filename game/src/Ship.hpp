@@ -9,12 +9,12 @@ class Ship: public MapObject{
 
 public:
     Ship(){};
-    char getChar(){return disp_char;}
+    char getChar() const{return disp_char;}
     void setChar(char c){disp_char=c;}
     void setBounds(rect b){bounds = b;}
     rect getBounds(){return bounds;}
     void setDammage(int dam){damage=dam;}
-    int getDammage(){return damage;}
+    int getDammage() const{return damage;}
 
 };
 

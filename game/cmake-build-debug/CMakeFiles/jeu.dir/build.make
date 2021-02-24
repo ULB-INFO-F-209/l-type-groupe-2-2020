@@ -142,18 +142,18 @@ CMakeFiles/jeu.dir/src/Interface.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/jeu.dir/src/Interface.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jean/l-type-groupe-2-2020/game/src/Interface.cpp -o CMakeFiles/jeu.dir/src/Interface.cpp.s
 
-CMakeFiles/jeu.dir/src/InputHandler.cpp.o: CMakeFiles/jeu.dir/flags.make
-CMakeFiles/jeu.dir/src/InputHandler.cpp.o: ../src/InputHandler.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jean/l-type-groupe-2-2020/game/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/jeu.dir/src/InputHandler.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/jeu.dir/src/InputHandler.cpp.o -c /home/jean/l-type-groupe-2-2020/game/src/InputHandler.cpp
+CMakeFiles/jeu.dir/src/Boss.cpp.o: CMakeFiles/jeu.dir/flags.make
+CMakeFiles/jeu.dir/src/Boss.cpp.o: ../src/Boss.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jean/l-type-groupe-2-2020/game/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/jeu.dir/src/Boss.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/jeu.dir/src/Boss.cpp.o -c /home/jean/l-type-groupe-2-2020/game/src/Boss.cpp
 
-CMakeFiles/jeu.dir/src/InputHandler.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/jeu.dir/src/InputHandler.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jean/l-type-groupe-2-2020/game/src/InputHandler.cpp > CMakeFiles/jeu.dir/src/InputHandler.cpp.i
+CMakeFiles/jeu.dir/src/Boss.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/jeu.dir/src/Boss.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jean/l-type-groupe-2-2020/game/src/Boss.cpp > CMakeFiles/jeu.dir/src/Boss.cpp.i
 
-CMakeFiles/jeu.dir/src/InputHandler.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/jeu.dir/src/InputHandler.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jean/l-type-groupe-2-2020/game/src/InputHandler.cpp -o CMakeFiles/jeu.dir/src/InputHandler.cpp.s
+CMakeFiles/jeu.dir/src/Boss.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/jeu.dir/src/Boss.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jean/l-type-groupe-2-2020/game/src/Boss.cpp -o CMakeFiles/jeu.dir/src/Boss.cpp.s
 
 # Object files for target jeu
 jeu_OBJECTS = \
@@ -162,7 +162,7 @@ jeu_OBJECTS = \
 "CMakeFiles/jeu.dir/src/MapHandler.cpp.o" \
 "CMakeFiles/jeu.dir/src/Player.cpp.o" \
 "CMakeFiles/jeu.dir/src/Interface.cpp.o" \
-"CMakeFiles/jeu.dir/src/InputHandler.cpp.o"
+"CMakeFiles/jeu.dir/src/Boss.cpp.o"
 
 # External object files for target jeu
 jeu_EXTERNAL_OBJECTS =
@@ -172,7 +172,7 @@ jeu: CMakeFiles/jeu.dir/src/game.cpp.o
 jeu: CMakeFiles/jeu.dir/src/MapHandler.cpp.o
 jeu: CMakeFiles/jeu.dir/src/Player.cpp.o
 jeu: CMakeFiles/jeu.dir/src/Interface.cpp.o
-jeu: CMakeFiles/jeu.dir/src/InputHandler.cpp.o
+jeu: CMakeFiles/jeu.dir/src/Boss.cpp.o
 jeu: CMakeFiles/jeu.dir/build.make
 jeu: CMakeFiles/jeu.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/jean/l-type-groupe-2-2020/game/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable jeu"

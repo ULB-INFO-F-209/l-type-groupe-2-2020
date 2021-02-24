@@ -39,7 +39,7 @@ class CurrentGame {
 
 
     // méthodes privées
-    void execInput(int in_char, uint_fast16_t x1, uint_fast16_t y1, uint_fast16_t x2, uint_fast16_t y2);
+    void execInput(int inChar, uint_fast16_t x1, uint_fast16_t y1, uint_fast16_t x2, uint_fast16_t y2);
     void heal();
     void saveScore();
 

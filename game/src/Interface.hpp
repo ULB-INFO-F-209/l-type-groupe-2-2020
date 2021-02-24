@@ -38,6 +38,7 @@ public:
     void drawPlayer(MapHandler* m,int tick,std::vector<Player*>* listPlayer);
     void drawUI(MapHandler *m,PlayerShip* playership1,PlayerShip* playership2, Player* player1,Player* player2,int score1, int score2,int tick);
     void drawBonus(MapHandler* m);
+    void drawBoss(MapHandler* m);
     void drawNewLevel(MapHandler* m, int tick);
     void refresh_wnd();
     void close();

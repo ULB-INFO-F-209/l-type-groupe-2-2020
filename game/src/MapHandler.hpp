@@ -17,16 +17,15 @@ enum bonusType{damageUp, tripleShot, lifeSteal, minigun,noBonus};
 class MapObject{
 public:
     virtual void move();
-    vec2i getPos() const;
+    virtual vec2i getPos() const;
     void setPos(int x, int y){pos.x = x; pos.y = y;}
-    enum type{star,obstacle,playership,projectile,bonus,enemyship};
+    enum type{star,obstacle,playership,projectile,bonus,enemyship,boss};
     virtual void touched(int damage);
-    type typ;
-
     virtual void setHp(int h){hp =h;}
-
     virtual int getHp(){return hp;}
     virtual ~MapObject()= default;
+    type typ;
+
 protected:
     vec2i pos;
     int hp;
@@ -119,18 +118,34 @@ public:
     int getShootTime() const{return shootTime;}
 };
 
+class Boss : public Ship{
+    int shootTime{};
+    bool movingRight;
+public:
+    Boss()= default;
+    Boss(int x, int y, rect b, char c,int h, int shootDam) {pos.x = x; pos.y = y; bounds=b; hp=h; disp_char=c; collisionDamage=100; shootDamage = shootDam; projectileHp = 30; movingRight=true;}
+    void move() override{
+        if(movingRight)
+            pos.x++;
+        else pos.x--;
+    }
+    void setMovingRight(bool b){movingRight=b;}
+    bool getMovingRight() const{return movingRight;}
+};
 
 class MapHandler{
     int probaBonus;
     int currentLevel = 1;
     int levelTick = 0;
     bool changingLevel = false;
+    bool bossSpawned=false;
     int enemyCount = 0;
     int enemyLimit=5;
     int enemyStartHp = 30;
     int enemyStartProjectileDamage = 10;
     int obstacleStartHp = 10;
     int obstacleStartDamage = 10;
+    std::vector<Boss*> boss_set;
     std::vector<Star*> stars_set;
     std::vector<Obstacle*> obstacles_set;
     std::vector<Projectile*> projectiles_set;
@@ -141,11 +156,11 @@ class MapHandler{
 public:
     MapHandler()=default;
     MapHandler(float p){probaBonus=p;};
-    int getCurrentLevel(){return currentLevel;}
+    int getCurrentLevel() const{return currentLevel;}
     void setCurrentLevel(int l){currentLevel = l;}
-    int getLevelTick(){return levelTick;}
+    int getLevelTick() const{return levelTick;}
     void setLevelTick(int t){levelTick = t;}
-    bool getChangingLevel(){return changingLevel;}
+    bool getChangingLevel() const{return changingLevel;}
     void setChangingLevel(bool c){changingLevel = c;}
     void update(MapObject::type, int);
     void erase(size_t, MapObject::type);
@@ -155,6 +170,8 @@ public:
     std::vector<Projectile*> getProjectilesEnemy() const;
     std::vector<EnemyShip*> getEnemy() const;
     std::vector<Bonus*> getBonus() const;
+    std::vector<Boss*> getBoss() const;
+
     void setBounds(rect);
     void spawnProjectile(int x, int y, int damage, bool type, int hp, int player);
     void checkCollision(int t);

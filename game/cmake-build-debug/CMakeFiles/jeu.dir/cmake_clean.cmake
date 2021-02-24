@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/jeu.dir/src/InputHandler.cpp.o"
+  "CMakeFiles/jeu.dir/src/Boss.cpp.o"
   "CMakeFiles/jeu.dir/src/Interface.cpp.o"
   "CMakeFiles/jeu.dir/src/MapHandler.cpp.o"
   "CMakeFiles/jeu.dir/src/Player.cpp.o"

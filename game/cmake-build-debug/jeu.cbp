@@ -82,10 +82,10 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/jean/l-type-groupe-2-2020/game/src/InputHandler.cpp">
+		<Unit filename="/home/jean/l-type-groupe-2-2020/game/src/Boss.cpp">
 			<Option target="jeu"/>
 		</Unit>
-		<Unit filename="/home/jean/l-type-groupe-2-2020/game/src/InputHandler.h">
+		<Unit filename="/home/jean/l-type-groupe-2-2020/game/src/Boss.h">
 			<Option target="jeu"/>
 		</Unit>
 		<Unit filename="/home/jean/l-type-groupe-2-2020/game/src/Interface.cpp">

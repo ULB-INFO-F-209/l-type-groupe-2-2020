@@ -89,6 +89,7 @@ void Interface::display(MapHandler *m,int tick, std::vector<Player *> *listPlaye
     drawObstacle(m);
     drawBonus(m);
     drawPlayer(m,tick,listPlayer);
+    drawBoss(m);
     drawUI(m,playership1,playership2,player1,player2,score1,score2,tick);
     
 }
@@ -323,5 +324,19 @@ void Interface::drawBonus(MapHandler *m) {
 void Interface::drawNewLevel(MapHandler *map, int tick) {
     mvwprintw(game_wnd, 8, 35, "level %i", map->getCurrentLevel());
     
+}
+
+void Interface::drawBoss(MapHandler *m) {
+    for(auto b :m->getBoss()){
+        wattron(game_wnd, COLOR_PAIR(4));
+        mvwaddch(game_wnd, b->getPos().y, b->getPos().x, b->getChar());
+        wattroff(game_wnd, COLOR_PAIR(4));
+
+
+        wattron(game_wnd, A_ALTCHARSET);
+        mvwaddch(game_wnd, b->getPos().y, b->getPos().x - 1, ACS_LARROW);
+        mvwaddch(game_wnd, b->getPos().y, b->getPos().x + 1, ACS_RARROW);
+        wattroff(game_wnd, A_ALTCHARSET);
+    }
 }
 

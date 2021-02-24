@@ -143,32 +143,32 @@ jeu/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/jeu.dir/build.make CMakeFiles/jeu.dir/build
 .PHONY : jeu/fast
 
-src/InputHandler.o: src/InputHandler.cpp.o
+src/Boss.o: src/Boss.cpp.o
 
-.PHONY : src/InputHandler.o
+.PHONY : src/Boss.o
 
 # target to build an object file
-src/InputHandler.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/jeu.dir/build.make CMakeFiles/jeu.dir/src/InputHandler.cpp.o
-.PHONY : src/InputHandler.cpp.o
+src/Boss.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jeu.dir/build.make CMakeFiles/jeu.dir/src/Boss.cpp.o
+.PHONY : src/Boss.cpp.o
 
-src/InputHandler.i: src/InputHandler.cpp.i
+src/Boss.i: src/Boss.cpp.i
 
-.PHONY : src/InputHandler.i
+.PHONY : src/Boss.i
 
 # target to preprocess a source file
-src/InputHandler.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/jeu.dir/build.make CMakeFiles/jeu.dir/src/InputHandler.cpp.i
-.PHONY : src/InputHandler.cpp.i
+src/Boss.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jeu.dir/build.make CMakeFiles/jeu.dir/src/Boss.cpp.i
+.PHONY : src/Boss.cpp.i
 
-src/InputHandler.s: src/InputHandler.cpp.s
+src/Boss.s: src/Boss.cpp.s
 
-.PHONY : src/InputHandler.s
+.PHONY : src/Boss.s
 
 # target to generate assembly for a file
-src/InputHandler.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/jeu.dir/build.make CMakeFiles/jeu.dir/src/InputHandler.cpp.s
-.PHONY : src/InputHandler.cpp.s
+src/Boss.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jeu.dir/build.make CMakeFiles/jeu.dir/src/Boss.cpp.s
+.PHONY : src/Boss.cpp.s
 
 src/Interface.o: src/Interface.cpp.o
 
@@ -314,9 +314,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... jeu"
-	@echo "... src/InputHandler.o"
-	@echo "... src/InputHandler.i"
-	@echo "... src/InputHandler.s"
+	@echo "... src/Boss.o"
+	@echo "... src/Boss.i"
+	@echo "... src/Boss.s"
 	@echo "... src/Interface.o"
 	@echo "... src/Interface.i"
 	@echo "... src/Interface.s"

@@ -17,8 +17,8 @@
 #include "CurrentGame.hpp"
 
 
-void CurrentGame::execInput(int in_char, uint_fast16_t x1, uint_fast16_t y1, uint_fast16_t x2, uint_fast16_t y2){
-    switch(in_char) {
+void CurrentGame::execInput(int inChar, uint_fast16_t x1, uint_fast16_t y1, uint_fast16_t x2, uint_fast16_t y2){
+    switch(inChar) {
         case 'q':
             if(x1 > game_area.left() + 1)
                 playership1->setPos(x1 - 1, y1);
@@ -100,8 +100,6 @@ void CurrentGame::execInput(int in_char, uint_fast16_t x1, uint_fast16_t y1, uin
     }
 }
 
-//===================================================================================================
-
 void CurrentGame::heal() {      // remet hp du player à 100 si encore vies
     for( PlayerShip* p : map.getListPlayer()){
         if(listPlayer.at(p->getPlayerNb())->getnLives() > 0){
@@ -120,8 +118,6 @@ void CurrentGame::heal() {      // remet hp du player à 100 si encore vies
     }
 }
 
-//===================================================================================================
-
 void CurrentGame::saveScore(){      //final score save
     for( PlayerShip* p : map.getListPlayer()){
         if(p->getPlayerNb() == 0)finalScore1 = p->getScore();
@@ -137,7 +133,6 @@ void CurrentGame::saveScore(){      //final score save
     }
 }
 
-//===================================================================================================
 
 void CurrentGame::run() {
     tick = 0;
@@ -150,7 +145,7 @@ void CurrentGame::run() {
     anInterface.initialDraw();
     game_area = anInterface.get_game_area();
     screen_area = anInterface.get_screen_area();
-    while(1) {
+    while(true) {
 
         // get input
         in_char = wgetch(anInterface.get_main_window());
@@ -181,6 +176,9 @@ void CurrentGame::run() {
         if(tick %50  == 0) {
             map.update(MapObject::bonus, tick);
         }
+        if(map.getCurrentLevel()==2 && tick%10==0){
+            map.update(MapObject::boss,tick);
+        }
 
         for( PlayerShip* p : map.getListPlayer()){
             if (p->getCurrentBonus()==minigun && p->getHp()>0 && tick % 7 == 0)
@@ -209,7 +207,7 @@ void CurrentGame::run() {
         }
         anInterface.refresh_wnd();
 
-        saveScore(); // sauvegarde le score     FIXME: devons nous le faire à chaque tick ?
+        saveScore(); // sauvegarde le score
 
         if(exit_requested || game_over) break;
 
@@ -218,8 +216,6 @@ void CurrentGame::run() {
     }
     anInterface.close();
 }
-//
-// Created by jean on 19/02/2021.
-//
+
 
 
