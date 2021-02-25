@@ -202,7 +202,7 @@ void Interface::drawUI(MapHandler *m,PlayerShip* playership1,PlayerShip* players
     whline(main_wnd, ' ', 25); // health bar is 25 chars long
     wmove(main_wnd, 20, 1);
     drawEnergyBar(playership1->getHp());
-
+    
     // energy bar player2
     wmove(main_wnd, 20, 54);
     whline(main_wnd, ' ', 25); // health bar is 25 chars long

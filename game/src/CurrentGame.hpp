@@ -16,10 +16,15 @@
 #include "InternGameObject.hpp"
 //class Interface;
 
+enum difficulty{easy, medium, hard};
+
 class CurrentGame {
 
     rect game_area;
     rect screen_area;
+    bool twoPlayers;
+    int dropRate;
+    difficulty difficulte;
 
     MapHandler map{80};
 
@@ -28,9 +33,12 @@ class CurrentGame {
     int finalScore2{};
 
     PlayerShip* playership1 = new PlayerShip(10, 5, { {10 - 1, 5 }, { 3, 2 } }, '0',100, 0,100,0);
-    PlayerShip* playership2 = new PlayerShip(50, 5, { { 50 - 1, 5 }, { 3, 2 } }, '1',100, 1,100,0);
-    Player* player1 = new Player(1);
-    Player* player2 = new Player(1);
+    Player* player1 = new Player(3);
+
+    if (twoPlayers){
+        PlayerShip* playership2 = new PlayerShip(50, 5, { { 50 - 1, 5 }, { 3, 2 } }, '1',100, 1,100,0);
+        Player* player2 = new Player(3);
+    }
     std::vector<Player*> listPlayer=std::vector<Player*>();
 
     int in_char = 0;
@@ -45,6 +53,7 @@ class CurrentGame {
 
 public:
     CurrentGame()=default;
+    CurrentGame(bool twoP, int dropR, difficulty diff) {twoPlayers=twoP; dropRate=dropR; difficulte=diff;}
     int getInput(){return in_char;}
 
     void run();

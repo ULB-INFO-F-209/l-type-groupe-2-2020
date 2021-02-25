@@ -153,8 +153,8 @@ void MapHandler::update(MapObject::type typ, int t) {
           }
 
     }
-    else if (typ==MapObject::boss && (currentLevel==2) && !bossSpawned){
-        boss_set.push_back(new Boss(0,0,{{10 - 1, 5},{3,2}},'&',enemyStartHp,t + 100, enemyStartProjectileDamage));
+    else if (typ==MapObject::boss && (currentLevel==4) && !bossSpawned){
+        boss_set.push_back(new Boss(0,0,{{0, 0},{18,6}},'&',1000,t + 100, enemyStartProjectileDamage));
         bossSpawned=true;
     }
 }
@@ -286,7 +286,9 @@ void MapHandler::checkCollision(int t) {
                 else if (player_ships_set.size() == 1) {
                     player_ships_set.at(0)->setScore(player_ships_set.at(0)->getScore() + 10);
                     if(e->getHp()==0 && player_ships_set.at(0)->getCurrentBonus()==lifeSteal && player_ships_set.at(0)->getHp()<100)
-                        player_ships_set.at(0)->setHp(player_ships_set.at(0)->getHp()+10);
+                        if ((player_ships_set.at(0)->getHp()+10) <= 100)
+                            player_ships_set.at(0)->setHp(player_ships_set.at(0)->getHp()+10);
+                        else player_ships_set.at(0)->setHp(100);
 
                 }
             }
@@ -326,6 +328,17 @@ void MapHandler::checkCollision(int t) {
             }
         }
     }
+
+    //collision player/boss
+    for(PlayerShip* p : player_ships_set){
+        for(auto & b : boss_set){
+            if(p->getBounds().contains(b->getBounds()) && p->getHp()>0){
+                p->touched(p->getHp());
+                b->touched(p->getDammage());
+            }
+        }
+    }
+
     //erase enemy
     for(size_t e = 0; e < enemy_ships_set.size(); e++){
         if(enemy_ships_set.at(e)->getHp() <= 0){
@@ -342,8 +355,6 @@ void MapHandler::checkCollision(int t) {
     //erase boss
     for(size_t e = 0; e < boss_set.size(); e++){
         if(boss_set.at(e)->getHp() <= 0){
-            if (rand()%100<=probaBonus)
-                spawnBonuses(boss_set.at(e)->getPos().x, boss_set.at(e)->getPos().y);
             boss_set.erase(boss_set.begin() + e);
             if(enemyCount == enemyLimit && changingLevel && boss_set.empty()){
                 levelTick = t;
@@ -386,7 +397,7 @@ void MapHandler::updateBounds() {
         e->setBounds({{static_cast<uint_fast16_t>(e->getPos().x-1), e->getPos().y},{3,1}});
     }
     for(Boss* b: boss_set){
-        b->setBounds({{static_cast<uint_fast16_t>(b->getPos().x-1), b->getPos().y},{3,1}});
+        b->setBounds({{static_cast<uint_fast16_t>(b->getPos().x), b->getPos().y},{18,6}});
     }
 
 }

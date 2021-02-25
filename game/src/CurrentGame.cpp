@@ -7,10 +7,8 @@
  *  thread pour jouer en même temps (Aïssa)
  *  enlever static_cast !!
  *  ajouter effet explosion
- * séparer proj_set en 2
  *  ajouter la condition pour les tirs alliés
  * ERROR:
- * quand J1 à 10% et que l'autre meurt, J1 meurt aussi ???
  *
  *
  */
@@ -176,7 +174,7 @@ void CurrentGame::run() {
         if(tick %50  == 0) {
             map.update(MapObject::bonus, tick);
         }
-        if(map.getCurrentLevel()==2 && tick%10==0){
+        if(map.getCurrentLevel()==4 && tick%10==0 && !map.getChangingLevel()){
             map.update(MapObject::boss,tick);
         }
 
