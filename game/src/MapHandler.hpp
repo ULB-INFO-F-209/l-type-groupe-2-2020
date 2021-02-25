@@ -53,6 +53,7 @@ protected:
     int shootDamage;
     int projectileHp;
 
+
 public:
     Ship(){};
     char getChar() const{return disp_char;}
@@ -65,6 +66,7 @@ public:
     int getShootDamage() const{return shootDamage;}
     void setProjectileHp(int p_hp){projectileHp = p_hp;}
     int getProjectileHp() const{return projectileHp;}
+
 };
 
 class Projectile: public MapObject{
@@ -113,7 +115,7 @@ class EnemyShip : public Ship{
     double bonusDropProb;
     int shootTime;
 public:
-    EnemyShip(int x, int y, rect b, char c,int h, int t, int shootDam){pos.x = x; pos.y = y; setBounds(b); setHp(h); setChar(c); setDammage(10);shootTime=t; shootDamage = shootDam; projectileHp = 10;}
+    EnemyShip(int x, int y, rect b, char c,int h, int t, int shootDam){pos.x = x; pos.y = y; setBounds(b); setHp(h); setChar(c); setDammage(10); shootTime=t; shootDamage = shootDam; projectileHp = 10;}
     void setShootTime(int t){shootTime=t;}
     int getShootTime() const{return shootTime;}
 };
@@ -123,7 +125,7 @@ class Boss : public Ship{
     bool movingRight;
 public:
     Boss()= default;
-    Boss(int x, int y, rect b, char c,int h, int shootDam) {pos.x = x; pos.y = y; bounds=b; hp=h; disp_char=c; collisionDamage=100; shootDamage = shootDam; projectileHp = 30; movingRight=true;}
+    Boss(int x, int y, rect b, char c,int h, int t,int shootDam) {pos.x = x; pos.y = y; bounds=b; hp=h; disp_char=c; collisionDamage=100; shootTime = t;shootDamage = shootDam; projectileHp = 30; movingRight=true;}
     void move() override{
         if(movingRight)
             pos.x++;
@@ -131,6 +133,8 @@ public:
     }
     void setMovingRight(bool b){movingRight=b;}
     bool getMovingRight() const{return movingRight;}
+    void setShootTime(int t){shootTime=t;}
+    int getShootTime() const{return shootTime;}
 };
 
 class MapHandler{
@@ -180,6 +184,7 @@ public:
     void updatePlayerBounds();
     std::vector<PlayerShip*>  getListPlayer()const;
     void enemyShoot(int tick);
+    void bossShoot(int tick);
     void explosion();
     void spawnBonuses(int x, int y);
     void changeLevel();

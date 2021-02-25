@@ -326,11 +326,10 @@ void Interface::drawBonus(MapHandler *m) {
 
 void Interface::drawNewLevel(MapHandler *map, int tick) {
     mvwprintw(game_wnd, 8, 35, "level %i", map->getCurrentLevel());
-
 }
 
-void Interface::drawBoss(MapHandler *m) {
-    for(auto b :m->getBoss()){
+void Interface::drawBoss(MapHandler *map) {
+    for(auto b :map->getBoss()){
         wattron(game_wnd, COLOR_PAIR(4));
         mvwaddch(game_wnd, b->getPos().y, b->getPos().x, b->getChar());
         wattroff(game_wnd, COLOR_PAIR(4));
@@ -341,4 +340,4 @@ void Interface::drawBoss(MapHandler *m) {
         mvwaddch(game_wnd, b->getPos().y, b->getPos().x + 1, ACS_RARROW);
         wattroff(game_wnd, A_ALTCHARSET);
     }
-}
+  }

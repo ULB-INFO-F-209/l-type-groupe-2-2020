@@ -11,8 +11,8 @@
  *  ajouter la condition pour les tirs alliés
  * ERROR:
  * quand J1 à 10% et que l'autre meurt, J1 meurt aussi ???
- * 
- * 
+ *
+ *
  */
 #include "CurrentGame.hpp"
 
@@ -185,6 +185,7 @@ void CurrentGame::run() {
                 map.spawnProjectile(p->getPos().x, p->getPos().y, p->getShootDamage(), true, 10, p->getPlayerNb()+1);
         }
         map.enemyShoot(tick);
+        map.bossShoot(tick);
         map.updatePlayerBounds();     // update player bounds
         map.checkCollision(tick);
 
@@ -196,10 +197,9 @@ void CurrentGame::run() {
 
         werase(anInterface.get_game_window());
         anInterface.display(&map,tick,&listPlayer,playership1,playership2,player1,player2,finalScore1,finalScore2);
-        
+
         if(map.getLevelTick() != 0 && tick <= map.getLevelTick() + 600 && tick > map.getLevelTick()+100){
             anInterface.drawNewLevel(&map, tick);
-            
             if(tick == map.getLevelTick() + 600) {
                 map.changeLevel();
                 map.setChangingLevel(false);
@@ -216,6 +216,3 @@ void CurrentGame::run() {
     }
     anInterface.close();
 }
-
-
-
