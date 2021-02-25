@@ -81,7 +81,7 @@ Interface::Interface(): main_wnd(),game_wnd(), game_area(), screen_area() {
 }
 
 void Interface::display(MapHandler *m,int tick, std::vector<Player *> *listPlayer,PlayerShip* playership1,PlayerShip* playership2, Player* player1,Player* player2,int score1, int score2) {
-    
+
     // l'affichage à chaque tour de boucle (server->game->server->client)
     drawStar(m);
     drawProjectile(m);
@@ -91,7 +91,7 @@ void Interface::display(MapHandler *m,int tick, std::vector<Player *> *listPlaye
     drawPlayer(m,tick,listPlayer);
     drawBoss(m);
     drawUI(m,playership1,playership2,player1,player2,score1,score2,tick);
-    
+
 }
 
 void Interface::drawStar(MapHandler *m) {
@@ -143,7 +143,7 @@ void Interface::drawProjectile(MapHandler *m) {
         mvwaddch(game_wnd, pE->getPos().y, pE->getPos().x, '*');
         wattroff(game_wnd, COLOR_PAIR(4));
     }
-        
+
 }
 
 
@@ -212,6 +212,9 @@ void Interface::drawUI(MapHandler *m,PlayerShip* playership1,PlayerShip* players
     //score
     mvwprintw(main_wnd, 22, 1, "  score: %i", score1);
     mvwprintw(main_wnd, 22, 54, "  score: %i", score2);
+
+    //level
+    mvwprintw(main_wnd,20,33," LEVEL : %i",m->getCurrentLevel());
 
     // draw static string to hold percentage
     mvwprintw(main_wnd, 21, 1, "- P1 HP                -");
@@ -323,7 +326,7 @@ void Interface::drawBonus(MapHandler *m) {
 
 void Interface::drawNewLevel(MapHandler *map, int tick) {
     mvwprintw(game_wnd, 8, 35, "level %i", map->getCurrentLevel());
-    
+
 }
 
 void Interface::drawBoss(MapHandler *m) {
@@ -339,4 +342,3 @@ void Interface::drawBoss(MapHandler *m) {
         wattroff(game_wnd, A_ALTCHARSET);
     }
 }
-
