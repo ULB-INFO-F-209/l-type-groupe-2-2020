@@ -48,8 +48,11 @@ namespace Screen{
 	std::string SHORT_PSEUDO = "Pseudo is too short!";
 	std::string SHORT_PSWD = "Password is too short!";
 	std::string SHORT_ALL = "Pseudo and password are too short!";
-	std::string NO_USER_MSG = "Pseudo or password must be wrong !";
+	std::string NO_USER_MSG = "User doensn't exist!";
 	std::string TAKEN_PSEUDO_MSG = "This pseudo is already taken. Try to sign in.";
+	std::string ALREADY_FRIENDS = "You are already friends. check your friendlist";
+	std::string NOT_FRIENDS =  "You are not friends yet";
+	std::string ALREADY_REQUESTED =  "You had already sent a request!";
 	std::string DEFAULT_ERROR = "There is an error. Try again !";
 	//CAPTION
 	std::string PSEUDO_ZONE = "PSEUDO  :";

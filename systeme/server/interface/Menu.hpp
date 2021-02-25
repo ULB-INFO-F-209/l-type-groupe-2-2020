@@ -7,9 +7,9 @@
 		verifier les entrée (user met une lettre dans int ..faut gérer)
 
 	commentaire:
-		Utiliser les thread evite de faire full stack. Sans thread y'aura trop 
+		_Utiliser les thread evite de faire full stack. Sans thread y'aura trop 
 		d'appelle de menu successive sur le stack, et même de la réentrance de code
-
+		_DECOMMENTER POUR UTILISER CLIENT
 */
 
 #ifndef Menu_HPP
@@ -17,10 +17,13 @@
 
 #include <iostream>
 #include <sys/types.h>
+#include <vector>
 #include <signal.h>
 #include "Client.hpp"
 #include "Interface.hpp"
 #include "parsing.hpp"
+#include "test.hpp"
+#include "wait.h"
 
 using namespace Parsing; //utilities
 using namespace Screen;
@@ -28,7 +31,7 @@ using namespace Screen;
 class Menu{
 
 	//who
-	Client *_client;
+	//Client *_client;
 
 	//all menu
 	static const int HOME = 0;
@@ -48,9 +51,10 @@ class Menu{
 								   "Profile", "Log out"};
 	//console
 	Interface window{};
+	
 public:
 	Menu()=default;
-	Menu(Client *client):_client(client){}
+	//Menu(Client *client):_client(client){}
 
 	void start_session();
 	
@@ -74,9 +78,8 @@ public:
 	void afficher_friends();
 	void request_management();
 	void add_del_friends(bool add=true);
-	void get_msg(char * pseudo, char *res,int msg, bool invitation);
-
 };
+
 
 
 #endif //MENU_HPP

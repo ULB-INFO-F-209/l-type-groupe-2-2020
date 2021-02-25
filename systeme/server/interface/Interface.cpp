@@ -91,16 +91,10 @@ void Interface::resize_win(){
 // PUBLIC METHODES
 int Interface::print_menu(size_t size, std::string *choices, int type){
 	int res =0, choice = 1;
-	if(type==HOME)
-		set_screen(&HOME_TITLE, nullptr, &HOME_SAYING, nullptr);
-	else if(type==MAIN)
-		set_screen(&MAIN_TITLE, nullptr, &MAIN_SAYING, &MAIN_SAYING2);
-	else if(type==FRIENDS)
-		set_screen(&FRIENDS_TITLE, nullptr, &FRIENDS_SAYING, nullptr);
 	
 	keypad(stdscr,TRUE); //active clavier
 	while(choice){
-		update_menu(size,choices,res);
+		update_menu(size,choices,res, type);
 		choice = getch();
 		switch(choice){
 			case KEY_UP:
@@ -110,7 +104,7 @@ int Interface::print_menu(size_t size, std::string *choices, int type){
 				if(static_cast<size_t>(res) < size-1)
 					res++; //tu peux pas descendre plus bas que terre
 				break;
-			case KEY_RIGHT:
+			case KEY_LEFT:
 				choice = 0; //quit menu
 				res = -1;
 				break;
@@ -124,11 +118,11 @@ int Interface::print_menu(size_t size, std::string *choices, int type){
 	return res;
 }
 bool Interface::get_connexion(char pseudo[20], char pswd[20], int error, int type){
+	bool res = false; //si tu met vrai , il affiche qqchose (letrre apres) . WHYYYY?
 	char cara; int choice = 1,  focus=0;
 	int py = _ps_caption_y, px = _ps_caption_x + PSEUDO_ZONE.size() + 1,
 		my=_pa_caption_y, mx=_ps_caption_x + PSWD_ZONE.size() + 1;
 	int idx_ps = 0, idx_pa=0; 
-	bool res = false; //si tu met vrai , il affiche qqchose (letrre apres) . WHYYYY?
 
 	keypad(stdscr, true);
 	init_connexion(type);
@@ -164,11 +158,14 @@ bool Interface::get_connexion(char pseudo[20], char pswd[20], int error, int typ
 				}
 				else{
 					choice = 0; //stop loop
+					pswd[idx_pa] = '\0';
+					pseudo[idx_ps] = '\0'; //end of line to supress letters
+
 				}
 				break;
 			case KEY_LEFT: //retour 
 				choice = 0; 
-				res = true; 
+				res = true;  //quit
 				break;
 			case KEY_BACKSPACE:
 				if(focus and idx_pa > 0){ //pswd_zone
@@ -193,7 +190,7 @@ bool Interface::get_connexion(char pseudo[20], char pswd[20], int error, int typ
 					idx_ps ++;
 				}
 				else if(focus and idx_pa < NB_MAX_CARA and verify_cara(&cara)){
-					print_cara(_pass_win, &MASK, mx, my);
+					print_cara(_pass_win, &cara, mx, my);
 					move_cursor(_pass_win, ++mx, my);
 					pswd[idx_pa] = cara;
 					idx_pa++;
@@ -201,11 +198,11 @@ bool Interface::get_connexion(char pseudo[20], char pswd[20], int error, int typ
 				break;
 		}
 	}
-	return not res;
+	return res;
 }
 
 int  Interface::print_profile(Profile *prof, int type){
-	wclear(_main_win); int res = 0;
+	int res = 0;
 	if(type==PROF)
 		set_screen(&PROFILE, nullptr, &PROFILE_SAYING, nullptr); 
 	else if (type==REQ)
@@ -215,6 +212,7 @@ int  Interface::print_profile(Profile *prof, int type){
 	sprintf(name,  "Pseudo : %s", prof->pseudo);
 	sprintf(score, "Score : %d", prof->score);
 	int x = WIN_WIDTH/4, y = WIN_HEIGHT/2;
+
 	print_cara(_main_win,name,x , y);
 	if(type==REQ)
 		print_cara(_main_win,score,x, y+2);
@@ -240,21 +238,25 @@ int  Interface::print_profile(Profile *prof, int type){
 					break;
 				case 10:
 					res = focus;
-						choice = 0;
+					choice = 0;
 					break;
 				default:
 					break;
 			}
 		}
 	}
+	else{
+		getch(); //sto
+	}
 	return res;
 }
 
 
 
-int Interface::print_profile(std::vector<Profile*> vect, int type){
+bool Interface::print_profile(std::vector<Profile*> vect, int type, int *answer){
 	keypad(stdscr,TRUE);
-	int choice = 1, res=0, accepted=-1,
+	bool res=false;
+	int choice = 1, accepted=-1,
 		MIN = 0,  MAX = vect.size() -1,
 		focus = 0; int nb_elem = 10, //on peut afficher que 10
 		idx_min = 0, idx_max;
@@ -289,9 +291,23 @@ int Interface::print_profile(std::vector<Profile*> vect, int type){
 			case 10:
 				if(type==REQ){
 					accepted = print_profile(vect[focus], REQ);
-					clear();
 					print_users(vect, focus, idx_min, idx_max,type);
+
+					if(accepted==1){
+						answer[0] = focus;
+						answer[1] = 1; //accepted friends
+						choice = 0;
+						res = true; //juste prevenir qu il y a une reponse
+					}
+
+					else if(accepted==-1){
+						answer[0] = focus;
+						answer[1] = 0; //not accepted
+						choice =0; 
+						res = true;
+					}
 				}
+
 				break;
 			case KEY_LEFT: //retour?
 				choice = 0;
@@ -326,10 +342,11 @@ int Interface::get_pseudo(char *res, int error,int type){
 					print_error(LEN_PSEUDO);
 				else
 					choice = 0;
+					res[idx] = '\0'; //fin de ligne	
 				break;
 			case KEY_LEFT: //retour | 
 				choice = 0; 
-				ret = 1; 
+				ret = 1;  
 				break;
 			case KEY_BACKSPACE:
 				if(idx > 0){
@@ -355,7 +372,8 @@ int Interface::get_pseudo(char *res, int error,int type){
 
 //PRIVATE METHODES 
 void Interface::set_screen(std::string *title,std::string *saying1, std::string *saying2, std::string *saying3){
-	clear();
+	clear(); wclear(_main_win);
+	wclear(_pseudo_win); wclear(_pass_win); wclear(_saying_win);
 	resize_win(); //maybe do the resize only if terminal change
 	box(_main_win,0,0);
     box(_saying_win,0,0);
@@ -402,13 +420,22 @@ void Interface::init_connexion(int choice){
 			break;
 	}
 	init_pseudo_win();
+	wclear(_pass_win);
 	print_cara(_pass_win, PSWD_ZONE.c_str(),_ps_caption_x, _pa_caption_y);
 	box(_pass_win,0,0);
 	refresh();
 	wrefresh(_pass_win);
 
 }
-void Interface::update_menu(size_t size,  std::string *choices, int highlight){
+void Interface::update_menu(size_t size,  std::string *choices, int highlight, int type){
+	clear();
+	if(type==HOME)
+		set_screen(&HOME_TITLE, nullptr, &HOME_SAYING, nullptr);
+	else if(type==MAIN)
+		set_screen(&MAIN_TITLE, nullptr, &MAIN_SAYING, &MAIN_SAYING2);
+	else if(type==FRIENDS)
+		set_screen(&FRIENDS_TITLE, nullptr, &FRIENDS_SAYING, nullptr);
+
 	int x = WIN_WIDTH/2, y= (WIN_HEIGHT/2) - (size+1)/2;
 	start_color(); int x_courant;
 	init_pair(1, COLOR_WHITE, COLOR_BLACK);
@@ -427,7 +454,7 @@ void Interface::update_menu(size_t size,  std::string *choices, int highlight){
 	wattroff(_main_win, COLOR_PAIR(1));
 }
 
-void Interface::print_error(int error){
+void Interface::print_error(int error){ //a effacer la zone erreur 
 	start_color(); int caption_score_x;
 	init_pair(2, COLOR_RED, COLOR_BLACK);
 	wattron(_main_win, COLOR_PAIR(2));
@@ -502,7 +529,8 @@ void Interface::move_cursor(WINDOW *win, int x, int y, bool invisible){
 }
 
 void Interface::print_users(std::vector<Profile*> vect, int highlight, int min, int max, int type){
-	wclear(_main_win);
+	clear();
+	resize_win();
 	if(type == Y_FRIENDS) 
 		set_screen(&YOUR_FRIENDS, nullptr, &Y_FRIENDS_SAYING, &Y_FRIENDS_SAYING2);
 	else if(type==LEADB) //lead_board

@@ -43,7 +43,7 @@ public:
 	//communication with screen
 	int print_menu(size_t size, std::string *choices, int type);
 	bool get_connexion(char *pseudo, char *pswd,int error, int type);
-	int print_profile(std::vector<Parsing::Profile*> vect, int type); //n oublie pas le titre
+	bool print_profile(std::vector<Parsing::Profile*> vect, int type,int answer[2] = nullptr); //n oublie pas le titre
 	int print_profile(Parsing::Profile *prof, int type);
 	int get_pseudo(char *res, int error, int type);
 
@@ -52,7 +52,7 @@ public:
 
 private:
 	void set_screen(std::string *title,std::string *saying1, std::string *saying2, std::string *saying3);
-	void update_menu(size_t size,  std::string *choices, int highlight);
+	void update_menu(size_t size,  std::string *choices, int highlight, int type);
 	bool verify_cara(char *c);
 	void print_cara(WINDOW *win , const char *c, int x, int y);
 	void move_cursor(WINDOW *win, int x, int y, bool invisible=false);

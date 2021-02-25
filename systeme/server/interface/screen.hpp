@@ -53,6 +53,8 @@ namespace Screen{
 	extern std::string SHORT_ALL;
 	extern std::string NO_USER_MSG;
 	extern std::string TAKEN_PSEUDO_MSG;
+	extern std::string ALREADY_FRIENDS;
+	extern std::string NOT_FRIENDS;
 	extern std::string DEFAULT_ERROR;
 
 	//CAPTION
@@ -76,7 +78,8 @@ namespace Screen{
 	const int PROF = 10;
 	const int LEADB = 11;
 	const int LEN_ERROR = 0, LEN_PSEUDO = 1, LEN_PSWD = 2;
-	const int NO_USER = 3, TAKEN_PSEUDO = 4;
+	const int NO_USER = 3, TAKEN_PSEUDO = 4, FRIENDS_ALREADY  = 5;
+	const int FRIENDS_YET = 6, REQ_ALREADY =7;
 	const int NO_ERROR = -1;
 	const int NB_MIN_CARA = 7;
 	const int NB_MAX_CARA = 15;

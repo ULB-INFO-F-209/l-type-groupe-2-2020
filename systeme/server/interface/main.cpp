@@ -33,9 +33,9 @@ int main(int argc, char const *argv[])
 
 	//win.get_connexion(p, m, NO_ERROR, S_IN);	
 
-	win.get_pseudo(p, NO_ERROR, DEL);	
+	//win.get_pseudo(p, NO_ERROR, DEL);	
 
-	//win.print_menu(5,cn, HOME);	*/
+	//win.print_menu(3,cn, HOME);	*/
 
 	Menu m{};
 	m.start_session();
