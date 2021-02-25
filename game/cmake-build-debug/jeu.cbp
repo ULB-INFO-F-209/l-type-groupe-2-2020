@@ -85,7 +85,7 @@
 		<Unit filename="/home/jean/l-type-groupe-2-2020/game/src/Boss.cpp">
 			<Option target="jeu"/>
 		</Unit>
-		<Unit filename="/home/jean/l-type-groupe-2-2020/game/src/Boss.h">
+		<Unit filename="/home/jean/l-type-groupe-2-2020/game/src/Boss.hpp">
 			<Option target="jeu"/>
 		</Unit>
 		<Unit filename="/home/jean/l-type-groupe-2-2020/game/src/Interface.cpp">

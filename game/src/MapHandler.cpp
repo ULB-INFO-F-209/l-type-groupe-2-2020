@@ -102,7 +102,7 @@ void MapHandler::update(MapObject::type typ, int t) {
     if (typ==MapObject::boss){
         for (auto & i : boss_set) {
             i->move();
-            if (i->getPos().x > field_bounds.right())
+            if (i->getPos().x > field_bounds.right()-19)
                 i->setMovingRight(false);
             else if(i->getPos().x <= field_bounds.left())
                 i->setMovingRight(true);
@@ -154,7 +154,7 @@ void MapHandler::update(MapObject::type typ, int t) {
 
     }
     else if (typ==MapObject::boss && (currentLevel==2) && !bossSpawned){
-        boss_set.push_back(new Boss(2,2,{{10 - 1, 5},{3,2}},'&',enemyStartHp,50, enemyStartProjectileDamage));
+        boss_set.push_back(new Boss(0,0,{{10 - 1, 5},{3,2}},'&',enemyStartHp,t + 100, enemyStartProjectileDamage));
         bossSpawned=true;
     }
 }
@@ -303,8 +303,29 @@ void MapHandler::checkCollision(int t) {
         }
     }
 
-    //collision Boss/
+    //collision Boss/projectile
+    for(Boss* b : boss_set){
+        for(auto & proj : projectiles_set){
+            if(b->getBounds().contains(proj->getPos()) && b->getHp()>0){
+                b->touched(proj->getDamage());
+                proj->touched(b->getDammage());
+                if(player_ships_set.size() == 2){
+                    player_ships_set.at(proj->getPlayer()-1)->setScore(player_ships_set.at(proj->getPlayer()-1)->getScore() + 10);
+                    if(b->getHp()==0 && player_ships_set.at(proj->getPlayer()-1)->getCurrentBonus()==lifeSteal && player_ships_set.at(proj->getPlayer()-1)->getHp()<100){
+                        if ((player_ships_set.at(proj->getPlayer()-1)->getHp()+10) <= 100)
+                            player_ships_set.at(proj->getPlayer()-1)->setHp(player_ships_set.at(proj->getPlayer()-1)->getHp()+10);
+                        else player_ships_set.at(proj->getPlayer()-1)->setHp(100);
+                    }
 
+                }
+                else if (player_ships_set.size() == 1) {
+                    player_ships_set.at(0)->setScore(player_ships_set.at(0)->getScore() + 10);
+                    if(b->getHp()==0 && player_ships_set.at(0)->getCurrentBonus()==lifeSteal && player_ships_set.at(0)->getHp()<100)
+                        player_ships_set.at(0)->setHp(player_ships_set.at(0)->getHp()+10);
+                }
+            }
+        }
+    }
     //erase enemy
     for(size_t e = 0; e < enemy_ships_set.size(); e++){
         if(enemy_ships_set.at(e)->getHp() <= 0){
@@ -318,6 +339,20 @@ void MapHandler::checkCollision(int t) {
             }
         }
     }
+    //erase boss
+    for(size_t e = 0; e < boss_set.size(); e++){
+        if(boss_set.at(e)->getHp() <= 0){
+            if (rand()%100<=probaBonus)
+                spawnBonuses(boss_set.at(e)->getPos().x, boss_set.at(e)->getPos().y);
+            boss_set.erase(boss_set.begin() + e);
+            if(enemyCount == enemyLimit && changingLevel && boss_set.empty()){
+                levelTick = t;
+                enemyCount = 0;
+                currentLevel++;
+            }
+        }
+    }
+    // erase bonus
     for(size_t bon = 0; bon < bonuses_set.size(); bon++){
         if(bonuses_set.at(bon)->getHp() <= 0)bonuses_set.erase(bonuses_set.begin() + bon);
     }
@@ -343,12 +378,15 @@ void MapHandler::playerInit(PlayerShip* p1,PlayerShip* p2) {
     player_ships_set.push_back(p2);
 }
 
-void MapHandler::updatePlayerBounds() {
+void MapHandler::updateBounds() {
     for( PlayerShip* p : player_ships_set){
         p->setBounds({ { static_cast<uint_fast16_t>(p->getPos().x -1), p->getPos().y}, {3, 2}});
     }
     for(EnemyShip* e: enemy_ships_set){
         e->setBounds({{static_cast<uint_fast16_t>(e->getPos().x-1), e->getPos().y},{3,1}});
+    }
+    for(Boss* b: boss_set){
+        b->setBounds({{static_cast<uint_fast16_t>(b->getPos().x-1), b->getPos().y},{3,1}});
     }
 
 }
@@ -378,8 +416,10 @@ void MapHandler::enemyShoot(int tick) {
 
 void MapHandler::bossShoot(int tick) {
     for (auto & b : boss_set) {
-        if (tick== b->getShootTime()+100){
-            spawnProjectile(b->getPos().x,b->getPos().y+1,b->getShootDamage(),false,b->getProjectileHp(),0);
+        if (tick== b->getShootTime()+50){
+            spawnProjectile(b->getPos().x+7,b->getPos().y+5,b->getShootDamage(),false,b->getProjectileHp(),0);
+            spawnProjectile(b->getPos().x+11,b->getPos().y+5,b->getShootDamage(),false,b->getProjectileHp(),0);
+
             b->setShootTime(tick);
         }
     }

@@ -121,7 +121,7 @@ public:
 };
 
 class Boss : public Ship{
-    int shootTime{};
+    int shootTime;
     bool movingRight;
 public:
     Boss()= default;
@@ -175,14 +175,13 @@ public:
     std::vector<EnemyShip*> getEnemy() const;
     std::vector<Bonus*> getBonus() const;
     std::vector<Boss*> getBoss() const;
-
+    std::vector<PlayerShip*>  getListPlayer()const;
     void setBounds(rect);
     void spawnProjectile(int x, int y, int damage, bool type, int hp, int player);
     void checkCollision(int t);
     rect field_bounds;
     void playerInit(PlayerShip* p1,PlayerShip* p2);
-    void updatePlayerBounds();
-    std::vector<PlayerShip*>  getListPlayer()const;
+    void updateBounds();
     void enemyShoot(int tick);
     void bossShoot(int tick);
     void explosion();

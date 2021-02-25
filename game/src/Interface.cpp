@@ -330,14 +330,14 @@ void Interface::drawNewLevel(MapHandler *map, int tick) {
 
 void Interface::drawBoss(MapHandler *map) {
     for(auto b :map->getBoss()){
-        wattron(game_wnd, COLOR_PAIR(4));
-        mvwaddch(game_wnd, b->getPos().y, b->getPos().x, b->getChar());
-        wattroff(game_wnd, COLOR_PAIR(4));
+        wattron(main_wnd, COLOR_PAIR(4));
+        mvwprintw(game_wnd, b->getPos().y, b->getPos().x, "      ______      ");
+        mvwprintw(game_wnd, b->getPos().y+1, b->getPos().x, " ____|______|____");
+        mvwprintw(game_wnd, b->getPos().y+2, b->getPos().x, "/ |____________| \\");
+        mvwprintw(game_wnd, b->getPos().y+3, b->getPos().x, "| |____________| |");
+        mvwprintw(game_wnd, b->getPos().y+4, b->getPos().x, "\\_|____ ___ ___|_/");
+        mvwprintw(game_wnd, b->getPos().y+5, b->getPos().x, "      |_| |_|     ");
+        wattroff(main_wnd, COLOR_PAIR(4));
 
-
-        wattron(game_wnd, A_ALTCHARSET);
-        mvwaddch(game_wnd, b->getPos().y, b->getPos().x - 1, ACS_LARROW);
-        mvwaddch(game_wnd, b->getPos().y, b->getPos().x + 1, ACS_RARROW);
-        wattroff(game_wnd, A_ALTCHARSET);
     }
   }

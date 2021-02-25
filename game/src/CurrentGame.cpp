@@ -186,7 +186,7 @@ void CurrentGame::run() {
         }
         map.enemyShoot(tick);
         map.bossShoot(tick);
-        map.updatePlayerBounds();     // update player bounds
+        map.updateBounds();     // update player bounds
         map.checkCollision(tick);
 
 
