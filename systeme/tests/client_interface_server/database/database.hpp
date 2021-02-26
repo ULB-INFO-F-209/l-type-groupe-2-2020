@@ -45,7 +45,7 @@ public:
 	bool updateScore(int score, char* pseudo);
 	int friendRequest(char* pseudoSrc, char* pseudoDest);
 	bool addFriend(char *pseudo1, char *pseudo2);
-    bool removeFriend(char *pseudo1, char *pseudo2);
+    int removeFriend(char *pseudo1, char *pseudo2);
 
     // File management
     void dbLoad();

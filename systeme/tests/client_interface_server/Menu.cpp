@@ -142,22 +142,19 @@ void Menu::afficher_friends(){
 
 void Menu::request_management(){
 	int ret=true; char buffer[100]; 
-	int answer[2];
-	std::vector<Profile> vect;
-	_client.getFriendRequest(buffer);
-	profile_list_from_str(buffer, &vect);;
-	ret = window.print_profile(&vect, REQ, answer); 
+	int answer[2] = {0,0};
 	while(ret){
+		_client.getFriendRequest(buffer);
+		std::vector<Profile> vect;
+		profile_list_from_str(buffer, &vect);;
+		ret = window.print_profile(&vect, REQ, answer); 
 		int idx = answer[0];
 		int accepted = answer[1];
-		if(accepted)
+		if(accepted and ret)
 			_client.addFriend(vect[idx].pseudo);
-		else
+		else if (ret)
 			_client.delFriendRequest(vect[idx].pseudo);	
-		
-		_client.getFriendRequest(buffer);
-		profile_list_from_str(buffer, &vect);
-		ret = window.print_profile(&vect, REQ, answer); 
+		sleep(3);
 	}
 }
 
@@ -183,7 +180,7 @@ void Menu::add_del_friends(bool add){
 		else{
 			quit = window.get_pseudo(buffer,error,DEL);
 			if(not quit){
-				success = _client.sendFriendRequest(buffer);
+				success = _client.delFriend(buffer);
 				if(success==1)
 					error = FRIENDS_YET;
 				else if (success==2)

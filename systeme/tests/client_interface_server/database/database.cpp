@@ -156,17 +156,22 @@ bool Database::delFriendRequest(char *pseudo1, char *pseudo2){
     return res;
 }
 
-bool Database::removeFriend(char* pseudo1, char* pseudo2){
+int Database::removeFriend(char* pseudo1, char* pseudo2){
     std::ptrdiff_t idx1 = find(pseudo1);
     std::ptrdiff_t idx2 = find(pseudo2);
-    bool res = false;
+    int res = 2; //already friend
     if (idx1 != -1 && idx2 != -1){
-        _data[idx1].removeFriend(pseudo2);
-        _data[idx2].removeFriend(pseudo1);
-        res = true;
+        if(_data[idx1].findFriend(pseudo2) != -1){
+            _data[idx1].removeFriend(pseudo2);
+            _data[idx2].removeFriend(pseudo1);
+            res = 0; //bien supp
+        }
+        else
+            res = 1;
+        
     }
     if (idx1 == -1){std::cout << pseudo1 << " does not exist" << std::endl;}
-    if (idx2 == -1){std::cout << pseudo2 << " does not exist" << std::endl;}
+    if (idx2 == -1){std::cout << pseudo2 << " does not exist" << std::endl; }
     return res;
 }
 

@@ -292,16 +292,14 @@ bool Interface::print_profile(std::vector<Profile> *vect, int type, int *answer)
 			case 10:
 				if(type==REQ){
 					accepted = print_profile(&vect->at(focus), REQ);
-					print_users(vect, focus, idx_min, idx_max,type);
-
-					if(accepted==1){
+					if(accepted==0){
 						answer[0] = focus;
 						answer[1] = 1; //accepted friends
-						choice = 0;
+						choice = 0; //stop
 						res = true; //juste prevenir qu il y a une reponse
 					}
 
-					else if(accepted==-1){
+					else if(accepted==1){
 						answer[0] = focus;
 						answer[1] = 0; //not accepted
 						choice =0; 
