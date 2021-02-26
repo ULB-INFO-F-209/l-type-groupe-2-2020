@@ -23,6 +23,7 @@ class CurrentGame {
     rect game_area;
     rect screen_area;
     bool twoPlayers;
+    bool friendlyFire;
     int dropRate;
     difficulty difficulte;
 
@@ -32,13 +33,13 @@ class CurrentGame {
     int finalScore1{};
     int finalScore2{};
 
-    PlayerShip* playership1 = new PlayerShip(10, 5, { {10 - 1, 5 }, { 3, 2 } }, '0',100, 0,100,0);
-    Player* player1 = new Player(3);
+    PlayerShip* playership1;
+    Player* player1;
 
-    if (twoPlayers){
-        PlayerShip* playership2 = new PlayerShip(50, 5, { { 50 - 1, 5 }, { 3, 2 } }, '1',100, 1,100,0);
-        Player* player2 = new Player(3);
-    }
+    
+    PlayerShip* playership2 = nullptr;
+    Player* player2 = nullptr;
+    
     std::vector<Player*> listPlayer=std::vector<Player*>();
 
     int in_char = 0;
@@ -47,13 +48,13 @@ class CurrentGame {
 
 
     // méthodes privées
-    void execInput(int inChar, uint_fast16_t x1, uint_fast16_t y1, uint_fast16_t x2, uint_fast16_t y2);
+    void execInput(int inChar, uint_fast16_t x1, uint_fast16_t y1, bool firstPlayer);
     void heal();
     void saveScore();
 
 public:
     CurrentGame()=default;
-    CurrentGame(bool twoP, int dropR, difficulty diff) {twoPlayers=twoP; dropRate=dropR; difficulte=diff;}
+    CurrentGame(bool twoP, int dropR, difficulty diff, bool ff) {twoPlayers=twoP; dropRate=dropR; difficulte=diff; friendlyFire=ff;}
     int getInput(){return in_char;}
 
     void run();

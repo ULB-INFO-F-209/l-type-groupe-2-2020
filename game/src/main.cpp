@@ -11,7 +11,7 @@ int main(int argc, char **argv){
 
     close();*/
 
-    CurrentGame game;
+    CurrentGame game(true, 80, easy, true);
     game.run();
 
     return 0;

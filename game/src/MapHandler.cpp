@@ -153,7 +153,7 @@ void MapHandler::update(MapObject::type typ, int t) {
           }
 
     }
-    else if (typ==MapObject::boss && (currentLevel==4) && !bossSpawned){
+    else if (typ==MapObject::boss && (currentLevel==6) && !bossSpawned){
         boss_set.push_back(new Boss(0,0,{{0, 0},{18,6}},'&',1000,t + 100, enemyStartProjectileDamage));
         bossSpawned=true;
     }
@@ -176,8 +176,8 @@ void MapHandler::spawnProjectile(int x, int y, int damage, bool type, int hp, in
                 projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
             }
             else if (player_ships_set.at(player - 1)->getCurrentBonus() == damageUp) {
-                if (player_ships_set.at(player - 1)->getShootDamage() != 20)
-                    player_ships_set.at(player - 1)->setShootDamage(20);
+                if (player_ships_set.at(player - 1)->getShootDamage() != 50)
+                    player_ships_set.at(player - 1)->setShootDamage(50);
                 projectiles_set.push_back(
                         new Projectile(x, y - 1, player_ships_set.at(player - 1)->getShootDamage(), type, hp, player));
             }
@@ -205,7 +205,7 @@ void MapHandler::spawnProjectile(int x, int y, int damage, bool type, int hp, in
     else projectilesEnemy_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
 }
 
-void MapHandler::checkCollision(int t) {
+void MapHandler::checkCollision(int t, bool friendlyFire) {
     //collision player/obstacle
     for(PlayerShip* p : player_ships_set){
         for(auto & i : obstacles_set){
@@ -245,6 +245,16 @@ void MapHandler::checkCollision(int t) {
             }
         }
     }
+    
+    //collision player/player
+    if(player_ships_set.size() > 1 && friendlyFire){
+    
+        if(player_ships_set.at(0)->getBounds().contains(player_ships_set.at(1)->getBounds()) && player_ships_set.at(0)->getHp()>0){
+            player_ships_set.at(0)->touched(player_ships_set.at(0)->getHp());
+            player_ships_set.at(1)->touched(player_ships_set.at(1)->getHp());
+        }
+            
+    }
 
     // collision player/projectile
     for(PlayerShip* p : player_ships_set){
@@ -252,6 +262,14 @@ void MapHandler::checkCollision(int t) {
             if(p->getBounds().contains(proj->getPos()) && p->getHp()>0){
                 p->touched(proj->getDamage());
                 proj->touched(proj->getHp());
+            }
+        }
+        if(friendlyFire){
+            for(auto & proj : projectiles_set){
+                if(p->getBounds().contains(proj->getPos()) && p->getHp()>0){
+                    p->touched(proj->getDamage());
+                    proj->touched(proj->getHp());
+                }
             }
         }
     }
@@ -285,11 +303,11 @@ void MapHandler::checkCollision(int t) {
                 }
                 else if (player_ships_set.size() == 1) {
                     player_ships_set.at(0)->setScore(player_ships_set.at(0)->getScore() + 10);
-                    if(e->getHp()==0 && player_ships_set.at(0)->getCurrentBonus()==lifeSteal && player_ships_set.at(0)->getHp()<100)
+                    if(e->getHp()==0 && player_ships_set.at(0)->getCurrentBonus()==lifeSteal && player_ships_set.at(0)->getHp()<100){
                         if ((player_ships_set.at(0)->getHp()+10) <= 100)
                             player_ships_set.at(0)->setHp(player_ships_set.at(0)->getHp()+10);
                         else player_ships_set.at(0)->setHp(100);
-
+                    }
                 }
             }
         }
@@ -386,7 +404,7 @@ void MapHandler::checkCollision(int t) {
 
 void MapHandler::playerInit(PlayerShip* p1,PlayerShip* p2) {
     player_ships_set.push_back(p1);
-    player_ships_set.push_back(p2);
+    if(p2)player_ships_set.push_back(p2);
 }
 
 void MapHandler::updateBounds() {

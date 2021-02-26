@@ -66,6 +66,7 @@ public:
     int getShootDamage() const{return shootDamage;}
     void setProjectileHp(int p_hp){projectileHp = p_hp;}
     int getProjectileHp() const{return projectileHp;}
+    
 
 };
 
@@ -176,9 +177,10 @@ public:
     std::vector<Bonus*> getBonus() const;
     std::vector<Boss*> getBoss() const;
     std::vector<PlayerShip*>  getListPlayer()const;
+    bool getBossSpawned() const{return bossSpawned;}
     void setBounds(rect);
     void spawnProjectile(int x, int y, int damage, bool type, int hp, int player);
-    void checkCollision(int t);
+    void checkCollision(int t, bool firendlyFire);
     rect field_bounds;
     void playerInit(PlayerShip* p1,PlayerShip* p2);
     void updateBounds();

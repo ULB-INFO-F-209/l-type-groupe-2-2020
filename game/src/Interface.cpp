@@ -3,6 +3,7 @@
 //
 
 #include "Interface.hpp"
+
 int Interface::init() {
 
     srand(time(0)); // ??????
@@ -23,7 +24,8 @@ int Interface::init() {
     // define area for screen (default terminal size)
     screen_area = { {0, 0}, {80, 24}};
 
-    //wresize(main_wnd, screen_area.height(), screen_area.width());     Ne sert à rien
+    //wresize(main_wnd, screen_area.height(), screen_area.width());
+    
 
     // initialize window areas
     int infopanel_height = 4;
@@ -80,7 +82,7 @@ Interface::Interface(): main_wnd(),game_wnd(), game_area(), screen_area() {
 
 }
 
-void Interface::display(MapHandler *m,int tick, std::vector<Player *> *listPlayer,PlayerShip* playership1,PlayerShip* playership2, Player* player1,Player* player2,int score1, int score2) {
+void Interface::display(MapHandler *m,int tick, std::vector<Player *> *listPlayer,PlayerShip* playership1,PlayerShip* playership2, Player* player1,Player* player2,int score1, int score2, bool twoPlayers) {
 
     // l'affichage à chaque tour de boucle (server->game->server->client)
     drawStar(m);
@@ -90,7 +92,7 @@ void Interface::display(MapHandler *m,int tick, std::vector<Player *> *listPlaye
     drawBonus(m);
     drawPlayer(m,tick,listPlayer);
     drawBoss(m);
-    drawUI(m,playership1,playership2,player1,player2,score1,score2,tick);
+    drawUI(m,playership1,playership2,player1,player2,score1,score2,tick, twoPlayers);
 
 }
 
@@ -196,32 +198,18 @@ void Interface::drawPlayer(MapHandler *m, int tick, std::vector<Player *> *listP
 
 }
 
-void Interface::drawUI(MapHandler *m,PlayerShip* playership1,PlayerShip* playership2, Player* player1,Player* player2,int score1, int score2,int tick) {
+void Interface::drawUI(MapHandler *m,PlayerShip* playership1,PlayerShip* playership2, Player* player1,Player* player2,int score1, int score2,int tick, bool twoPlayers) {
+    
     // energy bar player1
     wmove(main_wnd, 20, 1);
     whline(main_wnd, ' ', 25); // health bar is 25 chars long
     wmove(main_wnd, 20, 1);
     drawEnergyBar(playership1->getHp());
-    
-    // energy bar player2
-    wmove(main_wnd, 20, 54);
-    whline(main_wnd, ' ', 25); // health bar is 25 chars long
-    wmove(main_wnd, 20, 54);
-    drawEnergyBar(playership2->getHp());
-
     //score
     mvwprintw(main_wnd, 22, 1, "  score: %i", score1);
-    mvwprintw(main_wnd, 22, 54, "  score: %i", score2);
-
-    //level
-    mvwprintw(main_wnd,20,33," LEVEL : %i",m->getCurrentLevel());
-
     // draw static string to hold percentage
     mvwprintw(main_wnd, 21, 1, "- P1 HP                -");
-    mvwprintw(main_wnd, 21, 54, "- P2 HP                -");
     mvwprintw(main_wnd, 21, 15, "lives: %i",player1->getnLives());
-    mvwprintw(main_wnd, 21, 68, "lives: %i",player2->getnLives());
-
     // draw numeric percentage player 1
     wattron(main_wnd, A_BOLD);
     if(playership1->getHp() <= 25) {
@@ -232,38 +220,52 @@ void Interface::drawUI(MapHandler *m,PlayerShip* playership1,PlayerShip* players
     } else
         mvwprintw(main_wnd, 21, 9, "%i%%", playership1->getHp());
     wattroff(main_wnd, A_BOLD);
+    if (playership1->getCurrentBonus() == minigun)
+        mvwprintw(main_wnd, 22, 25, "  B%d:minigun",playership1->getPlayerNb()+1);
+    else if (playership1->getCurrentBonus() == damageUp)
+        mvwprintw(main_wnd, 22, 25, "  B%d:damageUp",playership1->getPlayerNb()+1);
+    else if (playership1->getCurrentBonus() == tripleShot)
+        mvwprintw(main_wnd,22, 25, "  B%d:tripleShot",playership1->getPlayerNb()+1);
+    else if (playership1->getCurrentBonus() == lifeSteal)
+        mvwprintw(main_wnd, 22, 25, "  B%d:lifeSteal",playership1->getPlayerNb()+1);
+    else if (playership1->getCurrentBonus() == noBonus)
+        mvwprintw(main_wnd, 22, 25, "  B%d:          ",playership1->getPlayerNb()+1);
 
-    // draw numeric percentage player 2
-    wattron(main_wnd, A_BOLD);
-    if(playership2->getHp() <= 25) {
-        wattron(main_wnd, COLOR_PAIR(4));
-        if(tick % 100 < 50)
+    if(twoPlayers){
+        // energy bar player2
+        wmove(main_wnd, 20, 54);
+        whline(main_wnd, ' ', 25); // health bar is 25 chars long
+        wmove(main_wnd, 20, 54);
+        drawEnergyBar(playership2->getHp());
+        //score  
+        mvwprintw(main_wnd, 22, 54, "  score: %i", score2);
+        // draw static string to hold percentage
+        mvwprintw(main_wnd, 21, 54, "- P2 HP                -");
+        mvwprintw(main_wnd, 21, 68, "lives: %i",player2->getnLives());
+        // draw numeric percentage player 2
+        wattron(main_wnd, A_BOLD);
+        if(playership2->getHp() <= 25) {
+            wattron(main_wnd, COLOR_PAIR(4));
+            if(tick % 100 < 50)
+                mvwprintw(main_wnd, 21, 62, "%i%%", playership2->getHp());
+            wattroff(main_wnd, COLOR_PAIR(4));
+        } else
             mvwprintw(main_wnd, 21, 62, "%i%%", playership2->getHp());
-        wattroff(main_wnd, COLOR_PAIR(4));
-    } else
-        mvwprintw(main_wnd, 21, 62, "%i%%", playership2->getHp());
-    wattroff(main_wnd, A_BOLD);
-    //draw bonus type
-    int x,y ;
-    for( PlayerShip* p : m->getListPlayer()) {
-        if (p->getPlayerNb() == 0) {
-            y = 22;
-            x = 25;
-        } else {
-            y = 22;
-            x = 40;
-        }
-        if (p->getCurrentBonus() == minigun)
-            mvwprintw(main_wnd, y, x, "  B%d:minigun",p->getPlayerNb()+1);
-        else if (p->getCurrentBonus() == damageUp)
-            mvwprintw(main_wnd, y, x, "  B%d:damageUp",p->getPlayerNb()+1);
-        else if (p->getCurrentBonus() == tripleShot)
-            mvwprintw(main_wnd, y, x, "  B%d:tripleShot",p->getPlayerNb()+1);
-        else if (p->getCurrentBonus() == lifeSteal)
-            mvwprintw(main_wnd, y, x, "  B%d:lifeSteal",p->getPlayerNb()+1);
-        else if (p->getCurrentBonus() == noBonus)
-            mvwprintw(main_wnd, y, x, "  B%d: ",p->getPlayerNb()+1);
+        wattroff(main_wnd, A_BOLD);
+        if (playership2->getCurrentBonus() == minigun)
+            mvwprintw(main_wnd, 22, 40, "  B%d:minigun",playership2->getPlayerNb()+1);
+        else if (playership2->getCurrentBonus() == damageUp)
+            mvwprintw(main_wnd, 22, 40, "  B%d:damageUp",playership2->getPlayerNb()+1);
+        else if (playership2->getCurrentBonus() == tripleShot)
+            mvwprintw(main_wnd, 22, 40, "  B%d:tripleShot",playership2->getPlayerNb()+1);
+        else if (playership2->getCurrentBonus() == lifeSteal)
+            mvwprintw(main_wnd, 22, 40, "  B%d:lifeSteal",playership2->getPlayerNb()+1);
+        else if (playership2->getCurrentBonus() == noBonus)
+            mvwprintw(main_wnd, 22, 40, "  B%d:          ",playership2->getPlayerNb()+1);
     }
+    
+    //level
+    mvwprintw(main_wnd,20,33," LEVEL : %i",m->getCurrentLevel());
 
 }
 
@@ -341,3 +343,11 @@ void Interface::drawBoss(MapHandler *map) {
 
     }
   }
+
+void Interface::drawGameOver(MapHandler* m, int score1){
+    mvwprintw(game_wnd,8, 35,"GAME OVER");
+    mvwprintw(game_wnd,9, 35,"SCORE : %i", score1);
+    mvwprintw(game_wnd,12, 30,"press SPACE to quit");
+    
+    
+}
