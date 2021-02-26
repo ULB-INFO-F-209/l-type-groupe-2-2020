@@ -65,7 +65,7 @@ int  Menu::friends(){ //decouper en fonction
 
 int  Menu::main_m(){
 	int res; char buffer[100];
-	std::vector<Profile*> profile_list;
+	std::vector<Profile> profile_list;
 	Profile profile;
 	int choice = window.print_menu(SIZE_MAIN_MENU, main_menu, MAIN);
 	switch(choice){
@@ -78,8 +78,8 @@ int  Menu::main_m(){
 			break; 
 		case 2: //leaderboard
 			_client.checkLeaderboard(buffer);
-			profile_list_from_str(buffer, profile_list);
-			window.print_profile(profile_list, LEADB);
+			profile_list_from_str(buffer, &profile_list);
+			window.print_profile(&profile_list, LEADB);
 			res = MAIN;
 			break;
 		case 3:  //profils
@@ -133,32 +133,31 @@ int Menu::connexion(bool sign_in){
 //Friends utilities
 void Menu::afficher_friends(){
 	char buffer[100];
-	std::vector<Profile*> vect;
+	std::vector<Profile> vect;
 	_client.getFriendList(buffer);
-	profile_list_from_str(buffer, vect); //parsing
+	profile_list_from_str(buffer, &vect); //parsing
 
-	window.print_profile(vect, Y_FRIENDS);
+	window.print_profile(&vect, Y_FRIENDS);
 }
 
 void Menu::request_management(){
 	int ret=true; char buffer[100]; 
 	int answer[2];
-	std::vector<Profile*> vect;
+	std::vector<Profile> vect;
 	_client.getFriendRequest(buffer);
-	profile_list_from_str(buffer, vect);
-	
-	ret = window.print_profile(vect, REQ, answer); 
+	profile_list_from_str(buffer, &vect);;
+	ret = window.print_profile(&vect, REQ, answer); 
 	while(ret){
 		int idx = answer[0];
 		int accepted = answer[1];
 		if(accepted)
-			_client.addFriend(vect[idx]->pseudo);
+			_client.addFriend(vect[idx].pseudo);
 		else
-			_client.delFriendRequest(vect[idx]->pseudo);	
+			_client.delFriendRequest(vect[idx].pseudo);	
 		
 		_client.getFriendRequest(buffer);
-		profile_list_from_str(buffer, vect);
-		ret = window.print_profile(vect, REQ, answer); 
+		profile_list_from_str(buffer, &vect);
+		ret = window.print_profile(&vect, REQ, answer); 
 	}
 }
 

@@ -10,9 +10,10 @@
 #include <iostream>
 #include <string>
 #include <unistd.h>
+#include "database/database.hpp"
 
 namespace Parsing{
-	struct Profile;
+	using Profile = Profile;
 	struct Game_settings;
 
 	//encodage
@@ -27,15 +28,6 @@ namespace Parsing{
 	void create_game_from_str(char *buffer, Game_settings * settings);
 	void parsing(char* str, char* token1, char* token2 = nullptr);
 }
-
-
-struct Parsing::Profile
-{
-	char pseudo[20];
-	int score;	
-	Profile(const char *p, int s){sprintf(pseudo,"%s", p); score=s;}
-	Profile()=default;
-};
 
 struct Parsing::Game_settings
 {

@@ -36,7 +36,7 @@ namespace Screen{
 	std::string ADD_SAYING2 = "But you can only have 100 friends there !";
 	std::string DEL_SAYING = "I wish it was not as easy to unfriend";
 	std::string DEL_SAYING2 = "someone in real life like your're doing now.";
-	std::string REQUEST_SAYING = " ";
+	std::string REQUEST_SAYING = " Salut la mif !";
 	std::string FRIENDS_SAYING = "If you want the rainbow, you have to endure the rain.";
 	std::string PROFILE_SAYING = "BE PROUD OF YOUR SCORE!";
 	std::string PROFILE2_SAYING = "Would you like to be friend with this user ?";

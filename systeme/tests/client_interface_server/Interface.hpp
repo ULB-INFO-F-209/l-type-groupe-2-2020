@@ -43,7 +43,7 @@ public:
 	//communication with screen
 	int print_menu(size_t size, std::string *choices, int type);
 	bool get_connexion(char *pseudo, char *pswd,int error, int type);
-	bool print_profile(std::vector<Parsing::Profile*> vect, int type,int answer[2] = nullptr); //n oublie pas le titre
+	bool print_profile(std::vector<Parsing::Profile> *vect, int type,int answer[2] = nullptr); //n oublie pas le titre
 	int print_profile(Parsing::Profile *prof, int type);
 	int get_pseudo(char *res, int error, int type);
 
@@ -58,7 +58,7 @@ private:
 	void move_cursor(WINDOW *win, int x, int y, bool invisible=false);
 	void init_connexion(int choice);
 	void print_error(int error);
-	void print_users(std::vector<Parsing::Profile*> vect, int highlight, int min, int max, int type);
+	void print_users(std::vector<Parsing::Profile> *vect, int highlight, int min, int max, int type);
 	void init_pseudo_win();
 	void set_request(int highlight);
 };

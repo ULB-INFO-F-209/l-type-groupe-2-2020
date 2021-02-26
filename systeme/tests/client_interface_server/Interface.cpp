@@ -253,15 +253,16 @@ int  Interface::print_profile(Profile *prof, int type){
 
 
 
-bool Interface::print_profile(std::vector<Profile*> vect, int type, int *answer){
+bool Interface::print_profile(std::vector<Profile> *vect, int type, int *answer){
 	keypad(stdscr,TRUE);
 	bool res=false;
 	int choice = 1, accepted=-1,
-		MIN = 0,  MAX = vect.size() -1,
+		MIN = 0,  MAX = vect->size() -1,
 		focus = 0; int nb_elem = 10, //on peut afficher que 10
 		idx_min = 0, idx_max;
+	bool TEST = MAX < nb_elem;
 
-	if(MAX < nb_elem)
+	if(TEST)
 		idx_max = MAX; //no scroll
 	else
 		idx_max = idx_min + nb_elem;
@@ -272,7 +273,7 @@ bool Interface::print_profile(std::vector<Profile*> vect, int type, int *answer)
 		switch(choice){
 			case KEY_UP:
 				if(focus > MIN){
-					if(focus == idx_min){
+					if(focus == idx_min and TEST){
 						idx_min --;
 						idx_max--;
 					}
@@ -281,7 +282,7 @@ bool Interface::print_profile(std::vector<Profile*> vect, int type, int *answer)
 				break;
 			case KEY_DOWN:
 				if(focus < MAX){
-					if(focus == idx_max-1){
+					if(focus == idx_max-1 and not TEST){
 						idx_min++;
 						idx_max++;
 					}
@@ -290,7 +291,7 @@ bool Interface::print_profile(std::vector<Profile*> vect, int type, int *answer)
 				break;
 			case 10:
 				if(type==REQ){
-					accepted = print_profile(vect[focus], REQ);
+					accepted = print_profile(&vect->at(focus), REQ);
 					print_users(vect, focus, idx_min, idx_max,type);
 
 					if(accepted==1){
@@ -528,7 +529,7 @@ void Interface::move_cursor(WINDOW *win, int x, int y, bool invisible){
 	
 }
 
-void Interface::print_users(std::vector<Profile*> vect, int highlight, int min, int max, int type){
+void Interface::print_users(std::vector<Profile> *vect, int highlight, int min, int max, int type){
 	clear();
 	resize_win();
 	if(type == Y_FRIENDS) 
@@ -548,9 +549,9 @@ void Interface::print_users(std::vector<Profile*> vect, int highlight, int min, 
 	print_cara(_main_win, pseudo_title,caption_x,caption_y);
 	print_cara(_main_win, score_title, caption_score_x,caption_y);
 	
-	for (int i = min; i < max; ++i){
-		sprintf(score, "%d",vect[i]->score);
-		sprintf(pseudo, "%s", vect[i]->pseudo);
+	for (int i = min; i <= max; ++i){ 
+		sprintf(score, "%d",vect->at(i).score);
+		sprintf(pseudo, "%s", vect->at(i).pseudo);
 		if(i == highlight)
 		{
 			wattron(_main_win, A_REVERSE);
