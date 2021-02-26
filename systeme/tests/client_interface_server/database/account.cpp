@@ -1,6 +1,6 @@
 #include "account.hpp"
 
-Account::Account(char* pseudo, char* pswd): _bestScore(rand()%100){
+Account::Account(char* pseudo, char* pswd): _bestScore(0){
     strcpy(_pseudo, pseudo);
     strcpy(_pswd, pswd);
     for (size_t i = 0; i < _max_friend_nb; i++) {

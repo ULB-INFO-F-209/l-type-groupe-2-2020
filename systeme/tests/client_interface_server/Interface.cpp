@@ -32,10 +32,10 @@ void Interface::resize_win(){
     getmaxyx(stdscr,YMAX,XMAX);
 
     //size and positions
-    WIN_HEIGHT = YMAX-(YMAX/4);
-    WIN_WIDTH = XMAX-(XMAX/5);
-    WIN_Y = YMAX/7;
-    WIN_X = XMAX/8;
+    WIN_HEIGHT = YMAX-(YMAX/8);
+    WIN_WIDTH = XMAX-(XMAX/8);
+    WIN_Y = YMAX/10;
+    WIN_X = XMAX/14;
 
     //Saying
     S_HEIGHT =  WIN_HEIGHT/3;
@@ -47,12 +47,12 @@ void Interface::resize_win(){
     PS_WIDTH = (WIN_WIDTH/5)*3;
 
     PS_Y = WIN_Y + (WIN_HEIGHT/3) + (WIN_HEIGHT-S_HEIGHT)/6;
-    PS_X = (WIN_WIDTH/2) - (PS_WIDTH/4);
+    PS_X = WIN_WIDTH/4;
 
 
     PA_HEIGHT = WIN_HEIGHT/5;
     PA_WIDTH = PS_WIDTH;
-    PA_Y = PS_Y + 3*PS_HEIGHT/2;
+    PA_Y = (WIN_HEIGHT *4/5); //PS_Y + 3*PS_HEIGHT/2;
     PA_X = PS_X;
 
     
@@ -61,18 +61,18 @@ void Interface::resize_win(){
     _menu_x = WIN_WIDTH/4;
 	_menu_y =  WIN_HEIGHT/3;
 
-	_title_x = WIN_WIDTH/2;			//(WIN_X*3)-7;
-	_title_y =  (WIN_Y /2) +1;
+	_title_x = S_WIDTH/2;			//(WIN_X*3)-7;
+	_title_y =  S_HEIGHT /4;
 
 	_ps_caption_x=	3;  //caption of pseudo and pass win
-	_ps_caption_y= (PS_HEIGHT/2)- 1;
+	_ps_caption_y= (PS_HEIGHT/2);
 	_pa_caption_y= _ps_caption_y;
 
 	_saying_x =  _title_x;
-	_saying_y = _title_y+1;
+	_saying_y = _title_y*2;
 
 	_error_x = WIN_WIDTH/2;
-	_error_y= PS_Y -1 + (PA_HEIGHT/2);
+	_error_y = S_HEIGHT+((WIN_HEIGHT - S_HEIGHT)/2) ;//PS_Y -1 + (PA_HEIGHT/2);
 	_prof_x = WIN_X+4; //afficher ton profile
 	_prof_p_y = WIN_Y*4;
 	_prof_s_y = (WIN_Y*4)+3;
@@ -120,8 +120,8 @@ int Interface::print_menu(size_t size, std::string *choices, int type){
 bool Interface::get_connexion(char pseudo[20], char pswd[20], int error, int type){
 	bool res = false; //si tu met vrai , il affiche qqchose (letrre apres) . WHYYYY?
 	char cara; int choice = 1,  focus=0;
-	int py = _ps_caption_y, px = _ps_caption_x + PSEUDO_ZONE.size() + 1,
-		my=_pa_caption_y, mx=_ps_caption_x + PSWD_ZONE.size() + 1;
+	int py = _ps_caption_y, px = _ps_caption_x + PSEUDO_ZONE.size()+1,
+		my=_pa_caption_y, mx=_ps_caption_x + PSWD_ZONE.size()+1;
 	int idx_ps = 0, idx_pa=0; 
 
 	keypad(stdscr, true);

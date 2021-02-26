@@ -5,7 +5,6 @@
 #include <ostream>
 #include <cstring>
 #include <vector>
-#include <random>
 
 class Account{
     static const size_t _max_friend_nb = 10;
