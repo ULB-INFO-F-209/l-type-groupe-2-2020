@@ -46,8 +46,8 @@ ___________________SYNTAXE DES REQUÊTES____________________
 		Server: "pseudo1|score&pseudo2|score&pseudo|score...." 
 
 	View profile:
-		Client : "Mi&pseudo" 
-		Server: "Pseudo&Score&pid" 
+		Client : "Mi&pseudo&pid" 
+		Server: "Pseudo&Score" 
 
 	Exit:
 		Client : "Mj&pid" 

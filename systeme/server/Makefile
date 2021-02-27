@@ -18,7 +18,6 @@ server.o: server.cpp server.hpp Constante.hpp
 
 parsing.o: parsing.hpp parsing.cpp
 	g++ $(FLAGS) -c parsing.cpp -o parsing.o
-
 clean:
 	rm *.o
 	rm pipefile*
