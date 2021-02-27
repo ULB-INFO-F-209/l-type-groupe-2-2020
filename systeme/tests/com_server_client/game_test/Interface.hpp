@@ -17,7 +17,6 @@
 #include "Player.hpp"
 #include "MapHandler.hpp"
 #include "GameConstante.hpp"
-#include <iostream>
 
 //class MapHandler;
 //class PlayerShip;
@@ -51,11 +50,20 @@ public:
     rect get_game_area(){return game_area;};
     rect get_screen_area(){return screen_area;};
     void display(GameSetting::settingServer* obj){
-        std::cout << obj->game_over << std::endl;
-        MapHandler* tmp = obj->object_map;
-        Star* tmp2 = tmp->getStars().at(0);
         //drawStar(obj->object_map);
-        
+        drawProjectile(obj->object_map);
+        //drawEnemy(obj->object_map);
+        //drawObstacle(obj->object_map);
+        //drawBonus(obj->object_map);
+        if(obj->game_over){
+            drawGameOver(obj->object_map,obj->score_j1 + obj->score_j2);
+        }
+        //drawNewLevel(obj->object_map,obj->tick);
+        drawPlayer(obj->object_map,obj->tick,obj->list_player);
+        //drawBoss(obj->object_map);
+        drawUI(obj->object_map,obj->object_playership1,obj->object_playership2,obj->object_player1,obj->object_player2,obj->score_j1,obj->score_j2,obj->tick,obj->two_players);
+
+        refresh_wnd();
     }
 };
 

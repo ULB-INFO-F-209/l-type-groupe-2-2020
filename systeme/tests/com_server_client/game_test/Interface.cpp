@@ -100,7 +100,7 @@ void Interface::drawStar(MapHandler *m) {
     for(auto s : m->getStars()){
         mvwaddch(game_wnd, s->getPos().y, s->getPos().x, '.');
     }
-    refresh_wnd();
+    //refresh_wnd();
 
 }
 

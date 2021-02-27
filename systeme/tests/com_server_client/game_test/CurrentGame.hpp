@@ -56,7 +56,7 @@ class CurrentGame {
 public:
     CurrentGame()=default;
     CurrentGame(bool twoP, int dropR, difficulty diff, bool ff) {twoPlayers=twoP; dropRate=dropR; difficulte=diff; friendlyFire=ff;}
-    CurrentGame(bool twoP, int dropR, difficulty diff, bool ff, bool server) {
+    CurrentGame(bool twoP, int dropR, difficulty diff, bool ff, bool server,Interface * anInterface) {
         twoPlayers=twoP; dropRate=dropR; difficulte=diff; friendlyFire=ff;
         if (server){
             playership1 = new PlayerShip(10, 5, { {10 - 1, 5 }, { 3, 2 } }, '0',100, 0,100,0);
@@ -68,6 +68,9 @@ public:
                 player2 = new Player(1);
                 listPlayer.push_back(player2);
             }
+            map.setBounds(anInterface->get_game_area());
+            game_area = anInterface->get_game_area();
+            screen_area = anInterface->get_screen_area();
             
         }
     }

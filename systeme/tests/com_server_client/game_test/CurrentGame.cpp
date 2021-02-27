@@ -263,13 +263,8 @@ void CurrentGame::run_test(Interface * anInterface,GameSetting::settingServer* s
     //Interface anInterface;
     //anInterface->init();
     map.playerInit(playership1,playership2);
-    map.setBounds(anInterface->get_game_area());
     //anInterface->initialDraw();
-    game_area = anInterface->get_game_area();
-    screen_area = anInterface->get_screen_area();
-
     
-
         // get input
         in_char = wgetch(anInterface->get_main_window());
         in_char = tolower(in_char);
@@ -337,7 +332,11 @@ void CurrentGame::run_test(Interface * anInterface,GameSetting::settingServer* s
 
         saveScore(); // sauvegarde le score
 
-        if(exit_requested) get_settings(setting_to_fill);return;
+        if(exit_requested){
+            get_settings(setting_to_fill);
+            //std::cout << setting_to_fill->tick << std::endl;
+            return;
+        } 
         if(game_over){
             
             //anInterface->drawGameOver(&map,finalScore1 + finalScore2);
@@ -346,10 +345,14 @@ void CurrentGame::run_test(Interface * anInterface,GameSetting::settingServer* s
                 in_char = wgetch(anInterface->get_main_window());
                 if(in_char == ' ')break;
             }
-            get_settings(setting_to_fill);return;
+            get_settings(setting_to_fill);
+            return;
         }
         tick++;
-        get_settings(setting_to_fill);return;
+        get_settings(setting_to_fill);
+        anInterface->display(setting_to_fill);
+        //std::cout << setting_to_fill->tick << std::endl;
+        return;
 
     
     //anInterface->close();

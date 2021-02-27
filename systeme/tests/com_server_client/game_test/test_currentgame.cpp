@@ -11,21 +11,17 @@ int main(){
     game_screen.init();
     game_screen.initialDraw();
 
-    CurrentGame game(true, 80, easy, true,true);
+    CurrentGame game(true, 80, easy, true,true,&game_screen);
     bool t =true;
     GameSetting::settingServer obj;
     while(t){
-        //game_screen.close();
-        //break;
-        //std::cout << "Yo" << std::endl;
+    
         game.run_test(&game_screen,&obj);
-        //std::cout << obj.game_over << std::endl;
-        //break;
-        game_screen.display(&obj);
-        //t = val->game_over;
+        //game_screen.display(&obj);
+        t = !obj.game_over;
 
     }
-
+    game_screen.close();
 
     return 0;
 }
