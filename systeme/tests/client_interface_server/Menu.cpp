@@ -3,15 +3,14 @@
 void Menu::start_session(){
 	int menu = HOME;
 	while(menu != -1){ //-1 = quiter programme
-		if(menu==HOME){
+		if(menu==HOME)
 			menu = home();
-		}
-		else if(menu==MAIN){
+		else if(menu==MAIN)
 			menu = main_m();
-		}
-		else if(menu==FRIENDS){
+		else if(menu==FRIENDS)
 			menu = friends();
-		}
+		else if(menu==SETTINGS)
+			menu = lobby();
 	}
 	//_client.exit();
 	std::cout << "EXIT !"<<std::endl;
@@ -64,14 +63,14 @@ int  Menu::friends(){ //decouper en fonction
 }
 
 int  Menu::main_m(){
-	int res; char buffer[100];
+	int res; char buffer[Constante::CHAR_SIZE];
 	std::vector<Profile> profile_list;
 	Profile profile;
 	int choice = window.print_menu(SIZE_MAIN_MENU, main_menu, MAIN);
 	switch(choice){
 		case 0: //new game
 			//later
-			res = MAIN; //crée jeu 
+			res = SETTINGS; //crée jeu 
 			break;
 		case 1: //Friends
 			res = FRIENDS;
@@ -97,6 +96,27 @@ int  Menu::main_m(){
 	}
 
 	return res;
+}
+
+int Menu::lobby(){
+	int res = SETTINGS; //return to lobby 
+	int choice = window.print_menu(SIZE_SETTINGS, settings_menu, LOBBY);
+	char other_pseudo[20];
+	switch(choice){
+		case 0: //nb_of player
+			window.get_players(other_pseudo,NO_ERROR);
+			break;
+		case 1: //DROP_RATE
+			break; 
+		case 2: //Ally_SHOT
+			break;
+		case 3:  //live's number
+			break;
+		default: // - 1 ==> quit 
+			res = MAIN;
+			break;
+	}
+	return res; 
 }
 
 //home utilities
@@ -132,7 +152,7 @@ int Menu::connexion(bool sign_in){
 
 //Friends utilities
 void Menu::afficher_friends(){
-	char buffer[100];
+	char buffer[Constante::CHAR_SIZE];
 	std::vector<Profile> vect;
 	_client.getFriendList(buffer);
 	profile_list_from_str(buffer, &vect); //parsing
@@ -141,7 +161,7 @@ void Menu::afficher_friends(){
 }
 
 void Menu::request_management(){
-	int ret=true; char buffer[100]; 
+	int ret=true; char buffer[Constante::CHAR_SIZE]; 
 	int answer[2] = {0,0};
 	while(ret){
 		_client.getFriendRequest(buffer);
@@ -154,12 +174,11 @@ void Menu::request_management(){
 			_client.addFriend(vect[idx].pseudo);
 		else if (ret)
 			_client.delFriendRequest(vect[idx].pseudo);	
-		sleep(3);
 	}
 }
 
 void Menu::add_del_friends(bool add){
-	char  buffer[20];
+	char  buffer[Constante::CHAR_SIZE];
 	int success=1, error = NO_ERROR; 
 	bool quit = false;
 	while(success and not quit){ 

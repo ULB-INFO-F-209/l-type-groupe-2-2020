@@ -260,12 +260,13 @@ bool Interface::print_profile(std::vector<Profile> *vect, int type, int *answer)
 		MIN = 0,  MAX = vect->size() -1,
 		focus = 0; int nb_elem = 10, //on peut afficher que 10
 		idx_min = 0, idx_max;
-	bool TEST = MAX < nb_elem;
+	
+	bool TEST = vect->size() <= static_cast<size_t>(nb_elem);
 
 	if(TEST)
 		idx_max = MAX; //no scroll
 	else
-		idx_max = idx_min + nb_elem;
+		idx_max = idx_min + nb_elem -1;
 
 	while(choice){
 		print_users(vect, focus, idx_min, idx_max,type);
@@ -273,7 +274,7 @@ bool Interface::print_profile(std::vector<Profile> *vect, int type, int *answer)
 		switch(choice){
 			case KEY_UP:
 				if(focus > MIN){
-					if(focus == idx_min and TEST){
+					if(focus == idx_min and not TEST){
 						idx_min --;
 						idx_max--;
 					}
@@ -282,7 +283,7 @@ bool Interface::print_profile(std::vector<Profile> *vect, int type, int *answer)
 				break;
 			case KEY_DOWN:
 				if(focus < MAX){
-					if(focus == idx_max-1 and not TEST){
+					if(focus == idx_max and not TEST){
 						idx_min++;
 						idx_max++;
 					}
@@ -369,6 +370,65 @@ int Interface::get_pseudo(char *res, int error,int type){
 	return ret;
 }
 
+int Interface::get_players(char*pseudo, int error){
+	int res = -1, choice = 1, focus = 0;
+	const int nb_elem = 3;
+	set_screen(&LOBBY_TITLE, nullptr, &LOBBY_SAYING, nullptr);
+	std::string options[nb_elem] = {"1", "2", "quit"};
+	int x = WIN_WIDTH/2, y = (WIN_HEIGHT/2) - (nb_elem+1)/2;
+
+	int x_courant, y_courant;
+	while(choice){
+		y_courant = y;
+		for(int i = 0; i < nb_elem; ++i){ //print options
+			x_courant = x - (options[i].size()/2);
+			if(i  == focus){
+				wattron(_main_win, A_STANDOUT);
+				print_cara(_main_win,options[i].c_str(), x_courant, y_courant);
+				wattroff(_main_win, A_STANDOUT);
+			}
+			else
+				print_cara(_main_win,options[i].c_str(), x_courant, y_courant);
+
+			y_courant +=3;
+		}
+		//print_error(9);
+		choice = getch();
+		switch(choice){
+			case KEY_UP:
+				if(focus > 0){focus--;} //tu peux monter plus haut que le ciel
+				break;
+			case KEY_DOWN:
+				if(focus < nb_elem-1)
+					focus++; //tu peux pas descendre plus bas que terre
+				break;
+			case KEY_LEFT:
+				choice = 0; //quit menu
+				res = -1;
+				break;
+			case 10:
+				if(focus==1){
+					char poubelle[20];
+					bool quit = get_connexion(pseudo, poubelle, error,LOBBY);
+					if(not quit){
+						res = 2; //2 player
+						choice = 0; 
+					}
+					else
+						set_screen(&LOBBY_TITLE, nullptr, &LOBBY_SAYING, nullptr);
+				}
+				break;
+			default: //any other
+				break;
+		}
+	}
+
+	return res;
+	
+}
+
+
+
 //PRIVATE METHODES 
 void Interface::set_screen(std::string *title,std::string *saying1, std::string *saying2, std::string *saying3){
 	clear(); wclear(_main_win);
@@ -412,7 +472,7 @@ void Interface::init_connexion(int choice){
 		case S_UP:
 			set_screen(&SIGN_UP, nullptr,&SIGN_UP_SAYING,nullptr);
 			break;
-		case GAME:
+		case LOBBY:
 			set_screen(&CHECK_USER, nullptr,&CHECK_USER_SAYING,&CHECK_USER_SAYING2);
 			break;
 		default:
@@ -434,6 +494,8 @@ void Interface::update_menu(size_t size,  std::string *choices, int highlight, i
 		set_screen(&MAIN_TITLE, nullptr, &MAIN_SAYING, &MAIN_SAYING2);
 	else if(type==FRIENDS)
 		set_screen(&FRIENDS_TITLE, nullptr, &FRIENDS_SAYING, nullptr);
+	else if(type==LOBBY)
+		set_screen(&LOBBY_TITLE, nullptr, &LOBBY_SAYING, nullptr);
 
 	int x = WIN_WIDTH/2, y= (WIN_HEIGHT/2) - (size+1)/2;
 	start_color(); int x_courant;
@@ -573,6 +635,7 @@ bool Interface::verify_cara(char *c){
 
 	return isNum || isMaj || isMin || isSpecial;
 }
+
 
 Interface::~Interface(){
 		getch();

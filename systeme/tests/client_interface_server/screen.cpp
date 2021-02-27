@@ -5,7 +5,7 @@ namespace Screen{
 	std::string HOME_TITLE = "H O M E";
 	std::string MAIN_TITLE = "M A I N  M E N U";
 	std::string FRIENDS_TITLE = "F R I E N D S";
-	std::string GAME_TITLE = "G A M E";
+	std::string LOBBY_TITLE = "L O B B Y";
 
 	//OTHER MENU TITLE
 	std::string  SIGN_IN = "S I G N  I N";
@@ -25,7 +25,7 @@ namespace Screen{
 	std::string MAIN_SAYING2 = "has clearly never ...trouve la suite";
 	std::string Y_FRIENDS_SAYING = "Friends are always with you whether";
 	std::string Y_FRIENDS_SAYING2 = "they are imaginary or virtual !";
-	std::string GAME_SAYING = "Win the game before is played !";
+	std::string LOBBY_SAYING = "Win the game before is played !";
 	std::string SIGN_IN_SAYING = "Staying home saves lives.";
 	std::string SIGN_IN_SAYING2 = "Play this game save yours.";
 	std::string SIGN_UP_SAYING = "You will nerver fail until you stop trying !";

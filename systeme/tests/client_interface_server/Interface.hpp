@@ -46,6 +46,7 @@ public:
 	bool print_profile(std::vector<Parsing::Profile> *vect, int type,int answer[2] = nullptr); //n oublie pas le titre
 	int print_profile(Parsing::Profile *prof, int type);
 	int get_pseudo(char *res, int error, int type);
+	int get_players(char*pseudo, int error);
 
 	//destructor
 	~Interface();

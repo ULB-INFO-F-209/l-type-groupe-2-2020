@@ -8,7 +8,7 @@ namespace Screen{
 	extern std::string HOME_TITLE;
 	extern std::string MAIN_TITLE;
 	extern std::string FRIENDS_TITLE;
-	extern std::string GAME_TITLE;
+	extern std::string LOBBY_TITLE;
 
 	//OTHER MENU TITLE
 	extern std::string SIGN_IN;
@@ -28,7 +28,7 @@ namespace Screen{
 	extern std::string MAIN_SAYING2;
 	extern std::string Y_FRIENDS_SAYING;
 	extern std::string Y_FRIENDS_SAYING2;
-	extern std::string GAME_SAYING;
+	extern std::string LOBBY_SAYING;
 	extern std::string SIGN_IN_SAYING;
 	extern std::string SIGN_IN_SAYING2;
 	extern std::string SIGN_UP_SAYING;
@@ -68,7 +68,7 @@ namespace Screen{
 	const int HOME = 0;
 	const int MAIN = 1;
 	const int FRIENDS = 2;
-	const int GAME = 3;
+	const int LOBBY  = 3;
 	const int S_IN = 4;
 	const int S_UP = 5;
 	const int ADD = 6;
