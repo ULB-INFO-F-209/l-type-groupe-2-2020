@@ -87,7 +87,7 @@ void Interface::display(MapHandler *m,int tick, std::vector<Player *> *listPlaye
     // l'affichage à chaque tour de boucle (server->game->server->client)
     drawStar(m);
     drawProjectile(m);
-    drawEnemy(m);
+    drawEnemy(m, tick, listPlayer);
     drawObstacle(m);
     drawBonus(m);
     drawPlayer(m,tick,listPlayer);
@@ -112,7 +112,7 @@ void Interface::drawObstacle(MapHandler *m) {
     }
 }
 
-void Interface::drawEnemy(MapHandler *m) {
+void Interface::drawEnemy(MapHandler *m, int tick, std::vector<Player *> *listPlayer) {
     for(auto e :m->getEnemy()){
         wattron(game_wnd, COLOR_PAIR(4));
         mvwaddch(game_wnd, e->getPos().y, e->getPos().x, e->getChar());
@@ -123,6 +123,23 @@ void Interface::drawEnemy(MapHandler *m) {
         mvwaddch(game_wnd, e->getPos().y, e->getPos().x - 1, ACS_LARROW);
         mvwaddch(game_wnd, e->getPos().y, e->getPos().x + 1, ACS_RARROW);
         wattroff(game_wnd, A_ALTCHARSET);
+    }
+
+    for( PlayerShip* p : m->getListPlayer()) {
+        if(listPlayer->at(p->getPlayerNb())->getnLives() > 0){
+            if(tick % 20 < 10 && p->getHp()<=0 && tick<p->getKillTime()+200) {
+                for(EnemyShip* e :m->getEnemy()){
+                    wattron(game_wnd, COLOR_PAIR(4));
+                    mvwaddch(game_wnd, e->getPos().y, e->getPos().x, ' ');
+                    wattroff(game_wnd, COLOR_PAIR(4));
+
+                    wattron(game_wnd, A_ALTCHARSET);
+                    mvwaddch(game_wnd, e->getPos().y, e->getPos().x - 1, ' ');
+                    mvwaddch(game_wnd, e->getPos().y, e->getPos().x + 1, ' ');
+                    wattroff(game_wnd, A_ALTCHARSET);
+                }
+            }
+        }
     }
 
 }
@@ -168,7 +185,7 @@ void Interface::drawPlayer(MapHandler *m, int tick, std::vector<Player *> *listP
 
 
         if(listPlayer->at(p->getPlayerNb())->getnLives() > 0){
-
+            // show player looses a life
             if(tick % 100 < 50 && p->getHp()<=0 && tick<p->getKillTime()+300) {
                 wattron(game_wnd, COLOR_PAIR(player_color));
                 mvwaddch(game_wnd, p->getPos().y, p->getPos().x, ' ');
@@ -177,8 +194,7 @@ void Interface::drawPlayer(MapHandler *m, int tick, std::vector<Player *> *listP
                 wattron(game_wnd, A_ALTCHARSET);
                 mvwaddch(game_wnd, p->getPos().y, p->getPos().x - 1, ' ');
                 mvwaddch(game_wnd, p->getPos().y, p->getPos().x + 1, ' ');
-                wattroff(game_wnd, COLOR_PAIR(player_color));
-
+                wattroff(game_wnd, A_ALTCHARSET);
             }
 
             // draw engines flames

@@ -148,12 +148,12 @@ void CurrentGame::run() {
     tick = 0;
 
     playership1 = new PlayerShip(10, 5, { {10 - 1, 5 }, { 3, 2 } }, '0',100, 0,100,0);
-    player1 = new Player(1);
+    player1 = new Player(3);
     listPlayer.push_back(player1);
 
     if(twoPlayers){
         playership2 = new PlayerShip(50, 5, { { 50 - 1, 5 }, { 3, 2 } }, '1',100, 1,100,0);
-        player2 = new Player(1);
+        player2 = new Player(3);
         listPlayer.push_back(player2);
     }
       
