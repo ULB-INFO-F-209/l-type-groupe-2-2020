@@ -30,6 +30,7 @@ namespace GameSetting{
 
     struct settingClient;
     struct settingServer;
+    
 }
 
 struct GameSetting::settingServer{
@@ -49,4 +50,6 @@ struct GameSetting::settingServer{
 struct GameSetting::settingClient{
     MapHandler* object_map; 
 };
+
+
 #endif

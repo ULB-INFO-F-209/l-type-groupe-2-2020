@@ -20,5 +20,8 @@ MapHandler.o: MapHandler.cpp Rect.hpp InternGameObject.hpp Player.hpp
 Player.o: Player.cpp Player.hpp
 	g++ -g -c -o Player.o Player.cpp $(CFLAGS)
 
+run:
+	make && ./run1
+
 clean:
 	rm *.o

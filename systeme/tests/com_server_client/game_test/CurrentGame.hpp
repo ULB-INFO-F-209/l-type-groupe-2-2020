@@ -60,7 +60,7 @@ public:
         twoPlayers=twoP; dropRate=dropR; difficulte=diff; friendlyFire=ff;
         if (server){
             playership1 = new PlayerShip(10, 5, { {10 - 1, 5 }, { 3, 2 } }, '0',100, 0,100,0);
-            player1 = new Player(1);
+            player1 = new Player(3);
             listPlayer.push_back(player1);
 
             if(twoPlayers){
@@ -76,14 +76,14 @@ public:
     }
 
     int getInput(){return in_char;}
-
+    void delPlayer();
     void run();
     void get_settings(GameSetting::settingServer* obj){
         obj->object_map = &map;
         obj->object_playership1 = playership1; 
         obj->object_playership2 = playership2;
-        obj->score_j1 =  finalScore1;
-        obj->score_j2 =  finalScore2;
+        obj->score_j1 =  playership1->getScore();
+        obj->score_j2 =  twoPlayers ? playership2->getScore() :0;
         obj->two_players = twoPlayers; 
         obj->object_player1 =  player1;
         obj->object_player2 = player2;

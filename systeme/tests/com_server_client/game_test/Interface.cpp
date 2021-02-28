@@ -206,7 +206,7 @@ void Interface::drawUI(MapHandler *m,PlayerShip* playership1,PlayerShip* players
     wmove(main_wnd, 20, 1);
     drawEnergyBar(playership1->getHp());
     //score
-    mvwprintw(main_wnd, 22, 1, "  score: %i", score1);
+    mvwprintw(main_wnd, 22, 1, "  score: %i", playership1->getScore());
     // draw static string to hold percentage
     mvwprintw(main_wnd, 21, 1, "- P1 HP                -");
     mvwprintw(main_wnd, 21, 15, "lives: %i",player1->getnLives());

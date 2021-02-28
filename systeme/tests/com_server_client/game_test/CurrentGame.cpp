@@ -128,17 +128,22 @@ void CurrentGame::saveScore(){      //final score save
     for( PlayerShip* p : map.getListPlayer()){
         if(p->getPlayerNb() == 0)finalScore1 = p->getScore();
         if(p->getPlayerNb() == 1)finalScore2 = p->getScore();
-        if(listPlayer.at(p->getPlayerNb())->getnLives() < 1){
-            if (map.getListPlayer().size() == 2) {
-                map.erase(p->getPlayerNb(), MapObject::playership);
-            }
-            else {
-                map.erase(0, MapObject::playership);
-            }
-        }
+        
     }
 }
 
+void CurrentGame::delPlayer(){  // supprime playerShip si plus de vie
+    for( PlayerShip* p : map.getListPlayer()){
+        if(listPlayer.at(p->getPlayerNb())->getnLives() < 1){
+                if (map.getListPlayer().size() == 2) {
+                    map.erase(p->getPlayerNb(), MapObject::playership);
+                }
+                else {
+                    map.erase(0, MapObject::playership);
+                }
+            }
+    }
+}
 
 void CurrentGame::run() {
 
@@ -256,15 +261,8 @@ void CurrentGame::run() {
 
 void CurrentGame::run_test(Interface * anInterface,GameSetting::settingServer* setting_to_fill){
 
-    //tick = 0;
-
-    
-      
-    //Interface anInterface;
-    //anInterface->init();
+   
     map.playerInit(playership1,playership2);
-    //anInterface->initialDraw();
-    
         // get input
         in_char = wgetch(anInterface->get_main_window());
         in_char = tolower(in_char);
@@ -285,7 +283,7 @@ void CurrentGame::run_test(Interface * anInterface,GameSetting::settingServer* s
 
 
         // update object field
-        if(tick % 7 == 0)
+        if(tick % 3 == 0)
             map.update(MapObject::star, tick);
         if(tick % 7 == 0)
             map.update(MapObject::projectile, tick);
@@ -298,7 +296,7 @@ void CurrentGame::run_test(Interface * anInterface,GameSetting::settingServer* s
         if(tick %50  == 0) {
             map.update(MapObject::bonus, tick);
         }
-        if(map.getCurrentLevel()==6 && tick%10==0 && !map.getChangingLevel()){
+        if(map.getCurrentLevel()==2 && tick%10==0 && !map.getChangingLevel()){
             map.update(MapObject::boss,tick);
         }
 
@@ -324,13 +322,15 @@ void CurrentGame::run_test(Interface * anInterface,GameSetting::settingServer* s
 
         heal(); // remet hp du player à 100 si encore vies
 
-        //werase(anInterface->get_game_window());
-        //anInterface->display(&map,tick,&listPlayer,playership1,playership2,player1,player2,finalScore1,finalScore2, twoPlayers);
-
         change_level();
         //anInterface->refresh_wnd();
 
-        saveScore(); // sauvegarde le score
+        if (twoPlayers){
+            
+            finalScore2 = playership2->getScore();
+        }
+        finalScore1 = playership1->getScore();
+        //saveScore(); // sauvegarde le score
 
         if(exit_requested){
             get_settings(setting_to_fill);
