@@ -348,9 +348,10 @@ void CurrentGame::run_test(Interface * anInterface,GameSetting::settingServer* s
             get_settings(setting_to_fill);
             return;
         }
-        tick++;
         get_settings(setting_to_fill);
-        anInterface->display(setting_to_fill);
+        tick++;
+        //werase(anInterface->get_game_window());
+        //anInterface->display(setting_to_fill);
         //std::cout << setting_to_fill->tick << std::endl;
         return;
 
