@@ -69,11 +69,11 @@ ___________________SYNTAXE DES REQUÊTES____________________
 	Cree une partie:
 		Client : "Pp&nb_player&pseudo_hote&other_pseudo&drop_rate&
 		ally_shot&nb_lives&pid"
-		Server : "ID" 
+		Server :  
 
 	Action: TODO
 		Client : "J&Action&ID&pid" 
-		Server : "IMAGE du jeux" 
+		Server : "Variable du jeu" 
 
 
 
