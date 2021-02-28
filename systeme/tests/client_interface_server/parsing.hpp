@@ -37,6 +37,7 @@ struct Parsing::Game_settings
 	float drop_rate;
 	bool ally_shot=false;
 	int nb_lives=5;
+	std::string difficulty = "easy";
 
 };
 

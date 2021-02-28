@@ -2,7 +2,7 @@
     semaine 1 : 
         géré comunication client-serveur sans raccorder la game
     semaine 2:
-        raccorder la game et le menu 
+        raccorder lle menu - interface-client-serveur
         relax : il y a une autre semaine en plus si no time
         (c'était ecrit il y a une semaine ...plus de relax)
     Note: 

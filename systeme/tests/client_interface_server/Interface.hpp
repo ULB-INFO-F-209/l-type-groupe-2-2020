@@ -46,11 +46,10 @@ public:
 	bool print_profile(std::vector<Parsing::Profile> *vect, int type,int answer[2] = nullptr); //n oublie pas le titre
 	int print_profile(Parsing::Profile *prof, int type);
 	int get_pseudo(char *res, int error, int type);
-	int get_players(char*pseudo, int error);
+	int range(int n, bool pourence=false);
 
 	//destructor
 	~Interface();
-
 private:
 	void set_screen(std::string *title,std::string *saying1, std::string *saying2, std::string *saying3);
 	void update_menu(size_t size,  std::string *choices, int highlight, int type);

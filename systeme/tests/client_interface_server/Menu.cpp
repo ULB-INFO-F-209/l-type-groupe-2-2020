@@ -100,21 +100,32 @@ int  Menu::main_m(){
 
 int Menu::lobby(){
 	int res = SETTINGS; //return to lobby 
-	int choice = window.print_menu(SIZE_SETTINGS, settings_menu, LOBBY);
-	char other_pseudo[20];
-	switch(choice){
-		case 0: //nb_of player
-			window.get_players(other_pseudo,NO_ERROR);
-			break;
-		case 1: //DROP_RATE
-			break; 
-		case 2: //Ally_SHOT
-			break;
-		case 3:  //live's number
-			break;
-		default: // - 1 ==> quit 
-			res = MAIN;
-			break;
+	char other_pseudo[20], other_pswd[20];
+	Game_settings setting; int ret; bool stop = false;
+	while(not stop){
+		int choice = window.print_menu(SIZE_SETTINGS, settings_menu, LOBBY);
+		switch(choice){
+			case 0: //nb_of player
+				ret = get_players(other_pseudo, other_pswd);
+				if(ret==2)
+					setting.nb_player = ret;
+				break;
+			case 1: //DROP_RATE
+				ret = window.range(100, true);
+				break; 
+			case 2: //Ally_SHOT
+				break;
+			case 3:  //live's number
+				break;
+			case 4:	//play
+				break;
+			case 5: 	//quitter le lobby
+				break;
+			default: // - 1 ==> quit 
+				res = MAIN;
+				stop = true;
+				break;
+		}
 	}
 	return res; 
 }
@@ -210,4 +221,33 @@ void Menu::add_del_friends(bool add){
 		}
 	}
 }
+
+//game utilities
+int Menu::get_players(char*pseudo, char *pswd){
+
+	int nb_player = 1; int choice = 1; int error = NO_ERROR;
+	bool quit=false;
+	std::string options[3] = {"1", "2", "quit"}; bool success = false;
+
+	choice = window.print_menu(3, options, LOBBY);
+	while(choice==1){ //two player
+		while(not success and not quit){
+			quit = window.get_connexion(pseudo, pswd, error,LOBBY);
+			if(not quit){
+				success = _client.signIn(pseudo, pswd); //if user exist!
+				if(not success){
+					error = NO_USER;
+					nb_player = 1;
+				}
+				else{
+					error = NO_ERROR;
+					nb_player = 2;
+				}
+			}
+		}
+		choice = window.print_menu(3, options, LOBBY);
+	}
+	return nb_player;
+}
+
 

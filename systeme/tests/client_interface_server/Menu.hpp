@@ -40,7 +40,7 @@ class Menu{
 	static const size_t SIZE_HOME = 3;
 	static const size_t SIZE_FRIENDS_MENU = 5; 
 	static const size_t SIZE_MAIN_MENU = 5;
-	static const size_t SIZE_SETTINGS = 4;
+	static const size_t SIZE_SETTINGS = 7;
 
 	//choices
 	std::string connexion_menu[SIZE_HOME] = {"Sign in", "Sign up", "Quit"};
@@ -48,8 +48,8 @@ class Menu{
 								   "Remove friend", "Back"};
 	std::string main_menu[ SIZE_MAIN_MENU] = {"New game", "Friends", "Leaderboard",
 								   "Profile", "Log out"};
-	std::string settings_menu[ SIZE_SETTINGS] = {"Number of player", "Drop rate",
-												 "Ally shot", "Number of live"};				   
+	std::string settings_menu[ SIZE_SETTINGS] = {"Number of player", "Drop rate","Ally shot",
+									 "Number of live", "Difficulty", "Play", "Quit lobby"};				   
 	//console
 	Interface window{};
 	
@@ -78,6 +78,7 @@ private:
 	void add_del_friends(bool add=true);
 
 	//Game utilities
+	int get_players(char *pseudo, char*pswd);
 	
 };
 

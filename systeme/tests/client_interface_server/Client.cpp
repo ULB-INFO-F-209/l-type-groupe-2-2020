@@ -29,12 +29,11 @@ void Client::communication(char *buffer){
 	_fd_send_query =  open(_pipe_to_server, O_WRONLY); 
 	write(_fd_send_query, buffer, Constante::CHAR_SIZE); //sending query
 	close(_fd_send_query);
-	std::cout << "requete : " << buffer;
-	int ret = open(_pipe_from_server, O_RDONLY);
-	if (ret != -1){
+	_fd_get_query = open(_pipe_from_server, O_RDONLY);
+	if (_fd_get_query != -1){
 		//char buff[Constante::CHAR_SIZE];
 		while(true){
-			int res = read(ret, buffer, Constante::CHAR_SIZE);
+			int res = read(_fd_get_query , buffer, Constante::CHAR_SIZE);
 			if (res == -1){
                 std::cout << " [ERROR] " <<_pid << "n'a pas reussit a lire"<<std::endl;
             }
@@ -46,7 +45,7 @@ void Client::communication(char *buffer){
 			}
 		}
 	}
-	close(ret);
+	close(_fd_get_query );
 }
 
 //Communication

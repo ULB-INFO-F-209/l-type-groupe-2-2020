@@ -40,7 +40,7 @@ namespace Screen{
 	std::string FRIENDS_SAYING = "If you want the rainbow, you have to endure the rain.";
 	std::string PROFILE_SAYING = "BE PROUD OF YOUR SCORE!";
 	std::string PROFILE2_SAYING = "Would you like to be friend with this user ?";
-	std::string LEADBOARD_SAYING = "Win or larn ! Never lose. ";
+	std::string LEADBOARD_SAYING = "Win or learn ! Never lose. ";
 	std::string CHECK_USER_SAYING = "We are who we are. Not who we say we are.";
 	std::string CHECK_USER_SAYING2 = "So prove that there is a second player !";
 

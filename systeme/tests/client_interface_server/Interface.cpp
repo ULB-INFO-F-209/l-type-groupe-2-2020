@@ -329,7 +329,6 @@ int Interface::get_pseudo(char *res, int error,int type){
 
 	init_pseudo_win();
 	keypad(stdscr, true);
-	
 
 	if(error != NO_ERROR)
 		print_error(error);
@@ -370,61 +369,38 @@ int Interface::get_pseudo(char *res, int error,int type){
 	return ret;
 }
 
-int Interface::get_players(char*pseudo, int error){
-	int res = -1, choice = 1, focus = 0;
-	const int nb_elem = 3;
-	set_screen(&LOBBY_TITLE, nullptr, &LOBBY_SAYING, nullptr);
-	std::string options[nb_elem] = {"1", "2", "quit"};
-	int x = WIN_WIDTH/2, y = (WIN_HEIGHT/2) - (nb_elem+1)/2;
-
-	int x_courant, y_courant;
+int Interface::range(int n, bool pourcent){
+	int focus=1, x = WIN_WIDTH/2, y = WIN_HEIGHT/2;	
+	keypad(stdscr,TRUE); //active clavier
+	int choice = 1;
 	while(choice){
-		y_courant = y;
-		for(int i = 0; i < nb_elem; ++i){ //print options
-			x_courant = x - (options[i].size()/2);
-			if(i  == focus){
-				wattron(_main_win, A_STANDOUT);
-				print_cara(_main_win,options[i].c_str(), x_courant, y_courant);
-				wattroff(_main_win, A_STANDOUT);
-			}
-			else
-				print_cara(_main_win,options[i].c_str(), x_courant, y_courant);
+		set_screen(&LOBBY_TITLE, nullptr, &LOBBY_SAYING, nullptr);
+		std::string s = std::to_string(focus);
+		if(pourcent)
+			s += '%';
+		print_cara(_main_win, s.c_str(), x,y);
 
-			y_courant +=3;
-		}
-		//print_error(9);
+
 		choice = getch();
 		switch(choice){
 			case KEY_UP:
 				if(focus > 0){focus--;} //tu peux monter plus haut que le ciel
 				break;
 			case KEY_DOWN:
-				if(focus < nb_elem-1)
+				if(focus < n)
 					focus++; //tu peux pas descendre plus bas que terre
 				break;
 			case KEY_LEFT:
 				choice = 0; //quit menu
-				res = -1;
 				break;
 			case 10:
-				if(focus==1){
-					char poubelle[20];
-					bool quit = get_connexion(pseudo, poubelle, error,LOBBY);
-					if(not quit){
-						res = 2; //2 player
-						choice = 0; 
-					}
-					else
-						set_screen(&LOBBY_TITLE, nullptr, &LOBBY_SAYING, nullptr);
-				}
+				choice = 0;
 				break;
 			default: //any other
 				break;
 		}
 	}
-
-	return res;
-	
+	return focus +1;
 }
 
 
