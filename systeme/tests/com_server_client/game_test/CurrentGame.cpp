@@ -341,10 +341,10 @@ void CurrentGame::run_test(Interface * anInterface,GameSetting::settingServer* s
             
             //anInterface->drawGameOver(&map,finalScore1 + finalScore2);
             //anInterface->refresh_wnd();
-            while(true){
+            /*while(true){
                 in_char = wgetch(anInterface->get_main_window());
                 if(in_char == ' ')break;
-            }
+            }*/
             get_settings(setting_to_fill);
             return;
         }

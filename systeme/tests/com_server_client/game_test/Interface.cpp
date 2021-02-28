@@ -148,8 +148,6 @@ void Interface::drawProjectile(MapHandler *m) {
 
 }
 
-
-
 void Interface::drawPlayer(MapHandler *m, int tick, std::vector<Player *> *listPlayer) {
     for( PlayerShip* p : m->getListPlayer()) {
         // draw player body
@@ -347,10 +345,16 @@ void Interface::drawBoss(MapHandler *map) {
   }
 
 void Interface::drawGameOver(MapHandler* m, int score1){
+    //werase(game_wnd);
     mvwprintw(game_wnd,8, 35,"GAME OVER");
     mvwprintw(game_wnd,9, 35,"SCORE : %i", score1);
     mvwprintw(game_wnd,12, 30,"press SPACE to quit");
     refresh_wnd();
+    while(true){
+        char in_char = wgetch(main_wnd);
+        if(in_char == ' ')break;
+    }
+    
     
     
 }

@@ -22,9 +22,9 @@ int main(){
         
 
     }
-    std::cout << obj.score_j1 << std::endl;
+    //std::cout << obj.score_j1 << std::endl;
     game_screen.drawGameOver(obj.object_map,obj.score_j1 + obj.score_j2);
-    game_screen.refresh_wnd();
+    //game_screen.refresh_wnd();
     game_screen.close();
     std::cout << t <<std::endl;
 

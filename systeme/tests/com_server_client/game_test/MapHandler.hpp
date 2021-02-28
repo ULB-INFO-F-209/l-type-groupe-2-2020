@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <vector>
 #include <cstdint>
+#include <iostream>
 #include <list>
 #include "Player.hpp"
 #include "InternGameObject.hpp"
