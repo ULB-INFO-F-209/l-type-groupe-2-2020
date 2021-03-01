@@ -12,6 +12,7 @@
 #include "Rect.hpp"
 #include "Player.hpp"
 #include "MapHandler.hpp"
+#include "settingServer.hpp"
 
 class Interface  {
     WINDOW* main_wnd;
@@ -23,6 +24,8 @@ public:
     int init();
     void initialDraw();
     void display(MapHandler *m,int tick, std::vector<Player *> *listPlayer,PlayerShip* playership1,PlayerShip* playership2, Player* player1,Player* player2,int score1, int score2,bool twoPlayers);
+    void display(settingServer* settings);
+    
     void drawStar(MapHandler* m);
     void drawObstacle(MapHandler* m);
     void drawEnemy(MapHandler* m, int tick, std::vector<Player*>* listPlayer);

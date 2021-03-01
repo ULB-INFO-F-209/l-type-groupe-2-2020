@@ -12,6 +12,7 @@
 #include "MapHandler.hpp"
 #include "Interface.hpp"
 #include "InternGameObject.hpp"
+#include "settingServer.hpp"
 
 class CurrentGame {
 
@@ -48,7 +49,25 @@ class CurrentGame {
 public:
     CurrentGame()=default;
     CurrentGame(bool twoP, int dropR, difficulty d, bool ff):twoPlayers(twoP),dropRate(dropR),map(dropR,d){ dif=d; friendlyFire=ff;}
+    CurrentGame(bool twoP, int dropR, difficulty d, bool ff, Interface* anInterface):twoPlayers(twoP),dropRate(dropR),map(dropR,d){ dif=d; friendlyFire=ff;
+        playership1 = new PlayerShip(10, 5, { {10 - 1, 5 }, { 3, 2 } }, '0',100, 0,100,0);
+        player1 = new Player(1);
+        listPlayer.push_back(player1);
+
+        if(twoPlayers){
+            playership2 = new PlayerShip(50, 5, { { 50 - 1, 5 }, { 3, 2 } }, '1',100, 1,100,0);
+            player2 = new Player(1);
+            listPlayer.push_back(player2);
+        }
+        
+        map.playerInit(playership1,playership2);
+        map.setBounds(anInterface->get_game_area());
+        game_area = anInterface->get_game_area();
+        screen_area = anInterface->get_screen_area();
+    }
+    void run_test(Interface * anInterface, settingServer* setting_to_fill);
     int getInput() const{return in_char;}
+    void getSettings(settingServer* settings);
 
     void run();
 };

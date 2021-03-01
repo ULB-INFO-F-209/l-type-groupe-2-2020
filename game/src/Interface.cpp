@@ -85,6 +85,7 @@ Interface::Interface(): main_wnd(),game_wnd(), game_area(), screen_area() {
 void Interface::display(MapHandler *m,int tick, std::vector<Player *> *listPlayer,PlayerShip* playership1,PlayerShip* playership2, Player* player1,Player* player2,int score1, int score2, bool twoPlayers) {
 
     // l'affichage à chaque tour de boucle (server->game->server->client)
+    werase(game_wnd); // attention ?
     drawStar(m);
     drawProjectile(m);
     drawEnemy(m, tick, listPlayer);
@@ -92,9 +93,29 @@ void Interface::display(MapHandler *m,int tick, std::vector<Player *> *listPlaye
     drawBonus(m);
     drawPlayer(m,tick,listPlayer);
     drawBoss(m);
+    drawNewLevel(m,tick);
     drawUI(m,playership1,playership2,player1,player2,score1,score2,tick, twoPlayers);
-
+    refresh_wnd();
 }
+
+void Interface::display(settingServer* settings){
+    werase(game_wnd); // attention ?
+    drawStar(settings->object_map);
+    drawProjectile(settings->object_map);
+    drawEnemy(settings->object_map, settings->tick, settings->list_player);
+    drawObstacle(settings->object_map);
+    drawBonus(settings->object_map);
+    drawPlayer(settings->object_map,settings->tick,settings->list_player);
+    drawBoss(settings->object_map);
+    drawNewLevel(settings->object_map,settings->tick);
+    drawUI(settings->object_map,settings->object_playership1,settings->object_playership2,settings->object_player1,settings->object_player2,settings->score_j1,settings->score_j2,settings->tick, settings->two_players);
+    if (settings->game_over)
+        drawGameOver(settings->object_map, (settings->score_j1+settings->score_j2));
+    refresh_wnd();
+}
+
+
+
 
 void Interface::drawStar(MapHandler *m) {
     for(auto s : m->getStars()){
@@ -343,7 +364,9 @@ void Interface::drawBonus(MapHandler *m) {
 }
 
 void Interface::drawNewLevel(MapHandler *map, int tick) {
-    mvwprintw(game_wnd, 8, 35, "level %i", map->getCurrentLevel());
+    if(map->getLevelTick() != 0 && tick <= map->getLevelTick() + 600 && tick > map->getLevelTick()+100){
+        mvwprintw(game_wnd, 8, 35, "level %i", map->getCurrentLevel());
+    }
 }
 
 void Interface::drawBoss(MapHandler *map) {
@@ -363,7 +386,11 @@ void Interface::drawBoss(MapHandler *map) {
 void Interface::drawGameOver(MapHandler* m, int score1){
     mvwprintw(game_wnd,8, 35,"GAME OVER");
     mvwprintw(game_wnd,9, 35,"SCORE : %i", score1);
-    mvwprintw(game_wnd,12, 30,"press P to quit");
-    
-    
+    mvwprintw(game_wnd,12, 32,"press P to quit");
+    refresh_wnd();
+    while(true){
+        char in_char = wgetch(get_main_window());
+        if(in_char == 'p')break;
+    } 
+
 }
