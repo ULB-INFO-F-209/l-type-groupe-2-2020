@@ -63,16 +63,16 @@ ___________________SYNTAXE DES REQUÊTES____________________
 ---------------
 
 	CheckID:
-		Client : "Pf&pseudo&pswd&pid"
+		Client : "Pf&pseudo&pswd&pid" ==> JE PENSE PAS QUE JE VAIS FAIRE CA DSL
 		server : "0" ou "1" => User doesn't exist || User exist
 
 	Cree une partie:
-		Client : "Pp&nb_player&pseudo_hote&other_pseudo&drop_rate&
+		Client : "P&nb_player&pseudo_hote&other_pseudo&drop_rate&
 		ally_shot&nb_lives&pid"
 		Server :  
 
 	Action: TODO
-		Client : "J&Action&ID&pid" 
+		Client : "Action" 
 		Server : "Variable du jeu" 
 
 
