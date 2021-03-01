@@ -11,9 +11,11 @@
 #include <list>
 #include "Player.hpp"
 #include "InternGameObject.hpp"
+//#include "CurrentGame.hpp"
 #include "Rect.hpp"
 
 enum bonusType{damageUp, tripleShot, lifeSteal, minigun,noBonus};
+enum difficulty{easy, medium, hard};
 
 class MapObject{
 public:
@@ -160,9 +162,10 @@ class MapHandler{
     std::vector<EnemyShip*> enemy_ships_set;
     std::vector<Bonus*> bonuses_set;
     rect field_bounds;
+    difficulty dif;
 public:
     MapHandler()=default;
-    MapHandler(float p){probaBonus=p;};
+    MapHandler(int p, difficulty d);
     int getCurrentLevel() const{return currentLevel;}
     void setCurrentLevel(int l){currentLevel = l;}
     int getLevelTick() const{return levelTick;}

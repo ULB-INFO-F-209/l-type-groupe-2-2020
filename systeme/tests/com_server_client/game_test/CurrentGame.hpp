@@ -9,8 +9,8 @@
 #include <ncurses.h>
 
 #include <string>
-#include <stdlib.h>
-//#include <time.h>
+//#include <stdlib.h>
+#include <cstdlib>
 #include "MapHandler.hpp"
 #include "Interface.hpp"
 #include "InternGameObject.hpp"
@@ -18,7 +18,7 @@
 #include <iostream>
 //class Interface;
 
-enum difficulty{easy, medium, hard};
+
 
 class CurrentGame {
 
@@ -27,9 +27,9 @@ class CurrentGame {
     bool twoPlayers;
     bool friendlyFire;
     int dropRate;
-    difficulty difficulte;
+    difficulty diff{};
 
-    MapHandler map{80};
+    MapHandler map;
 
     int tick=0;
     int finalScore1{};
@@ -56,9 +56,9 @@ class CurrentGame {
 
 public:
     CurrentGame()=default;
-    CurrentGame(bool twoP, int dropR, difficulty diff, bool ff) {twoPlayers=twoP; dropRate=dropR; difficulte=diff; friendlyFire=ff;}
-    CurrentGame(bool twoP, int dropR, difficulty diff, bool ff, bool server,Interface * anInterface) {
-        twoPlayers=twoP; dropRate=dropR; difficulte=diff; friendlyFire=ff;
+    CurrentGame(bool twoP, int dropR, difficulty d, bool ff):map(dropR,d),twoPlayers(twoP),dropRate(dropR),diff(diff),friendlyFire(ff) {}
+    CurrentGame(bool twoP, int dropR, difficulty diff, bool ff, bool server,Interface * anInterface):map(dropR,diff),twoPlayers(twoP),dropRate(dropR),diff(diff),friendlyFire(ff) {
+        
         if (server){
             playership1 = new PlayerShip(10, 5, { {10 - 1, 5 }, { 3, 2 } }, '0',100, 0,100,0);
             player1 = new Player(1);

@@ -21,6 +21,9 @@ Player.o: Player.cpp Player.hpp
 	g++ -g -c -o Player.o Player.cpp $(CFLAGS)
 
 run:
+	make main && ./main
+
+run1:
 	make && ./run1
 
 clean:

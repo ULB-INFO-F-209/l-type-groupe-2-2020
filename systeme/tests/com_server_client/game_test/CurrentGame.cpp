@@ -150,12 +150,12 @@ void CurrentGame::run() {
     tick = 0;
 
     playership1 = new PlayerShip(10, 5, { {10 - 1, 5 }, { 3, 2 } }, '0',100, 0,100,0);
-    player1 = new Player(1);
+    player1 = new Player(3);
     listPlayer.push_back(player1);
 
     if(twoPlayers){
         playership2 = new PlayerShip(50, 5, { { 50 - 1, 5 }, { 3, 2 } }, '1',100, 1,100,0);
-        player2 = new Player(1);
+        player2 = new Player(3);
         listPlayer.push_back(player2);
     }
       
@@ -248,7 +248,7 @@ void CurrentGame::run() {
             anInterface.refresh_wnd();
             while(true){
                 in_char = wgetch(anInterface.get_main_window());
-                if(in_char == ' ')break;
+                if(in_char == 'p')break;
             }
             break;
         }
@@ -296,7 +296,7 @@ void CurrentGame::run_test(Interface * anInterface,GameSetting::settingServer* s
         if(tick %50  == 0) {
             map.update(MapObject::bonus, tick);
         }
-        if(map.getCurrentLevel()==2 && tick%10==0 && !map.getChangingLevel()){
+        if(map.getCurrentLevel()==3 && tick%10==0 && !map.getChangingLevel()){
             map.update(MapObject::boss,tick);
         }
 
