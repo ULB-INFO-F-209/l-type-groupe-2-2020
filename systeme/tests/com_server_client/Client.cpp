@@ -136,7 +136,10 @@ void Client::get_profile(char *res){
 void Client::exit(){
 	char buffer[Constante::CHAR_SIZE];
 	sprintf(buffer, "Mj&%d",_pid);
-	communication(buffer); //server return exit code 0
+	_fd_send_query =  open(_pipe_to_server, O_WRONLY); 
+	write(_fd_send_query, buffer, Constante::CHAR_SIZE); //sending query
+	close(_fd_send_query);
+	//communication(buffer); //server return exit code 0
 	//the server should delete all pipe we used!
 	//and destruct my game if I was playing
 }
@@ -165,5 +168,5 @@ int  Client::createGame(char *game_info){
 
 //destructor
 Client::~Client(){
-	//exit(); //kill process
+	exit(); //kill process
 }

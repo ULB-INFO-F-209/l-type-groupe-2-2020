@@ -1,27 +1,27 @@
 #ifndef SERVER_HPP
 #define SERVER_HPP
 
+#include "database/database.hpp" 
+#include "Constante.hpp"
+
+// C++
 #include <thread>
 #include <vector>
-#include "database/database.hpp" //gardons les dossiers
-//#include "database/interface/Client.hpp" //pour la clarté
-//#include "database/interface/Menu.hpp" //aprés on changera
-
 #include <cstring>
 #include <string>
 #include <iostream>
-#include <unistd.h>
 #include <stdexcept>
+#include <mutex>
+#include <csignal>
+#include <cstdio>
 
+// C
+#include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <fcntl.h>
-#include <iostream>
-#include <csignal>
-#include <mutex>
-#include "Constante.hpp"
 
 
 
@@ -37,13 +37,12 @@ private:
 public:
     Server();
     ~Server(){_db.dbSave();};
-    static void close_me(int sig){mtx.lock(); _db.dbSave(); mtx.unlock(); }
+    static void close_me(int sig){mtx.lock(); _db.dbSave(); mtx.unlock(); }// handle CTRL + C signal ==> save db
 
 private:
 	//connections
     void initConnexions();
     void createPipe(const char*);
-    void resClient(std::string*, bool);
     //inputs
     void handleIncommingMessages();
     void catchInput(char *); // devrait se nommer handeInput(input)
@@ -62,9 +61,12 @@ private:
     bool logOut(char* );
     void resClient(std::string* processId, char* res);
     void resClient(std::string* processId, int res);
+    void resClient(std::string*, bool);
+    void client_exit(char *input);
     static void launch_db_save();
-    
     bool static isServerActive() {return _is_active;}
+    void launch_game();
+    void get_game_settings(char *);
     
 
 };
