@@ -6,24 +6,16 @@
 #define GAME_INTERFACE_H
 #include <unistd.h>
 #include <ncurses.h>
-
-//#include <cstdint>
 #include <string>
-#include <stdlib.h>
-//#include <time.h>
+#include <cstdlib>
 #include <vector>
-
 #include "Rect.hpp"
 #include "Player.hpp"
 #include "MapHandler.hpp"
 
-//class MapHandler;
-//class PlayerShip;
-
 class Interface  {
     WINDOW* main_wnd;
     WINDOW* game_wnd;
-
     rect game_area;
     rect screen_area;
 public:

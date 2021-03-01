@@ -12,7 +12,6 @@
 #include "MapHandler.hpp"
 #include "Interface.hpp"
 #include "InternGameObject.hpp"
-//class Interface;
 
 class CurrentGame {
 
@@ -32,7 +31,6 @@ class CurrentGame {
     PlayerShip* playership1;
     Player* player1;
 
-    
     PlayerShip* playership2 = nullptr;
     Player* player2 = nullptr;
     
@@ -42,7 +40,6 @@ class CurrentGame {
     bool exit_requested = false;
     bool game_over = false;
 
-
     // méthodes privées
     void execInput(int inChar, uint_fast16_t x1, uint_fast16_t y1, bool firstPlayer);
     void heal();
@@ -50,8 +47,8 @@ class CurrentGame {
 
 public:
     CurrentGame()=default;
-    CurrentGame(bool twoP, int dropR, difficulty d, bool ff):map(dropR,d) {twoPlayers=twoP; dropRate=dropR; dif=d; friendlyFire=ff;}
-    int getInput(){return in_char;}
+    CurrentGame(bool twoP, int dropR, difficulty d, bool ff):twoPlayers(twoP),dropRate(dropR),map(dropR,d){ dif=d; friendlyFire=ff;}
+    int getInput() const{return in_char;}
 
     void run();
 };

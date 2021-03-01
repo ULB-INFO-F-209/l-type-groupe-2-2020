@@ -11,7 +11,6 @@ class Boss : public Ship{
 public:
     Boss()= default;
     Boss(int x, int y, rect b, char c,int h, int t, int shootDam){pos.x = x; pos.y = y; bounds=b; hp=h; disp_char=c; collisionDamage=100;shootTime=t; shootDamage = shootDam; projectileHp = 30;}
-
     void move() override;
 };
 

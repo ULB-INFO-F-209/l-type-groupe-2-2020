@@ -3,11 +3,8 @@
 //
 /**
  * TODO:
- *
  *  thread pour jouer en même temps (Aïssa)
  *  enlever static_cast !!
- *  ajouter effet explosion
- *  affichage bonus
  * ERROR:
  *
  *
