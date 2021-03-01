@@ -3,6 +3,7 @@
 //
 /**
  * TODO:
+ *
  *  thread pour jouer en même temps (Aïssa)
  *  enlever static_cast !!
  *  ajouter effet explosion
@@ -104,8 +105,6 @@ void CurrentGame::execInput(int inChar, uint_fast16_t x1, uint_fast16_t y1, bool
                 }
         }
 }
-
-        
 
 
 void CurrentGame::heal() {      // remet hp du player à 100 si encore vies
@@ -246,7 +245,7 @@ void CurrentGame::run() {
             anInterface.refresh_wnd();
             while(true){
                 in_char = wgetch(anInterface.get_main_window());
-                if(in_char == ' ')break;
+                if(in_char == 'p')break;
             }
             break;
         }

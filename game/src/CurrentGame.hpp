@@ -7,16 +7,12 @@
 
 #include <unistd.h>
 #include <ncurses.h>
-
 #include <string>
-#include <stdlib.h>
-//#include <time.h>
+#include <cstdlib>
 #include "MapHandler.hpp"
 #include "Interface.hpp"
 #include "InternGameObject.hpp"
 //class Interface;
-
-enum difficulty{easy, medium, hard};
 
 class CurrentGame {
 
@@ -25,9 +21,9 @@ class CurrentGame {
     bool twoPlayers;
     bool friendlyFire;
     int dropRate;
-    difficulty difficulte;
+    difficulty dif{};
 
-    MapHandler map{80};
+    MapHandler map;
 
     int tick=0;
     int finalScore1{};
@@ -54,7 +50,7 @@ class CurrentGame {
 
 public:
     CurrentGame()=default;
-    CurrentGame(bool twoP, int dropR, difficulty diff, bool ff) {twoPlayers=twoP; dropRate=dropR; difficulte=diff; friendlyFire=ff;}
+    CurrentGame(bool twoP, int dropR, difficulty d, bool ff):map(dropR,d) {twoPlayers=twoP; dropRate=dropR; dif=d; friendlyFire=ff;}
     int getInput(){return in_char;}
 
     void run();

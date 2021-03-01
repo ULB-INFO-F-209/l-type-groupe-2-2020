@@ -13,6 +13,7 @@
 #include "Rect.hpp"
 
 enum bonusType{damageUp, tripleShot, lifeSteal, minigun,noBonus};
+enum difficulty{easy, medium, hard};
 
 class MapObject{
 public:
@@ -150,6 +151,7 @@ class MapHandler{
     int enemyStartProjectileDamage = 10;
     int obstacleStartHp = 10;
     int obstacleStartDamage = 10;
+    difficulty dif;
     std::vector<Boss*> boss_set;
     std::vector<Star*> stars_set;
     std::vector<Obstacle*> obstacles_set;
@@ -160,7 +162,7 @@ class MapHandler{
     std::vector<Bonus*> bonuses_set;
 public:
     MapHandler()=default;
-    MapHandler(float p){probaBonus=p;};
+    MapHandler(int p,difficulty d);
     int getCurrentLevel() const{return currentLevel;}
     void setCurrentLevel(int l){currentLevel = l;}
     int getLevelTick() const{return levelTick;}

@@ -3,6 +3,7 @@
 //
 
 #include "MapHandler.hpp"
+
 void MapHandler::erase(size_t i, MapObject::type typ) { //1ier elem=index(0)
     if (typ == MapObject::star) {
         stars_set.erase(stars_set.begin() + i);
@@ -133,8 +134,6 @@ void MapHandler::update(MapObject::type typ, int t) {
     else if (typ == MapObject::bonus) {
         for(size_t i = 0; i < bonuses_set.size(); i++) {
             bonuses_set.at(i)->move();
-            if(bonuses_set.at(i)->getPos().y > field_bounds.bot() + 1)
-                bonuses_set.erase(bonuses_set.begin() + i);
 
         }
     }
@@ -176,10 +175,8 @@ void MapHandler::spawnProjectile(int x, int y, int damage, bool type, int hp, in
                 projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
             }
             else if (player_ships_set.at(player - 1)->getCurrentBonus() == damageUp) {
-                if (player_ships_set.at(player - 1)->getShootDamage() != 50)
-                    player_ships_set.at(player - 1)->setShootDamage(50);
                 projectiles_set.push_back(
-                        new Projectile(x, y - 1, player_ships_set.at(player - 1)->getShootDamage(), type, hp, player));
+                        new Projectile(x, y - 1, player_ships_set.at(player - 1)->getShootDamage()+40, type, hp, player));
             }
         }
         else {
@@ -266,7 +263,7 @@ void MapHandler::checkCollision(int t, bool friendlyFire) {
         }
         if(friendlyFire){
             for(auto & proj : projectiles_set){
-                if(p->getBounds().contains(proj->getPos()) && p->getHp()>0){
+                if(p->getBounds().contains(proj->getPos()) && p->getHp()>0 && p->getPlayerNb()!=proj->getPlayer()-1){
                     p->touched(proj->getDamage());
                     proj->touched(proj->getHp());
                 }
@@ -466,33 +463,53 @@ void MapHandler::spawnBonuses(int x, int y) {
 }
 
 void MapHandler::changeLevel() {
+
     if(currentLevel==2){
-        enemyLimit=10;
-        enemyStartHp=40;
-        enemyStartProjectileDamage=15;
+        enemyLimit+=5;
+        enemyStartHp+=10;
+        enemyStartProjectileDamage+=5;
     }
     else if(currentLevel==3){
-        enemyLimit=20;
-        enemyStartHp=40;
-        enemyStartProjectileDamage=15;
+        enemyLimit+=15;
     }
     else if(currentLevel==4){
-        enemyLimit=20;
-        enemyStartHp=50;
-        enemyStartProjectileDamage=20;
+        enemyStartHp+=10;
+        enemyStartProjectileDamage+=5;
     }
     else if(currentLevel==5){
-        enemyLimit=30;
-        enemyStartHp=50;
-        enemyStartProjectileDamage=20;
-        obstacleStartHp=20;
-        obstacleStartDamage=20;
+        enemyLimit+=5;
+        obstacleStartHp+=10;
+        obstacleStartDamage+=10;
     }
 
 }
 
 std::vector<Boss *> MapHandler::getBoss() const {
     return boss_set;
+}
+
+MapHandler::MapHandler(int p, difficulty d): probaBonus(p),dif(d){
+    if(d==easy){
+        enemyLimit=5;
+        enemyStartHp = 30;
+        enemyStartProjectileDamage = 10;
+        obstacleStartHp = 10;
+        obstacleStartDamage = 10;
+    }
+    else if(d==medium){
+        enemyLimit=10;
+        enemyStartHp = 35;
+        enemyStartProjectileDamage = 15;
+        obstacleStartHp = 15;
+        obstacleStartDamage = 15;
+    }
+    else{
+        enemyLimit=20;
+        enemyStartHp = 45;
+        enemyStartProjectileDamage = 25;
+        obstacleStartHp = 25;
+        obstacleStartDamage = 25;
+    }
 }
 
 void PlayerShip::catchBonus(const Bonus* b) {
