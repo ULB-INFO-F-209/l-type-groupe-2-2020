@@ -49,12 +49,12 @@ void Client::communication(char *buffer){
 }
 
 //Communication
-bool Client::signIn(char *pseudo, char *pswd){
+bool Client::signIn(char *pseudo, char *pswd, bool true_connexion){
 	char buffer[Constante::CHAR_SIZE];
 	sprintf(buffer, "Ma&%s&%s&%d", pseudo, pswd, _pid);
 	communication(buffer);
 	bool success = atoi(buffer); // 0: User doesn't exist || 1: has been connected
-	if(success){strcpy(_pseudo, pseudo);}
+	if(success and true_connexion){strcpy(_pseudo, pseudo);}
 	
 	return success; 
 }

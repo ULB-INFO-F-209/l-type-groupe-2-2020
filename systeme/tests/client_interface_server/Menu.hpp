@@ -5,11 +5,13 @@
 		option log out dans le menu principale
 	Bugs:
 		verifier les entrée (user met une lettre dans int ..faut gérer)
+		LE BOUTONNNNN EXITTT  du programme
 
 	commentaire:
 		_Utiliser les thread evite de faire full stack. Sans thread y'aura trop 
 		d'appelle de menu successive sur le stack, et même de la réentrance de code
 		_DECOMMENTER POUR UTILISER CLIENT
+
 */
 
 #ifndef Menu_HPP
@@ -78,7 +80,7 @@ private:
 	void add_del_friends(bool add=true);
 
 	//Game utilities
-	int get_players(char *pseudo, char*pswd);
+	void get_players(Game_settings *set);
 	
 };
 

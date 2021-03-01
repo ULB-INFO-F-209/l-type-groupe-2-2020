@@ -1,9 +1,9 @@
 #include "Interface.hpp"
 
 /*****************NOTE*************************
-	- Proportionaliser tous les dimensions
+	- Proportionaliser tous les dimensions  
 	- Lancer un thread d'ecoute en cas de 
-		changement de la taille du terminale
+		changement de la taille du terminale (a réflechir)
 	-Arranger le code et les fênetre
 	_ 24/02 : Trouver pourquoi la cosntante	
 			 KEY_ENTER  n'est pas recconnu
@@ -15,6 +15,11 @@
 				b) tout afficher , laisser l user
 					naviguer et apuyer sur enter 
 				c) lui proposer d'accepter ou non, ou quitter
+	_1/03: impossible d'afficher le caractère %
+	_1/03:
+		_printer les instruction pour le jeux
+		_printer toutes les autres instruction 
+		(format pseudo, pwd, fleche gauche pour retour, haut, bat dans le range, ect)
 
 
 *******************************************/
@@ -55,6 +60,13 @@ void Interface::resize_win(){
     PA_Y = (WIN_HEIGHT *4/5); //PS_Y + 3*PS_HEIGHT/2;
     PA_X = PS_X;
 
+    SET_HEIGHT = WIN_HEIGHT/2;
+    SET_WIDTH = WIN_WIDTH/5;
+    SET_Y = WIN_HEIGHT/2;
+    SET_X1 = WIN_WIDTH/6;
+    SET_X2 = 3*WIN_WIDTH/4;
+
+
     
 
     //other postions (a readapater selon la fenetre)
@@ -81,6 +93,8 @@ void Interface::resize_win(){
     _pseudo_win = newwin(PS_HEIGHT, PS_WIDTH, PS_Y, PS_X);
     _pass_win = newwin(PA_HEIGHT, PA_WIDTH, PA_Y, PA_X);
     _saying_win = newwin(S_HEIGHT, S_WIDTH, S_Y, S_X);
+    _settings_win1 = newwin(SET_HEIGHT, SET_WIDTH, SET_Y, SET_X1);
+	_settings_win2 = newwin(SET_HEIGHT, SET_WIDTH, SET_Y, SET_X2);
 
     wrefresh(_main_win);
     wrefresh(_pseudo_win);
@@ -89,12 +103,14 @@ void Interface::resize_win(){
 }
 
 // PUBLIC METHODES
-int Interface::print_menu(size_t size, std::string *choices, int type){
+int Interface::print_menu(size_t size, std::string *choices, int type, Game_settings*set){
 	int res =0, choice = 1;
 	
 	keypad(stdscr,TRUE); //active clavier
 	while(choice){
 		update_menu(size,choices,res, type);
+		if(type==LOBBY)
+			set_settings(set);
 		choice = getch();
 		switch(choice){
 			case KEY_UP:
@@ -369,22 +385,23 @@ int Interface::get_pseudo(char *res, int error,int type){
 	return ret;
 }
 
-int Interface::range(int n, bool pourcent){
+int Interface::range(int n, Game_settings *set, bool percent){
 	int focus=1, x = WIN_WIDTH/2, y = WIN_HEIGHT/2;	
 	keypad(stdscr,TRUE); //active clavier
 	int choice = 1;
 	while(choice){
 		set_screen(&LOBBY_TITLE, nullptr, &LOBBY_SAYING, nullptr);
+		set_settings(set);
 		std::string s = std::to_string(focus);
-		if(pourcent)
-			s += '%';
-		print_cara(_main_win, s.c_str(), x,y);
-
-
+		if(percent)
+			s += " percent";
+		else
+			s += " lives";
+		print_cara(_main_win, s.c_str(), x-(s.size()/2),y);
 		choice = getch();
 		switch(choice){
 			case KEY_UP:
-				if(focus > 0){focus--;} //tu peux monter plus haut que le ciel
+				if(focus > 1){focus--;} //tu peux monter plus haut que le ciel
 				break;
 			case KEY_DOWN:
 				if(focus < n)
@@ -400,7 +417,7 @@ int Interface::range(int n, bool pourcent){
 				break;
 		}
 	}
-	return focus +1;
+	return focus;
 }
 
 
@@ -417,7 +434,12 @@ void Interface::set_screen(std::string *title,std::string *saying1, std::string 
 	wrefresh(_saying_win);
 	int t_x =_title_x - (title->size() / 2);
 	int s_x;
+	start_color(); 
+	init_pair(3,COLOR_RED, COLOR_BLACK);
+	wattron(_saying_win,COLOR_PAIR(3) );
 	print_cara(_saying_win, title->c_str(), t_x, _title_y);
+	wattroff(_saying_win,COLOR_PAIR(3) );
+
  
 	if(saying1 != nullptr){
 		s_x = _saying_x - (saying1->size()/2);
@@ -474,21 +496,20 @@ void Interface::update_menu(size_t size,  std::string *choices, int highlight, i
 		set_screen(&LOBBY_TITLE, nullptr, &LOBBY_SAYING, nullptr);
 
 	int x = WIN_WIDTH/2, y= (WIN_HEIGHT/2) - (size+1)/2;
-	start_color(); int x_courant;
-	init_pair(1, COLOR_WHITE, COLOR_BLACK);
-	wattron(_main_win, COLOR_PAIR(1));
+	int x_courant;
+	start_color(); 
+	init_pair(1,COLOR_WHITE, COLOR_RED);
 	for(size_t i = 0; i < size; ++i){
 		x_courant = x- (choices[i] .size()/2);
 		if(i  == static_cast<size_t>(highlight)){
-			wattron(_main_win, A_STANDOUT);
+			wattron(_main_win, COLOR_PAIR(1));
 			print_cara(_main_win,choices[i].c_str(), x_courant, y);
-			wattroff(_main_win, A_STANDOUT);
+			wattroff(_main_win,  COLOR_PAIR(1));
 		}
 		else
 			print_cara(_main_win,choices[i].c_str(), x_courant, y);
 		y+=3;
 	}
-	wattroff(_main_win, COLOR_PAIR(1));
 }
 
 void Interface::print_error(int error){ //a effacer la zone erreur 
@@ -612,6 +633,69 @@ bool Interface::verify_cara(char *c){
 	return isNum || isMaj || isMin || isSpecial;
 }
 
+void Interface::set_settings(Game_settings *set){
+	//resize_win(); //maybe do the resize only if terminal change
+	box(_settings_win1, 0,0);
+	box(_settings_win2,0,0);
+	wrefresh(_settings_win1);
+	wrefresh(_settings_win2);
+    refresh();
+
+    const int nb_elem = 7;
+    std::string ally;
+
+    std::string caption[nb_elem] = {"Number of player : ", "Player 1 : ", "Player 2 : ",
+							"Drop rate : ", "difficulty  : ", "Ally shot : ", "Number of lives : "};
+	if(set->ally_shot)
+		ally = "Yes";
+	else
+		ally = "No";
+
+	//box one
+	int x = SET_WIDTH/2, y= (SET_HEIGHT/2) - ((nb_elem/2)+1)/2;
+	int x_courant, y_courant = y; std::string buffer;
+
+	buffer = caption[0] + std::to_string(set->nb_player);
+	x_courant = x - buffer.size()/2;
+	print_cara(_settings_win1,buffer.c_str(), x_courant, y_courant);
+	y_courant +=3;
+
+	buffer = caption[1] + std::string(set->pseudo_hote);
+	x_courant = x - buffer.size()/2;
+	print_cara(_settings_win1,buffer.c_str(), x_courant, y_courant);
+	y_courant +=3;
+
+	if(set->nb_player ==2){
+		buffer = caption[2] + std::string(set->pseudo_other);
+		x_courant = x - buffer.size()/2;
+		print_cara(_settings_win1,buffer.c_str(), x_courant, y_courant);
+		y_courant += 3;
+	}
+
+	buffer = caption[5] + ally;
+	x_courant = x - buffer.size()/2;
+	print_cara(_settings_win1,buffer.c_str(), x_courant, y_courant);
+	y_courant +=3;
+
+	//box two
+
+	y_courant = y;
+	buffer = caption[4] + set->difficulty;
+	x_courant = x - buffer.size()/2;
+	print_cara(_settings_win2,buffer.c_str(), x_courant, y_courant);
+	y_courant +=3;
+
+	buffer = caption[6] + std::to_string(set->nb_lives) + " lives";
+	x_courant = x - buffer.size()/2;
+	print_cara(_settings_win2,buffer.c_str(), x_courant, y_courant);
+	y_courant +=3;
+
+	buffer = caption[3] + std::to_string(set->drop_rate) + " percent";
+	x_courant = x - buffer.size()/2;
+	print_cara(_settings_win2,buffer.c_str(), x_courant, y_courant);
+
+
+}
 
 Interface::~Interface(){
 		getch();

@@ -8,7 +8,7 @@
 #include "parsing.hpp"
 #include "screen.hpp"
 
-using namespace Parsing;
+using Parsing::Game_settings;
 using namespace Screen;
 
 class Interface final{
@@ -20,7 +20,7 @@ class Interface final{
 	int PS_HEIGHT{}, PS_WIDTH{}, PS_Y {}, PS_X{}; 	//pseudo win
 	int PA_HEIGHT{}, PA_WIDTH{}, PA_Y{}, PA_X{}; 	//password win
 	int S_HEIGHT{}, S_WIDTH{}, S_Y{}, S_X{}; 		//saying win
-
+	int SET_HEIGHT{}, SET_WIDTH{}, SET_Y{}, SET_X1{}, SET_X2{}; //settings of lobby
 	//positions
 	int _menu_x{} , _menu_y{}; 			//where menu begin to be printed
 	int _saying_x{}, _saying_y{};
@@ -35,19 +35,20 @@ class Interface final{
 	WINDOW* _pseudo_win;
 	WINDOW*_pass_win;
 	WINDOW*_saying_win;
+	WINDOW* _settings_win1;
+	WINDOW* _settings_win2;
 public:
 	//constructor
 	Interface();
 	void resize_win();
 
 	//communication with screen
-	int print_menu(size_t size, std::string *choices, int type);
+	int print_menu(size_t size, std::string *choices, int type, Game_settings*set=nullptr);
 	bool get_connexion(char *pseudo, char *pswd,int error, int type);
 	bool print_profile(std::vector<Parsing::Profile> *vect, int type,int answer[2] = nullptr); //n oublie pas le titre
 	int print_profile(Parsing::Profile *prof, int type);
 	int get_pseudo(char *res, int error, int type);
-	int range(int n, bool pourence=false);
-
+	int range(int n, Game_settings *set, bool percent=false);
 	//destructor
 	~Interface();
 private:
@@ -61,6 +62,8 @@ private:
 	void print_users(std::vector<Parsing::Profile> *vect, int highlight, int min, int max, int type);
 	void init_pseudo_win();
 	void set_request(int highlight);
+	void set_settings(Game_settings *set);
+
 };
 
 

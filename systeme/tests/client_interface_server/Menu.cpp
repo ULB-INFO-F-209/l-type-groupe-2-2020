@@ -100,26 +100,37 @@ int  Menu::main_m(){
 
 int Menu::lobby(){
 	int res = SETTINGS; //return to lobby 
-	char other_pseudo[20], other_pswd[20];
-	Game_settings setting; int ret; bool stop = false;
+	Game_settings setting{}; int ret; bool stop = false;
+	char buffer[Constante::CHAR_SIZE];
+	std::string yes_no[] = {"Yes", "No"};
+	std::string difficulty[] = {"Easy", "Normal", "Hard"};
+	_client.get_pseudo(setting.pseudo_hote);
 	while(not stop){
-		int choice = window.print_menu(SIZE_SETTINGS, settings_menu, LOBBY);
+		int choice = window.print_menu(SIZE_SETTINGS, settings_menu, LOBBY, &setting);
 		switch(choice){
 			case 0: //nb_of player
-				ret = get_players(other_pseudo, other_pswd);
-				if(ret==2)
-					setting.nb_player = ret;
+				get_players(&setting);
 				break;
 			case 1: //DROP_RATE
-				ret = window.range(100, true);
+				setting.drop_rate = window.range(100, &setting, true);
 				break; 
 			case 2: //Ally_SHOT
+				ret = window.print_menu(2, yes_no, LOBBY,&setting);
+				if(ret != -1)
+					setting.ally_shot = (ret+1)%2;
+
 				break;
 			case 3:  //live's number
+				setting.nb_lives = window.range(3,&setting);
 				break;
-			case 4:	//play
+			case 4:	//difficulty
+				ret = window.print_menu(3, difficulty, LOBBY, &setting);
+				if(ret != -1)
+					setting.difficulty = difficulty[ret];
 				break;
-			case 5: 	//quitter le lobby
+			case 5: 	//play
+				create_game_to_str(buffer,&setting);
+				_client.createGame(buffer);
 				break;
 			default: // - 1 ==> quit 
 				res = MAIN;
@@ -223,31 +234,34 @@ void Menu::add_del_friends(bool add){
 }
 
 //game utilities
-int Menu::get_players(char*pseudo, char *pswd){
+void Menu::get_players(Game_settings*set){
 
-	int nb_player = 1; int choice = 1; int error = NO_ERROR;
-	bool quit=false;
+	int choice = 1; int error = NO_ERROR;
+	bool quit=false; char pswd[20];
 	std::string options[3] = {"1", "2", "quit"}; bool success = false;
 
-	choice = window.print_menu(3, options, LOBBY);
-	while(choice==1){ //two player
-		while(not success and not quit){
-			quit = window.get_connexion(pseudo, pswd, error,LOBBY);
-			if(not quit){
-				success = _client.signIn(pseudo, pswd); //if user exist!
-				if(not success){
-					error = NO_USER;
-					nb_player = 1;
-				}
-				else{
-					error = NO_ERROR;
-					nb_player = 2;
+	choice = window.print_menu(3, options, LOBBY, set);
+	while(choice!=-1){ //two player
+		if(choice==1){
+			while(not success and not quit){
+				quit = window.get_connexion(set->pseudo_other, pswd, error,LOBBY);
+				if(not quit){
+					success = _client.signIn(set->pseudo_other, pswd,false); //if user exist!
+					if(not success){
+						error = NO_USER;
+						set->nb_player = 1;
+					}
+					else{
+						error = NO_ERROR;
+						set->nb_player = 2;
+					}
 				}
 			}
 		}
-		choice = window.print_menu(3, options, LOBBY);
+		else if(choice==0)
+			set->nb_player = 1;
+		choice = window.print_menu(3, options, LOBBY, set);
 	}
-	return nb_player;
 }
 
 

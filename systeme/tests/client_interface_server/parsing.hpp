@@ -34,9 +34,9 @@ struct Parsing::Game_settings
 	int nb_player = 1;
 	char pseudo_hote[20];
 	char pseudo_other[20];
-	float drop_rate;
+	int drop_rate=25;
 	bool ally_shot=false;
-	int nb_lives=5;
+	int nb_lives=3;
 	std::string difficulty = "easy";
 
 };

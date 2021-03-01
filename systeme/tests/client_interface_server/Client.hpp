@@ -2,13 +2,16 @@
     semaine 1 : 
         géré comunication client-serveur sans raccorder la game
     semaine 2:
-        raccorder lle menu - interface-client-serveur
+        raccorder le menu - interface-client-serveur
         relax : il y a une autre semaine en plus si no time
         (c'était ecrit il y a une semaine ...plus de relax)
     Note: 
         15/02 : toutes les communications ont été gérées sauf
                 l'affichage du jeux et la manière d'énvoyer 
                 les inputs du jeu au serveur!
+        26/02 : Lien serveur-client établit 
+
+        1/02: tester la récupération des settings pour la game et envoyer au serveur
 
 */
 
@@ -51,7 +54,7 @@ public:
     explicit Client();
 
     //Communication
-    bool signIn(char *pseudo, char *pswd);
+    bool signIn(char *pseudo, char *pswd, bool true_conn=true);
     bool signUp(char *pseudo, char *pswd);
     bool addFriend(char *pseudo);
     int delFriend(char *pseudo);
