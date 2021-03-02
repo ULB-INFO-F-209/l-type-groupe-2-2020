@@ -156,7 +156,7 @@ int Menu::connexion(bool sign_in){
 		if(not quit){
 			if(sign_in){
 				success = _client.signIn(pseudo, pswd); //if user exist!
-				if(not success){error = NO_USER;}
+				if(not success){error = NO_USER_ERROR;}
 				else{error = NO_ERROR;}
 			}
 			else{
@@ -208,12 +208,18 @@ void Menu::add_del_friends(bool add){
 			quit = window.get_pseudo(buffer,error,ADD); 
 			if(not quit){
 				success = _client.sendFriendRequest(buffer);
-				if(success==1)
+				if(success==1){
 					error = REQ_ALREADY;
+					sleep(3);
+				}
 				else if (success==2)
 					error = FRIENDS_ALREADY;
 				else if(success==3)
-					error = NO_USER;
+					error = NO_USER_ERROR;
+				else if(success==4){
+					error = YOURSELF_ERROR;
+					//sleep(3);
+				}
 				else
 					error = NO_ERROR;
 			}
@@ -225,7 +231,9 @@ void Menu::add_del_friends(bool add){
 				if(success==1)
 					error = FRIENDS_YET;
 				else if (success==2)
-					error = NO_USER;
+					error = NO_USER_ERROR;
+				else if(success==3)
+					error = YOURSELF_ERROR;
 				else
 					error = NO_ERROR;
 			}
@@ -241,27 +249,26 @@ void Menu::get_players(Game_settings*set){
 	std::string options[3] = {"1", "2", "quit"}; bool success = false;
 
 	choice = window.print_menu(3, options, LOBBY, set);
-	while(choice!=-1){ //two player
-		if(choice==1){
-			while(not success and not quit){
-				quit = window.get_connexion(set->pseudo_other, pswd, error,LOBBY);
-				if(not quit){
-					success = _client.signIn(set->pseudo_other, pswd,false); //if user exist!
-					if(not success){
-						error = NO_USER;
-						set->nb_player = 1;
-					}
-					else{
-						error = NO_ERROR;
-						set->nb_player = 2;
-					}
+
+	if(choice==1){
+		while(not success and not quit){
+			quit = window.get_connexion(set->pseudo_other, pswd, error,LOBBY);
+			if(not quit){
+				success = _client.signIn(set->pseudo_other, pswd,false); //if user exist!
+				if(not success){
+					error = NO_USER_ERROR;
+					set->nb_player = 1;
+				}
+				else{
+					error = NO_ERROR;
+					set->nb_player = 2;
 				}
 			}
 		}
-		else if(choice==0)
-			set->nb_player = 1;
-		choice = window.print_menu(3, options, LOBBY, set);
 	}
+	else if(choice==0)
+		set->nb_player = 1;
+		//choice = window.print_menu(3, options, LOBBY, set);
 }
 
 

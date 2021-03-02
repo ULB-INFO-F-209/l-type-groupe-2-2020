@@ -63,6 +63,7 @@ private:
 	void init_pseudo_win();
 	void set_request(int highlight);
 	void set_settings(Game_settings *set);
+	void print_message(std::string *msg1, bool up=true );
 
 };
 

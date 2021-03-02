@@ -123,7 +123,7 @@ int Database::friendRequest(char* pseudoSrc, char* pseudoDest){
     }                                                   // res=2 if already friends
     if (idxSrc == -1){std::cout << pseudoSrc << " does not exist" << std::endl; res = 3;}  // res=3 if pseudo doesn't exist
     if (idxDest == -1){std::cout << pseudoDest << " does not exist" << std::endl; res = 3;}
-    if (idxSrc == idxDest){std::cout << pseudoSrc << " can not add him/herself" << std::endl; res = 4;}
+    if (idxSrc == idxDest){std::cout << pseudoSrc << " can not add him/herself :  "<< std::endl; res = 4;}
     return res;
 }
 

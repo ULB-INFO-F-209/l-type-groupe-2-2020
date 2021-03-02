@@ -92,7 +92,7 @@ int Client::sendFriendRequest(char *p_friend){
 	char buffer[Constante::CHAR_SIZE];
 	sprintf(buffer, "Me&%s&%s&%d", _pseudo, p_friend,_pid);
 	communication(buffer);
-	bool state = atoi(buffer); // 0:request sent || 1:already in request ||2: Already Friend||3:error pseudo
+	int state = atoi(buffer); // 0:request sent || 1:already in request ||2: Already Friend||3:error pseudo
 	return state; 
 }
 

@@ -52,7 +52,7 @@ void Interface::resize_win(){
     PS_WIDTH = (WIN_WIDTH/5)*3;
 
     PS_Y = WIN_Y + (WIN_HEIGHT/3) + (WIN_HEIGHT-S_HEIGHT)/6;
-    PS_X = WIN_WIDTH/4;
+    PS_X = (WIN_WIDTH/2) - (PS_WIDTH/2)+WIN_X;
 
 
     PA_HEIGHT = WIN_HEIGHT/5;
@@ -83,8 +83,8 @@ void Interface::resize_win(){
 	_saying_x =  _title_x;
 	_saying_y = _title_y*2;
 
-	_error_x = WIN_WIDTH/2;
-	_error_y = S_HEIGHT+((WIN_HEIGHT - S_HEIGHT)/2) ;//PS_Y -1 + (PA_HEIGHT/2);
+	_error_x = PS_X;//WIN_WIDTH/2;
+	_error_y = 2*WIN_HEIGHT/3; //S_HEIGHT+((WIN_HEIGHT - S_HEIGHT)/2) ;//PS_Y -1 + (PA_HEIGHT/2);
 	_prof_x = WIN_X+4; //afficher ton profile
 	_prof_p_y = WIN_Y*4;
 	_prof_s_y = (WIN_Y*4)+3;
@@ -109,8 +109,13 @@ int Interface::print_menu(size_t size, std::string *choices, int type, Game_sett
 	keypad(stdscr,TRUE); //active clavier
 	while(choice){
 		update_menu(size,choices,res, type);
-		if(type==LOBBY)
+		if(type==HOME)
+			print_message(&BACK,false);
+		else if(type==LOBBY)
 			set_settings(set);
+		else if(type==MAIN or FRIENDS)
+			print_message(&SWITCH,false);
+
 		choice = getch();
 		switch(choice){
 			case KEY_UP:
@@ -146,6 +151,11 @@ bool Interface::get_connexion(char pseudo[20], char pswd[20], int error, int typ
 		print_error(error);
 	move_cursor(_pseudo_win, px, py);
 	while(choice){
+		if(type==S_UP){
+			print_message(&SIGN_UP_SAYING1);
+			print_message(&SIGN_UP_SAYING2,false);
+		}
+
 		choice = getch();
 		switch(choice){
 			case KEY_UP:
@@ -163,13 +173,13 @@ bool Interface::get_connexion(char pseudo[20], char pswd[20], int error, int typ
 				}
 				break;
 			case 10: //enter 
-				if(idx_ps + 1 < NB_MIN_CARA and idx_pa+1 < NB_MIN_CARA){
+				if(idx_ps < NB_MIN_CARA and idx_pa+1 < NB_MIN_CARA){
 					print_error(LEN_ERROR);
 				}
-				else if(idx_pa + 1 < NB_MIN_CARA){
+				else if(idx_pa <NB_MIN_CARA){
 					print_error(LEN_PSWD);
 				}
-				else if(idx_ps +1 < NB_MIN_CARA){
+				else if(idx_ps < NB_MIN_CARA){
 					print_error(LEN_PSEUDO);
 				}
 				else{
@@ -206,7 +216,7 @@ bool Interface::get_connexion(char pseudo[20], char pswd[20], int error, int typ
 					idx_ps ++;
 				}
 				else if(focus and idx_pa < NB_MAX_CARA and verify_cara(&cara)){
-					print_cara(_pass_win, &cara, mx, my);
+					print_cara(_pass_win, &MASK, mx, my);
 					move_cursor(_pass_win, ++mx, my);
 					pswd[idx_pa] = cara;
 					idx_pa++;
@@ -242,6 +252,7 @@ int  Interface::print_profile(Profile *prof, int type){
 		int choice = 1;
 		while(choice){
 			set_request(focus);
+			print_message(&BACK, false);
 			choice = getch();
 			switch(choice){
 				case KEY_RIGHT:
@@ -286,6 +297,7 @@ bool Interface::print_profile(std::vector<Profile> *vect, int type, int *answer)
 
 	while(choice){
 		print_users(vect, focus, idx_min, idx_max,type);
+		print_message(&BACK, false);
 		choice = getch();
 		switch(choice){
 			case KEY_UP:
@@ -398,6 +410,7 @@ int Interface::range(int n, Game_settings *set, bool percent){
 		else
 			s += " lives";
 		print_cara(_main_win, s.c_str(), x-(s.size()/2),y);
+		print_message(&RANGE, false);
 		choice = getch();
 		switch(choice){
 			case KEY_UP:
@@ -456,7 +469,11 @@ void Interface::set_screen(std::string *title,std::string *saying1, std::string 
 }
 void Interface::init_pseudo_win(){
 	wclear(_pseudo_win);
+	start_color(); 
+	init_pair(2, COLOR_RED, COLOR_BLACK);
+	wattron(_pseudo_win, COLOR_PAIR(2));
 	print_cara(_pseudo_win, PSEUDO_ZONE.c_str(), _ps_caption_x, _ps_caption_y);
+	wattroff(_pseudo_win, COLOR_PAIR(2));
 	box(_pseudo_win,0,0);
 	refresh();
 	wrefresh(_pseudo_win);
@@ -478,7 +495,11 @@ void Interface::init_connexion(int choice){
 	}
 	init_pseudo_win();
 	wclear(_pass_win);
+	start_color(); 
+	init_pair(2, COLOR_RED, COLOR_BLACK);
+	wattron(_pass_win, COLOR_PAIR(2));
 	print_cara(_pass_win, PSWD_ZONE.c_str(),_ps_caption_x, _pa_caption_y);
+	wattroff(_pass_win, COLOR_PAIR(2));
 	box(_pass_win,0,0);
 	refresh();
 	wrefresh(_pass_win);
@@ -493,7 +514,7 @@ void Interface::update_menu(size_t size,  std::string *choices, int highlight, i
 	else if(type==FRIENDS)
 		set_screen(&FRIENDS_TITLE, nullptr, &FRIENDS_SAYING, nullptr);
 	else if(type==LOBBY)
-		set_screen(&LOBBY_TITLE, nullptr, &LOBBY_SAYING, nullptr);
+		set_screen(&LOBBY_TITLE, nullptr, &LOBBY_SAYING, &LOBBY_SAYING2);
 
 	int x = WIN_WIDTH/2, y= (WIN_HEIGHT/2) - (size+1)/2;
 	int x_courant;
@@ -512,33 +533,43 @@ void Interface::update_menu(size_t size,  std::string *choices, int highlight, i
 	}
 }
 
-void Interface::print_error(int error){ //a effacer la zone erreur 
-	start_color(); int caption_score_x;
+void Interface::print_error(int error){
+	start_color(); 
 	init_pair(2, COLOR_RED, COLOR_BLACK);
 	wattron(_main_win, COLOR_PAIR(2));
+	std::string effacer = "unechainejustepoureffacerlaprecendenteerreur";
+	wattron(_main_win, A_INVIS);
+	print_cara(_main_win, effacer.c_str(),_error_x, _error_y);
+	wattroff(_main_win, A_INVIS);
 	switch(error){
 		case LEN_ERROR:
-			caption_score_x = _error_x - (SHORT_ALL.size()/2);
-			print_cara(_main_win, SHORT_ALL.c_str(),caption_score_x, _error_y);
+			print_cara(_main_win, SHORT_ALL.c_str(),_error_x, _error_y);
 			break;
 		case LEN_PSEUDO:
-			caption_score_x = _error_x - (SHORT_PSEUDO.size()/2);
 			print_cara(_main_win, SHORT_PSEUDO.c_str(),_error_x, _error_y);
 			break;
 		case LEN_PSWD:
-			caption_score_x = _error_x - (SHORT_PSWD.size()/2);
 			print_cara(_main_win, SHORT_PSWD.c_str(),_error_x, _error_y);
 			break;
-		case NO_USER:
-			caption_score_x = _error_x - (NO_USER_MSG.size()/2);
+		case NO_USER_ERROR:
 			print_cara(_main_win, NO_USER_MSG.c_str(),_error_x, _error_y);
 			break;
 		case TAKEN_PSEUDO:
-			caption_score_x = _error_x - (TAKEN_PSEUDO_MSG.size()/2);
 			print_cara(_main_win,TAKEN_PSEUDO_MSG.c_str(),_error_x, _error_y);
 			break;
+		case FRIENDS_ALREADY:
+			print_cara(_main_win,ALREADY_FRIENDS.c_str(),_error_x, _error_y);
+			break;
+		case FRIENDS_YET:
+			print_cara(_main_win,NOT_FRIENDS.c_str(),_error_x, _error_y);
+			break;
+		case REQ_ALREADY:
+			print_cara(_main_win,ALREADY_REQUESTED.c_str(),_error_x, _error_y);
+			break;
+		case YOURSELF_ERROR:
+			print_cara(_main_win,YOURSEL_MSG.c_str(),_error_x, _error_y);
+			break;
 		default:
-			caption_score_x = _error_x - (DEFAULT_ERROR.size()/2);
 			print_cara(_main_win,DEFAULT_ERROR.c_str(),_error_x, _error_y);
 			break; 
 	}
@@ -598,13 +629,13 @@ void Interface::print_users(std::vector<Profile> *vect, int highlight, int min, 
  
 	int caption_x  = (WIN_WIDTH/4),caption_y = (WIN_HEIGHT-PS_HEIGHT)/2;
 
-	int x =caption_x, y=caption_y+2, caption_score_x =caption_x*3;
+	int x =caption_x, y=caption_y+2, _error_x =caption_x*3;
 
 	char score[10]; char pseudo[30];
 	char pseudo_title[20] = "PSEUDO", score_title[] = "SCORE";
 
 	print_cara(_main_win, pseudo_title,caption_x,caption_y);
-	print_cara(_main_win, score_title, caption_score_x,caption_y);
+	print_cara(_main_win, score_title, _error_x,caption_y);
 	
 	for (int i = min; i <= max; ++i){ 
 		sprintf(score, "%d",vect->at(i).score);
@@ -613,12 +644,12 @@ void Interface::print_users(std::vector<Profile> *vect, int highlight, int min, 
 		{
 			wattron(_main_win, A_REVERSE);
 			print_cara(_main_win,pseudo,x,y);
-			print_cara(_main_win, score,caption_score_x,y);
+			print_cara(_main_win, score,_error_x,y);
 			wattroff(_main_win, A_REVERSE);
 		}
 		else{
 			print_cara(_main_win, pseudo,x,y);
-			print_cara(_main_win, score,caption_score_x,y);
+			print_cara(_main_win, score,_error_x,y);
 		}
 		y++;
 	}
@@ -645,7 +676,7 @@ void Interface::set_settings(Game_settings *set){
     std::string ally;
 
     std::string caption[nb_elem] = {"Number of player : ", "Player 1 : ", "Player 2 : ",
-							"Drop rate : ", "difficulty  : ", "Ally shot : ", "Number of lives : "};
+							"Drop rate : ", "Difficulty  : ", "Ally shot : ", "Number of lives : "};
 	if(set->ally_shot)
 		ally = "Yes";
 	else
@@ -654,7 +685,10 @@ void Interface::set_settings(Game_settings *set){
 	//box one
 	int x = SET_WIDTH/2, y= (SET_HEIGHT/2) - ((nb_elem/2)+1)/2;
 	int x_courant, y_courant = y; std::string buffer;
-
+	start_color(); 
+	init_pair(2, COLOR_RED, COLOR_BLACK);
+	wattron(_settings_win1, COLOR_PAIR(2));
+	wattron(_settings_win2, COLOR_PAIR(2));
 	buffer = caption[0] + std::to_string(set->nb_player);
 	x_courant = x - buffer.size()/2;
 	print_cara(_settings_win1,buffer.c_str(), x_courant, y_courant);
@@ -694,8 +728,20 @@ void Interface::set_settings(Game_settings *set){
 	x_courant = x - buffer.size()/2;
 	print_cara(_settings_win2,buffer.c_str(), x_courant, y_courant);
 
+	wattroff(_settings_win1, COLOR_PAIR(2));
+	wattroff(_settings_win2, COLOR_PAIR(2));
+
+
 
 }
+
+void Interface::print_message(std::string *msg1, bool up ){
+	int x=WIN_WIDTH/2, y=9*WIN_HEIGHT/10;;
+	if(up)
+		y = 4*WIN_HEIGHT/10;
+	print_cara(_main_win, msg1->c_str(), x-msg1->size()/2, y);
+}
+
 
 Interface::~Interface(){
 		getch();
