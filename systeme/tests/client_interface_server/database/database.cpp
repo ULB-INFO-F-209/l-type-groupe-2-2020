@@ -118,11 +118,12 @@ int Database::friendRequest(char* pseudoSrc, char* pseudoDest){
     int res;
     std::ptrdiff_t idxSrc = find(pseudoSrc);
     std::ptrdiff_t idxDest = find(pseudoDest);
-    if (idxSrc != -1 && idxDest != -1){
+    if (idxSrc != -1 && idxDest != -1 && idxSrc != idxDest){
         res = _data[idxDest].addRequest(pseudoSrc);     // res=0 if request is sent, res=1 if already requested
     }                                                   // res=2 if already friends
-    if (idxSrc == -1){std::cout << idxSrc << " does not exist" << std::endl; res = 3;}  // res=3 if pseudo doesn't exist
-    if (idxDest == -1){std::cout << idxDest << " does not exist" << std::endl; res = 3;}
+    if (idxSrc == -1){std::cout << pseudoSrc << " does not exist" << std::endl; res = 3;}  // res=3 if pseudo doesn't exist
+    if (idxDest == -1){std::cout << pseudoDest << " does not exist" << std::endl; res = 3;}
+    if (idxSrc == idxDest){std::cout << pseudoSrc << " can not add him/herself" << std::endl; res = 4;}
     return res;
 }
 
@@ -168,10 +169,10 @@ int Database::removeFriend(char* pseudo1, char* pseudo2){
         }
         else
             res = 1;
-        
     }
     if (idx1 == -1){std::cout << pseudo1 << " does not exist" << std::endl;}
-    if (idx2 == -1){std::cout << pseudo2 << " does not exist" << std::endl; }
+    if (idx2 == -1){std::cout << pseudo2 << " does not exist" << std::endl;}
+    if (idx1 == idx2){std::cout << pseudo1 << " can not delete him/herself" << std::endl; res = 3;}
     return res;
 }
 
