@@ -7,6 +7,7 @@ class Player{
     int nLives;
 
 public:
+    Player()=default;
     int getnLives(){return nLives;}
     void setnLives(int lives){nLives = lives;}
     Player( int lives){nLives = lives;}

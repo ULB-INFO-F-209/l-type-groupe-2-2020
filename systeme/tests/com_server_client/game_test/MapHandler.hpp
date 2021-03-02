@@ -7,11 +7,9 @@
 #include <cstdlib>
 #include <vector>
 #include <cstdint>
-#include <iostream>
 #include <list>
 #include "Player.hpp"
 #include "InternGameObject.hpp"
-//#include "CurrentGame.hpp"
 #include "Rect.hpp"
 
 enum bonusType{damageUp, tripleShot, lifeSteal, minigun,noBonus};
@@ -36,13 +34,14 @@ protected:
 
 class Star: public MapObject{ //background
 public:
+    Star()=default;
     Star(int nx, int ny) { pos.x = nx; pos.y = ny;typ=star; }
 };
 
 class Obstacle: public MapObject{
     int damage;
 public:
-
+    Obstacle()=default;
     Obstacle(int nx, int ny,int dam,int h) {pos.x = nx; pos.y = ny; damage=dam;typ=obstacle;hp=h;}
     int get_damage() const {return damage;};
 };
@@ -78,6 +77,7 @@ class Projectile: public MapObject{
     bool shipType;
     int player;   // 0 = enemy; 1 = player1; 2 = player2
 public:
+    Projectile()=default;
     void move() override;
     Projectile(int nx, int ny,int dam,bool ship_t, int h, int p) {pos.x = nx; pos.y = ny; damage=dam; shipType=ship_t;typ=projectile; hp = h; player = p;}
     int getDamage() const{return damage;}
@@ -88,6 +88,7 @@ public:
 class Bonus: public MapObject{
     bonusType bonustype;
 public:
+    Bonus()=default;
     Bonus(int nx, int ny,bonusType bonus_t) :bonustype(bonus_t)  {pos.x = nx; pos.y = ny; hp=10;};
     bonusType getBonusType() const{return bonustype;}
 };
@@ -101,6 +102,7 @@ class PlayerShip : public Ship{
 
 
 public:
+    PlayerShip()=default;
     PlayerShip(int x, int y, rect b, char c, int h, int nb, int dam, int s){pos.x = x; pos.y = y; bounds=b; hp=h; disp_char=c;isAlive=true; playerNb = nb; collisionDamage=dam; score = s;currentBonus=noBonus;shootDamage=10; projectileHp = 10;}
     int getKillTime() const{return killTime;}
     bool getIsAlive() const{return isAlive;}
@@ -119,6 +121,7 @@ class EnemyShip : public Ship{
     double bonusDropProb;
     int shootTime;
 public:
+    EnemyShip()=default;
     EnemyShip(int x, int y, rect b, char c,int h, int t, int shootDam){pos.x = x; pos.y = y; setBounds(b); setHp(h); setChar(c); setDammage(10); shootTime=t; shootDamage = shootDam; projectileHp = 10;}
     void setShootTime(int t){shootTime=t;}
     int getShootTime() const{return shootTime;}
@@ -153,6 +156,7 @@ class MapHandler{
     int enemyStartProjectileDamage = 10;
     int obstacleStartHp = 10;
     int obstacleStartDamage = 10;
+    difficulty dif;
     std::vector<Boss*> boss_set;
     std::vector<Star*> stars_set;
     std::vector<Obstacle*> obstacles_set;
@@ -161,11 +165,9 @@ class MapHandler{
     std::vector<PlayerShip*> player_ships_set;
     std::vector<EnemyShip*> enemy_ships_set;
     std::vector<Bonus*> bonuses_set;
-    rect field_bounds;
-    difficulty dif;
 public:
     MapHandler()=default;
-    MapHandler(int p, difficulty d);
+    MapHandler(int p,difficulty d);
     int getCurrentLevel() const{return currentLevel;}
     void setCurrentLevel(int l){currentLevel = l;}
     int getLevelTick() const{return levelTick;}
@@ -174,7 +176,6 @@ public:
     void setChangingLevel(bool c){changingLevel = c;}
     void update(MapObject::type, int);
     void erase(size_t, MapObject::type);
-
     std::vector<Star*> getStars() const;
     std::vector<Obstacle*> getObstacles() const;
     std::vector<Projectile*> getProjectiles() const;
@@ -187,7 +188,7 @@ public:
     void setBounds(rect);
     void spawnProjectile(int x, int y, int damage, bool type, int hp, int player);
     void checkCollision(int t, bool firendlyFire);
-    
+    rect field_bounds;
     void playerInit(PlayerShip* p1,PlayerShip* p2);
     void updateBounds();
     void enemyShoot(int tick);

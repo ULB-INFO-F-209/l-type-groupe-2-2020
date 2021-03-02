@@ -85,16 +85,37 @@ Interface::Interface(): main_wnd(),game_wnd(), game_area(), screen_area() {
 void Interface::display(MapHandler *m,int tick, std::vector<Player *> *listPlayer,PlayerShip* playership1,PlayerShip* playership2, Player* player1,Player* player2,int score1, int score2, bool twoPlayers) {
 
     // l'affichage à chaque tour de boucle (server->game->server->client)
+    werase(game_wnd); // attention ?
     drawStar(m);
     drawProjectile(m);
-    drawEnemy(m,tick,listPlayer);
+    drawEnemy(m, tick, listPlayer);
     drawObstacle(m);
     drawBonus(m);
     drawPlayer(m,tick,listPlayer);
     drawBoss(m);
+    drawNewLevel(m,tick);
     drawUI(m,playership1,playership2,player1,player2,score1,score2,tick, twoPlayers);
-
+    refresh_wnd();
 }
+
+void Interface::display(settingServer* settings){
+    werase(game_wnd); // attention ?
+    drawStar(settings->object_map);
+    drawProjectile(settings->object_map);
+    drawEnemy(settings->object_map, settings->tick, settings->list_player);
+    drawObstacle(settings->object_map);
+    drawBonus(settings->object_map);
+    drawPlayer(settings->object_map,settings->tick,settings->list_player);
+    drawBoss(settings->object_map);
+    drawNewLevel(settings->object_map,settings->tick);
+    drawUI(settings->object_map,settings->object_playership1,settings->object_playership2,settings->object_player1,settings->object_player2,settings->score_j1,settings->score_j2,settings->tick, settings->two_players);
+    if (settings->game_over)
+        drawGameOver(settings->object_map, (settings->score_j1+settings->score_j2));
+    refresh_wnd();
+}
+
+
+
 
 void Interface::drawStar(MapHandler *m) {
     for(auto s : m->getStars()){
@@ -124,6 +145,7 @@ void Interface::drawEnemy(MapHandler *m, int tick, std::vector<Player *> *listPl
         mvwaddch(game_wnd, e->getPos().y, e->getPos().x + 1, ACS_RARROW);
         wattroff(game_wnd, A_ALTCHARSET);
     }
+
     for( PlayerShip* p : m->getListPlayer()) {
         if(listPlayer->at(p->getPlayerNb())->getnLives() > 0){
             if(tick % 20 < 10 && p->getHp()<=0 && tick<p->getKillTime()+100) {
@@ -131,6 +153,7 @@ void Interface::drawEnemy(MapHandler *m, int tick, std::vector<Player *> *listPl
                     wattron(game_wnd, COLOR_PAIR(4));
                     mvwaddch(game_wnd, e->getPos().y, e->getPos().x, ' ');
                     wattroff(game_wnd, COLOR_PAIR(4));
+
                     wattron(game_wnd, A_ALTCHARSET);
                     mvwaddch(game_wnd, e->getPos().y, e->getPos().x - 1, ' ');
                     mvwaddch(game_wnd, e->getPos().y, e->getPos().x + 1, ' ');
@@ -141,7 +164,6 @@ void Interface::drawEnemy(MapHandler *m, int tick, std::vector<Player *> *listPl
     }
 
 }
-
 
 void Interface::drawProjectile(MapHandler *m) {
     for(auto p : m->getProjectiles()){
@@ -164,6 +186,8 @@ void Interface::drawProjectile(MapHandler *m) {
 
 }
 
+
+
 void Interface::drawPlayer(MapHandler *m, int tick, std::vector<Player *> *listPlayer) {
     for( PlayerShip* p : m->getListPlayer()) {
         // draw player body
@@ -182,7 +206,7 @@ void Interface::drawPlayer(MapHandler *m, int tick, std::vector<Player *> *listP
 
 
         if(listPlayer->at(p->getPlayerNb())->getnLives() > 0){
-
+            // show player looses a life
             if(tick % 100 < 50 && p->getHp()<=0 && tick<p->getKillTime()+300) {
                 wattron(game_wnd, COLOR_PAIR(player_color));
                 mvwaddch(game_wnd, p->getPos().y, p->getPos().x, ' ');
@@ -191,8 +215,7 @@ void Interface::drawPlayer(MapHandler *m, int tick, std::vector<Player *> *listP
                 wattron(game_wnd, A_ALTCHARSET);
                 mvwaddch(game_wnd, p->getPos().y, p->getPos().x - 1, ' ');
                 mvwaddch(game_wnd, p->getPos().y, p->getPos().x + 1, ' ');
-                wattroff(game_wnd, COLOR_PAIR(player_color));
-
+                wattroff(game_wnd, A_ALTCHARSET);
             }
 
             // draw engines flames
@@ -220,7 +243,7 @@ void Interface::drawUI(MapHandler *m,PlayerShip* playership1,PlayerShip* players
     wmove(main_wnd, 20, 1);
     drawEnergyBar(playership1->getHp());
     //score
-    mvwprintw(main_wnd, 22, 1, "  score: %i", playership1->getScore());
+    mvwprintw(main_wnd, 22, 1, "  score: %i", score1);
     // draw static string to hold percentage
     mvwprintw(main_wnd, 21, 1, "- P1 HP                -");
     mvwprintw(main_wnd, 21, 15, "lives: %i",player1->getnLives());
@@ -235,15 +258,15 @@ void Interface::drawUI(MapHandler *m,PlayerShip* playership1,PlayerShip* players
         mvwprintw(main_wnd, 21, 9, "%i%%", playership1->getHp());
     wattroff(main_wnd, A_BOLD);
     if (playership1->getCurrentBonus() == minigun)
-        mvwprintw(main_wnd, 22, 16, "B%d: M",playership1->getPlayerNb()+1);
+        mvwprintw(main_wnd, 22, 16, "  B%d: M",playership1->getPlayerNb()+1);
     else if (playership1->getCurrentBonus() == damageUp)
-        mvwprintw(main_wnd, 22, 16, "B%d: D",playership1->getPlayerNb()+1);
+        mvwprintw(main_wnd, 22, 16, "  B%d: D",playership1->getPlayerNb()+1);
     else if (playership1->getCurrentBonus() == tripleShot)
-        mvwprintw(main_wnd,22, 16, "B%d:  T",playership1->getPlayerNb()+1);
+        mvwprintw(main_wnd,22, 16, "  B%d: T",playership1->getPlayerNb()+1);
     else if (playership1->getCurrentBonus() == lifeSteal)
-        mvwprintw(main_wnd, 22, 16, "B%d: L",playership1->getPlayerNb()+1);
+        mvwprintw(main_wnd, 22, 16, "  B%d: L",playership1->getPlayerNb()+1);
     else if (playership1->getCurrentBonus() == noBonus)
-        mvwprintw(main_wnd, 22, 16, "B%d:  ",playership1->getPlayerNb()+1);
+        mvwprintw(main_wnd, 22, 16, "  B%d:  ",playership1->getPlayerNb()+1);
 
     if(twoPlayers){
         // energy bar player2
@@ -267,15 +290,15 @@ void Interface::drawUI(MapHandler *m,PlayerShip* playership1,PlayerShip* players
             mvwprintw(main_wnd, 21, 62, "%i%%", playership2->getHp());
         wattroff(main_wnd, A_BOLD);
         if (playership2->getCurrentBonus() == minigun)
-            mvwprintw(main_wnd, 22, 69, "  B%d: M",playership1->getPlayerNb()+1);
+            mvwprintw(main_wnd, 22, 69, "  B%d: M",playership2->getPlayerNb()+1);
         else if (playership2->getCurrentBonus() == damageUp)
-            mvwprintw(main_wnd, 22, 69, "  B%d: D",playership1->getPlayerNb()+1);
+            mvwprintw(main_wnd, 22, 69, "  B%d: D",playership2->getPlayerNb()+1);
         else if (playership2->getCurrentBonus() == tripleShot)
-            mvwprintw(main_wnd, 22, 69, "  B%d: T",playership1->getPlayerNb()+1);
+            mvwprintw(main_wnd, 22, 69, "  B%d: T",playership2->getPlayerNb()+1);
         else if (playership2->getCurrentBonus() == lifeSteal)
-            mvwprintw(main_wnd, 22, 69, "  B%d: L",playership1->getPlayerNb()+1);
+            mvwprintw(main_wnd, 22, 69, "  B%d: L",playership2->getPlayerNb()+1);
         else if (playership2->getCurrentBonus() == noBonus)
-            mvwprintw(main_wnd, 22, 69, "  B%D:  ",playership1->getPlayerNb()+1);
+            mvwprintw(main_wnd, 22, 69, "  B%d:  ",playership2->getPlayerNb()+1);
     }
     
     //level
@@ -361,16 +384,13 @@ void Interface::drawBoss(MapHandler *map) {
   }
 
 void Interface::drawGameOver(MapHandler* m, int score1){
-    //werase(game_wnd);
     mvwprintw(game_wnd,8, 35,"GAME OVER");
     mvwprintw(game_wnd,9, 35,"SCORE : %i", score1);
-    mvwprintw(game_wnd,12, 30,"press p to quit");
+    mvwprintw(game_wnd,12, 32,"press P to quit");
     refresh_wnd();
     while(true){
-        char in_char = wgetch(main_wnd);
+        char in_char = wgetch(get_main_window());
         if(in_char == 'p')break;
-    }
-    
-    
-    
+    } 
+
 }
