@@ -13,6 +13,7 @@
 #include "Interface.hpp"
 #include "InternGameObject.hpp"
 #include "settingServer.hpp"
+#include "GameConstante.hpp"
 
 class CurrentGame {
 
@@ -64,6 +65,19 @@ public:
         map.setBounds(anInterface->get_game_area());
         game_area = anInterface->get_game_area();
         screen_area = anInterface->get_screen_area();
+    }
+    CurrentGame(Game_settings *game_sett):twoPlayers(game_sett->nb_player == 2? true:false),friendlyFire(game_sett->ally_shot), dropRate(game_sett->drop_rate),dif(easy) {
+        
+        playership1 = new PlayerShip(10, 5, { {10 - 1, 5 }, { 3, 2 } }, '0',100, 0,100,0);
+        player1 = new Player(game_sett->nb_lives);
+        listPlayer.push_back(player1);
+
+        if(twoPlayers){
+            playership2 = new PlayerShip(50, 5, { { 50 - 1, 5 }, { 3, 2 } }, '1',100, 1,100,0);
+            player2 = new Player(game_sett->nb_lives);
+            listPlayer.push_back(player2);
+        }
+
     }
     void run_test(Interface * anInterface, settingServer* setting_to_fill);
     int getInput() const{return in_char;}

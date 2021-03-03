@@ -408,7 +408,7 @@ void Interface::drawGameOver(MapHandler* m, int score1){
 void Interface::drawGameOver(int score1){
     mvwprintw(game_wnd,8, 35,"GAME OVER");
     mvwprintw(game_wnd,9, 35,"SCORE : %i", score1);
-    mvwprintw(game_wnd,12, 32,"press P to quit");
+    mvwprintw(game_wnd,12, 32,"press p to quit");
     refresh_wnd();
     while(true){
         char in_char = wgetch(get_main_window());
@@ -472,7 +472,7 @@ void Interface::drawProjectile(Projectile*p,std::size_t size_p, Projectile*pe,st
         }
         else{
             wattron(game_wnd, COLOR_PAIR(2));
-            mvwaddch(game_wnd, p->getPos().y, p->getPos().x, '*');
+            mvwaddch(game_wnd, p[i].getPos().y, p[i].getPos().x, '*');
             wattroff(game_wnd, COLOR_PAIR(2));
         }
     }
@@ -594,19 +594,19 @@ void Interface::drawUI(PlayerShip* playerships, Player* players, int score1, int
     mvwprintw(main_wnd,20,33," LEVEL : %i",current_level);
 }
 void Interface::drawBonus(Bonus* b,std::size_t size_b){
-    for(std::size_t i =0; i< size_b;i++) {
+    for(std::size_t i =0; i< size_b; i++) {
         wattron(game_wnd, A_BOLD);
         if(b[i].getBonusType()==lifeSteal){
-            mvwaddch(game_wnd, b->getPos().y, b->getPos().x, 'L');
+            mvwaddch(game_wnd, b[i].getPos().y, b[i].getPos().x, 'L');
         }
         else if(b[i].getBonusType()==minigun){
-            mvwaddch(game_wnd, b->getPos().y, b->getPos().x, 'M');
+            mvwaddch(game_wnd, b[i].getPos().y, b[i].getPos().x, 'M');
         }
         else if(b[i].getBonusType()==damageUp){
-            mvwaddch(game_wnd, b->getPos().y, b->getPos().x, 'D');
+            mvwaddch(game_wnd, b[i].getPos().y, b[i].getPos().x, 'D');
         }
         else if(b[i].getBonusType()==tripleShot){
-            mvwaddch(game_wnd, b->getPos().y, b->getPos().x, 'T');
+            mvwaddch(game_wnd, b[i].getPos().y, b[i].getPos().x, 'T');
         }
         wattroff(game_wnd, A_BOLD);
 

@@ -90,7 +90,7 @@ class Bonus: public MapObject{
 public:
     Bonus()=default;
     Bonus(int nx, int ny,bonusType bonus_t) :bonustype(bonus_t)  {pos.x = nx; pos.y = ny; hp=10;};
-    bonusType getBonusType() const{return bonustype;}
+    bonusType const getBonusType() const {return bonustype;}
 };
 
 class PlayerShip : public Ship{
