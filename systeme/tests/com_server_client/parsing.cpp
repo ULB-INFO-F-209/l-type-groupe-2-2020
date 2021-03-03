@@ -69,49 +69,55 @@ void Parsing::profile_from_str(char *buffer, Profile *prof){
 
 }
 void Parsing::create_game_from_str(char *buffer, Game_settings * settings){
-	//buffer -> "nb_player&pseudo_hote&other_pseudo&drop_rate&ally_shot&nb_lives"
+	//buffer -> "P&nb_player&pseudo_hote&other_pseudo&drop_rate&ally_shot&nb_lives"
+
 	std::string cpp_str_buffer(buffer);
 	const char delimiteur_score = '&';
 	std::size_t index = cpp_str_buffer.find(delimiteur_score);
+	cpp_str_buffer = cpp_str_buffer.substr(index+1,cpp_str_buffer.length());
+	index = cpp_str_buffer.find(delimiteur_score);
+
+
+	//buffer -> "nb_player&pseudo_hote&other_pseudo&drop_rate&ally_shot&nb_lives"
 
 	//nb player
 	std::string option = cpp_str_buffer.substr(0,index);
-	cpp_str_buffer = cpp_str_buffer.substr(index,cpp_str_buffer.size());
+	cpp_str_buffer = cpp_str_buffer.substr(index+1,cpp_str_buffer.size());
 	settings->nb_player = atoi(option.c_str());
-	option = option.substr(index, option.length());
+	//option = option.substr(index, option.length());
 
 	//pseudo_hote
 	index = cpp_str_buffer.find(delimiteur_score);
 	option = cpp_str_buffer.substr(0,index);
-	cpp_str_buffer = cpp_str_buffer.substr(index,cpp_str_buffer.size());
+	cpp_str_buffer = cpp_str_buffer.substr(index+1,cpp_str_buffer.size());
 	strcpy(settings->pseudo_hote, option.c_str());
 
 	//pseudo_other
 	index = cpp_str_buffer.find(delimiteur_score);
-	option = option.substr(index, option.length());
+	//option = cpp_str_buffer.substr(index, cpp_str_buffer.length());
 	option = cpp_str_buffer.substr(0,index);
-	cpp_str_buffer = cpp_str_buffer.substr(index,cpp_str_buffer.size());
+	cpp_str_buffer = cpp_str_buffer.substr(index+1,cpp_str_buffer.size());
 	strcpy(settings->pseudo_other, option.c_str());
 
 	//drop_rate
 	index = cpp_str_buffer.find(delimiteur_score);
-	option = option.substr(index, option.length());
+	//option = option.substr(index, option.length());
 	option = cpp_str_buffer.substr(0,index);
-	cpp_str_buffer = cpp_str_buffer.substr(index,cpp_str_buffer.size());
+	cpp_str_buffer = cpp_str_buffer.substr(index+1,cpp_str_buffer.size());
 	settings->drop_rate = std::atof(option.c_str()); // TODO drop_rate est un float trouvé un equivalente de atoi pour float
 
 	//ally_shot
 	index = cpp_str_buffer.find(delimiteur_score);
-	option = option.substr(index, option.length());
+	//option = option.substr(index, option.length());
 	option = cpp_str_buffer.substr(0,index);
-	cpp_str_buffer = cpp_str_buffer.substr(index,cpp_str_buffer.size());
+	cpp_str_buffer = cpp_str_buffer.substr(index+1,cpp_str_buffer.size());
 	settings->ally_shot = atoi(option.c_str()); //TODO changer le false en un nb 0 ou 1 plus simple pour la convertion
 
 	//nb_lives
 	index = cpp_str_buffer.find(delimiteur_score);
-	option = option.substr(index, option.length());
+	//option = option.substr(index, option.length());
 	option = cpp_str_buffer.substr(0,index);
-	cpp_str_buffer = cpp_str_buffer.substr(index,cpp_str_buffer.size());
+	cpp_str_buffer = cpp_str_buffer.substr(index+1,cpp_str_buffer.size());
 	settings->nb_lives = atoi(option.c_str());
 
 }
