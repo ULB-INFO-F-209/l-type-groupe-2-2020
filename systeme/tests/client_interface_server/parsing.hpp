@@ -12,6 +12,8 @@
 #include <unistd.h>
 #include "database/database.hpp"
 
+enum difficulty{easy, medium, hard};
+
 namespace Parsing{
 	using Profile = Profile;
 	struct Game_settings;
@@ -37,7 +39,8 @@ struct Parsing::Game_settings
 	int drop_rate=25;
 	bool ally_shot=false;
 	int nb_lives=3;
-	std::string difficulty = "easy";
+	char difficulty_str[20] = "easy";
+	difficulty diff;
 
 };
 

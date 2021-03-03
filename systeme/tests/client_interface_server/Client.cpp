@@ -151,7 +151,7 @@ bool Client::checkID(char *pseudo, char*pswd){
 
 int  Client::createGame(char *game_info){
 	char buffer[Constante::CHAR_SIZE];
-	sprintf(buffer, "Pp&%s&%d", game_info,_pid);
+	sprintf(buffer, "P&%s&%d", game_info,_pid);
 	communication(buffer);
 	int ID_game = atoi(buffer); //-1 if error
 	if(ID_game != -1){

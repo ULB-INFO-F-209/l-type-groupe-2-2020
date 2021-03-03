@@ -92,53 +92,56 @@ void Server::catchInput(char* input) {
     processId = processId.substr(i+1,processId.length());
 
     std::cout << "Input recu : " << input <<std::endl;
-	if (input[0] == Constante::ACTION_MENU_PRINCIPAL[0]) {
+	if (input[0] == Constante::ACTION_MENU_PRINCIPAL) {
 		switch(input[1]) {
-			case Constante::ACTION_MENU_PRINCIPAL[1]:
+			case Constante::SIGN_IN:
 				resClient(&processId, signIn(input));    //Ma_pseudo_mdp
 				break;					//a chaque connexion le server associe un pid a un pseudo
-			case Constante::ACTION_MENU_PRINCIPAL[2]:
+			case Constante::SIGN_UP:
 				resClient(&processId, signUp(input));    //Mb_pseudo_mdp
 				break;
-			case Constante::ACTION_MENU_PRINCIPAL[3]:
+			case Constante::ADD_FRIEND:
 				resClient(&processId, addFriend(input)); //Mc_PseudoMe_PseudoF
 				break;
-			case Constante::ACTION_MENU_PRINCIPAL[4]:
+			case Constante::DEL_FRIEND:
 				resClient(&processId,delFriend(input)); //Md_Pseudo
 				break;
-			case Constante::ACTION_MENU_PRINCIPAL[5]:
+			case Constante::SEND_FRIEND_REQUEST:
                 resClient(&processId,sendFriendRequest(input)); //Me&source&destination&pid
 				//resClient(processId, ret) avec ret le retour de checkleaderboard
 				break;
-			case Constante::ACTION_MENU_PRINCIPAL[6]:
+			case Constante::GET_FRIEND_REQUEST:
                 getFriendRequest(input);
                 resClient(&processId,input); //Mf&pseudo&pid ==> get friend request
 				break;
-			case Constante::ACTION_MENU_PRINCIPAL[7]:
+			case Constante::GET_FRIEND_LIST:
                 friendList(input); // input change il contient mtn le res de friendList
                 resClient(&processId,input);
 				//res = getFriendRequest(input); //Mg_Pseudo
 				break;
-			case Constante::ACTION_MENU_PRINCIPAL[8]:
+			case Constante::LEARDERBOARD:
                 checkleaderboard(input); //Mh_ checkLeaderboard
                 resClient(&processId,input);
 				break;
-			case Constante::ACTION_MENU_PRINCIPAL[9]:
+			case Constante::VIEW_PROFILE:
 				viewProfile(input); //Mi&pseudo  // input change il contient mtn le res de viewProfile
                 resClient(&processId,input); 
 				break;
-            case Constante::ACTION_MENU_PRINCIPAL[11]:
+            case Constante::DEL_FRIEND_REQUEST:
                 resClient(&processId,delFriendRequest(input));
 				//res = viewProfile(input); //Mh_Pseudo
+                break;
+            case Constante::CLIENT_EXIT:
+                client_exit(input);
                 break;
 		}
 
 		
-	} else if (input[0] == Constante::ACTION_JEU[0]){
-		//similaire a M mais on a besoin de connaitre les input du jeu
+	} else if (input[0] == Constante::GAME_SETTINGS){
+        get_game_settings(input);// [TODO] cette fonction lance un thread avec le jeu et les parametre du jeu
 	} else {
 		std::cerr << "[ERROR IN INPUT]" << std::endl;
-		exit(1);
+		return;
 	}
 
 }
@@ -151,6 +154,7 @@ void Server::catchInput(char* input) {
 void Server::createPipe(const char *name){
     char path[Constante::CHAR_SIZE];
     sprintf(path,"%s%s",Constante::PIPE_PATH,name);
+
     int ret_val = mkfifo(path,Constante::PIPE_MODE);
     std::cout << "nom pipe = " << path<<" ("<<ret_val<<"),  ";
     
@@ -186,15 +190,23 @@ void Server::initConnexions(){
             int val = read(fd,proc_id,Constante::CHAR_SIZE); // TODO verification de val 
             if (val == -1)
             {
-                std::cout << "connexion echouée" <<proc_id<<std::endl;
+                std::cout << "[ERROR] CAN'T READ IN INIT CONNEXION" <<std::endl;
             }
             else{
                 std::cout << "connexion du processus :" <<proc_id<<std::endl;
 
                 char pipe_name[Constante::CHAR_SIZE*2];
+                char pipe_input_game[Constante::CHAR_SIZE*2];
+                char pipe_game[Constante::CHAR_SIZE*2];
+
                 sprintf(pipe_name,"%s%s",Constante::BASE_PIPE_FILE,proc_id); // constitue le nom du pipe priver entre le serveur et le client
-                
+                sprintf(pipe_input_game,"%s%s",Constante::BASE_INPUT_PIPE,proc_id);
+                sprintf(pipe_game,"%s%s",Constante::BASE_GAME_PIPE,proc_id);
+
                 createPipe(pipe_name); // creation de nouveau pipe avec le pid du client
+                createPipe(pipe_game);
+                createPipe(pipe_input_game);
+
                 close(fd);
             }
     
@@ -288,7 +300,7 @@ bool Server::delFriendRequest(char* val){
 }
 
 /**
- * Envoie la réponse au bon client si la réponse est un booléen
+ * Envoie la réponse au bon client
  * 
  **/ 
 void Server::resClient(std::string* processId, bool res) {
@@ -341,6 +353,10 @@ void Server::resClient(std::string* processId, int res) {
     std::cout <<std::endl;
 }
 
+/**
+ * @brief (deamons) lance un sauvergarde periodique (90 sec en theorie) de la database
+ * 
+ */
 void Server::launch_db_save(){
     while(true){
         std::this_thread::sleep_for(std::chrono::seconds(Constante::SERVER_SAVE_TIME));
@@ -349,3 +365,60 @@ void Server::launch_db_save(){
         mtx.unlock(); 
     }
 }
+
+/**
+ * @brief Supprime les pipes du client [TODO] ajouter la sup du pipe input et game
+ * 
+ * @param input : le pid du client pour pouvoir supprimer les pipes
+ */
+void Server::client_exit(char *input){
+
+    std::string processId(input);
+    int i = processId.rfind(Constante::DELIMITEUR);
+    processId = processId.substr(i+1,processId.length());
+
+    processId.insert(0,Constante::BASE_PIPE_FILE);
+    processId.insert(0,Constante::PIPE_PATH);
+
+    if(remove(processId.c_str()) != 0){
+        std::cerr << "[ERROR] suppresion du pipe : " << processId << std::endl;
+    }
+    else{
+        std::cout << processId << " supprimer avec succes :) "<<std::endl;
+    }
+
+}
+
+/**
+ * @brief recoit les parametres de jeu et lance un thread avec le jeu
+ * 
+ * @param input les parametres non parser
+ */
+void Server::get_game_settings(char* input){
+	Parsing::Game_settings game;
+	Parsing::create_game_from_str(input, &game);
+	std::cout << game.nb_player << "-" << game.pseudo_hote << "-"
+			  << game.pseudo_other    << "-" << game.drop_rate << "-"
+			  << game.ally_shot << "-" << game.nb_lives << "-"
+			  << game.difficulty_str << std::endl;
+    return;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

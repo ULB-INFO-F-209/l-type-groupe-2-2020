@@ -103,7 +103,7 @@ int Menu::lobby(){
 	Game_settings setting{}; int ret; bool stop = false;
 	char buffer[Constante::CHAR_SIZE];
 	std::string yes_no[] = {"Yes", "No"};
-	std::string difficulty[] = {"Easy", "Normal", "Hard"};
+	std::string difficulty[] = {"easy", "medium", "hard"};
 	_client.get_pseudo(setting.pseudo_hote);
 	while(not stop){
 		int choice = window.print_menu(SIZE_SETTINGS, settings_menu, LOBBY, &setting);
@@ -126,7 +126,8 @@ int Menu::lobby(){
 			case 4:	//difficulty
 				ret = window.print_menu(3, difficulty, LOBBY, &setting);
 				if(ret != -1)
-					setting.difficulty = difficulty[ret];
+					//setting.difficulty_str = difficulty[ret];
+					strcpy(setting.difficulty_str, difficulty[ret].c_str());
 				break;
 			case 5: 	//play
 				create_game_to_str(buffer,&setting);
@@ -210,7 +211,7 @@ void Menu::add_del_friends(bool add){
 				success = _client.sendFriendRequest(buffer);
 				if(success==1){
 					error = REQ_ALREADY;
-					sleep(3);
+					//sleep(3);
 				}
 				else if (success==2)
 					error = FRIENDS_ALREADY;
