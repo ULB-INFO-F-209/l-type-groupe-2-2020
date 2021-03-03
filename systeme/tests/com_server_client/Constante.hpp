@@ -11,7 +11,7 @@
  **/
 namespace Constante{
 
-    const size_t CHAR_SIZE = 264;
+    const size_t CHAR_SIZE = 1000;
 
     //pipe
     const char PIPE_DE_CONNEXION[] = {"connexion"};
@@ -24,7 +24,7 @@ namespace Constante{
 
     //gestion des messages
     constexpr char ACTION_MENU_PRINCIPAL = 'M';
-    constexpr char GAME_SETTINGS = 'J';
+    constexpr char GAME_SETTINGS = 'P';
     constexpr char REPONSE_AMI = 'R';
     const char PAS_SECOND_JOUEUR[] = {"Null"};
     constexpr char ACTION_JEU[] = {"J"/* ajouter les touches possibles*/};
