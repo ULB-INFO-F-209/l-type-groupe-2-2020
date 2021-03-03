@@ -3,6 +3,7 @@
 //
 
 #include "Interface.hpp"
+#include <iostream>
 
 int Interface::init() {
 
@@ -61,7 +62,6 @@ int Interface::init() {
     }
     return 0;
 }
-
 void Interface::initialDraw(){
     //frame around screen
     wattron(main_wnd, A_BOLD);
@@ -77,11 +77,9 @@ void Interface::initialDraw(){
     wrefresh(main_wnd);
     wrefresh(game_wnd);
 }
-
 Interface::Interface(): main_wnd(),game_wnd(), game_area(), screen_area() {
 
 }
-
 void Interface::display(MapHandler *m,int tick, std::vector<Player *> *listPlayer,PlayerShip* playership1,PlayerShip* playership2, Player* player1,Player* player2,int score1, int score2, bool twoPlayers) {
 
     // l'affichage à chaque tour de boucle (server->game->server->client)
@@ -97,7 +95,6 @@ void Interface::display(MapHandler *m,int tick, std::vector<Player *> *listPlaye
     drawUI(m,playership1,playership2,player1,player2,score1,score2,tick, twoPlayers);
     refresh_wnd();
 }
-
 void Interface::display(settingServer* settings){
     werase(game_wnd); // attention ?
     drawStar(settings->object_map);
@@ -113,10 +110,10 @@ void Interface::display(settingServer* settings){
         drawGameOver(settings->object_map, (settings->score_j1+settings->score_j2));
     refresh_wnd();
 }
-
 void Interface::display(settingArray *sett){
     werase(game_wnd); // attention ?
     if (sett->game_over){
+        std::cout << sett->game_over << std::endl;
         drawGameOver((sett->score_j1+sett->score_j2));
         refresh_wnd();
         return;
@@ -124,25 +121,20 @@ void Interface::display(settingArray *sett){
     drawStar(sett->stars_set,sett->my_size.stars_set_size);
     drawProjectile(sett->projectiles_set,sett->my_size.projectiles_set, sett->projectilesEnemy_set,sett->my_size.projectilesEnemy_set);
     drawEnemy(sett->enemy_ships_set, sett->tick, sett->list_player,sett->player_ships_set,sett->my_size.enemy_ships_set,sett->my_size.player_ships_set);
-    
     drawObstacle(sett->obstacles_set,sett->my_size.obstacles_set);
     drawBonus(sett->bonnuses_set,sett->my_size.bonnuses_set);
     drawPlayer(sett->player_ships_set,sett->tick,sett->list_player,sett->my_size.player_ships_set,sett->my_size.list_player);
     drawBoss(sett->boss_set,sett->my_size.boss_set);
     drawNewLevel(sett->tick,sett->level_tick,sett->current_level);
     drawUI(sett->player_ships_set,sett->list_player,sett->score_j1,sett->score_j2 ,sett->tick, sett->two_players,sett->current_level);
-    
     refresh_wnd();
 }
-
-
 void Interface::drawStar(MapHandler *m) {
     for(auto s : m->getStars()){
         mvwaddch(game_wnd, s->getPos().y, s->getPos().x, '.');
     }
 
 }
-
 void Interface::drawObstacle(MapHandler *m) {
     for(auto o : m->getObstacles()){
         wattron(game_wnd, COLOR_PAIR(1));
@@ -151,7 +143,6 @@ void Interface::drawObstacle(MapHandler *m) {
 
     }
 }
-
 void Interface::drawEnemy(MapHandler *m, int tick, std::vector<Player *> *listPlayer) {
     for(auto e :m->getEnemy()){
         wattron(game_wnd, COLOR_PAIR(4));
@@ -183,7 +174,6 @@ void Interface::drawEnemy(MapHandler *m, int tick, std::vector<Player *> *listPl
     }
 
 }
-
 void Interface::drawProjectile(MapHandler *m) {
     for(auto p : m->getProjectiles()){
         if (p->getPlayer()==1) {
@@ -204,7 +194,6 @@ void Interface::drawProjectile(MapHandler *m) {
     }
 
 }
-
 void Interface::drawPlayer(MapHandler *m, int tick, std::vector<Player *> *listPlayer) {
     for( PlayerShip* p : m->getListPlayer()) {
         // draw player body
@@ -251,7 +240,6 @@ void Interface::drawPlayer(MapHandler *m, int tick, std::vector<Player *> *listP
 
 
 }
-
 void Interface::drawUI(MapHandler *m,PlayerShip* playership1,PlayerShip* playership2, Player* player1,Player* player2,int score1, int score2,int tick, bool twoPlayers) {
     
     // energy bar player1
@@ -322,7 +310,6 @@ void Interface::drawUI(MapHandler *m,PlayerShip* playership1,PlayerShip* players
     mvwprintw(main_wnd,20,33," LEVEL : %i",m->getCurrentLevel());
 
 }
-
 void Interface::refresh_wnd() {
     wrefresh(main_wnd);
     wrefresh(game_wnd);
@@ -330,14 +317,12 @@ void Interface::refresh_wnd() {
     refresh();
 
 }
-
 void Interface::close() {
     delwin(main_wnd);
     delwin(game_wnd);
     endwin();
 
 }
-
 void Interface::drawEnergyBar(int a) {
 
     int col_pair = 1;
@@ -358,7 +343,6 @@ void Interface::drawEnergyBar(int a) {
         wattroff(main_wnd, COLOR_PAIR(col_pair));
     }
 }
-
 void Interface::drawBonus(MapHandler *m) {
     for(auto b : m->getBonus()) {
         wattron(game_wnd, A_BOLD);
@@ -379,13 +363,11 @@ void Interface::drawBonus(MapHandler *m) {
     }
 
 }
-
 void Interface::drawNewLevel(MapHandler *map, int tick) {
     if(map->getLevelTick() != 0 && tick <= map->getLevelTick() + 600 && tick > map->getLevelTick()+100){
         mvwprintw(game_wnd, 8, 35, "level %i", map->getCurrentLevel());
     }
 }
-
 void Interface::drawBoss(MapHandler *map) {
     for(auto b :map->getBoss()){
         wattron(main_wnd, COLOR_PAIR(4));
@@ -399,7 +381,6 @@ void Interface::drawBoss(MapHandler *map) {
 
     }
 }
-
 void Interface::drawBoss(Boss *bs,std::size_t size_bs) {
     for(std::size_t i=0; i < size_bs; i++){
         wattron(main_wnd, COLOR_PAIR(4));
@@ -413,7 +394,6 @@ void Interface::drawBoss(Boss *bs,std::size_t size_bs) {
 
     }
   }
-
 void Interface::drawGameOver(MapHandler* m, int score1){
     mvwprintw(game_wnd,8, 35,"GAME OVER");
     mvwprintw(game_wnd,9, 35,"SCORE : %i", score1);
@@ -425,7 +405,6 @@ void Interface::drawGameOver(MapHandler* m, int score1){
     } 
 
 }
-
 void Interface::drawGameOver(int score1){
     mvwprintw(game_wnd,8, 35,"GAME OVER");
     mvwprintw(game_wnd,9, 35,"SCORE : %i", score1);
@@ -437,24 +416,22 @@ void Interface::drawGameOver(int score1){
     } 
 
 }
-
 void Interface::drawStar(Star*s,std::size_t size_s){
-    if (size_s == 0) return;
+    //if (size_s == 0) return;
     for(std::size_t i =0; i< size_s;i++){
         mvwaddch(game_wnd, s[i].getPos().y, s[i].getPos().x, '.');
     }
 }
-
 void Interface::drawObstacle(Obstacle*o,std::size_t size_o){
     if (size_o == 0) return;
     for(std::size_t i =0; i< size_o;i++){
+        
         wattron(game_wnd, COLOR_PAIR(1));
         mvwaddch(game_wnd, o[i].getPos().y, o[i].getPos().x, '#');
         wattroff(game_wnd, COLOR_PAIR(1));
 
     }
 }
-
 void Interface::drawEnemy(EnemyShip* e, int tick, Player* listPlayer,PlayerShip* ps,std::size_t size_e,std::size_t size_ps){
     for(std::size_t i =0; i< size_e;i++){
         wattron(game_wnd, COLOR_PAIR(4));

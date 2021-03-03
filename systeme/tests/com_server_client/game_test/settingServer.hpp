@@ -30,11 +30,12 @@ struct sizeArray{
 };
 
 struct settingArray{
+    sizeArray my_size;
     Boss boss_set[1];
-    Star stars_set[50];
-    Obstacle obstacles_set[65];
-    Projectile projectiles_set[200];
-    Projectile projectilesEnemy_set[200];
+    Star stars_set[606];
+    Obstacle obstacles_set[100];
+    Projectile projectiles_set[300];
+    Projectile projectilesEnemy_set[300];
     PlayerShip player_ships_set[2];
     EnemyShip enemy_ships_set[65]; 
     Bonus bonnuses_set[65];
@@ -47,7 +48,46 @@ struct settingArray{
     bool game_over;
     int level_tick;
     int current_level;
-    sizeArray my_size;
+
+    settingArray(settingServer*obj){
+        my_size = { obj->object_map->getBoss().size(),
+                    obj->object_map->getStars().size(),
+                    obj->object_map->getObstacles().size(),
+                    obj->object_map->getProjectiles().size(), 
+                    obj->object_map->getProjectilesEnemy().size(), 
+                    obj->object_map->getListPlayer().size(), 
+                    obj->object_map->getEnemy().size(), 
+                    obj->object_map->getBonus().size(), 
+                    obj->list_player->size()
+                    };
+        
+        toArray((obj->object_map->getBoss()),boss_set);
+        toArray((obj->object_map->getStars()),stars_set);
+        toArray((obj->object_map->getObstacles()),obstacles_set);
+        toArray((obj->object_map->getProjectiles()),projectiles_set);
+        toArray((obj->object_map->getProjectilesEnemy()),projectilesEnemy_set);
+        toArray((obj->object_map->getEnemy()),enemy_ships_set);
+        toArray((obj->object_map->getListPlayer()),player_ships_set);
+        toArray((obj->object_map->getBonus()),bonnuses_set);
+        toArray(*(obj->list_player),list_player);
+
+        score_j1 = obj->score_j1;
+        score_j2 = obj->score_j2;
+        two_players =obj->two_players;
+        game_over = obj->game_over;
+        tick = obj->tick;
+        level_tick = obj->object_map->getLevelTick();
+        current_level = obj->object_map->getCurrentLevel();
+
+    }
+
+    template<typename K>
+    void toArray(std::vector<K*> obj_vect,K* array){
+        for(std::size_t i = 0; i < obj_vect.size(); i++){
+            array[i] = *(obj_vect[i]);
+        }
+    }
+    
 };
 
 

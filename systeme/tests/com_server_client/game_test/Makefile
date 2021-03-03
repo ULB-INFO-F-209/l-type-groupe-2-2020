@@ -1,4 +1,4 @@
-CFLAGS = -std=c++11 -Wall -pedantic
+CFLAGS = -std=c++17 -Wall -pedantic
 
 main: main.cpp	CurrentGame.o MapHandler.o Interface.o Player.o
 	g++ -g  -o main main.cpp CurrentGame.o MapHandler.o Interface.o Player.o $(CFLAGS) -lncurses
