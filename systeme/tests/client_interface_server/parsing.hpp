@@ -11,12 +11,13 @@
 #include <string>
 #include <unistd.h>
 #include "database/database.hpp"
+#include "game_test/settingServer.hpp"
 
-enum difficulty{easy, medium, hard};
+//enum difficulty{easy, medium, hard};
 
 namespace Parsing{
 	using Profile = Profile;
-	struct Game_settings;
+	using Game_settings = Game_settings;
 
 	//encodage
 	void profile_list_to_str(char *buffer,std::vector<Profile> *prof);
@@ -31,7 +32,7 @@ namespace Parsing{
 	void parsing(char* str, char* token1, char* token2 = nullptr);
 }
 
-struct Parsing::Game_settings
+/*struct Parsing::Game_settings
 {
 	int nb_player = 1;
 	char pseudo_hote[20];
@@ -42,6 +43,6 @@ struct Parsing::Game_settings
 	char difficulty_str[20] = "easy";
 	difficulty diff;
 
-};
+};*/
 
 #endif

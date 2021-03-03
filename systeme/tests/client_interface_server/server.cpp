@@ -138,7 +138,9 @@ void Server::catchInput(char* input) {
 
 		
 	} else if (input[0] == Constante::GAME_SETTINGS){
-        get_game_settings(input);// [TODO] cette fonction lance un thread avec le jeu et les parametre du jeu
+        Parsing::Game_settings game_sett;
+        get_game_settings(input,&game_sett);// [TODO] cette fonction lance un thread avec le jeu et les parametre du jeu
+        
 	} else {
 		std::cerr << "[ERROR IN INPUT]" << std::endl;
 		return;
@@ -394,17 +396,54 @@ void Server::client_exit(char *input){
  * 
  * @param input les parametres non parser
  */
-void Server::get_game_settings(char* input){
-	Parsing::Game_settings game;
-	Parsing::create_game_from_str(input, &game);
-	std::cout << game.nb_player << "-" << game.pseudo_hote << "-"
-			  << game.pseudo_other    << "-" << game.drop_rate << "-"
-			  << game.ally_shot << "-" << game.nb_lives << "-"
-			  << game.difficulty_str << std::endl;
+void Server::get_game_settings(char* input, Parsing::Game_settings* game_sett){
+	
+	Parsing::create_game_from_str(input, game_sett);
+	std::cout << game_sett->nb_player << "-" << game_sett->pseudo_hote << "-"
+			  << game_sett->pseudo_other    << "-" << game_sett->drop_rate << "-"
+			  << game_sett->ally_shot << "-" << game_sett->nb_lives << "-"
+			  << game_sett->difficulty_str << std::endl;
+
+    std::string processId(input);
+    int i = processId.rfind(Constante::DELIMITEUR);
+    processId = processId.substr(i+1,processId.length());
+    strcpy(game_sett->pid,processId.c_str());
+    
     return;
 }
 
+void Server::launch_game(Game_settings* sett_game){
 
+    CurrentGame game{sett_game};
+    settingServer obj;   
+
+    char input_pipe[Constante::CHAR_SIZE],send_response_pipe[Constante::CHAR_SIZE];
+    sprintf(input_pipe,"%s%s%s",Constante::PIPE_PATH,Constante::BASE_INPUT_PIPE,sett_game->pid);
+    sprintf(send_response_pipe,"%s%s%s",Constante::PIPE_PATH,Constante::BASE_GAME_PIPE,sett_game->pid);
+
+    bool gameOn = true;
+    while(gameOn){
+        // [TODO] read de input pipe
+        game.run_test(&obj);
+        settingArray obj2(&obj);
+        sleep(2);
+        resClient(input_pipe,&obj2);
+
+    }
+     
+
+    
+}
+
+void Server::resClient(char* pipe, settingArray* res){
+
+    int fd = open(pipe,O_WRONLY);
+    if (fd != -1) write(fd, &(*res), sizeof(settingArray));
+    else std::cout << "[ERROR] settings non ecrit " << std::endl;
+    
+    close(fd);
+
+}
 
 
 

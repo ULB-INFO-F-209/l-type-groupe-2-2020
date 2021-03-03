@@ -5,8 +5,8 @@ flag = -std=c++17 -masm=intel -lncurses -fconcepts -pthread \
 		 -Wnoexcept -Wctor-dtor-privacy -Woverloaded-virtual -Wsign-promo -Wzero-as-null-pointer-constant\
 		 -Wsuggest-final-types -Wsuggest-final-methods  -Wsuggest-override -lquadmath
 
-server: main_server.cpp server.o database.o account.o parsing.o
-	g++  main_server.cpp server.o database.o account.o parsing.o $(flag) -o process_server
+server: main_server.cpp server.o database.o account.o parsing.o CurrentGame.o MapHandler.o game_test/settingServer.hpp interface_game.o
+	g++  main_server.cpp CurrentGame.o server.o database.o account.o parsing.o MapHandler.o interface_game.o $(flag) -o process_server
 
 client: main_client.cpp client.o parsing.o interface.o screen.o menu.o
 	g++  main_client.cpp  client.o parsing.o interface.o screen.o menu.o  $(flag)  -o process_client
@@ -16,6 +16,10 @@ interface.o: Interface.cpp Interface.hpp screen.hpp
 
 screen.o:screen.hpp screen.cpp
 	g++  -c screen.cpp $(flag) -o screen.o
+
+interface_game.o: game_test/Interface_game.cpp game_test/MapHandler.hpp game_test/Player.hpp game_test/CurrentGame.hpp 
+	g++ -g -c -o Interface_game.o game_test/Interface_game.cpp $(flag)
+
 
 menu.o: Menu.hpp Menu.cpp
 	g++  -c Menu.cpp $(flag) -o menu.o
@@ -28,6 +32,16 @@ server.o: server.cpp server.hpp Constante.hpp
 
 database.o: database/database.hpp database/database.cpp
 	g++  -c database/database.cpp $(flag) -o database.o
+
+CurrentGame.o: game_test/CurrentGame.cpp game_test/MapHandler.hpp game_test/Interface_game.hpp game_test/Player.hpp
+	g++ -g -c -o CurrentGame.o game_test/CurrentGame.cpp $(flag)
+
+MapHandler.o: game_test/MapHandler.cpp game_test/Rect.hpp game_test/InternGameObject.hpp game_test/Player.hpp
+	g++ -g -c -o MapHandler.o game_test/MapHandler.cpp $(flag)
+
+Player.o: game_test/Player.cpp game_test/Player.hpp
+	g++ -g -c -o Player.o Player.cpp $(flag)
+
 
 account.o: database/account.hpp database/account.cpp
 	g++  -c database/account.cpp $(flag) -o account.o

@@ -139,15 +139,7 @@ void Client::exit(){
 	//and destruct my game if I was playing
 }
 
-//game
-bool Client::checkID(char *pseudo, char*pswd){
-	char buffer[Constante::CHAR_SIZE];
-	sprintf(buffer, "Pf&%s&%s&%d", pseudo, pswd, _pid);
-	communication(buffer);
-	bool success = atoi(buffer); // "0" ou "1" => User doesn't exist || User exist
 
-	return success;
-}
 
 int  Client::createGame(char *game_info){
 	char buffer[Constante::CHAR_SIZE];

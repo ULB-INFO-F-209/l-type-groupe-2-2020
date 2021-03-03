@@ -3,6 +3,8 @@
 
 #include "database/database.hpp" 
 #include "Constante.hpp"
+#include "game_test/settingServer.hpp"
+#include "game_test/CurrentGame.hpp"
 
 // C++
 #include <thread>
@@ -65,9 +67,9 @@ private:
     void client_exit(char *input);
     static void launch_db_save();
     bool static isServerActive() {return _is_active;}
-    void launch_game();
-    void get_game_settings(char *);
-    
+    void launch_game(Game_settings* sett_game);
+    void get_game_settings(char* input, Game_settings* game_sett);
+    void resClient(char* pipe, settingArray *res);
 
 };
 
