@@ -11,7 +11,7 @@
  **/
 namespace Constante{
 
-    const size_t CHAR_SIZE = 100000;
+    const size_t CHAR_SIZE = 2500;
 
     //pipe
     const char PIPE_DE_CONNEXION[] = {"connexion"};
