@@ -12,6 +12,9 @@ Client::Client():_pid(getpid()){
 	
 	sprintf(_pipe_from_server,"%s%s%d", Constante::PIPE_PATH,Constante::BASE_PIPE_FILE, _pid); //nom a lire
 	sprintf(_pipe_to_server, "%s%s", Constante::PIPE_PATH, Constante::PIPE_DE_REPONSE); //pipe où écrire
+	sprintf(_pipe_input_game, "%s%s%d", Constante::PIPE_PATH, Constante::BASE_INPUT_PIPE,_pid); //pipe où écrire
+	sprintf(_pipe_game_sett, "%s%s%d", Constante::PIPE_PATH, Constante::BASE_GAME_PIPE,_pid); //pipe où écrire
+		
 	char test[100];
 	sprintf(test,"%s%s",Constante::PIPE_PATH,Constante::PIPE_DE_CONNEXION); //nom a lire
 
@@ -155,5 +158,5 @@ int  Client::createGame(char *game_info){
 
 //destructor
 Client::~Client(){
-	//exit(); //kill process
+	exit(); //kill process
 }

@@ -8,8 +8,8 @@ flag = -std=c++17 -masm=intel -lncurses -fconcepts -pthread \
 server: main_server.cpp server.o database.o account.o parsing.o CurrentGame.o MapHandler.o game_test/settingServer.hpp interface_game.o
 	g++  main_server.cpp CurrentGame.o server.o database.o account.o parsing.o MapHandler.o interface_game.o $(flag) -o process_server
 
-client: main_client.cpp client.o parsing.o interface.o screen.o menu.o
-	g++  main_client.cpp  client.o parsing.o interface.o screen.o menu.o  $(flag)  -o process_client
+client: main_client.cpp client.o parsing.o interface.o screen.o menu.o CurrentGame.o MapHandler.o
+	g++  main_client.cpp  client.o parsing.o interface.o screen.o menu.o CurrentGame.o MapHandler.o interface_game.o $(flag)  -o process_client
 
 interface.o: Interface.cpp Interface.hpp screen.hpp
 	g++  -c Interface.cpp $(flag) -o interface.o
@@ -18,7 +18,7 @@ screen.o:screen.hpp screen.cpp
 	g++  -c screen.cpp $(flag) -o screen.o
 
 interface_game.o: game_test/Interface_game.cpp game_test/MapHandler.hpp game_test/Player.hpp game_test/CurrentGame.hpp 
-	g++ -g -c -o Interface_game.o game_test/Interface_game.cpp $(flag)
+	g++ -g -c -o interface_game.o game_test/Interface_game.cpp $(flag)
 
 
 menu.o: Menu.hpp Menu.cpp
@@ -48,6 +48,10 @@ account.o: database/account.hpp database/account.cpp
 
 parsing.o: parsing.hpp parsing.cpp
 	g++  -c parsing.cpp $(flag) -o parsing.o
+
+run_client1: test_client1.cpp client.o parsing.o interface.o screen.o menu.o CurrentGame.o MapHandler.o
+	g++  test_client1.cpp  client.o parsing.o interface.o screen.o menu.o CurrentGame.o MapHandler.o interface_game.o $(flag)  -o test_client1
+	./test_client1
 
 run_server:
 	make server

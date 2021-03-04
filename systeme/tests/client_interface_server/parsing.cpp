@@ -103,7 +103,7 @@ void Parsing::create_game_from_str(char *buffer, Game_settings * settings){
 	//option = option.substr(index, option.length());
 	option = cpp_str_buffer.substr(0,index);
 	cpp_str_buffer = cpp_str_buffer.substr(index+1,cpp_str_buffer.size());
-	settings->drop_rate = std::atof(option.c_str()); // TODO drop_rate est un float trouvé un equivalente de atoi pour float
+	settings->drop_rate = atoi(option.c_str()); // TODO drop_rate est un float trouvé un equivalente de atoi pour float
 
 	//ally_shot
 	index = cpp_str_buffer.find(delimiteur_score);

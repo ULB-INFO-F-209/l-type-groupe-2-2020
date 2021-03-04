@@ -48,7 +48,7 @@ struct settingArray{
     bool game_over;
     int level_tick;
     int current_level;
-
+    settingArray()=default;
     settingArray(settingServer*obj){
         my_size = { obj->object_map->getBoss().size(),
                     obj->object_map->getStars().size(),
@@ -99,7 +99,7 @@ struct Game_settings
 	bool ally_shot=false;
 	int nb_lives=3;
 	char difficulty_str[20] = "easy";
-	difficulty diff;
+	difficulty diff{easy};
     char pid[10];
 
 };

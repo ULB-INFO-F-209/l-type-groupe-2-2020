@@ -140,7 +140,7 @@ void Server::catchInput(char* input) {
 	} else if (input[0] == Constante::GAME_SETTINGS){
         Parsing::Game_settings game_sett;
         get_game_settings(input,&game_sett);// [TODO] cette fonction lance un thread avec le jeu et les parametre du jeu
-        
+        launch_game(&game_sett);
 	} else {
 		std::cerr << "[ERROR IN INPUT]" << std::endl;
 		return;
@@ -414,20 +414,23 @@ void Server::get_game_settings(char* input, Parsing::Game_settings* game_sett){
 
 void Server::launch_game(Game_settings* sett_game){
 
-    CurrentGame game{sett_game};
+    CurrentGame game{*sett_game};
     settingServer obj;   
 
     char input_pipe[Constante::CHAR_SIZE],send_response_pipe[Constante::CHAR_SIZE];
     sprintf(input_pipe,"%s%s%s",Constante::PIPE_PATH,Constante::BASE_INPUT_PIPE,sett_game->pid);
     sprintf(send_response_pipe,"%s%s%s",Constante::PIPE_PATH,Constante::BASE_GAME_PIPE,sett_game->pid);
 
+    std::cout << input_pipe << std::endl << send_response_pipe << std::endl;
     bool gameOn = true;
     while(gameOn){
         // [TODO] read de input pipe
-        game.run_test(&obj);
-        settingArray obj2(&obj);
-        sleep(2);
-        resClient(input_pipe,&obj2);
+        game.run_test(&obj,'q');
+        settingArray obj2{&obj};
+        sleep(3);
+        std::cout << "sleep "<<std::endl;
+        resClient(send_response_pipe,&obj2);
+        break;
 
     }
      
@@ -442,7 +445,7 @@ void Server::resClient(char* pipe, settingArray* res){
     else std::cout << "[ERROR] settings non ecrit " << std::endl;
     
     close(fd);
-
+    std::cout << "Settings ecrit !!" << std::endl;
 }
 
 

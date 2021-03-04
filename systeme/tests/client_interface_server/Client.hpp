@@ -57,7 +57,7 @@ class Client{
 public:
     //constructor
     explicit Client();
-    settingArray game_sett;
+    settingArray game_sett{};
     //Communication
     bool signIn(char *pseudo, char *pswd, bool true_conn=true);
     bool signUp(char *pseudo, char *pswd);
@@ -72,16 +72,19 @@ public:
     void exit();
     void read_pipe(){
 
+        int fd = open(_pipe_game_sett,O_RDONLY);
         while(true){
-			int res = read(_fd_get_query , &game_sett, sizeof(settingArray));
+			int res = read(fd , &game_sett, sizeof(settingArray));
 			if (res == -1){
                 std::cout << " [ERROR] " <<_pid << "n'a pas reussit a lire"<<std::endl;
             }
             else{
+                std::cout << "je suis la "<<std::endl;
                 std::cout << game_sett.list_player[0].getnLives() << std::endl; 
                 break;
             };
         }
+        close(fd);
     }
 
     //Game

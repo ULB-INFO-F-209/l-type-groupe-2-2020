@@ -714,7 +714,7 @@ void Interface::set_settings(Game_settings *set){
 	//box two
 
 	y_courant = y;
-	buffer = caption[4] + set->difficulty;
+	buffer = caption[4] + set->difficulty_str;
 	x_courant = x - buffer.size()/2;
 	print_cara(_settings_win2,buffer.c_str(), x_courant, y_courant);
 	y_courant +=3;
