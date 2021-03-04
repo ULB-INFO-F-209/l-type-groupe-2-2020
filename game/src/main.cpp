@@ -13,7 +13,7 @@ int main(int argc, char **argv){
     game_screen.init();
     game_screen.initialDraw();
 
-    CurrentGame game(false, 80, easy, false,&game_screen);
+    CurrentGame game(true, 80, easy, true,&game_screen);
     
     bool gameOn =true;
 
