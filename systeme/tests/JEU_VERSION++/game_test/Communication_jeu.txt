@@ -1,0 +1,15 @@
+
+Communication:
+
+    Delimiteur   : &
+
+    Spwan:
+        Obstacle : O|x
+        Ennemie  : E|x
+        Boss     : B|
+        Bonus    : b|x,y
+
+        Player Projectile  :  P|True
+        Ennemie Projectile :  PE|x,y
+
+    
