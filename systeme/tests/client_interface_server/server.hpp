@@ -70,7 +70,7 @@ private:
     void launch_game(Game_settings* sett_game);
     void get_game_settings(char* input, Game_settings* game_sett);
     void resClient(char* pipe, settingArray *res);
-
+    void resClient(char* pipe, settingArray2* res);
 };
 
 

@@ -32,7 +32,7 @@ void Client::communication(char *buffer){
 	_fd_send_query =  open(_pipe_to_server, O_WRONLY); 
 	write(_fd_send_query, buffer, Constante::CHAR_SIZE); //sending query
 	close(_fd_send_query);
-	_fd_get_query = open(_pipe_from_server, O_RDONLY);
+	_fd_get_query = open(_pipe_from_server, O_RDWR);
 	if (_fd_get_query != -1){
 		//char buff[Constante::CHAR_SIZE];
 		while(true){
@@ -137,7 +137,11 @@ void Client::get_profile(char *res){
 void Client::exit(){
 	char buffer[Constante::CHAR_SIZE];
 	sprintf(buffer, "Mj&%d",_pid);
-	communication(buffer); //server return exit code 0
+	_fd_send_query =  open(_pipe_to_server, O_WRONLY); 
+	write(_fd_send_query, buffer, Constante::CHAR_SIZE);
+	std::cout << "bla bla " << std::endl;
+	close(_fd_send_query);
+	//server return exit code 0
 	//the server should delete all pipe we used!
 	//and destruct my game if I was playing
 }
@@ -148,15 +152,16 @@ int  Client::createGame(char *game_info){
 	char buffer[Constante::CHAR_SIZE];
 	sprintf(buffer, "P&%s&%d", game_info,_pid);
 	communication(buffer);
-	int ID_game = atoi(buffer); //-1 if error
+	/*int ID_game = atoi(buffer); //-1 if error
 	if(ID_game != -1){
 		_currentGameID = ID_game; 
 		_inGame = true;
 	}
-	return ID_game;
+	return ID_game;*/
 }
 
 //destructor
 Client::~Client(){
 	exit(); //kill process
+	std::cout << "blou blou" << std::endl;
 }

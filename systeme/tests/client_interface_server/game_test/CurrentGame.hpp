@@ -12,7 +12,6 @@
 #include "MapHandler.hpp"
 #include "Interface_game.hpp"
 #include "InternGameObject.hpp"
-#include "settingServer.hpp"
 #include "GameConstante.hpp"
 
 class CurrentGame {
@@ -66,7 +65,7 @@ public:
         game_area = anInterface->get_game_area();
         screen_area = anInterface->get_screen_area();
     }
-    CurrentGame(Game_settings game_sett):twoPlayers(game_sett.nb_player == 2? true:false),friendlyFire(game_sett.ally_shot), dropRate(game_sett.drop_rate),dif(game_sett.diff),screen_area({ {0, 0}, {80, 24}}),game_area({ {0, 0}, {static_cast<uint_fast16_t>(screen_area.width() - 2), static_cast<uint_fast16_t>(screen_area.height() - 4 - 4)}}) {
+    CurrentGame(Game_settings game_sett):twoPlayers(game_sett.nb_player == 2? true:false),friendlyFire(game_sett.ally_shot), dropRate(game_sett.drop_rate),dif(game_sett.diff),screen_area( {0, 0}, {80, 24}),game_area( {0, 0}, {static_cast<uint_fast16_t>(screen_area.width() - 2), static_cast<uint_fast16_t>(screen_area.height() - 4 - 4)}) {
         
         playership1 = new PlayerShip(10, 5, { {10 - 1, 5 }, { 3, 2 } }, '0',100, 0,100,0);
         player1 = new Player(game_sett.nb_lives);
@@ -77,11 +76,12 @@ public:
             player2 = new Player(game_sett.nb_lives);
             listPlayer.push_back(player2);
         }
-
+        map.playerInit(playership1,playership2);
+        map.setBounds(game_area);
     }
-    void run_test(/*Interface * anInterface,*/ settingServer* setting_to_fill,int in_char);
+    void run_test(settingServer2* setting_to_fill,char in_char);
     int getInput() const{return in_char;}
-    void getSettings(settingServer* settings);
+    void getSettings(settingServer2* settings);
 
     void run();
 };

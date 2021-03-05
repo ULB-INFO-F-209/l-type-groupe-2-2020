@@ -34,6 +34,7 @@
 
 #include "Constante.hpp"
 #include "game_test/settingServer.hpp"
+#include "game_test/Interface_game.hpp"
 
 class Client{
     //state
@@ -51,13 +52,13 @@ class Client{
     //files descriptors
     int _fd_send_query;
     int _fd_get_query;
+    settingArray2 game_sett;
 
     
 
 public:
     //constructor
     explicit Client();
-    settingArray game_sett{};
     //Communication
     bool signIn(char *pseudo, char *pswd, bool true_conn=true);
     bool signUp(char *pseudo, char *pswd);
@@ -72,19 +73,32 @@ public:
     void exit();
     void read_pipe(){
 
+        std::cout << _pipe_game_sett << std::endl;
         int fd = open(_pipe_game_sett,O_RDONLY);
+
         while(true){
-			int res = read(fd , &game_sett, sizeof(settingArray));
-			if (res == -1){
-                std::cout << " [ERROR] " <<_pid << "n'a pas reussit a lire"<<std::endl;
-            }
-            else{
-                std::cout << "je suis la "<<std::endl;
-                std::cout << game_sett.list_player[0].getnLives() << std::endl; 
-                break;
-            };
+            // std::cout << _pipe_game_sett << std::endl;
+
+            // if(errno == -1 )std::cout << "erreur ici" <<std::endl;
+            // break;
+            // else{
+                settingArray2 obj3;
+                 int res = read(fd , &obj3, sizeof(settingArray2));
+            //     if (res == -1){
+            //         std::cout << " [ERROR] " <<_pid << " n'a pas reussit a lire"<<std::endl;
+            //     }
+            //     else{
+            //         std::cout << "je suis la "<<std::endl;
+                     std::cout << obj3.list_player[0].getnLives() << std::endl;
+            //         br
+            //     }
+            // }
+            break;
         }
+        //delete game_sett;
         close(fd);
+        std::cout << "je suis la apres 2 ans "<<std::endl;
+
     }
 
     //Game

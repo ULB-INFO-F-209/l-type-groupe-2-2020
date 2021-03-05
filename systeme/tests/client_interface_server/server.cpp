@@ -140,6 +140,8 @@ void Server::catchInput(char* input) {
 	} else if (input[0] == Constante::GAME_SETTINGS){
         Parsing::Game_settings game_sett;
         get_game_settings(input,&game_sett);// [TODO] cette fonction lance un thread avec le jeu et les parametre du jeu
+        bool o = true;
+        resClient(&processId,o);
         launch_game(&game_sett);
 	} else {
 		std::cerr << "[ERROR IN INPUT]" << std::endl;
@@ -312,13 +314,13 @@ void Server::resClient(std::string* processId, bool res) {
     char pipe_name[Constante::CHAR_SIZE];
     sprintf(pipe_name,"%s%s%s", Constante::PIPE_PATH, Constante::BASE_PIPE_FILE,(*processId).c_str());
 
-    std::cout << "resultat requete : " << message <<" sur le pipe "<<pipe_name << std::endl; 
 
-	fd = open(pipe_name,O_WRONLY);
+	fd = open(pipe_name,O_RDWR);
     if (fd != -1) write(fd, &message, Constante::CHAR_SIZE);
     else std::cout << "[ERROR] requete non ecrite " << std::endl;
     
     close(fd);
+    std::cout << "resultat requete : " << message <<" sur le pipe "<<pipe_name << std::endl; 
     std::cout <<std::endl;
 }
 
@@ -415,7 +417,7 @@ void Server::get_game_settings(char* input, Parsing::Game_settings* game_sett){
 void Server::launch_game(Game_settings* sett_game){
 
     CurrentGame game{*sett_game};
-    settingServer obj;   
+    settingServer2 obj;   
 
     char input_pipe[Constante::CHAR_SIZE],send_response_pipe[Constante::CHAR_SIZE];
     sprintf(input_pipe,"%s%s%s",Constante::PIPE_PATH,Constante::BASE_INPUT_PIPE,sett_game->pid);
@@ -426,22 +428,32 @@ void Server::launch_game(Game_settings* sett_game){
     while(gameOn){
         // [TODO] read de input pipe
         game.run_test(&obj,'q');
-        settingArray obj2{&obj};
-        sleep(3);
-        std::cout << "sleep "<<std::endl;
-        resClient(send_response_pipe,&obj2);
+        //settingArray obj2{&obj};
+        settingArray2 obj3{&obj};
+        //std::cout << obj2.my_size.list_player<<std::endl;
+        std::cout << "Beforre sleep" << std::endl;
+        sleep(4);
+        std::cout << "After   sleep "<<std::endl;
+        resClient(send_response_pipe,&obj3);
         break;
 
     }
-     
-
-    
 }
 
 void Server::resClient(char* pipe, settingArray* res){
-
+    std::cout << " SEND INPUT TO : " << pipe << std::endl;
     int fd = open(pipe,O_WRONLY);
-    if (fd != -1) write(fd, &(*res), sizeof(settingArray));
+    if (fd != -1) write(fd, res, sizeof(settingArray));
+    else std::cout << "[ERROR] settings non ecrit " << std::endl;
+    
+    close(fd);
+    std::cout << "Settings ecrit !!" << std::endl;
+}
+
+void Server::resClient(char* pipe, settingArray2* res){
+    std::cout << " SEND INPUT TO : " << pipe << std::endl;
+    int fd = open(pipe,O_WRONLY);
+    if (fd != -1) write(fd, res, sizeof(settingArray));
     else std::cout << "[ERROR] settings non ecrit " << std::endl;
     
     close(fd);

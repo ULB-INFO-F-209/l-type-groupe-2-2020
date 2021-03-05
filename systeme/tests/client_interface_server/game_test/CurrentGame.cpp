@@ -257,7 +257,7 @@ void CurrentGame::run() {
 
 
 
-void CurrentGame::run_test(/*Interface * anInterface,*/settingServer* setting_to_fill,int in_char){
+void CurrentGame::run_test(settingServer2* setting_to_fill,char in_char){
 
 
     // get input
@@ -275,70 +275,70 @@ void CurrentGame::run_test(/*Interface * anInterface,*/settingServer* setting_to
 
 
     // fonction du switch
-    //execInput(in_char, x1, y1, true);    // peut changer le exit_requested
-    //if(twoPlayers)execInput(in_char, x2, y2, false);
+    execInput(in_char, x1, y1, true);    // peut changer le exit_requested
+    if(twoPlayers)execInput(in_char, x2, y2, false);
 
 
     // update object field
-    // if(tick % 7 == 0)
-    //     map.update(MapObject::star, tick);
-    // if(tick % 7 == 0)
-    //     map.update(MapObject::projectile, tick);
+    if(tick % 7 == 0)
+        map.update(MapObject::star, tick);
+    if(tick % 7 == 0)
+        map.update(MapObject::projectile, tick);
 
-    // if(tick > 100 && tick %50  == 0) {
-    //     map.update(MapObject::obstacle, tick);
-    // }
-    // if (tick > 100 && tick %150 ==0)
-    //     map.update(MapObject::enemyship, tick);
-    // if(tick %50  == 0) {
-    //     map.update(MapObject::bonus, tick);
-    // }
-    // if(map.getCurrentLevel()==3 && tick%10==0 && !map.getChangingLevel()){
-    //     map.update(MapObject::boss,tick);
-    // }
+    if(tick > 100 && tick %50  == 0) {
+        map.update(MapObject::obstacle, tick);
+    }
+    if (tick > 100 && tick %150 ==0)
+        map.update(MapObject::enemyship, tick);
+    if(tick %50  == 0) {
+        map.update(MapObject::bonus, tick);
+    }
+    if(map.getCurrentLevel()==3 && tick%10==0 && !map.getChangingLevel()){
+        map.update(MapObject::boss,tick);
+    }
 
-    // for( PlayerShip* p : map.getListPlayer()){
-    //     if (p->getCurrentBonus()==minigun && p->getHp()>0 && tick % 7 == 0)
-    //         map.spawnProjectile(p->getPos().x, p->getPos().y, p->getShootDamage(), true, 10, p->getPlayerNb()+1);
-    // }
-    // map.enemyShoot(tick);
-    // map.bossShoot(tick);
-    // map.updateBounds();     // update player bounds
-    // map.checkCollision(tick, friendlyFire);
+    for( PlayerShip* p : map.getListPlayer()){
+        if (p->getCurrentBonus()==minigun && p->getHp()>0 && tick % 7 == 0)
+            map.spawnProjectile(p->getPos().x, p->getPos().y, p->getShootDamage(), true, 10, p->getPlayerNb()+1);
+    }
+    map.enemyShoot(tick);
+    map.bossShoot(tick);
+    map.updateBounds();     // update player bounds
+    map.checkCollision(tick, friendlyFire);
 
-    // if(map.getBoss().empty() && map.getBossSpawned())
-    //     game_over = true;
+    if(map.getBoss().empty() && map.getBossSpawned())
+         game_over = true;
 
-    // if(twoPlayers){
-    //     if (player1->getnLives() < 1 && player2->getnLives() < 1)
-    //         game_over = true;
-    // }else{
-    //     if (player1->getnLives() < 1)
-    //         game_over = true;
-    // }
+    if(twoPlayers){
+        if (player1->getnLives() < 1 && player2->getnLives() < 1)
+            game_over = true;
+    }else{
+        if (player1->getnLives() < 1)
+            game_over = true;
+    }
 
-    // heal(); // remet hp du player à 100 si encore vies
+    heal(); // remet hp du player à 100 si encore vies
 
-    // if(map.getLevelTick() != 0 && tick <= map.getLevelTick() + 600 && tick > map.getLevelTick()+100){
-    //         if(tick == map.getLevelTick() + 600) {
-    //             map.changeLevel();
-    //             map.setChangingLevel(false);
-    //         }
-    //     }
+    if(map.getLevelTick() != 0 && tick <= map.getLevelTick() + 600 && tick > map.getLevelTick()+100){
+            if(tick == map.getLevelTick() + 600) {
+                map.changeLevel();
+                map.setChangingLevel(false);
+            }
+        }
 
     
-    // saveScore(); // sauvegarde le score
+    saveScore(); // sauvegarde le score
 
-    // if(exit_requested){
-    //     game_over = true;
-    //     getSettings(setting_to_fill);
-    //     return;
-    // } 
-    // if(game_over){
+    if(exit_requested){
+        game_over = true;
+        getSettings(setting_to_fill);
+        return;
+    } 
+    if(game_over){
         
-    //     getSettings(setting_to_fill);
-    //     return;
-    // }
+        getSettings(setting_to_fill);
+        return;
+    }
     getSettings(setting_to_fill);
     tick++;
     
@@ -347,16 +347,21 @@ void CurrentGame::run_test(/*Interface * anInterface,*/settingServer* setting_to
 }
 
 
-void CurrentGame::getSettings(settingServer* settings) {
-    settings->object_map = &map;
-    settings->object_playership1 = playership1; 
-    settings->object_playership2 = playership2;
+void CurrentGame::getSettings(settingServer2* settings) {
+    settings->boss_set = map.getBossPointeur();
+    settings->stars_set =map.getStarsPointeur();
+    settings->obstacles_set=map.getObstaclesPointeur();
+    settings->projectiles_set=map.getProjectilesPointeur();
+    settings->projectilesEnemy_set=map.getProjectilesEnemyPointeur();
+    settings->player_ships_set=map.getPlayerShipPointeur();
+    settings->enemy_ships_set==map.getEnemyPointeur();
+    settings->bonuses_set=map.getBonusPointeur();
     settings->score_j1 =  playership1->getScore();
     settings->score_j2 =  twoPlayers ? playership2->getScore() :0;
     settings->two_players = twoPlayers; 
-    settings->object_player1 =  player1;
-    settings->object_player2 = player2;
     settings->list_player = &listPlayer; 
     settings->tick = tick; 
     settings->game_over = game_over;
+    settings->level_tick = map.getLevelTick();
+    settings->current_level = map.getCurrentLevel();
 };

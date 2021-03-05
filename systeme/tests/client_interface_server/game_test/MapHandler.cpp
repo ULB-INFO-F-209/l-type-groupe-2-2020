@@ -443,6 +443,16 @@ void MapHandler::spawnBonuses(int x, int y) {
     auto bonusT = bonusType(rand()%4); // à changer si nombre de bonus change
     bonuses_set.push_back(new Bonus(x, y, bonusT ));
 }
+// void MapHandler::getSettings(settingServer2* obj){
+//     obj->boss_set = &boss_set;
+//     obj->stars_set =  &stars_set;
+//     obj->obstacles_set =  &obstacles_set;
+//     obj->projectiles_set =  &projectiles_set;
+//     obj->projectilesEnemy_set =  &projectilesEnemy_set;
+//     obj->player_ships_set =  &player_ships_set;
+//     obj->enemy_ships_set =  &enemy_ships_set;
+//     obj->bonuses_set =  &bonuses_set;
+// }
 void MapHandler::changeLevel() {
 
     if(currentLevel==2){

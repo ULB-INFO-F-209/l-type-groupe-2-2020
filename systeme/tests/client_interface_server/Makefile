@@ -11,6 +11,9 @@ server: main_server.cpp server.o database.o account.o parsing.o CurrentGame.o Ma
 client: main_client.cpp client.o parsing.o interface.o screen.o menu.o CurrentGame.o MapHandler.o
 	g++  main_client.cpp  client.o parsing.o interface.o screen.o menu.o CurrentGame.o MapHandler.o interface_game.o $(flag)  -o process_client
 
+test_client: test_client1.cpp client.o parsing.o interface.o screen.o menu.o CurrentGame.o MapHandler.o interface_game.o
+	g++  test_client1.cpp  client.o parsing.o interface.o screen.o menu.o CurrentGame.o MapHandler.o interface_game.o $(flag)  -o test_client1
+	
 interface.o: Interface.cpp Interface.hpp screen.hpp
 	g++  -c Interface.cpp $(flag) -o interface.o
 
@@ -36,7 +39,7 @@ database.o: database/database.hpp database/database.cpp
 CurrentGame.o: game_test/CurrentGame.cpp game_test/MapHandler.hpp game_test/Interface_game.hpp game_test/Player.hpp
 	g++ -g -c -o CurrentGame.o game_test/CurrentGame.cpp $(flag)
 
-MapHandler.o: game_test/MapHandler.cpp game_test/Rect.hpp game_test/InternGameObject.hpp game_test/Player.hpp
+MapHandler.o: game_test/MapHandler.cpp 
 	g++ -g -c -o MapHandler.o game_test/MapHandler.cpp $(flag)
 
 Player.o: game_test/Player.cpp game_test/Player.hpp
@@ -49,8 +52,8 @@ account.o: database/account.hpp database/account.cpp
 parsing.o: parsing.hpp parsing.cpp
 	g++  -c parsing.cpp $(flag) -o parsing.o
 
-run_client1: test_client1.cpp client.o parsing.o interface.o screen.o menu.o CurrentGame.o MapHandler.o
-	g++  test_client1.cpp  client.o parsing.o interface.o screen.o menu.o CurrentGame.o MapHandler.o interface_game.o $(flag)  -o test_client1
+run_test_client: 
+	make test_client
 	./test_client1
 
 run_server:
