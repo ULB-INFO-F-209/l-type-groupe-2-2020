@@ -35,6 +35,7 @@
 #include "Constante.hpp"
 #include "game_test/settingServer.hpp"
 #include "game_test/Interface_game.hpp"
+#include "game_test/MapHandler.hpp"
 
 class Client{
     //state
@@ -74,29 +75,28 @@ public:
     void read_pipe(){
 
         std::cout << _pipe_game_sett << std::endl;
-        int fd = open(_pipe_game_sett,O_RDONLY);
+        //int fd = open(_pipe_game_sett,O_RDONLY);
 
         while(true){
-            // std::cout << _pipe_game_sett << std::endl;
+            std::cout << "BEfore sleep\n";
+            sleep(10);
+            std::cout << "AfTer sleep\n";
+            
+            settingArray2 obj3;
+            FILE* file;
+            file = fopen("game_.bin","rb");
+            if (file!=nullptr){
+                fread(&obj3,sizeof(settingArray2),1,file);
+                std::cout << "je bloque 3 "<<std::endl;
 
-            // if(errno == -1 )std::cout << "erreur ici" <<std::endl;
-            // break;
-            // else{
-                settingArray2 obj3;
-                 int res = read(fd , &obj3, sizeof(settingArray2));
-            //     if (res == -1){
-            //         std::cout << " [ERROR] " <<_pid << " n'a pas reussit a lire"<<std::endl;
-            //     }
-            //     else{
-            //         std::cout << "je suis la "<<std::endl;
-                     std::cout << obj3.list_player[0].getnLives() << std::endl;
-            //         br
-            //     }
-            // }
+                std::cout << obj3.getListPlayer()[0].getnLives() << std::endl;
+            }
+            std::cout << "je bloque "<<std::endl;
+            
+            fclose(file);
             break;
         }
         //delete game_sett;
-        close(fd);
         std::cout << "je suis la apres 2 ans "<<std::endl;
 
     }

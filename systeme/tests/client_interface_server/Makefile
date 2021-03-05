@@ -30,16 +30,16 @@ menu.o: Menu.hpp Menu.cpp
 client.o: Client.hpp Client.cpp Constante.hpp
 	g++  -c Client.cpp $(flag) -o client.o 
 	
-server.o: server.cpp server.hpp Constante.hpp
+server.o: server.cpp server.hpp Constante.hpp game_test/settingServer.hpp
 	g++  -c server.cpp $(flag) -o server.o 
 
 database.o: database/database.hpp database/database.cpp
 	g++  -c database/database.cpp $(flag) -o database.o
 
-CurrentGame.o: game_test/CurrentGame.cpp game_test/MapHandler.hpp game_test/Interface_game.hpp game_test/Player.hpp
+CurrentGame.o: game_test/CurrentGame.cpp game_test/settingServer.hpp game_test/MapHandler.hpp game_test/Interface_game.hpp game_test/Player.hpp
 	g++ -g -c -o CurrentGame.o game_test/CurrentGame.cpp $(flag)
 
-MapHandler.o: game_test/MapHandler.cpp 
+MapHandler.o: game_test/MapHandler.cpp game_test/MapHandler.hpp game_test/settingServer.hpp game_test/Rect.hpp game_test/InternGameObject.hpp game_test/Player.hpp
 	g++ -g -c -o MapHandler.o game_test/MapHandler.cpp $(flag)
 
 Player.o: game_test/Player.cpp game_test/Player.hpp

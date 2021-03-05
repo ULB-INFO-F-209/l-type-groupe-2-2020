@@ -3,6 +3,9 @@ CFLAGS = -std=c++17 -Wall -pedantic
 main: main.cpp	CurrentGame.o MapHandler.o Interface.o Player.o
 	g++ -g  -o main main.cpp CurrentGame.o MapHandler.o Interface.o Player.o $(CFLAGS) -lncurses
 
+test_fichier_binaire: test_ficheir_binaire.cpp Player.o
+	g++ test_ficheir_binaire.cpp $(CFLAGS) -o test_fichier_binaire
+
 Interface.o: Interface.cpp MapHandler.hpp Player.hpp CurrentGame.hpp 
 	g++ -g -c -o Interface.o Interface.cpp $(CFLAGS)
 

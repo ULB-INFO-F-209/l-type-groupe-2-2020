@@ -417,7 +417,7 @@ void Server::get_game_settings(char* input, Parsing::Game_settings* game_sett){
 void Server::launch_game(Game_settings* sett_game){
 
     CurrentGame game{*sett_game};
-    settingServer2 obj;   
+    theSettings obj;   
 
     char input_pipe[Constante::CHAR_SIZE],send_response_pipe[Constante::CHAR_SIZE];
     sprintf(input_pipe,"%s%s%s",Constante::PIPE_PATH,Constante::BASE_INPUT_PIPE,sett_game->pid);
@@ -427,14 +427,30 @@ void Server::launch_game(Game_settings* sett_game){
     bool gameOn = true;
     while(gameOn){
         // [TODO] read de input pipe
+
         game.run_test(&obj,'q');
         //settingArray obj2{&obj};
+        std::cout << "JE rentre dans le constructeur  " << std::endl;
+
+        //PlayerShip res{};
+
         settingArray2 obj3{&obj};
-        //std::cout << obj2.my_size.list_player<<std::endl;
+
+        
+        FILE* f = fopen("game_.bin", "wb");
+        if (f != nullptr) fwrite(&obj3,sizeof(settingArray2),1,f );
+        else std::cout << "[ERROR] settings non ecrit " << std::endl;
+        fclose(f);
+        std::cout << "Ecriture fait \n";
+
+
+
+        //std::cout << obj3.my_size.list_player<<std::endl;
         std::cout << "Beforre sleep" << std::endl;
-        sleep(4);
+        
         std::cout << "After   sleep "<<std::endl;
-        resClient(send_response_pipe,&obj3);
+        //resClient(send_response_pipe,&obj3);
+        sleep(1000000);
         break;
 
     }
@@ -453,7 +469,7 @@ void Server::resClient(char* pipe, settingArray* res){
 void Server::resClient(char* pipe, settingArray2* res){
     std::cout << " SEND INPUT TO : " << pipe << std::endl;
     int fd = open(pipe,O_WRONLY);
-    if (fd != -1) write(fd, res, sizeof(settingArray));
+    if (fd != -1) write(fd, res, sizeof(settingArray2));
     else std::cout << "[ERROR] settings non ecrit " << std::endl;
     
     close(fd);

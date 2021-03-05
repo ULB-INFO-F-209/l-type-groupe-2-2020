@@ -10,7 +10,8 @@
 #include "Player.hpp"
 #include "InternGameObject.hpp"
 #include "Rect.hpp"
-#include "settingServer.hpp"
+#include <iostream>
+//#include "settingServer.hpp"
 
 
 enum bonusType{damageUp, tripleShot, lifeSteal, minigun,noBonus};
@@ -18,6 +19,9 @@ enum difficulty{easy, medium, hard};
 
 class MapObject{
 public:
+    MapObject(){
+        hp = 500;
+    }
     virtual void move();
     virtual vec2i getPos() const;
     void setPos(int x, int y){pos.x = x; pos.y = y;}
@@ -25,7 +29,10 @@ public:
     virtual void touched(int damage);
     virtual void setHp(int h){hp =h;}
     virtual int getHp(){return hp;}
-    virtual ~MapObject()= default;
+    virtual ~MapObject(){
+
+        std::cout << "JE suis le destructeur" <<std::endl;
+    };
     type typ;
 
 protected:
@@ -69,7 +76,7 @@ public:
     int getShootDamage() const{return shootDamage;}
     void setProjectileHp(int p_hp){projectileHp = p_hp;}
     int getProjectileHp() const{return projectileHp;}
-    
+    ~Ship()=default;
 
 };
 
@@ -89,7 +96,7 @@ public:
 class Bonus: public MapObject{
     bonusType bonustype;
 public:
-    Bonus()=default;
+    Bonus(){hp=20;};
     Bonus(int nx, int ny,bonusType bonus_t) :bonustype(bonus_t)  {pos.x = nx; pos.y = ny; hp=10;};
     bonusType const getBonusType() const {return bonustype;}
 };
@@ -115,6 +122,7 @@ public:
     void catchBonus (const Bonus* b);
     bonusType getCurrentBonus(){return currentBonus;}
     void setCurrentBonus(bonusType b){currentBonus=b;}
+    ~PlayerShip()=default;
 
 };
 

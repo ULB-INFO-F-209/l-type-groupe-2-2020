@@ -162,6 +162,6 @@ int  Client::createGame(char *game_info){
 
 //destructor
 Client::~Client(){
-	exit(); //kill process
+	//exit(); //kill process
 	std::cout << "blou blou" << std::endl;
 }

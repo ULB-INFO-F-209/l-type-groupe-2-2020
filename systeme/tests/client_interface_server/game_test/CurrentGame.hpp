@@ -79,9 +79,9 @@ public:
         map.playerInit(playership1,playership2);
         map.setBounds(game_area);
     }
-    void run_test(settingServer2* setting_to_fill,char in_char);
+    void run_test(theSettings* setting_to_fill,char in_char);
     int getInput() const{return in_char;}
-    void getSettings(settingServer2* settings);
+    void getSettings(theSettings* settings);
 
     void run();
 };

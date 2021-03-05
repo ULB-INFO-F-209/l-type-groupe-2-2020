@@ -257,7 +257,7 @@ void CurrentGame::run() {
 
 
 
-void CurrentGame::run_test(settingServer2* setting_to_fill,char in_char){
+void CurrentGame::run_test(theSettings* setting_to_fill,char in_char){
 
 
     // get input
@@ -347,14 +347,13 @@ void CurrentGame::run_test(settingServer2* setting_to_fill,char in_char){
 }
 
 
-void CurrentGame::getSettings(settingServer2* settings) {
+void CurrentGame::getSettings(theSettings* settings) {
     settings->boss_set = map.getBossPointeur();
     settings->stars_set =map.getStarsPointeur();
-    settings->obstacles_set=map.getObstaclesPointeur();
     settings->projectiles_set=map.getProjectilesPointeur();
     settings->projectilesEnemy_set=map.getProjectilesEnemyPointeur();
     settings->player_ships_set=map.getPlayerShipPointeur();
-    settings->enemy_ships_set==map.getEnemyPointeur();
+    settings->enemy_ships_set=map.getEnemyPointeur();
     settings->bonuses_set=map.getBonusPointeur();
     settings->score_j1 =  playership1->getScore();
     settings->score_j2 =  twoPlayers ? playership2->getScore() :0;
