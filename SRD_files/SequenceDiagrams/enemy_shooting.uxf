@@ -4,8 +4,8 @@
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>630</x>
-      <y>63</y>
+      <x>675</x>
+      <y>81</y>
       <w>90</w>
       <h>27</h>
     </coordinates>
@@ -15,8 +15,8 @@
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>855</x>
-      <y>63</y>
+      <x>900</x>
+      <y>81</y>
       <w>90</w>
       <h>27</h>
     </coordinates>
@@ -26,8 +26,8 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>666</x>
-      <y>81</y>
+      <x>711</x>
+      <y>99</y>
       <w>27</w>
       <h>315</h>
     </coordinates>
@@ -37,8 +37,8 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>891</x>
-      <y>81</y>
+      <x>936</x>
+      <y>99</y>
       <w>27</w>
       <h>684</h>
     </coordinates>
@@ -48,8 +48,8 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>126</x>
-      <y>99</y>
+      <x>171</x>
+      <y>117</y>
       <w>387</w>
       <h>36</h>
     </coordinates>
@@ -60,8 +60,8 @@
   <element>
     <id>UMLFrame</id>
     <coordinates>
-      <x>27</x>
-      <y>459</y>
+      <x>72</x>
+      <y>477</y>
       <w>1017</w>
       <h>63</h>
     </coordinates>
@@ -74,8 +74,8 @@ halign=left
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>891</x>
-      <y>126</y>
+      <x>936</x>
+      <y>144</y>
       <w>18</w>
       <h>594</h>
     </coordinates>
@@ -85,8 +85,8 @@ halign=left
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>243</x>
-      <y>54</y>
+      <x>288</x>
+      <y>72</y>
       <w>90</w>
       <h>27</h>
     </coordinates>
@@ -96,8 +96,8 @@ halign=left
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>270</x>
-      <y>72</y>
+      <x>315</x>
+      <y>90</y>
       <w>27</w>
       <h>684</h>
     </coordinates>
@@ -107,8 +107,8 @@ halign=left
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>666</x>
-      <y>126</y>
+      <x>711</x>
+      <y>144</y>
       <w>18</w>
       <h>252</h>
     </coordinates>
@@ -118,8 +118,8 @@ halign=left
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>270</x>
-      <y>99</y>
+      <x>315</x>
+      <y>117</y>
       <w>18</w>
       <h>603</h>
     </coordinates>
@@ -129,8 +129,8 @@ halign=left
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>666</x>
-      <y>360</y>
+      <x>711</x>
+      <y>378</y>
       <w>27</w>
       <h>171</h>
     </coordinates>
@@ -140,8 +140,8 @@ halign=left
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>126</x>
-      <y>396</y>
+      <x>171</x>
+      <y>414</y>
       <w>783</w>
       <h>36</h>
     </coordinates>
@@ -152,8 +152,8 @@ halign=left
   <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>648</x>
-      <y>504</y>
+      <x>693</x>
+      <y>522</y>
       <w>54</w>
       <h>27</h>
     </coordinates>
@@ -163,8 +163,8 @@ halign=left
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>315</x>
-      <y>189</y>
+      <x>360</x>
+      <y>207</y>
       <w>90</w>
       <h>27</h>
     </coordinates>
@@ -174,8 +174,8 @@ halign=left
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>351</x>
-      <y>207</y>
+      <x>396</x>
+      <y>225</y>
       <w>27</w>
       <h>189</h>
     </coordinates>
@@ -185,8 +185,8 @@ halign=left
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>351</x>
-      <y>216</y>
+      <x>396</x>
+      <y>234</y>
       <w>18</w>
       <h>162</h>
     </coordinates>
@@ -196,8 +196,8 @@ halign=left
   <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>342</x>
-      <y>360</y>
+      <x>387</x>
+      <y>378</y>
       <w>27</w>
       <h>27</h>
     </coordinates>
@@ -207,8 +207,8 @@ halign=left
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>459</x>
-      <y>63</y>
+      <x>504</x>
+      <y>81</y>
       <w>90</w>
       <h>27</h>
     </coordinates>
@@ -218,8 +218,8 @@ halign=left
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>495</x>
-      <y>81</y>
+      <x>540</x>
+      <y>99</y>
       <w>27</w>
       <h>684</h>
     </coordinates>
@@ -229,8 +229,8 @@ halign=left
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>495</x>
-      <y>99</y>
+      <x>540</x>
+      <y>117</y>
       <w>18</w>
       <h>594</h>
     </coordinates>
@@ -240,8 +240,8 @@ halign=left
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>504</x>
-      <y>135</y>
+      <x>549</x>
+      <y>153</y>
       <w>153</w>
       <h>72</h>
     </coordinates>
@@ -252,8 +252,8 @@ spawnProjectile()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>396</x>
-      <y>189</y>
+      <x>441</x>
+      <y>207</y>
       <w>117</w>
       <h>36</h>
     </coordinates>
@@ -264,8 +264,8 @@ newProjectile()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>504</x>
-      <y>297</y>
+      <x>549</x>
+      <y>315</y>
       <w>180</w>
       <h>54</h>
     </coordinates>
@@ -278,8 +278,8 @@ type)
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>81</x>
-      <y>63</y>
+      <x>126</x>
+      <y>81</y>
       <w>90</w>
       <h>27</h>
     </coordinates>
@@ -289,8 +289,8 @@ type)
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>117</x>
-      <y>108</y>
+      <x>162</x>
+      <y>126</y>
       <w>18</w>
       <h>594</h>
     </coordinates>
@@ -300,8 +300,8 @@ type)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>117</x>
-      <y>81</y>
+      <x>162</x>
+      <y>99</y>
       <w>27</w>
       <h>684</h>
     </coordinates>
@@ -311,8 +311,8 @@ type)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>504</x>
-      <y>234</y>
+      <x>549</x>
+      <y>252</y>
       <w>144</w>
       <h>72</h>
     </coordinates>
@@ -323,8 +323,8 @@ checkCollision()</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>666</x>
-      <y>378</y>
+      <x>711</x>
+      <y>396</y>
       <w>18</w>
       <h>144</h>
     </coordinates>
@@ -334,8 +334,8 @@ checkCollision()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>126</x>
-      <y>351</y>
+      <x>171</x>
+      <y>369</y>
       <w>81</w>
       <h>72</h>
     </coordinates>
@@ -346,8 +346,8 @@ heal()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>360</x>
-      <y>315</y>
+      <x>405</x>
+      <y>333</y>
       <w>153</w>
       <h>54</h>
     </coordinates>
@@ -360,8 +360,8 @@ type)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>126</x>
-      <y>423</y>
+      <x>171</x>
+      <y>441</y>
       <w>783</w>
       <h>36</h>
     </coordinates>
@@ -372,8 +372,8 @@ type)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>126</x>
-      <y>486</y>
+      <x>171</x>
+      <y>504</y>
       <w>558</w>
       <h>36</h>
     </coordinates>
