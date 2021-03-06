@@ -41,9 +41,6 @@ void Client::communication(char *buffer){
                 std::cout << " [ERROR] " <<_pid << "n'a pas reussit a lire"<<std::endl;
             }
             else{
-            	
-            	std::cout<<" ==> " << buffer <<std::endl;
-				//strcpy(buffer,buff);
             	break;
 			}
 		}
@@ -178,9 +175,6 @@ std::string Client::read_game_pipe(){
                 std::cout << " [ERROR] " <<_pid << "n'a pas reussit a lire"<<std::endl;
             }
             else{
-            	
-            	std::cout<<" ==> " << buffer <<std::endl;
-				//strcpy(buffer,buff);
             	break;
 			}
 		}

@@ -28,23 +28,36 @@ void test1(){
     Imene.createGame("1&Imene&&100&0&8");
     std::cout << "create game fini" << std::endl<<std::endl;
 
-    Interface_game interface_game{};
+
+    Game_settings option_jeu;
+    option_jeu.ally_shot = false; option_jeu.diff = easy; option_jeu.drop_rate =100; option_jeu.nb_lives = 10; option_jeu.nb_player = 1; strcpy(option_jeu.pseudo_hote,"Imene");
+    Interface_game interface_game;
     interface_game.init();
     interface_game.initialDraw();
-    theSettings setting_to_diplay{};
-    CurrentGame my_game{};
+    settingServer setting_to_diplay{};
+    CurrentGame my_game(option_jeu);
     bool gameOn = true;
+    int inp{};
+
     while(gameOn){
 
-        int inp = wgetch(interface_game.get_main_window());
+        inp = wgetch(interface_game.get_main_window());
         Imene.send_game_input(inp);
+
         std::string val = Imene.read_game_pipe();
         Parsing::parsing_settings_game(val,&my_game);
+        //std::cout << "valeur du parsing = " << val << std::endl;
+
+
         my_game.run_client(inp,&setting_to_diplay);
         interface_game.display(&setting_to_diplay);
-        //display
+        
+        gameOn = !setting_to_diplay.game_over;
+    //     //display
 
     }
+    interface_game.close();
+
     //Imene.read_pipe();
     //std::cout << "je suis sortie de la "<< std::endl;
 }

@@ -81,17 +81,17 @@ public:
         map.setBounds(game_area);
         
     }
-    void run_test(theSettings* setting_to_fill,char in_char);
+    //void run_test(theSettings* setting_to_fill,char in_char);
     int getInput() const{return in_char;}
-    void getSettings(theSettings* settings);
+    void getSettings(settingServer* settings);
     std::string run_server(char move_to_exec);
-    void run_client(char  parametre_to_change,theSettings* settings);
+    void run_client(int  parametre_to_change,settingServer* settings);
     void execInput(int inChar, uint_fast16_t x1, uint_fast16_t y1, bool firstPlayer,std::string to_fill);
     void spawnObstacle(int posx);
     void spawnEnemy(int posx,int tick);
     void spawnBoss(int tick);
     void spawnBonus(int posx,int posy,int rand_int);
-    void run_client(char * move_to_exec);
+    
 
     void run();
 };

@@ -424,10 +424,9 @@ void Server::launch_game(Game_settings* sett_game){
 
     std::cout << input_pipe << std::endl << send_response_pipe << std::endl;
     bool gameOn = true;
-    int t = 0;
     while(gameOn){
-        // [TODO] read de input pipe
-        char inp = ' ';
+        
+        int inp = read_game_input(input_pipe);
         std::string resp = game.run_server(inp);
         resClient(send_response_pipe,&resp);
     }
@@ -437,15 +436,31 @@ void Server::launch_game(Game_settings* sett_game){
 void Server::resClient(char* pipe, std::string* res){
     char to_send[Constante::CHAR_SIZE];
     strcpy(to_send,res->c_str());
-    std::cout << " SEND INPUT TO : " << pipe << std::endl;
+    
     int fd = open(pipe,O_WRONLY);
     if (fd != -1) write(fd, to_send, sizeof(Constante::CHAR_SIZE));
     else std::cout << "[ERROR] settings non ecrit " << std::endl;
-    
     close(fd);
-    std::cout << "Settings ecrit !!" << std::endl;
 }
 
+int Server::read_game_input(char * pipe){
+    int message;
+    int fd =open(pipe, O_RDONLY);
+    if (fd != -1){
+        int val = read(fd,&message,sizeof(int)); // TODO verification de val 
+        
+        if (val == -1){
+            std::cout << "[ERROR] CAN'T READ IN INPUT PIPE " <<std::endl;
+        }
+        
+    }
+    else{
+        std::cerr << "[ERROR PIPE INPUT]" <<std::endl;
+    }
+    close(fd);
+    return message;
+
+}
 
 
 

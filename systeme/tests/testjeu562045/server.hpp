@@ -72,6 +72,7 @@ private:
     void resClient(char* pipe, settingArray *res);
     void resClient(char* pipe, settingArray2* res);
     void resClient(char* pipe, std::string* res);
+    int read_game_input(char * pipe);
 
 };
 
