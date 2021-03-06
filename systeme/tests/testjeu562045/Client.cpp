@@ -180,6 +180,7 @@ std::string Client::read_game_pipe(){
 		}
 	}
 	close(fd );
+	
 	return std::string(buffer);
 }
 

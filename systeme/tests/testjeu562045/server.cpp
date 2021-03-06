@@ -424,11 +424,20 @@ void Server::launch_game(Game_settings* sett_game){
 
     std::cout << input_pipe << std::endl << send_response_pipe << std::endl;
     bool gameOn = true;
+    //std::vector<std::string> commande_jeu = {"E|56,337&E|54,337&E|30,337&E|50,337&E|45,337&"};
+    std::vector<std::string> commande_jeu = {"O|55&O|44&E|56,337&O|45&O|35&O|52&O|51&"};
+    int i =0 ;
     while(gameOn){
         
         int inp = read_game_input(input_pipe);
         std::string resp = game.run_server(inp);
+        //if (i < commande_jeu.size()){
+            //std::string resp = commande_jeu.at(i);
         resClient(send_response_pipe,&resp);
+
+        // }
+        // else break;
+        i++;
     }
     std::cout << "while fin"<< std::endl;
 }
@@ -436,9 +445,12 @@ void Server::launch_game(Game_settings* sett_game){
 void Server::resClient(char* pipe, std::string* res){
     char to_send[Constante::CHAR_SIZE];
     strcpy(to_send,res->c_str());
-    
+    if (!res->empty()){
+
+        std::cout << "voila ce que tu cherches vraiment : "<< to_send << std::endl;
+    }
     int fd = open(pipe,O_WRONLY);
-    if (fd != -1) write(fd, to_send, sizeof(Constante::CHAR_SIZE));
+    if (fd != -1) write(fd, to_send, Constante::CHAR_SIZE);
     else std::cout << "[ERROR] settings non ecrit " << std::endl;
     close(fd);
 }

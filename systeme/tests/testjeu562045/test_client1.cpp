@@ -46,9 +46,8 @@ void test1(){
 
         std::string val = Imene.read_game_pipe();
         Parsing::parsing_settings_game(val,&my_game);
-        //std::cout << "valeur du parsing = " << val << std::endl;
-
-
+        std::cout << "valeur du parsing = " << val << std::endl;
+        //sleep(5);
         my_game.run_client(inp,&setting_to_diplay);
         interface_game.display(&setting_to_diplay);
         

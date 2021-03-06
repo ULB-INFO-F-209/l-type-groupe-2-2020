@@ -151,8 +151,8 @@ void Parsing::parsing(char* str, char* token1, char* token2) {
 void Parsing::parsing_settings_game(std::string sett,CurrentGame* game){
 	char obstacle = 'O', enemy = 'E', boss = 'B', bonus = 'b';
 	
-	do{
-
+	while(!(sett.empty())){
+		
 		int index = sett.find("&"),idx = 0;
 
 		std::string to_spawn = sett.substr(0,index);
@@ -167,6 +167,7 @@ void Parsing::parsing_settings_game(std::string sett,CurrentGame* game){
 			int x = std::stoi(to_spawn.substr(0,idx));
 			int tick = std::stoi(to_spawn.substr(idx+1,to_spawn.length()));
 			game->spawnEnemy(x,tick);
+			std::cout << "add 1";
 
 		}
 		else if(to_spawn[0] == boss){
@@ -181,7 +182,8 @@ void Parsing::parsing_settings_game(std::string sett,CurrentGame* game){
 
 		}
 		sett = sett.substr(index+1,sett.length());
+		
 
-	}while(!(sett.empty()));
+	};
 }
 
