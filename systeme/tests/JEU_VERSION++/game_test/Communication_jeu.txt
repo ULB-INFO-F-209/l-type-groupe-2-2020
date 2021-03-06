@@ -3,13 +3,12 @@ Communication:
 
     Delimiteur   : &
 
+
     Spwan:
         Obstacle : O|x
-        Ennemie  : E|x
-        Boss     : B|
-        Bonus    : b|x,y
+        Ennemie  : E|x,tick
+        Boss     : B|tick
+        Bonus    : btype(int)|x,y
 
-        Player Projectile  :  P|True
-        Ennemie Projectile :  PE|x,y
 
     

@@ -213,7 +213,7 @@ public:
     void enemyShoot(int tick);
     void bossShoot(int tick);
     void explosion();
-    void spawnBonuses(int x, int y);
+    int spawnBonuses(int x, int y);
     void changeLevel();
     //void getSettings(settingServer2* obj);
     ~MapHandler()= default;
@@ -221,8 +221,12 @@ public:
     void spawnProjectile_server(int x, int y, int damage, bool type, int hp, int player,std::string *to_fill);
     void bossShoot_server(int tick,std::string *to_fill);
     void enemyShoot_server(int tick,std::string *to_fill);
-    
+    void checkCollision_server(int t, bool friendlyFire,std::string * to_fill);
     void add_object_server(MapObject::type type,int i, std::string *to_fill);
+    void spawnObstacle(int posx);
+    void spawnEnemy(int posx,int tick);
+    void spawnBoss(int tick);
+    void spawnBonus_client(int x, int y,int rand_spawn_bonus);
 
 
 
