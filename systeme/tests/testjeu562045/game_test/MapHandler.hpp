@@ -227,6 +227,9 @@ public:
     void spawnEnemy(int posx,int tick);
     void spawnBoss(int tick);
     void spawnBonus_client(int x, int y,int rand_spawn_bonus);
+    void update_client(MapObject::type typ, int t);
+    void checkCollision_client(int t, bool friendlyFire) ;
+
 
 
 

@@ -66,14 +66,14 @@ public:
         screen_area = anInterface->get_screen_area();
     }
     CurrentGame(Game_settings game_sett):twoPlayers(game_sett.nb_player == 2? true:false),friendlyFire(game_sett.ally_shot), dropRate(game_sett.drop_rate),dif(game_sett.diff),
-    screen_area( {0, 0}, {80, 24}),game_area( {0, 0}, {80 - 2, 24 - 4 - 4}) {
+    screen_area( {0, 0}, {80, 24}),game_area( {0, 0}, {78, 16}) {
         
-        playership1 = new PlayerShip(10, 5, { {10 - 1, 5 }, { 3, 2 } }, '0',100, 0,100,0);
+        playership1 = new PlayerShip(10, 5, { {9, 5 }, { 3, 2 } }, '0',100, 0,100,0);
         player1 = new Player(game_sett.nb_lives);
         listPlayer.push_back(player1);
 
         if(twoPlayers){
-            playership2 = new PlayerShip(50, 5, { { 50 - 1, 5 }, { 3, 2 } }, '1',100, 1,100,0);
+            playership2 = new PlayerShip(50, 5, { { 49, 5 }, { 3, 2 } }, '1',100, 1,100,0);
             player2 = new Player(game_sett.nb_lives);
             listPlayer.push_back(player2);
         }
@@ -84,13 +84,14 @@ public:
     //void run_test(theSettings* setting_to_fill,char in_char);
     int getInput() const{return in_char;}
     void getSettings(settingServer* settings);
-    std::string run_server(char move_to_exec);
+    std::string run_server(char move_to_exec,settingServer* settings);
     void run_client(int  parametre_to_change,settingServer* settings);
     void execInput(int inChar, uint_fast16_t x1, uint_fast16_t y1, bool firstPlayer,std::string to_fill);
     void spawnObstacle(int posx);
     void spawnEnemy(int posx,int tick);
     void spawnBoss(int tick);
     void spawnBonus(int posx,int posy,int rand_int);
+    void set_client_tick(int t);
     
 
     void run();

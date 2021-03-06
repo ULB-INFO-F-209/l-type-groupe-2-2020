@@ -149,7 +149,7 @@ void Parsing::parsing(char* str, char* token1, char* token2) {
 }
 
 void Parsing::parsing_settings_game(std::string sett,CurrentGame* game){
-	char obstacle = 'O', enemy = 'E', boss = 'B', bonus = 'b';
+	char obstacle = 'O', enemy = 'E', boss = 'B', bonus = 'b', the_tick = 'T';
 	
 	while(!(sett.empty())){
 		
@@ -167,8 +167,7 @@ void Parsing::parsing_settings_game(std::string sett,CurrentGame* game){
 			int x = std::stoi(to_spawn.substr(0,idx));
 			int tick = std::stoi(to_spawn.substr(idx+1,to_spawn.length()));
 			game->spawnEnemy(x,tick);
-			std::cout << "add 1";
-
+			
 		}
 		else if(to_spawn[0] == boss){
 			int tick = std::stoi(to_spawn.substr(idx+1,to_spawn.length()));
@@ -180,6 +179,11 @@ void Parsing::parsing_settings_game(std::string sett,CurrentGame* game){
 			int y = std::stoi(to_spawn.substr(to_spawn.find(","),to_spawn.length()));
 			game->spawnBonus(x,y,type_bonus);
 
+		}
+		else if(to_spawn[0] == the_tick){
+			int t = std::stoi(to_spawn.substr(idx+1,to_spawn.length()));
+			game->set_client_tick(t);
+			std::cout << "le tick serveir  =" << t << std::endl;
 		}
 		sett = sett.substr(index+1,sett.length());
 		

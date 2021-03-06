@@ -57,6 +57,7 @@ void CurrentGame::execInput(int inChar, uint_fast16_t x1, uint_fast16_t y1, bool
             default:
             break;
             }
+        
     }
     else{
         switch(inChar) {
@@ -255,98 +256,6 @@ void CurrentGame::run() {
 
 
 
-
-
-// void CurrentGame::run_test(theSettings* setting_to_fill,char in_char){
-
-
-//     // get input
-//     /*in_char = wgetch(anInterface->get_main_window());
-//     in_char = tolower(in_char);*/
-
-//     uint_fast16_t x1,y1,x2,y2;
-
-//     x1 = playership1->getPos().x;
-//     y1 = playership1->getPos().y;
-//     if(twoPlayers){
-//         x2 = playership2->getPos().x;
-//         y2 = playership2->getPos().y;
-//     }
-
-
-//     // fonction du switch
-//     execInput(in_char, x1, y1, true);    // peut changer le exit_requested
-//     if(twoPlayers)execInput(in_char, x2, y2, false);
-
-
-//     // update object field
-//     if(tick % 7 == 0)
-//         map.update(MapObject::star, tick);
-//     if(tick % 7 == 0)
-//         map.update(MapObject::projectile, tick);
-
-//     if(tick > 100 && tick %50  == 0) {
-//         map.update(MapObject::obstacle, tick);
-//     }
-//     if (tick > 100 && tick %150 ==0)
-//         map.update(MapObject::enemyship, tick);
-//     if(tick %50  == 0) {
-//         map.update(MapObject::bonus, tick);
-//     }
-//     if(map.getCurrentLevel()==3 && tick%10==0 && !map.getChangingLevel()){
-//         map.update(MapObject::boss,tick);
-//     }
-
-//     for( PlayerShip* p : map.getListPlayer()){
-//         if (p->getCurrentBonus()==minigun && p->getHp()>0 && tick % 7 == 0)
-//             map.spawnProjectile(p->getPos().x, p->getPos().y, p->getShootDamage(), true, 10, p->getPlayerNb()+1);
-//     }
-//     map.enemyShoot(tick);
-//     map.bossShoot(tick);
-//     map.updateBounds();     // update player bounds
-//     map.checkCollision(tick, friendlyFire);
-
-//     if(map.getBoss().empty() && map.getBossSpawned())
-//          game_over = true;
-
-//     if(twoPlayers){
-//         if (player1->getnLives() < 1 && player2->getnLives() < 1)
-//             game_over = true;
-//     }else{
-//         if (player1->getnLives() < 1)
-//             game_over = true;
-//     }
-
-//     heal(); // remet hp du player à 100 si encore vies
-
-//     if(map.getLevelTick() != 0 && tick <= map.getLevelTick() + 600 && tick > map.getLevelTick()+100){
-//             if(tick == map.getLevelTick() + 600) {
-//                 map.changeLevel();
-//                 map.setChangingLevel(false);
-//             }
-//         }
-
-    
-//     saveScore(); // sauvegarde le score
-
-//     if(exit_requested){
-//         game_over = true;
-//         getSettings(setting_to_fill);
-//         return;
-//     } 
-//     if(game_over){
-        
-//         getSettings(setting_to_fill);
-//         return;
-//     }
-//     getSettings(setting_to_fill);
-//     tick++;
-    
-//     return;
-
-// }
-
-
 void CurrentGame::getSettings(settingServer* settings) {
     settings->object_map = &map;
     settings->object_playership1 = playership1;
@@ -363,7 +272,7 @@ void CurrentGame::getSettings(settingServer* settings) {
 };
 
 
-std::string CurrentGame::run_server(char move_to_exec){
+std::string CurrentGame::run_server(char move_to_exec,settingServer* settings){
 
     std::string what_change;
    
@@ -432,25 +341,25 @@ std::string CurrentGame::run_server(char move_to_exec){
 
     if(exit_requested){
         const char * tmp = what_change.c_str();
+        getSettings(settings);
     
-        //std::cout << "The return : " << what_change<< std::endl;
-    //std::cout << to_ret << std::endl;
     return what_change;
     } 
     if(game_over){
         
         const char * tmp = what_change.c_str();
+        getSettings(settings);
     
-        //std::cout << "The return : " << what_change<< std::endl;
-    //std::cout << to_ret << std::endl;
     return what_change;
     }
     
+
     tick++;
     
-    
-    //std::cout << "The return : " << what_change<< std::endl;
-    //std::cout << to_ret << std::endl;
+    what_change.append("T|");
+    what_change.append(std::to_string(tick));
+    what_change.append("&");
+    getSettings(settings);
     return what_change;
     
 
@@ -479,20 +388,20 @@ void CurrentGame::run_client(int move_to_exec,settingServer* settings){
 
     // update object field
     if(tick % 7 == 0)
-        map.update(MapObject::star, tick);
+        map.update_client(MapObject::star, tick);
     if(tick % 7 == 0)
-        map.update(MapObject::projectile, tick);
+        map.update_client(MapObject::projectile, tick);
 
     if(tick > 100 && tick %50  == 0) {
-        map.update(MapObject::obstacle, tick);
+        map.update_client(MapObject::obstacle, tick);
     }
     if (tick > 100 && tick %150 ==0)
-        map.update(MapObject::enemyship, tick);
+        map.update_client(MapObject::enemyship, tick);
     if(tick %50  == 0) {
-        map.update(MapObject::bonus, tick);
+        map.update_client(MapObject::bonus, tick);
     }
     if(map.getCurrentLevel()==3 && tick%10==0 && !map.getChangingLevel()){
-        map.update(MapObject::boss,tick);
+        map.update_client(MapObject::boss,tick);
     }
 
     for( PlayerShip* p : map.getListPlayer()){
@@ -502,7 +411,7 @@ void CurrentGame::run_client(int move_to_exec,settingServer* settings){
     map.enemyShoot(tick);
     map.bossShoot(tick);
     map.updateBounds();     // update player bounds
-    map.checkCollision(tick, friendlyFire);
+    map.checkCollision_client(tick, friendlyFire);
 
     if(map.getBoss().empty() && map.getBossSpawned())
          game_over = true;
@@ -537,7 +446,6 @@ void CurrentGame::run_client(int move_to_exec,settingServer* settings){
         
         return;
     }
-    tick++;
     getSettings(settings);
     
     return;
@@ -568,6 +476,8 @@ void CurrentGame::spawnBonus(int posx,int posy,int rand_int){
 
 };
 
-
+void CurrentGame::set_client_tick(int t){
+	tick = t;
+}
 
 

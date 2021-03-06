@@ -36,7 +36,7 @@ int Interface_game::init() {
                        screen_area.left() + 1);
 
     main_wnd = newwin(screen_area.height(), screen_area.width(), 0, 0);
-
+    
     // define area for movement
     game_area = { {0, 0}, {static_cast<uint_fast16_t>(screen_area.width() - 2), static_cast<uint_fast16_t>(screen_area.height() - infopanel_height - 4)}};
 
