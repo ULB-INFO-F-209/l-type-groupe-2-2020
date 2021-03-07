@@ -978,7 +978,6 @@ void MapHandler::enemyShoot_server(int tick,std::string *to_fill) {
 
 void MapHandler::spawnProjectile_server(int x, int y, int damage, bool type, int hp, int player,std::string *to_fill){
     if(player!=0) {
-        to_fill->append("P|1");
             if (player_ships_set.size() == 2) {
                 if (player_ships_set.at(player - 1)->getCurrentBonus() == tripleShot) {
 
@@ -1022,7 +1021,6 @@ void MapHandler::spawnProjectile_server(int x, int y, int damage, bool type, int
         }
         else{
             projectilesEnemy_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
-            to_fill->append("P|1");
         }
 }
 

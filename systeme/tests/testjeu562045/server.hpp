@@ -31,7 +31,7 @@ class Server{
 
 private:
     static bool _is_active; 
-    std::vector<const char *> _pipe_running;    
+    std::vector<std::string> _pipe_running;    
     static  Database _db;
     static std::mutex mtx;
 
@@ -40,6 +40,7 @@ public:
     Server();
     ~Server(){_db.dbSave();};
     static void close_me(int sig){mtx.lock(); _db.dbSave(); mtx.unlock(); }// handle CTRL + C signal ==> save db
+    bool static isServerActive() {return _is_active;}
 
 private:
 	//connections
@@ -60,13 +61,11 @@ private:
     bool delFriendRequest(char*);
     int sendFriendRequest(char* );
     void viewProfile(char* );
-    bool logOut(char* );
     void resClient(std::string* processId, char* res);
     void resClient(std::string* processId, int res);
     void resClient(std::string*, bool);
     void client_exit(char *input);
     static void launch_db_save();
-    bool static isServerActive() {return _is_active;}
     void launch_game(Game_settings* sett_game);
     void get_game_settings(char* input, Game_settings* game_sett);
     void resClient(char* pipe, settingArray *res);

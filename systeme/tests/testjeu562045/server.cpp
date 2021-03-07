@@ -1,8 +1,7 @@
 #include "server.hpp"
 #include "parsing.hpp"
 
-
-#define TEST_GAME_INTERFACE 
+#define TEST_GAME_INTERFACE
 
 bool Server::_is_active = false;
 Database Server::_db{};
@@ -15,7 +14,7 @@ std::mutex Server::mtx;
 Server::Server():_pipe_running() {
 
     signal(SIGINT,close_me); /** gestion du CTRL + C ==> save db */
-
+    signal(SIGPIPE, SIG_IGN); // redirection du signal SIGPIPE vers SIG_IGN pour l'ignorer 
     
     if (!isServerActive()){ // pas actif
 
@@ -23,8 +22,6 @@ Server::Server():_pipe_running() {
 
         createPipe(Constante::PIPE_DE_CONNEXION);
         createPipe(Constante::PIPE_DE_REPONSE);
-
-
         
         _is_active = true;
         std::thread t1(&Server::initConnexions,this); // thread d'ecoute (deamon)
@@ -172,7 +169,7 @@ void Server::createPipe(const char *name){
     else{
         std::cout << "creation du pipe : " << path <<std::endl;
     }
-    _pipe_running.push_back(name);
+    _pipe_running.push_back(std::string(name));
 }
 
 /**
@@ -382,7 +379,6 @@ void Server::client_exit(char *input){
     processId.insert(0,Constante::PIPE_PATH);
     input_pipe.insert(0,Constante::PIPE_PATH);
     game_pipe.insert(0,Constante::PIPE_PATH);
-
     remove_pipe(processId);
     remove_pipe(game_pipe);
     remove_pipe(input_pipe);
@@ -449,7 +445,7 @@ void Server::launch_game(Game_settings* sett_game){
         int inp = read_game_input(input_pipe);
         std::string resp = game.run_server(inp,&setting_to_diplay);
         resClient(send_response_pipe,&resp);
-        usleep(1000);
+        //usleep(1000);
         #ifdef TEST_GAME_INTERFACE
             interface_game.display(&setting_to_diplay);
         #endif
@@ -472,8 +468,12 @@ void Server::launch_game(Game_settings* sett_game){
 void Server::resClient(char* pipe, std::string* res){
     char to_send[Constante::CHAR_SIZE];
     strcpy(to_send,res->c_str());
+    if (!res->empty()&&res->at(0) == 'b'){
+        std::cout << "BOnus  : "<< to_send << std::endl;
+        
+    }
     #ifdef TEST_GAME_INTERFACE
-        std::cout << "to affiche : "<< to_send << std::endl;
+        //std::cout << "to affiche : "<< to_send << std::endl;
     #endif
     int fd = open(pipe,O_WRONLY);
     if (fd != -1) write(fd, to_send, Constante::CHAR_SIZE);

@@ -187,6 +187,8 @@ void Parsing::parsing_settings_game(std::string sett,CurrentGame* game){
 			game->spawnBoss(tick);
 		}
 		else if(to_spawn[0] == bonus){
+			std::cout << "le bonus = "<< to_spawn<< std::endl;
+			
 			int type_bonus = std::stoi(to_spawn.substr(1,idx));
 			int x = std::stoi(to_spawn.substr(idx+1,to_spawn.find(",")));
 			int y = std::stoi(to_spawn.substr(to_spawn.find(",")+1,to_spawn.length()));
@@ -198,6 +200,7 @@ void Parsing::parsing_settings_game(std::string sett,CurrentGame* game){
 			game->set_client_tick(t);
 		}
 		sett = sett.substr(index+1,sett.length());
+		std::cout << "le string vide ? = "<< (sett.empty()) << std::endl;
 		
 
 	};
