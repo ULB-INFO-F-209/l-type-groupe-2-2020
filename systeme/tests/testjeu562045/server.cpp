@@ -1,21 +1,22 @@
 #include "server.hpp"
 #include "parsing.hpp"
 
+
+#define TEST_GAME_INTERFACE 
+
 bool Server::_is_active = false;
 Database Server::_db{};
 std::mutex Server::mtx;
 
 /**
- * Constructeur :
- *  - cree 2 pipe, connexion et reponse
- *  - lance 2 threads independant pour gerer connexion et reponse
+ * @brief Construct a new Server:: Server object
  * 
- **/
+ */
 Server::Server():_pipe_running() {
 
-    signal(SIGINT,close_me);
+    signal(SIGINT,close_me); /** gestion du CTRL + C ==> save db */
 
-    std::cout << "LANCEMENT DU SERVEUR \n";
+    
     if (!isServerActive()){ // pas actif
 
         _db.dbLoad();
@@ -23,10 +24,8 @@ Server::Server():_pipe_running() {
         createPipe(Constante::PIPE_DE_CONNEXION);
         createPipe(Constante::PIPE_DE_REPONSE);
 
-        //_server_instance.push_back(this);
-        //signal(SIGUSR1,handleSignalCall);
 
-        std::cout << "\nServeur connecter ... \n";
+        
         _is_active = true;
         std::thread t1(&Server::initConnexions,this); // thread d'ecoute (deamon)
         t1.detach(); //TODO verifier le comportement de ca 
@@ -39,6 +38,7 @@ Server::Server():_pipe_running() {
         std::cerr << "[ERROR SERVER ALREADY ACTIVE]" << std::endl; 
         exit(1);
     }
+    std::cout << "\n\n -----------------------|      SERVEUR PRET      |------------------------ \n\n";
     pause();
     
 }
@@ -139,12 +139,12 @@ void Server::catchInput(char* input) {
 		
 	} else if (input[0] == Constante::GAME_SETTINGS){
         Parsing::Game_settings game_sett;
-        get_game_settings(input,&game_sett);// [TODO] cette fonction lance un thread avec le jeu et les parametre du jeu
-        bool o = true;
-        resClient(&processId,o);
-        launch_game(&game_sett);
+        get_game_settings(input,&game_sett);
+        resClient(&processId,Constante::GAME_CAN_BE_LAUNCH);
+        std::thread t5(&Server::launch_game,this,&game_sett); // thread du jeu
+        t5.detach();  
 	} else {
-		std::cerr << "[ERROR IN INPUT]" << std::endl;
+		std::cerr << "[ERROR IN INPUT 1]" << std::endl;
 		return;
 	}
 
@@ -153,14 +153,13 @@ void Server::catchInput(char* input) {
 /**
  * Cree des pipes dans le dossier /tmp
  * 
- * format du pipe : /tmp/pipefile_name
+ * 
  **/
 void Server::createPipe(const char *name){
     char path[Constante::CHAR_SIZE];
     sprintf(path,"%s%s",Constante::PIPE_PATH,name);
 
     int ret_val = mkfifo(path,Constante::PIPE_MODE);
-    std::cout << "nom pipe = " << path<<" ("<<ret_val<<"),  ";
     
     if (errno == EEXIST ){ //cree le pipe
         std::cout << "pipe " << path << " existe deja" << std::endl;
@@ -191,7 +190,7 @@ void Server::initConnexions(){
         std::cout << std::endl;
         fd =open(connex_pipe_path, O_RDONLY);
         if (fd != -1){
-            int val = read(fd,proc_id,Constante::CHAR_SIZE); // TODO verification de val 
+            int val = read(fd,proc_id,Constante::CHAR_SIZE);
             if (val == -1)
             {
                 std::cout << "[ERROR] CAN'T READ IN INIT CONNEXION" <<std::endl;
@@ -222,10 +221,6 @@ void Server::initConnexions(){
 
     }
 
-}
-            
-void Server::sendPositionBoard(){
-    return ;
 }
 
 bool Server::signIn(char* val){
@@ -317,7 +312,7 @@ void Server::resClient(std::string* processId, bool res) {
 
 	fd = open(pipe_name,O_RDWR);
     if (fd != -1) write(fd, &message, Constante::CHAR_SIZE);
-    else std::cout << "[ERROR] requete non ecrite " << std::endl;
+    else std::cerr << "[ERROR] requete non ecrite " << std::endl;
     
     close(fd);
     std::cout << "resultat requete : " << message <<" sur le pipe "<<pipe_name << std::endl; 
@@ -334,7 +329,7 @@ void Server::resClient(std::string* processId, char* res) {
 
 	fd = open(pipe_name,O_WRONLY);
     if (fd != -1) write(fd, res, Constante::CHAR_SIZE);
-    else std::cout << "[ERROR] requete non ecrite " << std::endl;
+    else std::cerr << "[ERROR] requete non ecrite " << std::endl;
     
     close(fd);
     std::cout <<std::endl;
@@ -351,7 +346,7 @@ void Server::resClient(std::string* processId, int res) {
 
 	fd = open(pipe_name,O_WRONLY);
     if (fd != -1) write(fd, &message, Constante::CHAR_SIZE);
-    else std::cout << "[ERROR] requete non ecrite " << std::endl;
+    else std::cerr << "[ERROR] requete non ecrite " << std::endl;
     
     close(fd);
     std::cout <<std::endl;
@@ -371,32 +366,49 @@ void Server::launch_db_save(){
 }
 
 /**
- * @brief Supprime les pipes du client [TODO] ajouter la sup du pipe input et game
+ * @brief Supprime les pipes du client
  * 
  * @param input : le pid du client pour pouvoir supprimer les pipes
  */
 void Server::client_exit(char *input){
 
-    std::string processId(input);
-    int i = processId.rfind(Constante::DELIMITEUR);
-    processId = processId.substr(i+1,processId.length());
-
+    std::string processId(input); 
+    processId = processId.substr(processId.rfind(Constante::DELIMITEUR)+1,processId.length());
+    std::string game_pipe = input;
+    std::string input_pipe = input;
     processId.insert(0,Constante::BASE_PIPE_FILE);
+    game_pipe.insert(0,Constante::BASE_GAME_PIPE);
+    input_pipe.insert(0,Constante::BASE_INPUT_PIPE);
     processId.insert(0,Constante::PIPE_PATH);
+    input_pipe.insert(0,Constante::PIPE_PATH);
+    game_pipe.insert(0,Constante::PIPE_PATH);
 
-    if(remove(processId.c_str()) != 0){
-        std::cerr << "[ERROR] suppresion du pipe : " << processId << std::endl;
-    }
-    else{
-        std::cout << processId << " supprimer avec succes :) "<<std::endl;
-    }
-
+    remove_pipe(processId);
+    remove_pipe(game_pipe);
+    remove_pipe(input_pipe);
+    
 }
 
 /**
- * @brief recoit les parametres de jeu et lance un thread avec le jeu
+ * @brief supprime les pipes
  * 
- * @param input les parametres non parser
+ * @param the_pipe : le pipe a supprimer
+ */
+void Server::remove_pipe(std::string the_pipe){
+
+    if(remove(the_pipe.c_str()) != 0){
+        std::cerr << "[ERROR] suppresion du pipe : " << the_pipe << std::endl;
+    }
+    else{
+        std::cout << the_pipe << " supprimer avec succes "<<std::endl;
+    }
+}
+
+
+/**
+ * @brief recoit les paramètres de jeu et lance un thread avec le jeu
+ * 
+ * @param input les paramètres non parser
  */
 void Server::get_game_settings(char* input, Parsing::Game_settings* game_sett){
 	
@@ -404,16 +416,17 @@ void Server::get_game_settings(char* input, Parsing::Game_settings* game_sett){
 	std::cout << game_sett->nb_player << "-" << game_sett->pseudo_hote << "-"
 			  << game_sett->pseudo_other    << "-" << game_sett->drop_rate << "-"
 			  << game_sett->ally_shot << "-" << game_sett->nb_lives << "-"
-			  << game_sett->difficulty_str << std::endl;
-    
-    std::string processId(input);
-    int i = processId.rfind(Constante::DELIMITEUR);
-    processId = processId.substr(i+1,processId.length());
-    strcpy(game_sett->pid,processId.c_str());
-    
-    return;
+			  << game_sett->difficulty_str <<"-"<< game_sett->pid <<std::endl;
+
 }
 
+/**
+ * @brief Lance une version du jeu avec les bon parametre,
+ *        envoie a traver 1 pipes les objets a affiché
+ *        et recoit a travers un autre pipe les inpupts  
+ * 
+ * @param sett_game : les settings du jeu
+ */
 void Server::launch_game(Game_settings* sett_game){
 
     CurrentGame game{*sett_game};
@@ -421,69 +434,82 @@ void Server::launch_game(Game_settings* sett_game){
     char input_pipe[Constante::CHAR_SIZE],send_response_pipe[Constante::CHAR_SIZE];
     sprintf(input_pipe,"%s%s%s",Constante::PIPE_PATH,Constante::BASE_INPUT_PIPE,sett_game->pid);
     sprintf(send_response_pipe,"%s%s%s",Constante::PIPE_PATH,Constante::BASE_GAME_PIPE,sett_game->pid);
-
-    std::cout << input_pipe << std::endl << send_response_pipe << std::endl;
+    std::cout << "les pipes : "<< input_pipe << " - "<< send_response_pipe<<std::endl;
     bool gameOn = true;
 
-
-    Interface_game interface_game;
-    interface_game.init();
-    interface_game.initialDraw();
+    #ifdef TEST_GAME_INTERFACE
+        Interface_game interface_game;
+        interface_game.init();
+        interface_game.initialDraw();
+    #endif
     settingServer setting_to_diplay{};
-
-    //std::vector<std::string> commande_jeu = {"E|56,337&E|54,337&E|30,337&E|50,337&E|45,337&"};
     
     while(gameOn){
         
         int inp = read_game_input(input_pipe);
-            std::string resp = game.run_server(inp,&setting_to_diplay);
-
-            //game.run_client(inp,&setting_to_diplay);
-
-            //usleep(10500);
+        std::string resp = game.run_server(inp,&setting_to_diplay);
+        resClient(send_response_pipe,&resp);
+        usleep(1000);
+        #ifdef TEST_GAME_INTERFACE
             interface_game.display(&setting_to_diplay);
-            resClient(send_response_pipe,&resp);
-        
-        //usleep(100000);
-
-        
+        #endif
+        gameOn = !setting_to_diplay.game_over;
+                
     }
-    std::cout << "while fin"<< std::endl;
+    #ifdef TEST_GAME_INTERFACE
+        interface_game.close();
+    #endif
+    std::cout << "fin du jeu pour le pid : "<< sett_game->pid<< std::endl;
+
+    save_score(sett_game->pseudo_hote,setting_to_diplay.score_j1);
+    if(strcmp(sett_game->pseudo_other,Constante::NO_PARTENER) == 0){
+
+        save_score(sett_game->pseudo_other,setting_to_diplay.score_j2);
+    };
+
 }
 
 void Server::resClient(char* pipe, std::string* res){
     char to_send[Constante::CHAR_SIZE];
     strcpy(to_send,res->c_str());
-    if (res->at(0) == 'b'){
-
-        std::cout << "le tick : "<< to_send << std::endl;
-    }
-    
+    #ifdef TEST_GAME_INTERFACE
+        std::cout << "to affiche : "<< to_send << std::endl;
+    #endif
     int fd = open(pipe,O_WRONLY);
     if (fd != -1) write(fd, to_send, Constante::CHAR_SIZE);
-    else std::cout << "[ERROR] settings non ecrit " << std::endl;
+    else std::cerr << "[ERROR] settings non ecrit " << std::endl;
     close(fd);
 }
 
+/**
+ * @brief lis le pipe d'input
+ * 
+ * @param pipe : le pipe à lire 
+ * @return int : le char pressé par le clients, -1 si rien n'est pressé
+ */
 int Server::read_game_input(char * pipe){
     int message;
     int fd =open(pipe, O_RDONLY);
     if (fd != -1){
-        int val = read(fd,&message,sizeof(int)); // TODO verification de val 
-        
-        if (val == -1){
-            std::cout << "[ERROR] CAN'T READ IN INPUT PIPE " <<std::endl;
-        }
+        int val = read(fd,&message,sizeof(int)); 
+        if (val == -1)std::cerr << "[ERROR] CAN'T READ IN INPUT PIPE " <<std::endl;
         
     }
-    else{
-        std::cerr << "[ERROR PIPE INPUT]" <<std::endl;
-    }
+    else std::cerr << "[ERROR PIPE INPUT]" <<std::endl;
     close(fd);
     return message;
 
 }
 
+/**
+ * @brief Enregistre le score sur la database
+ * 
+ * @param pseudo1 
+ * @param score 
+ */
+void Server::save_score(char* pseudo, int score){
+    _db.updateScore(score,pseudo);
+}
 
 
 

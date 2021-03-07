@@ -318,6 +318,8 @@ void Interface_game::refresh_wnd() {
 
 }
 void Interface_game::close() {
+    werase(game_wnd);
+    werase(main_wnd);
     delwin(main_wnd);
     delwin(game_wnd);
     endwin();

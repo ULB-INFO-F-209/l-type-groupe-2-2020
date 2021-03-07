@@ -25,12 +25,12 @@ void test1(){
 
     std::cout<< "SLEEP FINI "<< std::endl << std::endl;
 
-    Imene.createGame("1&Imene&&100&0&1&easy");
+    Imene.createGame("2&Imene&vinove44&100&0&1&easy");
     std::cout << "create game fini" << std::endl<<std::endl;
 
 
     Game_settings option_jeu;
-    option_jeu.ally_shot = false; option_jeu.diff = easy; option_jeu.drop_rate =100; option_jeu.nb_lives = 1; option_jeu.nb_player = 1; strcpy(option_jeu.pseudo_hote,"Imene");
+    option_jeu.ally_shot = false; option_jeu.diff = easy; option_jeu.drop_rate =100; option_jeu.nb_lives = 1; option_jeu.nb_player = 2; strcpy(option_jeu.pseudo_hote,"Imene");
     Interface_game interface_game;
     interface_game.init();
     interface_game.initialDraw();

@@ -11,23 +11,22 @@
  **/
 namespace Constante{
 
-    const size_t CHAR_SIZE = 2500;
+    const size_t CHAR_SIZE = 2500;                      /** Tailles d'un message à lire sur les pipes, grand car possibilité de faire passer le classement  **/
 
     //pipe
-    const char PIPE_DE_CONNEXION[] = {"connexion"};
-    const char PIPE_DE_REPONSE[]   = {"getrequest"};
-    const char BASE_PIPE_FILE[]    = {"pipefile_"};
-    const char BASE_INPUT_PIPE[]   = {"input_pipe_"};
-    const char BASE_GAME_PIPE[]    = {"game_pipe_"};
+    const char PIPE_DE_CONNEXION[] = {"connexion"};     /** recoit les 1er connexions des clients **/
+    const char PIPE_DE_REPONSE[]   = {"getrequest"};    /** recois les requests de tous les clients **/
+    const char BASE_PIPE_FILE[]    = {"pipefile_"};     /** envois les reponses des requests au clients concerner **/
+    const char BASE_INPUT_PIPE[]   = {"input_pipe_"};   /** recois les inputs du jeu pout 1 clients  **/
+    const char BASE_GAME_PIPE[]    = {"game_pipe_"};    /** envoies les objets a cree pour le jeu au client  **/
     const char PIPE_PATH[]         = {"/tmp/"};
-    const int  PIPE_MODE            = 0666;
+    const int  PIPE_MODE            = 0666;             /** Mode de créations des PIPE **/
 
     //gestion des messages
     constexpr char ACTION_MENU_PRINCIPAL = 'M';
     constexpr char GAME_SETTINGS = 'P';
     constexpr char REPONSE_AMI = 'R';
-    const char PAS_SECOND_JOUEUR[] = {"Null"};
-    constexpr char ACTION_JEU[] = {"J"/* ajouter les touches possibles*/};
+    const char NO_PARTENER[] = {"Null"};
     constexpr char DELIMITEUR = '&';
 
     //client
@@ -36,6 +35,7 @@ namespace Constante{
 
     //server
     const unsigned SERVER_SAVE_TIME = 90000;
+    const bool GAME_CAN_BE_LAUNCH = true;
 
     // MENU
     constexpr char SIGN_IN = 'a';
