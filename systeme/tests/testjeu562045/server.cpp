@@ -1,7 +1,6 @@
 #include "server.hpp"
 #include "parsing.hpp"
 
-#define TEST_GAME_INTERFACE
 
 bool Server::_is_active = false;
 Database Server::_db{};
@@ -430,7 +429,6 @@ void Server::launch_game(Game_settings* sett_game){
     char input_pipe[Constante::CHAR_SIZE],send_response_pipe[Constante::CHAR_SIZE];
     sprintf(input_pipe,"%s%s%s",Constante::PIPE_PATH,Constante::BASE_INPUT_PIPE,sett_game->pid);
     sprintf(send_response_pipe,"%s%s%s",Constante::PIPE_PATH,Constante::BASE_GAME_PIPE,sett_game->pid);
-    std::cout << "les pipes : "<< input_pipe << " - "<< send_response_pipe<<std::endl;
     bool gameOn = true;
 
     #ifdef TEST_GAME_INTERFACE
@@ -450,18 +448,20 @@ void Server::launch_game(Game_settings* sett_game){
             interface_game.display(&setting_to_diplay);
         #endif
         gameOn = !setting_to_diplay.game_over;
+        //std::cout << "Gaem ON "<< std::endl;
         
     }
 
     #ifdef TEST_GAME_INTERFACE
         interface_game.close();
+        clear();
+        refresh();
     #endif
-    clear();
-    refresh();
+
     std::cout << "fin du jeu pour le pid : "<< sett_game->pid<< std::endl;
 
     save_score(sett_game->pseudo_hote,setting_to_diplay.score_j1);
-    if(!strcmp(sett_game->pseudo_other,Constante::NO_PARTENER) == 0){
+    if(strcmp(sett_game->pseudo_other,Constante::NO_PARTENER) == 0){
 
         save_score(sett_game->pseudo_other,setting_to_diplay.score_j2);
     };
