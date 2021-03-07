@@ -81,6 +81,7 @@ private:
 
 	//Game utilities
 	void get_players(Game_settings *set);
+	void launch_game(Game_settings *);
 	
 };
 

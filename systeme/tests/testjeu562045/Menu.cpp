@@ -132,6 +132,7 @@ int Menu::lobby(){
 			case 5: 	//play
 				create_game_to_str(buffer,&setting);
 				_client.createGame(buffer);
+				launch_game(&setting);
 				break;
 			default: // - 1 ==> quit 
 				res = MAIN;
@@ -272,4 +273,30 @@ void Menu::get_players(Game_settings*set){
 		//choice = window.print_menu(3, options, LOBBY, set);
 }
 
+void Menu::launch_game(Game_settings* game_option){
+    Interface_game interface_game;
+    interface_game.init();
+    interface_game.initialDraw();
+    settingServer setting_to_diplay{};
+    CurrentGame my_game(*game_option);
+    bool gameOn = true;
+    int inp{};
 
+    while(gameOn){
+
+        inp = wgetch(interface_game.get_main_window());
+        _client.send_game_input(inp);
+
+        std::string val = _client.read_game_pipe();
+        Parsing::parsing_settings_game(val,&my_game);
+        my_game.run_client(inp,&setting_to_diplay);
+        
+        interface_game.display(&setting_to_diplay);
+        
+        gameOn = !setting_to_diplay.game_over;
+    
+
+    }
+
+    interface_game.close();
+}

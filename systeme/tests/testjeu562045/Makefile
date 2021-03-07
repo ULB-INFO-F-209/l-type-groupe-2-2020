@@ -8,7 +8,7 @@ flag = -std=c++17 -masm=intel -lncurses -fconcepts -pthread \
 server: main_server.cpp server.o database.o account.o parsing.o CurrentGame.o MapHandler.o game_test/settingServer.hpp interface_game.o
 	g++  main_server.cpp CurrentGame.o server.o database.o account.o parsing.o MapHandler.o interface_game.o $(flag) -o process_server
 
-client: main_client.cpp client.o parsing.o interface.o screen.o menu.o CurrentGame.o MapHandler.o
+client: main_client.cpp client.o parsing.o interface.o screen.o menu.o CurrentGame.o MapHandler.o interface_game.o
 	g++  main_client.cpp  client.o parsing.o interface.o screen.o menu.o CurrentGame.o MapHandler.o interface_game.o $(flag)  -o process_client
 
 test_client: test_client1.cpp client.o parsing.o interface.o screen.o menu.o CurrentGame.o MapHandler.o interface_game.o

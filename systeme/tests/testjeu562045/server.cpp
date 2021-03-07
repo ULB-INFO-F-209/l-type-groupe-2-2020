@@ -450,11 +450,14 @@ void Server::launch_game(Game_settings* sett_game){
             interface_game.display(&setting_to_diplay);
         #endif
         gameOn = !setting_to_diplay.game_over;
-                
+        
     }
+
     #ifdef TEST_GAME_INTERFACE
         interface_game.close();
     #endif
+    clear();
+    refresh();
     std::cout << "fin du jeu pour le pid : "<< sett_game->pid<< std::endl;
 
     save_score(sett_game->pseudo_hote,setting_to_diplay.score_j1);
