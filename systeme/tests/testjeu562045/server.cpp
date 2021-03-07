@@ -462,7 +462,7 @@ void Server::launch_game(Game_settings* sett_game){
     std::cout << "fin du jeu pour le pid : "<< sett_game->pid<< std::endl;
 
     save_score(sett_game->pseudo_hote,setting_to_diplay.score_j1);
-    if(strcmp(sett_game->pseudo_other,Constante::NO_PARTENER) == 0){
+    if(!strcmp(sett_game->pseudo_other,Constante::NO_PARTENER) == 0){
 
         save_score(sett_game->pseudo_other,setting_to_diplay.score_j2);
     };
