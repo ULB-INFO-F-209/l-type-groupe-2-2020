@@ -47,8 +47,6 @@ void test1(){
         std::string val = Imene.read_game_pipe();
         Parsing::parsing_settings_game(val,&my_game);
         my_game.run_client(inp,&setting_to_diplay);
-        //inp = -10;
-        //Imene.send_game_input(inp);
         
         interface_game.display(&setting_to_diplay);
         

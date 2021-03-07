@@ -3,6 +3,7 @@
 //
 
 #include "MapHandler.hpp"
+#include <unistd.h>
 
 void MapHandler::erase(size_t i, MapObject::type typ) { //1ier elem=index(0)
     if (typ == MapObject::star) {
@@ -136,6 +137,13 @@ void MapHandler::update_client(MapObject::type typ, int t) {
 
     if(typ == MapObject::star )
         stars_set.push_back(new Star(rand() % field_bounds.width(), 0));
+    else if (typ == MapObject::enemyship && t%300==0 && !changingLevel&&!bossSpawned) {
+            
+        if(enemyCount >= enemyLimit){
+            changingLevel = true;
+        }
+
+    }
     
 }
 
@@ -744,8 +752,8 @@ void MapHandler::explosion() {
     }
 }
 int MapHandler::spawnBonuses(int x, int y) {
-    int rand_spawn_bonus = rand()%4;
-    auto bonusT = bonusType(rand_spawn_bonus); // à changer si nombre de bonus change
+    int rand_spawn_bonus = rand()%4; // à changer si nombre de bonus change
+    auto bonusT = bonusType(rand_spawn_bonus); 
     bonuses_set.push_back(new Bonus(x, y, bonusT ));
     return rand_spawn_bonus;
 }
@@ -771,9 +779,11 @@ void MapHandler::changeLevel() {
     }
 
 }
+
 std::vector<Boss *> MapHandler::getBoss() const {
     return boss_set;
 }
+
 MapHandler::MapHandler(int p, difficulty d): probaBonus(p),dif(d){
     if(d==easy){
         enemyLimit=5;
@@ -797,6 +807,7 @@ MapHandler::MapHandler(int p, difficulty d): probaBonus(p),dif(d){
         obstacleStartDamage = 25;
     }
 }
+
 void PlayerShip::catchBonus(const Bonus* b) {
         this->setCurrentBonus(b->getBonusType());
 }
@@ -907,13 +918,11 @@ void MapHandler::add_object_server(MapObject::type typ,int t, std::string *to_fi
         stars_set.push_back(new Star(rand() % field_bounds.width(), 0));
     else if(typ == MapObject::obstacle && t % 200 == 0 && !changingLevel && !bossSpawned){
         int x = rand() % (field_bounds.width()-1)+1;
-        std::cout << x << std::endl;
         std::string str_x = std::to_string(x);
         obstacles_set.push_back(new Obstacle(x, 0, obstacleStartDamage,obstacleStartHp));
         to_fill->append("O|"); 
         to_fill->append(str_x);
         to_fill->append("&");
-        std::cout<<" to_fill = "<< *to_fill<<std::endl;
     }
     else if (typ == MapObject::enemyship && t%300==0 && !changingLevel&&!bossSpawned) {
         int x = rand() % (field_bounds.width() - 1) + 1;
@@ -927,7 +936,6 @@ void MapHandler::add_object_server(MapObject::type typ,int t, std::string *to_fi
         to_fill->append(",");
         to_fill->append(str_tick);
         to_fill->append("&");
-        std::cout<<" to_fill = "<< *to_fill<<std::endl;
         enemyCount++;
           if(enemyCount >= enemyLimit){
               changingLevel = true;
@@ -940,7 +948,6 @@ void MapHandler::add_object_server(MapObject::type typ,int t, std::string *to_fi
         to_fill->append("B|");
         to_fill->append(std::to_string(t+100));
         to_fill->append("&");
-        std::cout<<" to_fill = "<< *to_fill<<std::endl;
     }
     
 }
@@ -1174,6 +1181,7 @@ void MapHandler::checkCollision_server(int t, bool friendlyFire,std::string * to
     //erase enemy
     for(size_t e = 0; e < enemy_ships_set.size(); e++){
         if(enemy_ships_set.at(e)->getHp() <= 0){
+            
             if (rand()%100<=probaBonus){
                 int posx = enemy_ships_set.at(e)->getPos().x;
                 int posy = enemy_ships_set.at(e)->getPos().y;
@@ -1182,6 +1190,7 @@ void MapHandler::checkCollision_server(int t, bool friendlyFire,std::string * to
                 to_fill->append(std::to_string(rand_spawn_bonus));
                 to_fill->append("|");
                 to_fill->append(std::to_string(posx));
+                to_fill->append(",");
                 to_fill->append(std::to_string(posy));
 
             }
@@ -1231,10 +1240,15 @@ void MapHandler::spawnObstacle(int posx){
 
 void MapHandler::spawnEnemy(int posx,int tick){
     enemy_ships_set.push_back(new EnemyShip(posx, 0, {{10 - 1, 5},{3,2}}, '%', enemyStartHp,tick, enemyStartProjectileDamage));
+    enemyCount++;
+    if(enemyCount >= enemyLimit){
+        changingLevel = true;
+    }
 }
 
 void MapHandler::spawnBoss(int tick){
     boss_set.push_back(new Boss(0,0,{{0, 0},{18,6}},'&',1000,tick, enemyStartProjectileDamage));
+    bossSpawned=true;
 
 }
 

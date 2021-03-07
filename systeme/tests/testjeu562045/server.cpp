@@ -405,7 +405,7 @@ void Server::get_game_settings(char* input, Parsing::Game_settings* game_sett){
 			  << game_sett->pseudo_other    << "-" << game_sett->drop_rate << "-"
 			  << game_sett->ally_shot << "-" << game_sett->nb_lives << "-"
 			  << game_sett->difficulty_str << std::endl;
-
+    
     std::string processId(input);
     int i = processId.rfind(Constante::DELIMITEUR);
     processId = processId.substr(i+1,processId.length());
@@ -454,7 +454,7 @@ void Server::launch_game(Game_settings* sett_game){
 void Server::resClient(char* pipe, std::string* res){
     char to_send[Constante::CHAR_SIZE];
     strcpy(to_send,res->c_str());
-    if (res->at(0) == 'T'){
+    if (res->at(0) == 'b'){
 
         std::cout << "le tick : "<< to_send << std::endl;
     }

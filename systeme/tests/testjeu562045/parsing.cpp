@@ -176,14 +176,13 @@ void Parsing::parsing_settings_game(std::string sett,CurrentGame* game){
 		else if(to_spawn[0] == bonus){
 			int type_bonus = std::stoi(to_spawn.substr(1,idx));
 			int x = std::stoi(to_spawn.substr(idx+1,to_spawn.find(",")));
-			int y = std::stoi(to_spawn.substr(to_spawn.find(","),to_spawn.length()));
+			int y = std::stoi(to_spawn.substr(to_spawn.find(",")+1,to_spawn.length()));
 			game->spawnBonus(x,y,type_bonus);
 
 		}
 		else if(to_spawn[0] == the_tick){
 			int t = std::stoi(to_spawn.substr(idx+1,to_spawn.length()));
 			game->set_client_tick(t);
-			std::cout << "le tick serveir  =" << t << std::endl;
 		}
 		sett = sett.substr(index+1,sett.length());
 		

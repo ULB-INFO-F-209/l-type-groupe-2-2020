@@ -66,7 +66,7 @@ public:
         screen_area = anInterface->get_screen_area();
     }
     CurrentGame(Game_settings game_sett):twoPlayers(game_sett.nb_player == 2? true:false),friendlyFire(game_sett.ally_shot), dropRate(game_sett.drop_rate),dif(game_sett.diff),
-    screen_area( {0, 0}, {80, 24}),game_area( {0, 0}, {78, 16}) {
+    screen_area( {0, 0}, {80, 24}),game_area( {0, 0}, {78, 16}),map(dropRate,dif) {
         
         playership1 = new PlayerShip(10, 5, { {9, 5 }, { 3, 2 } }, '0',100, 0,100,0);
         player1 = new Player(game_sett.nb_lives);

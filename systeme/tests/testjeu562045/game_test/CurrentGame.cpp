@@ -404,6 +404,7 @@ void CurrentGame::run_client(int move_to_exec,settingServer* settings){
         map.update_client(MapObject::boss,tick);
     }
 
+    //minigun
     for( PlayerShip* p : map.getListPlayer()){
         if (p->getCurrentBonus()==minigun && p->getHp()>0 && tick % 7 == 0)
             map.spawnProjectile(p->getPos().x, p->getPos().y, p->getShootDamage(), true, 10, p->getPlayerNb()+1);
