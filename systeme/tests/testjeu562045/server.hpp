@@ -41,7 +41,7 @@ public:
     ~Server(){_db.dbSave();};
     static void close_me(int sig){mtx.lock(); _db.dbSave(); mtx.unlock(); }// handle CTRL + C signal ==> save db
     bool static isServerActive() {return _is_active;}
-
+    static void error_pip(int sig){std::cerr << "\n***  [ERROR PIPE]  ***\n";}
 private:
 	//connections
     void initConnexions();

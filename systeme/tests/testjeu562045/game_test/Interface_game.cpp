@@ -106,8 +106,10 @@ void Interface_game::display(settingServer* settings){
     drawBoss(settings->object_map);
     drawNewLevel(settings->object_map,settings->tick);
     drawUI(settings->object_map,settings->object_playership1,settings->object_playership2,settings->object_player1,settings->object_player2,settings->score_j1,settings->score_j2,settings->tick, settings->two_players);
-    if (settings->game_over)
+    if (settings->game_over){
         drawGameOver(settings->object_map, (settings->score_j1+settings->score_j2));
+        return;
+    }
     refresh_wnd();
 }
 void Interface_game::display(settingArray *sett){
@@ -313,8 +315,7 @@ void Interface_game::drawUI(MapHandler *m,PlayerShip* playership1,PlayerShip* pl
 void Interface_game::refresh_wnd() {
     wrefresh(main_wnd);
     wrefresh(game_wnd);
-    usleep(10000); // 10 ms
-    refresh();
+    
 
 }
 void Interface_game::close() {
@@ -401,10 +402,8 @@ void Interface_game::drawGameOver(MapHandler* m, int score1){
     mvwprintw(game_wnd,9, 35,"SCORE : %i", score1);
     mvwprintw(game_wnd,12, 32,"press P to quit");
     refresh_wnd();
-    while(true){
-        char in_char = wgetch(get_main_window());
-        if(in_char == 'p')break;
-    } 
+    
+    
 
 }
 void Interface_game::drawGameOver(int score1){

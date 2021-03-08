@@ -285,15 +285,25 @@ void Menu::launch_game(Game_settings* game_option){
     while(gameOn){
 
         inp = wgetch(interface_game.get_main_window());
-        _client.send_game_input(inp);
+		if(gameOn){
 
-        std::string val = _client.read_game_pipe();
-        Parsing::parsing_settings_game(val,&my_game);
-        my_game.run_client(inp,&setting_to_diplay);
-        
+       	 	_client.send_game_input(inp);
+			std::string val = _client.read_game_pipe();
+			Parsing::parsing_settings_game(val,&my_game);
+		}
+
+		my_game.run_client(inp,&setting_to_diplay);
         interface_game.display(&setting_to_diplay);
-        
+
+		refresh();
         gameOn = !setting_to_diplay.game_over;
+		if (gameOn == false){
+
+			while(true){
+				char in_char = wgetch(interface_game.get_main_window());
+				if(in_char == 'p')break;
+			} 
+		}
     
 
     }

@@ -1,7 +1,7 @@
 #include "server.hpp"
 #include "parsing.hpp"
 
-
+#define TEST_GAME1
 bool Server::_is_active = false;
 Database Server::_db{};
 std::mutex Server::mtx;
@@ -13,7 +13,7 @@ std::mutex Server::mtx;
 Server::Server():_pipe_running() {
 
     signal(SIGINT,close_me); /** gestion du CTRL + C ==> save db */
-    signal(SIGPIPE, SIG_IGN); // redirection du signal SIGPIPE vers SIG_IGN pour l'ignorer 
+    signal(SIGPIPE, error_pip); // redirection du signal SIGPIPE vers SIG_IGN pour l'ignorer 
     
     if (!isServerActive()){ // pas actif
 
@@ -431,7 +431,7 @@ void Server::launch_game(Game_settings* sett_game){
     sprintf(send_response_pipe,"%s%s%s",Constante::PIPE_PATH,Constante::BASE_GAME_PIPE,sett_game->pid);
     bool gameOn = true;
 
-    #ifdef TEST_GAME_INTERFACE
+    #ifdef TEST_GAME
         Interface_game interface_game;
         interface_game.init();
         interface_game.initialDraw();
@@ -439,20 +439,24 @@ void Server::launch_game(Game_settings* sett_game){
     settingServer setting_to_diplay{};
     
     while(gameOn){
-        
-        int inp = read_game_input(input_pipe);
-        std::string resp = game.run_server(inp,&setting_to_diplay);
-        resClient(send_response_pipe,&resp);
-        //usleep(1000);
-        #ifdef TEST_GAME_INTERFACE
-            interface_game.display(&setting_to_diplay);
-        #endif
+        if(gameOn){
+
+            int inp = read_game_input(input_pipe);
+            std::string resp = game.run_server(inp,&setting_to_diplay);
+            resClient(send_response_pipe,&resp);
+        }
+        std::cout << "the value of the game : "<< gameOn<<std::endl;
         gameOn = !setting_to_diplay.game_over;
+        usleep(10000); // 10 ms
+        #ifdef TEST_GAME
+            interface_game.display(&setting_to_diplay);
+            refresh();
+        #endif
         //std::cout << "Gaem ON "<< std::endl;
         
     }
 
-    #ifdef TEST_GAME_INTERFACE
+    #ifdef TEST_GAME
         interface_game.close();
         clear();
         refresh();
@@ -461,8 +465,7 @@ void Server::launch_game(Game_settings* sett_game){
     std::cout << "fin du jeu pour le pid : "<< sett_game->pid<< std::endl;
 
     save_score(sett_game->pseudo_hote,setting_to_diplay.score_j1);
-    if(strcmp(sett_game->pseudo_other,Constante::NO_PARTENER) == 0){
-
+    if(sett_game->nb_player == 2){
         save_score(sett_game->pseudo_other,setting_to_diplay.score_j2);
     };
 
@@ -471,16 +474,15 @@ void Server::launch_game(Game_settings* sett_game){
 void Server::resClient(char* pipe, std::string* res){
     char to_send[Constante::CHAR_SIZE];
     strcpy(to_send,res->c_str());
-    if (!res->empty()&&res->at(0) == 'b'){
-        std::cout << "BOnus  : "<< to_send << std::endl;
-        
-    }
-    #ifdef TEST_GAME_INTERFACE
-        //std::cout << "to affiche : "<< to_send << std::endl;
+    
+    #ifdef TEST_GAME
+        std::cout << "to affiche : "<< to_send << std::endl;
     #endif
+    std::cout << "j'envois ic :   ";
     int fd = open(pipe,O_WRONLY);
     if (fd != -1) write(fd, to_send, Constante::CHAR_SIZE);
     else std::cerr << "[ERROR] settings non ecrit " << std::endl;
+    std::cout << "ce que j'envois  :  "<< to_send<<std::endl;
     close(fd);
 }
 
@@ -492,14 +494,16 @@ void Server::resClient(char* pipe, std::string* res){
  */
 int Server::read_game_input(char * pipe){
     int message;
+    std::cout << "juste AVant :   ";
     int fd =open(pipe, O_RDONLY);
     if (fd != -1){
         int val = read(fd,&message,sizeof(int)); 
-        if (val == -1)std::cerr << "[ERROR] CAN'T READ IN INPUT PIPE " <<std::endl;
+        if (val == -1)std::cerr << "[ERROR] CAN'T READ IN INPUT 2 PIPE " <<std::endl;
         
     }
-    else std::cerr << "[ERROR PIPE INPUT]" <<std::endl;
+    else std::cerr << "[ERROR PIPE INPUT 2 ]" <<std::endl;
     close(fd);
+    std::cout << "Input lus : "<< message << std::endl;;
     return message;
 
 }
