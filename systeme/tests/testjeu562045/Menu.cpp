@@ -1,6 +1,9 @@
 #include "Menu.hpp"
 
+Interface Menu::window = Interface();
+
 void Menu::start_session(){
+	signal(SIGINT,handle_SIGINT);
 	int menu = HOME;
 	while(menu != -1){ //-1 = quiter programme
 		if(menu==HOME)
@@ -115,9 +118,11 @@ int Menu::lobby(){
 				setting.drop_rate = window.range(100, &setting, true);
 				break; 
 			case 2: //Ally_SHOT
-				ret = window.print_menu(2, yes_no, LOBBY,&setting);
-				if(ret != -1)
-					setting.ally_shot = (ret+1)%2;
+				if (setting.nb_player == 2){
+					ret = window.print_menu(2, yes_no, LOBBY,&setting);
+					if(ret != -1)
+						setting.ally_shot = (ret+1)%2;
+				}
 
 				break;
 			case 3:  //live's number
@@ -247,7 +252,7 @@ void Menu::add_del_friends(bool add){
 void Menu::get_players(Game_settings*set){
 
 	int choice = 1; int error = NO_ERROR;
-	bool quit=false; char pswd[20];
+	bool quit=false; char pswd[20], pseudo[20];
 	std::string options[3] = {"1", "2", "quit"}; bool success = false;
 
 	choice = window.print_menu(3, options, LOBBY, set);
@@ -255,7 +260,9 @@ void Menu::get_players(Game_settings*set){
 	if(choice==1){
 		while(not success and not quit){
 			quit = window.get_connexion(set->pseudo_other, pswd, error,LOBBY);
-			if(not quit){
+			_client.get_pseudo(pseudo);
+			if(not quit and strcmp(set->pseudo_other,pseudo) != 0){
+
 				success = _client.signIn(set->pseudo_other, pswd,false); //if user exist!
 				if(not success){
 					error = NO_USER_ERROR;
@@ -265,6 +272,9 @@ void Menu::get_players(Game_settings*set){
 					error = NO_ERROR;
 					set->nb_player = 2;
 				}
+			}
+			else if(!quit){
+				error = YOURSELF_ERROR;
 			}
 		}
 	}
@@ -292,6 +302,10 @@ void Menu::launch_game(Game_settings* game_option){
 		if(setting_to_diplay.game_over == true){
 			inp = -10;
 			_client.send_game_input(inp);
+			inp = setting_to_diplay.score_j1 + setting_to_diplay.score_j2;
+			_client.send_game_input(inp);
+			clear();
+			sleep(1);
 			werase(interface_game.get_game_window());
 			interface_game.display(&setting_to_diplay);
 			refresh();
@@ -327,13 +341,14 @@ void Menu::launch_game(Game_settings* game_option){
 		refresh();
         gameOn = !setting_to_diplay.game_over;
 		if (gameOn == false){
+			inp = -10;
+			_client.send_game_input(inp);
+			inp = setting_to_diplay.score_j1 + setting_to_diplay.score_j2;
+			sleep(1);
+			_client.send_game_input(inp);
 			werase(interface_game.get_game_window());
 			interface_game.display(&setting_to_diplay);
 			refresh();
-			inp = -10;
-			_client.send_game_input(inp);
-			//break;
-			
 			while(true){
 				char in_char = wgetch(interface_game.get_main_window());
 				if(in_char == 'p')break;
@@ -345,3 +360,18 @@ void Menu::launch_game(Game_settings* game_option){
 
     interface_game.close();
 }
+
+
+void Menu::handle_SIGINT(int sig){
+	char pipe_to_server[Constante::SIZE_pipe];
+	sprintf(pipe_to_server, "%s%s", Constante::PIPE_PATH, Constante::PIPE_DE_REPONSE); //pipe où écrire
+	char buffer[Constante::CHAR_SIZE];
+	sprintf(buffer, "Mj&%d",getpid());
+	int fd =  open(pipe_to_server, O_WRONLY); 
+	write(fd, buffer, Constante::CHAR_SIZE);
+	close(fd);
+	std::cout << "Bye Bye"<< std::endl;
+	window.erase_win();
+	exit(EXIT_SUCCESS);
+}
+

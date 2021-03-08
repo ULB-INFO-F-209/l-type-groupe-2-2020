@@ -354,8 +354,8 @@ std::string CurrentGame::run_server(char move_to_exec,settingServer* settings){
     }
     
 
-    tick++;
     
+    tick++;
     what_change.append("T|");
     what_change.append(std::to_string(tick));
     what_change.append("&");

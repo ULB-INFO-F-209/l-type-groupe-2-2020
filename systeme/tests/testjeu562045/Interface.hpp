@@ -49,6 +49,7 @@ public:
 	int print_profile(Parsing::Profile *prof, int type);
 	int get_pseudo(char *res, int error, int type);
 	int range(int n, Game_settings *set, bool percent=false);
+	inline void erase_win(){endwin();}
 	//destructor
 	~Interface();
 private:

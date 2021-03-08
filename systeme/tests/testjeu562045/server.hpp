@@ -74,7 +74,7 @@ private:
     int read_game_input(char * pipe);
     void remove_pipe(std::string);
     void save_score(char* pseudo1, int score);
-
+    void kill_process(const char* pipe);
 };
 
 

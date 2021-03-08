@@ -48,12 +48,12 @@ class Menu{
 	std::string connexion_menu[SIZE_HOME] = {"Sign in", "Sign up", "Quit"};
 	std::string friends_menu[SIZE_FRIENDS_MENU] = {"Friends list", "Friends requests", "Add friend",
 								   "Remove friend", "Back"};
-	std::string main_menu[ SIZE_MAIN_MENU] = {"New game", "Friends", "Leaderboard",
+	std::string main_menu[SIZE_MAIN_MENU] = {"New game", "Friends", "Leaderboard",
 								   "Profile", "Log out"};
-	std::string settings_menu[ SIZE_SETTINGS] = {"Number of player", "Drop rate","Ally shot",
+	std::string settings_menu[SIZE_SETTINGS] = {"Number of player", "Drop rate","Ally shot",
 									 "Number of live", "Difficulty", "Play", "Quit lobby"};				   
 	//console
-	Interface window{};
+	static Interface window;
 	
 public:
 	Menu()=default;
@@ -82,6 +82,9 @@ private:
 	//Game utilities
 	void get_players(Game_settings *set);
 	void launch_game(Game_settings *);
+
+	static void handle_SIGINT(int sig);
+
 	
 };
 

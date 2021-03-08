@@ -89,7 +89,6 @@ public:
 
 private:
     void communication(char *buffer);
-    static void handle_SIGINT(int sig);
 
 };
 

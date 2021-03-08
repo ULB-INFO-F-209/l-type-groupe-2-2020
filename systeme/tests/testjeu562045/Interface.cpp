@@ -37,8 +37,8 @@ void Interface::resize_win(){
     getmaxyx(stdscr,YMAX,XMAX);
 
     //size and positions
-    WIN_HEIGHT = YMAX-(YMAX/8);
-    WIN_WIDTH = XMAX-(XMAX/8);
+    WIN_HEIGHT = YMAX-(YMAX/4);
+    WIN_WIDTH = XMAX-(XMAX/6);
     WIN_Y = YMAX/10;
     WIN_X = XMAX/14;
 
@@ -744,7 +744,7 @@ void Interface::print_message(std::string *msg1, bool up ){
 
 
 Interface::~Interface(){
-		getch();
+		
 		endwin();
 }
 

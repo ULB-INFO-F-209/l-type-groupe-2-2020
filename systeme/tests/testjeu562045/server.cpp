@@ -370,19 +370,31 @@ void Server::client_exit(char *input){
 
     std::string processId(input); 
     processId = processId.substr(processId.rfind(Constante::DELIMITEUR)+1,processId.length());
-    std::string game_pipe = input;
-    std::string input_pipe = input;
+    std::string game_pipe = processId;
+    std::string input_pipe = processId;
     processId.insert(0,Constante::BASE_PIPE_FILE);
     game_pipe.insert(0,Constante::BASE_GAME_PIPE);
     input_pipe.insert(0,Constante::BASE_INPUT_PIPE);
     processId.insert(0,Constante::PIPE_PATH);
     input_pipe.insert(0,Constante::PIPE_PATH);
     game_pipe.insert(0,Constante::PIPE_PATH);
+
+    kill_process(input_pipe.c_str());
+
     remove_pipe(processId);
     remove_pipe(game_pipe);
     remove_pipe(input_pipe);
     
 }
+
+void Server::kill_process(const char* pipe){
+    int to_send = -1000;
+    int fd = open(pipe,O_WRONLY);
+    if (fd != -1) write(fd, &to_send, sizeof(int));
+    else std::cerr << "[ERROR] KILL PROCESS " << std::endl;
+    close(fd);
+}
+
 
 /**
  * @brief supprime les pipes
@@ -437,10 +449,15 @@ void Server::launch_game(Game_settings* sett_game){
         interface_game.initialDraw();
     #endif
     settingServer setting_to_diplay{};
-    
+    int inp;
     while(gameOn){
-        int inp = read_game_input(input_pipe);
-        if(inp == -10) break;
+        inp = read_game_input(input_pipe);
+        if(inp == -10){
+            inp = read_game_input(input_pipe);
+            setting_to_diplay.score_j1 = inp;
+            break;
+        };
+        if(inp == -1000)break;
         std::string resp = game.run_server(inp,&setting_to_diplay);
         if(setting_to_diplay.game_over == true){
             resp = "END";
@@ -462,13 +479,14 @@ void Server::launch_game(Game_settings* sett_game){
         refresh();
     #endif
 
+    if (inp != -1000){
+        save_score(sett_game->pseudo_hote,setting_to_diplay.score_j1);
+        if(sett_game->nb_player == 2){
+            save_score(sett_game->pseudo_other,setting_to_diplay.score_j1);
+        };
+    }
 
-    save_score(sett_game->pseudo_hote,setting_to_diplay.score_j1);
-    if(sett_game->nb_player == 2){
-        save_score(sett_game->pseudo_other,setting_to_diplay.score_j2);
-    };
-
-    std::cout << "fin du jeu pour le pid : "<< sett_game->pid << "  score1 : " << setting_to_diplay.score_j1 << "   score2  : " << setting_to_diplay.score_j2 << std::endl;
+    std::cout << "fin du jeu pour le pid : "<< sett_game->pid << "  score : " << setting_to_diplay.score_j1 << std::endl;
 }
 
 void Server::resClient(char* pipe, std::string* res){
@@ -478,10 +496,11 @@ void Server::resClient(char* pipe, std::string* res){
     #ifdef TEST_GAME
         std::cout << "to affiche : "<< to_send << std::endl;
     #endif
-    
     int fd = open(pipe,O_WRONLY);
     if (fd != -1) write(fd, to_send, Constante::CHAR_SIZE);
     else std::cerr << "[ERROR] settings non ecrit " << std::endl;
+    std::cout << "TO CLIENT : "<<to_send<< std::endl;
+
     close(fd);
 }
 
@@ -502,6 +521,7 @@ int Server::read_game_input(char * pipe){
     }
     else std::cerr << "[ERROR PIPE INPUT 2 ]" <<std::endl;
     close(fd);
+    std::cout << "FROM CLIENT : "<<message<< std::endl;
     return message;
 
 }
