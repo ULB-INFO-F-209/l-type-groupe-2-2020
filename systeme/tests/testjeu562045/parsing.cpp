@@ -71,7 +71,6 @@ void Parsing::create_game_from_str(char *buffer, Game_settings * settings){
 	//buffer -> "P&nb_player&pseudo_hote&other_pseudo&drop_rate&ally_shot&nb_lives&difficulty&pid"
 
 	std::string cpp_str_buffer(buffer);
-	std::cout << "cpp_str_buffer = " <<cpp_str_buffer<< std::endl;
 	const char delimiteur_score = '&';
 	std::size_t index = cpp_str_buffer.find(delimiteur_score);
 	cpp_str_buffer = cpp_str_buffer.substr(index+1,cpp_str_buffer.length());

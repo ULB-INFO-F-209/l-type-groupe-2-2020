@@ -9,7 +9,9 @@
 
 //constructor
 Client::Client():_pid(getpid()){
-	
+
+	signal(SIGINT,handle_SIGINT);
+
 	sprintf(_pipe_from_server,"%s%s%d", Constante::PIPE_PATH,Constante::BASE_PIPE_FILE, _pid); //nom a lire
 	sprintf(_pipe_to_server, "%s%s", Constante::PIPE_PATH, Constante::PIPE_DE_REPONSE); //pipe où écrire
 	sprintf(_pipe_input_game, "%s%s%d", Constante::PIPE_PATH, Constante::BASE_INPUT_PIPE,_pid); //pipe où écrire
@@ -192,6 +194,17 @@ void Client::send_game_input(int inp){
 }
 
 
+void Client::handle_SIGINT(int sig){
+	char pipe_to_server[Constante::SIZE_pipe];
+	sprintf(pipe_to_server, "%s%s", Constante::PIPE_PATH, Constante::PIPE_DE_REPONSE); //pipe où écrire
+	char buffer[Constante::CHAR_SIZE];
+	sprintf(buffer, "Mj&%d",getpid());
+	int fd =  open(pipe_to_server, O_WRONLY); 
+	write(fd, buffer, Constante::CHAR_SIZE);
+	close(fd);
+	std::cout << "Bye Bye"<< std::endl;
+	//exit();
+}
 
 
 
