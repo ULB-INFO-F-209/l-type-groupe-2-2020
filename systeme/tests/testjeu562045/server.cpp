@@ -439,14 +439,22 @@ void Server::launch_game(Game_settings* sett_game){
     settingServer setting_to_diplay{};
     
     while(gameOn){
-        if(gameOn){
 
+        //gameOn = !setting_to_diplay.game_over;
+        //if(gameOn){
+
+            std::cout << "the value of the game1 : "<< gameOn<<std::endl;
             int inp = read_game_input(input_pipe);
+            if(inp == -10) break;
             std::string resp = game.run_server(inp,&setting_to_diplay);
+            if(setting_to_diplay.game_over == true){
+                resp = "END";
+                resClient(send_response_pipe,&resp);
+                break;
+            }
             resClient(send_response_pipe,&resp);
-        }
-        std::cout << "the value of the game : "<< gameOn<<std::endl;
-        gameOn = !setting_to_diplay.game_over;
+        //}
+        //gameOn = !setting_to_diplay.game_over;
         usleep(10000); // 10 ms
         #ifdef TEST_GAME
             interface_game.display(&setting_to_diplay);

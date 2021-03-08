@@ -280,25 +280,60 @@ void Menu::launch_game(Game_settings* game_option){
     settingServer setting_to_diplay{};
     CurrentGame my_game(*game_option);
     bool gameOn = true;
-    int inp{};
+    int inp = -1;
+	std::string val{};
 
     while(gameOn){
 
+        gameOn = !setting_to_diplay.game_over;
         inp = wgetch(interface_game.get_main_window());
-		if(gameOn){
 
-       	 	_client.send_game_input(inp);
-			std::string val = _client.read_game_pipe();
-			Parsing::parsing_settings_game(val,&my_game);
+
+		if(setting_to_diplay.game_over == true){
+			inp = -10;
+			_client.send_game_input(inp);
+			werase(interface_game.get_game_window());
+			interface_game.display(&setting_to_diplay);
+			refresh();
+			while(true){
+				char in_char = wgetch(interface_game.get_main_window());
+				if(in_char == 'p')break;
+			} 
+			break;
 		}
 
+		_client.send_game_input(inp);
+		val = _client.read_game_pipe();
+
+
+		if (val =="END"){
+			//std::cout << "je suis ici 2"<<std::endl;
+			//sleep(10);
+			setting_to_diplay.game_over =true;
+			werase(interface_game.get_game_window());
+			interface_game.display(&setting_to_diplay);
+			refresh();
+			while(true){
+				char in_char = wgetch(interface_game.get_main_window());
+				if(in_char == 'p')break;
+			} 
+			break;
+		}
+
+		Parsing::parsing_settings_game(val,&my_game);
 		my_game.run_client(inp,&setting_to_diplay);
         interface_game.display(&setting_to_diplay);
 
 		refresh();
         gameOn = !setting_to_diplay.game_over;
 		if (gameOn == false){
-
+			werase(interface_game.get_game_window());
+			interface_game.display(&setting_to_diplay);
+			refresh();
+			inp = -10;
+			_client.send_game_input(inp);
+			//break;
+			
 			while(true){
 				char in_char = wgetch(interface_game.get_main_window());
 				if(in_char == 'p')break;

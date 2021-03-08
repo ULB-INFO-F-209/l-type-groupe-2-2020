@@ -18,7 +18,7 @@ struct settingServer{
     Player* object_player2;
     std::vector<Player*>* list_player;
     int tick;
-    bool game_over;
+    bool game_over = false;
 };
 
 struct theSettings{
