@@ -4,8 +4,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>672</x>
-      <y>270</y>
+      <x>528</x>
+      <y>330</y>
       <w>162</w>
       <h>102</h>
     </coordinates>
@@ -25,8 +25,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>438</x>
-      <y>252</y>
+      <x>294</x>
+      <y>312</y>
       <w>126</w>
       <h>138</h>
     </coordinates>
@@ -50,8 +50,8 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>558</x>
-      <y>318</y>
+      <x>414</x>
+      <y>378</y>
       <w>126</w>
       <h>24</h>
     </coordinates>
@@ -63,9 +63,9 @@ m2=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>492</x>
-      <y>204</y>
-      <w>30</w>
+      <x>348</x>
+      <y>264</y>
+      <w>42</w>
       <h>60</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
@@ -76,8 +76,8 @@ m2=0..*</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>162</x>
-      <y>792</y>
+      <x>18</x>
+      <y>852</y>
       <w>126</w>
       <h>84</h>
     </coordinates>
@@ -93,8 +93,8 @@ m2=0..*</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>672</x>
-      <y>666</y>
+      <x>528</x>
+      <y>726</y>
       <w>126</w>
       <h>66</h>
     </coordinates>
@@ -111,8 +111,8 @@ m2=0..*</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>468</x>
-      <y>666</y>
+      <x>324</x>
+      <y>726</y>
       <w>126</w>
       <h>114</h>
     </coordinates>
@@ -132,8 +132,8 @@ Ship
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>162</x>
-      <y>912</y>
+      <x>18</x>
+      <y>972</y>
       <w>126</w>
       <h>84</h>
     </coordinates>
@@ -148,8 +148,8 @@ Ship
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>870</x>
-      <y>666</y>
+      <x>726</x>
+      <y>726</y>
       <w>126</w>
       <h>66</h>
     </coordinates>
@@ -164,8 +164,8 @@ Ship
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>282</x>
-      <y>774</y>
+      <x>138</x>
+      <y>834</y>
       <w>264</w>
       <h>174</h>
     </coordinates>
@@ -175,8 +175,8 @@ Ship
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>282</x>
-      <y>816</y>
+      <x>138</x>
+      <y>876</y>
       <w>264</w>
       <h>18</h>
     </coordinates>
@@ -186,8 +186,8 @@ Ship
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>588</x>
-      <y>708</y>
+      <x>444</x>
+      <y>768</y>
       <w>96</w>
       <h>30</h>
     </coordinates>
@@ -200,8 +200,8 @@ m1=1
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>678</x>
-      <y>468</y>
+      <x>534</x>
+      <y>528</y>
       <w>126</w>
       <h>132</h>
     </coordinates>
@@ -223,8 +223,8 @@ MapObjects
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>732</x>
-      <y>594</y>
+      <x>588</x>
+      <y>654</y>
       <w>204</w>
       <h>84</h>
     </coordinates>
@@ -234,8 +234,8 @@ MapObjects
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>522</x>
-      <y>618</y>
+      <x>378</x>
+      <y>678</y>
       <w>228</w>
       <h>60</h>
     </coordinates>
@@ -245,8 +245,8 @@ MapObjects
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>732</x>
-      <y>618</y>
+      <x>588</x>
+      <y>678</y>
       <w>18</w>
       <h>60</h>
     </coordinates>
@@ -256,9 +256,9 @@ MapObjects
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>282</x>
-      <y>726</y>
-      <w>708</w>
+      <x>138</x>
+      <y>786</y>
+      <w>714</w>
       <h>258</h>
     </coordinates>
     <panel_attributes>lt=-
@@ -270,9 +270,9 @@ m1=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>282</x>
-      <y>726</y>
-      <w>654</w>
+      <x>138</x>
+      <y>786</y>
+      <w>660</w>
       <h>144</h>
     </coordinates>
     <panel_attributes>lt=-
@@ -284,8 +284,8 @@ m1=1</panel_attributes>
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>714</x>
-      <y>780</y>
+      <x>570</x>
+      <y>840</y>
       <w>60</w>
       <h>36</h>
     </coordinates>
@@ -298,8 +298,8 @@ false = Friend
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>732</x>
-      <y>726</y>
+      <x>588</x>
+      <y>786</y>
       <w>18</w>
       <h>66</h>
     </coordinates>
@@ -309,8 +309,8 @@ false = Friend
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>1032</x>
-      <y>672</y>
+      <x>888</x>
+      <y>732</y>
       <w>84</w>
       <h>66</h>
     </coordinates>
@@ -326,8 +326,8 @@ false = Friend
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>990</x>
-      <y>690</y>
+      <x>846</x>
+      <y>750</y>
       <w>54</w>
       <h>18</h>
     </coordinates>
@@ -337,8 +337,8 @@ false = Friend
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>318</x>
-      <y>666</y>
+      <x>174</x>
+      <y>726</y>
       <w>126</w>
       <h>48</h>
     </coordinates>
@@ -352,8 +352,8 @@ false = Friend
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>372</x>
-      <y>618</y>
+      <x>228</x>
+      <y>678</y>
       <w>228</w>
       <h>60</h>
     </coordinates>
@@ -363,8 +363,8 @@ false = Friend
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>144</x>
-      <y>282</y>
+      <x>0</x>
+      <y>342</y>
       <w>126</w>
       <h>90</h>
     </coordinates>
@@ -383,8 +383,8 @@ false = Friend
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>264</x>
-      <y>318</y>
+      <x>120</x>
+      <y>378</y>
       <w>186</w>
       <h>24</h>
     </coordinates>
@@ -396,8 +396,8 @@ m1=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>198</x>
-      <y>366</y>
+      <x>54</x>
+      <y>426</y>
       <w>24</w>
       <h>438</h>
     </coordinates>
@@ -409,8 +409,8 @@ m2=1</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>444</x>
-      <y>438</y>
+      <x>300</x>
+      <y>498</y>
       <w>114</w>
       <h>78</h>
     </coordinates>
@@ -426,9 +426,9 @@ m2=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>492</x>
-      <y>384</y>
-      <w>30</w>
+      <x>348</x>
+      <y>444</y>
+      <w>42</w>
       <h>66</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
@@ -441,9 +441,9 @@ m1=1
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>726</x>
-      <y>366</y>
-      <w>48</w>
+      <x>582</x>
+      <y>426</y>
+      <w>60</w>
       <h>114</h>
     </coordinates>
     <panel_attributes>
@@ -457,8 +457,8 @@ m2=1..*</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>624</x>
-      <y>126</y>
+      <x>480</x>
+      <y>186</y>
       <w>270</w>
       <h>30</h>
     </coordinates>
@@ -472,8 +472,8 @@ send Informations &gt;
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>624</x>
-      <y>156</y>
+      <x>480</x>
+      <y>216</y>
       <w>270</w>
       <h>30</h>
     </coordinates>
@@ -487,8 +487,8 @@ m2=1..*
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>882</x>
-      <y>132</y>
+      <x>738</x>
+      <y>192</y>
       <w>96</w>
       <h>42</h>
     </coordinates>
@@ -499,26 +499,21 @@ m2=1..*
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>396</x>
-      <y>6</y>
+      <x>252</x>
+      <y>66</y>
       <w>234</w>
       <h>204</h>
     </coordinates>
     <panel_attributes>Server
 --
--dataBase:*DataBase
--connectedClients[ ]:ConnectedClient
--listOfCurrentGames[ ]: CurrentGame
+-_pipe_running[]:PIDinGame
 --
-+catchInput(input,currentGameID,firstPlayer)
-+sendPositionsBoard()
-+signIn()
-+signUp()
-+addFriend(pseudo)
-+delFriend(pseudo)
-+setSettings(settings)
-+checkleaderboard()
-
+-catchInput(input)
+-save_score(pseudo1,score)
+-get_game_settings(pid , game_settings )
+-launch_game(game_settings)
+-read_game_input(pipe)
+-resClient(pipe, resultat)
 
 </panel_attributes>
     <additional_attributes/>

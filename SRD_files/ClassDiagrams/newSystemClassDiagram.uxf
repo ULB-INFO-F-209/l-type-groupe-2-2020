@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><diagram program="umlet" version="13.3">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
   <help_text>++// Uncomment the following line to change the fontsize and font:
 // fontsize=14
 // fontfamily=SansSerif //possible: SansSerif,Serif,Monospaced
@@ -23,71 +24,79 @@
 
 
 // This text will be stored with each diagram;  use it for notes.</help_text>
-  <zoom_level>7</zoom_level>
+  <zoom_level>6</zoom_level>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>875</x>
-      <y>735</y>
-      <w>189</w>
-      <h>35</h>
+      <x>498</x>
+      <y>630</y>
+      <w>144</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
 m2=0..*
 
 stores &gt;</panel_attributes>
-    <additional_attributes>10.0;20.0;250.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;220.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1050</x>
-      <y>665</y>
-      <w>203</w>
-      <h>154</h>
+      <x>630</x>
+      <y>570</y>
+      <w>264</w>
+      <h>204</h>
     </coordinates>
     <panel_attributes>Account
 --
--name:string
--pseudo:string
--password:string
--friends[ ]:Account
--bestScore:int
+-_max_friend_nb:size_t
+-_max_request_nb:size_t
+-_curr_friend_nb:size_t
+-_curr_request_nb:size_t
+-_pseudo[]:char
+-_pswd[]:char
+-_bestScore:int 
+-_friends[_max_friend_nb][]:char
+-_friend_requests[_max_request_nb][]:char
 --
-+removeFriend(pseudo)
-+verifyFriendsList(pseudo)
++getPseudo(buff)
++getScore()
++findFriend(pseudo)
++findRequest(pseudo)
++addRequest(pseudo)
++removeRequest( pseudo)
 +addFriend(pseudo)
-</panel_attributes>
++removeFriend(pseudo)</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>770</x>
-      <y>455</y>
-      <w>21</w>
-      <h>217</h>
+      <x>378</x>
+      <y>432</y>
+      <w>24</w>
+      <h>144</h>
     </coordinates>
     <panel_attributes>
 m1=1
 m2=1
 
 lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;290.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;220.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>693</x>
-      <y>161</y>
-      <w>168</w>
-      <h>63</h>
+      <x>312</x>
+      <y>0</y>
+      <w>144</w>
+      <h>54</h>
     </coordinates>
-    <panel_attributes>ConnectedClient
+    <panel_attributes>PIDinGame
 --
--client:pidt
--account:Account
+-pid:str
+-inGame:bool
 --
 </panel_attributes>
     <additional_attributes/>
@@ -95,10 +104,10 @@ lt=&lt;&lt;&lt;&lt;-</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>770</x>
-      <y>217</y>
-      <w>35</w>
-      <h>105</h>
+      <x>378</x>
+      <y>48</y>
+      <w>42</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>
 m1=1
@@ -110,60 +119,85 @@ lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>679</x>
-      <y>658</y>
-      <w>203</w>
-      <h>203</h>
+      <x>276</x>
+      <y>564</y>
+      <w>228</w>
+      <h>204</h>
     </coordinates>
     <panel_attributes>DataBase
 --
--nbAccount:int
--accountList[nbAccount]:Account
+-_data[ ]:Account
+-_profiles[ ]:Profile
 --
-+dspPlayerInfo(string)
-+dbSave(DataBase)
-+dbLoad(File)
-+createAccount(name, pseudo, pswd)
-+find(pseudo):bool
-+verifyLogin(pseudo, pswd)
-+verifyFriendList(pseudo)
-+updateScore(score,User)
-+removeFriend(pseudo1, pseudo2)</panel_attributes>
+-add(Account)
++find(pseudo)
++verifyLogin(pseudo, password)
++getProfile(pseudo)
++getFriendRequest(pseudo)
++delFriendRequest(pseudo1, pseudo2 )
++getFriendList( pseudo)
++checkLeaderboard()
++createAccount(pseudo, password)
++updateScore(score, pseudo)
++friendRequest(pseudo1 , pseudo2)
++addFriend(pseudo1 , pseudo2 )
++removeFriend(pseudo1 , pseudo2)
++dbLoad()
++dbSave()
++display()</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>658</x>
-      <y>308</y>
-      <w>231</w>
-      <h>154</h>
+      <x>138</x>
+      <y>126</y>
+      <w>342</w>
+      <h>312</h>
     </coordinates>
     <panel_attributes>Server
 --
--dataBase:*DataBase
--connectedClients[]:ConnectedClient
--listofCurrentGames[]: CurrentGame
+-_db:DataBase
+-_pipe_running[]:PIDinGame
+-_is_active:bool 
+- mtx: mutex
 --
-+catchInput(input,currentGameID,firstPlayer)
-+sendPositionsBoard()
-+signIn()
-+signUp()
-+addFriend(pseudo)
-+delFriend(pseudo)
-+setSettings(settings)
-+checkleaderboard()
-
++close_me(signal)
++isServerActive()
++error_pip(signal)
+-initConnexions()
+-createPipe(name)
+-remove_pipe(pipe)
+-resClient(pipe, resultat)
+-handleIncommingMessages()
+-catchInput(request)
+-read_game_input(pipe)
+-signIn(request)
+-signUp(request)
+-addFriend(request )
+-delFriend(request )
+-checkleaderboard(request )
+-friendList(request )
+-getFriendRequest(request )
+-delFriendRequest(request)
+-sendFriendRequest(request )
+-viewProfile(request)
+-launch_db_save()
+-save_score(pseudo1,score)
+-get_game_settings(pid , game_settings )
+-launch_game(game_settings)
+-client_exit(pid)
+-kill_process(pipe)
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>882</x>
-      <y>378</y>
-      <w>266</w>
-      <h>35</h>
+      <x>474</x>
+      <y>186</y>
+      <w>228</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -175,10 +209,10 @@ send Informations &gt;
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>882</x>
-      <y>420</y>
-      <w>266</w>
-      <h>35</h>
+      <x>474</x>
+      <y>222</y>
+      <w>228</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -190,30 +224,69 @@ m2=1..*
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1134</x>
-      <y>301</y>
-      <w>245</w>
-      <h>196</h>
+      <x>690</x>
+      <y>120</y>
+      <w>342</w>
+      <h>264</h>
     </coordinates>
     <panel_attributes>Client
 --
--positionsBoard[MapObjects]: MapObject
--currentGameID:int
--firstPlayer:bool
--inGame:bool
-
+-_pseudo:string
+-_pid:int
+-_pipe_to_server:string
+-_pipe_from_server:string
+-_pipe_input_game:string
+-_pipe_game_sett:string
+-_fd_send_query;
+-_fd_get_query
 --
-+sendInput(currentgameID,playerID,input)
-+display(positionsBoard)
-+startGame()
++signIn(pseudo, pswd, isVerification)
++signUp(pseudo, pswd)
++addFriend(pseudo)
 +delFriend(pseudo)
-+createGame()
-+signIn()
-+signUp()
-+setSettings()
-+checkLeaderboard()
-+sendfriendRequest(pseudo)
++sendFriendRequest(pseudo)
++getFriendRequest(request_result)
++delFriendRequest(pseudo)
++getFriendList(request_result)
++checkLeaderboard(request_result)
++get_profile(request_result)
++read_game_pipe() : char
++send_game_input(input)
++createGame(game_info)
++get_pseudo(request_result)
+-communication(char *buffer);
 </panel_attributes>
     <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>636</y>
+      <w>144</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>Profile
+--
+-pseudo:char
+-score:int
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>138</x>
+      <y>648</y>
+      <w>150</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=0..*
+
+&lt; stores </panel_attributes>
+    <additional_attributes>230.0;20.0;10.0;20.0</additional_attributes>
   </element>
 </diagram>
