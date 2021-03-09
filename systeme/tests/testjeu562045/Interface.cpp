@@ -37,10 +37,10 @@ void Interface::resize_win(){
     getmaxyx(stdscr,YMAX,XMAX);
 
     //size and positions
-    WIN_HEIGHT = YMAX-(YMAX/4);
-    WIN_WIDTH = XMAX-(XMAX/6);
-    WIN_Y = YMAX/10;
-    WIN_X = XMAX/14;
+    WIN_HEIGHT = YMAX-(YMAX/30);
+    WIN_WIDTH = XMAX-(XMAX/20);
+    WIN_Y = YMAX/30;
+    WIN_X = XMAX/24;
 
     //Saying
     S_HEIGHT =  WIN_HEIGHT/3;
@@ -55,16 +55,16 @@ void Interface::resize_win(){
     PS_X = (WIN_WIDTH/2) - (PS_WIDTH/2)+WIN_X;
 
 
-    PA_HEIGHT = WIN_HEIGHT/5;
+    PA_HEIGHT = PS_HEIGHT;
     PA_WIDTH = PS_WIDTH;
-    PA_Y = (WIN_HEIGHT *4/5); //PS_Y + 3*PS_HEIGHT/2;
+    PA_Y = (PS_Y + 2*PS_HEIGHT)-1;
     PA_X = PS_X;
 
-    SET_HEIGHT = WIN_HEIGHT/2;
-    SET_WIDTH = WIN_WIDTH/5;
-    SET_Y = WIN_HEIGHT/2;
-    SET_X1 = WIN_WIDTH/6;
-    SET_X2 = 3*WIN_WIDTH/4;
+    SET_HEIGHT = (WIN_HEIGHT/2)+4;
+    SET_WIDTH = WIN_WIDTH/3;
+    SET_Y = WIN_HEIGHT/3;
+    SET_X1 = WIN_WIDTH/9;
+    SET_X2 = 2*WIN_WIDTH/3;
 
 
     
@@ -230,9 +230,9 @@ bool Interface::get_connexion(char pseudo[20], char pswd[20], int error, int typ
 int  Interface::print_profile(Profile *prof, int type){
 	int res = 0;
 	if(type==PROF)
-		set_screen(&PROFILE, nullptr, &PROFILE_SAYING, nullptr); 
+		set_screen(&PROFILE, nullptr, &PROFILE_SAYING); 
 	else if (type==REQ)
-		set_screen(&PROFILE2, nullptr, &PROFILE2_SAYING, nullptr); 
+		set_screen(&PROFILE2, nullptr, &PROFILE2_SAYING); 
 	char name[30];
 	char score[30];
 	sprintf(name,  "Pseudo : %s", prof->pseudo);
@@ -285,7 +285,7 @@ bool Interface::print_profile(std::vector<Profile> *vect, int type, int *answer)
 	bool res=false;
 	int choice = 1, accepted=-1,
 		MIN = 0,  MAX = vect->size() -1,
-		focus = 0; int nb_elem = 10, //on peut afficher que 10
+		focus = 0; int nb_elem = 8, //on peut afficher que 10
 		idx_min = 0, idx_max;
 	
 	bool TEST = vect->size() <= static_cast<size_t>(nb_elem);
@@ -351,9 +351,9 @@ int Interface::get_pseudo(char *res, int error,int type){
 	int ret=0; int py = _ps_caption_y, px =  _ps_caption_x + PSEUDO_ZONE.size() +1;
 	char cara; int choice=1, idx=0; //ret doit être ici sinon fonctionne pas
 	if(type == ADD)
-		set_screen(&ADD_FRIEND, nullptr, &ADD_SAYING, &ADD_SAYING2);
+		set_screen(&ADD_FRIEND,&ADD_SAYING, &ADD_SAYING2);
 	else
-		set_screen(&DEL_FRIEND, nullptr, &DEL_SAYING, &DEL_SAYING2);
+		set_screen(&DEL_FRIEND,&DEL_SAYING, &DEL_SAYING2);
 
 	init_pseudo_win();
 	keypad(stdscr, true);
@@ -402,7 +402,7 @@ int Interface::range(int n, Game_settings *set, bool percent){
 	keypad(stdscr,TRUE); //active clavier
 	int choice = 1;
 	while(choice){
-		set_screen(&LOBBY_TITLE, nullptr, &LOBBY_SAYING, nullptr);
+		set_screen(&LOBBY_TITLE, nullptr, &LOBBY_SAYING);
 		set_settings(set);
 		std::string s = std::to_string(focus);
 		if(percent)
@@ -436,7 +436,7 @@ int Interface::range(int n, Game_settings *set, bool percent){
 
 
 //PRIVATE METHODES 
-void Interface::set_screen(std::string *title,std::string *saying1, std::string *saying2, std::string *saying3){
+void Interface::set_screen(std::string *title,std::string *saying1, std::string *saying2){
 	clear(); wclear(_main_win);
 	wclear(_pseudo_win); wclear(_pass_win); wclear(_saying_win);
 	resize_win(); //maybe do the resize only if terminal change
@@ -462,10 +462,6 @@ void Interface::set_screen(std::string *title,std::string *saying1, std::string 
 		s_x = _saying_x - (saying2->size()/2);
 		print_cara(_saying_win, saying2->c_str(), s_x, _saying_y+1);
 	}
-	if(saying3 != nullptr){
-		s_x = _saying_x - (saying3->size()/2);
-		print_cara(_saying_win, saying3->c_str(), s_x, _saying_y+2);
-	}
 }
 void Interface::init_pseudo_win(){
 	wclear(_pseudo_win);
@@ -482,13 +478,13 @@ void Interface::init_connexion(int choice){
 
 	switch(choice){
 		case S_IN:
-			set_screen(&SIGN_IN, nullptr,&SIGN_IN_SAYING,&SIGN_IN_SAYING2);
+			set_screen(&SIGN_IN, &SIGN_IN_SAYING,&SIGN_IN_SAYING2);
 			break;
 		case S_UP:
-			set_screen(&SIGN_UP, nullptr,&SIGN_UP_SAYING,nullptr);
+			set_screen(&SIGN_UP, nullptr,&SIGN_UP_SAYING);
 			break;
 		case LOBBY:
-			set_screen(&CHECK_USER, nullptr,&CHECK_USER_SAYING,&CHECK_USER_SAYING2);
+			set_screen(&CHECK_USER,&CHECK_USER_SAYING,&CHECK_USER_SAYING2);
 			break;
 		default:
 			break;
@@ -508,15 +504,15 @@ void Interface::init_connexion(int choice){
 void Interface::update_menu(size_t size,  std::string *choices, int highlight, int type){
 	clear();
 	if(type==HOME)
-		set_screen(&HOME_TITLE, nullptr, &HOME_SAYING, nullptr);
+		set_screen(&HOME_TITLE, nullptr, &HOME_SAYING);
 	else if(type==MAIN)
-		set_screen(&MAIN_TITLE, nullptr, &MAIN_SAYING, &MAIN_SAYING2);
+		set_screen(&MAIN_TITLE, &MAIN_SAYING, &MAIN_SAYING2);
 	else if(type==FRIENDS)
-		set_screen(&FRIENDS_TITLE, nullptr, &FRIENDS_SAYING, nullptr);
+		set_screen(&FRIENDS_TITLE, nullptr, &FRIENDS_SAYING);
 	else if(type==LOBBY)
-		set_screen(&LOBBY_TITLE, nullptr, &LOBBY_SAYING, &LOBBY_SAYING2);
+		set_screen(&LOBBY_TITLE,&LOBBY_SAYING, &LOBBY_SAYING2);
 
-	int x = WIN_WIDTH/2, y= (WIN_HEIGHT/2) - (size+1)/2;
+	int x = WIN_WIDTH/2, y= (WIN_HEIGHT/2) - (size+2)/2;
 	int x_courant;
 	start_color(); 
 	init_pair(1,COLOR_WHITE, COLOR_RED);
@@ -529,7 +525,7 @@ void Interface::update_menu(size_t size,  std::string *choices, int highlight, i
 		}
 		else
 			print_cara(_main_win,choices[i].c_str(), x_courant, y);
-		y+=3;
+		y+=2;
 	}
 }
 
@@ -621,11 +617,11 @@ void Interface::print_users(std::vector<Profile> *vect, int highlight, int min, 
 	clear();
 	resize_win();
 	if(type == Y_FRIENDS) 
-		set_screen(&YOUR_FRIENDS, nullptr, &Y_FRIENDS_SAYING, &Y_FRIENDS_SAYING2);
+		set_screen(&YOUR_FRIENDS, &Y_FRIENDS_SAYING, &Y_FRIENDS_SAYING2);
 	else if(type==LEADB) //lead_board
-		set_screen(&LEADERBOARD, nullptr, &LEADBOARD_SAYING, nullptr);
+		set_screen(&LEADERBOARD, nullptr, &LEADBOARD_SAYING);
 	else if(type==REQ)
-		set_screen(&REQUEST, nullptr, &REQUEST_SAYING, nullptr);
+		set_screen(&REQUEST, nullptr, &REQUEST_SAYING);
  
 	int caption_x  = (WIN_WIDTH/4),caption_y = (WIN_HEIGHT-PS_HEIGHT)/2;
 
@@ -675,15 +671,15 @@ void Interface::set_settings(Game_settings *set){
     const int nb_elem = 7;
     std::string ally;
 
-    std::string caption[nb_elem] = {"Number of player : ", "Player 1 : ", "Player 2 : ",
-							"Drop rate : ", "Difficulty  : ", "Ally shot : ", "Number of lives : "};
+    std::string caption[nb_elem] = {"Nb player : ", "Player 1 : ", "Player 2 : ",
+							"Drop rate : ", "Difficulty  : ", "Ally shot : ", "Lives : "};
 	if(set->ally_shot)
 		ally = "Yes";
 	else
 		ally = "No";
 
 	//box one
-	int x = SET_WIDTH/2, y= (SET_HEIGHT/2) - ((nb_elem/2)+1)/2;
+	int x = SET_WIDTH/2, y= (SET_HEIGHT/2) - ((nb_elem/2)+2)/2;
 	int x_courant, y_courant = y; std::string buffer;
 	start_color(); 
 	init_pair(2, COLOR_RED, COLOR_BLACK);
@@ -692,7 +688,7 @@ void Interface::set_settings(Game_settings *set){
 	buffer = caption[0] + std::to_string(set->nb_player);
 	x_courant = x - buffer.size()/2;
 	print_cara(_settings_win1,buffer.c_str(), x_courant, y_courant);
-	y_courant +=3;
+	y_courant +=2;
 
 	buffer = caption[1] + std::string(set->pseudo_hote);
 	x_courant = x - buffer.size()/2;

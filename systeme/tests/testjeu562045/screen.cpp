@@ -43,9 +43,9 @@ namespace Screen{
 	std::string CHECK_USER_SAYING2 = "So prove that there is a second player !";
 
 	//INSTRUCTIONS
-	std::string SIGN_UP_SAYING1 = "Your username and password must be at least 7 characters long and maximum 15.";
+	std::string SIGN_UP_SAYING1 = "Username and password must be at least 7 characters long and maximum 15.";
 	std::string SIGN_UP_SAYING2 = "Only letters, numbers and the underscore characters are allowed.";
-	std::string BACK = "If you don't know how to return use the left key!";
+	std::string BACK = "Don't you know how to return? Use the keyleft !";
 	std::string SWITCH = "Use the keyup and keydown to navigate on a menu !";
 	std::string RANGE = "Use the keyup and keydown to change value !";
 
@@ -67,6 +67,6 @@ namespace Screen{
 	std::string PSWD_ZONE = "PASSWORD :";
 	char MASK = '*';
 	char CURSOR = '|';
-	std::string Username = "Username : ";
-	std::string SCORE = "Score : ";
+	std::string Username = "USERNAME : ";
+	std::string SCORE = "SCORE : ";
 }
