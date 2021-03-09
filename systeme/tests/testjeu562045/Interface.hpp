@@ -53,7 +53,7 @@ public:
 	//destructor
 	~Interface();
 private:
-	void set_screen(std::string *title,std::string *saying1, std::string *saying2, std::string *saying3);
+	void set_screen(std::string *title,std::string *saying1, std::string *saying2);
 	void update_menu(size_t size,  std::string *choices, int highlight, int type);
 	bool verify_cara(char *c);
 	void print_cara(WINDOW *win , const char *c, int x, int y);

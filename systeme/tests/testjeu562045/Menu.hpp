@@ -50,8 +50,8 @@ class Menu{
 								   "Remove friend", "Back"};
 	std::string main_menu[SIZE_MAIN_MENU] = {"New game", "Friends", "Leaderboard",
 								   "Profile", "Log out"};
-	std::string settings_menu[SIZE_SETTINGS] = {"Number of player", "Drop rate","Ally shot",
-									 "Number of live", "Difficulty", "Play", "Quit lobby"};				   
+	std::string settings_menu[SIZE_SETTINGS] = {"Players", "Drop rate","Ally shot",
+									 "Lives", "Difficulty", "Play", "Quit lobby"};				   
 	//console
 	static Interface window;
 	
