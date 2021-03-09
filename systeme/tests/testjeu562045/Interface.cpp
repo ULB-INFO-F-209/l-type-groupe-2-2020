@@ -60,7 +60,7 @@ void Interface::resize_win(){
     PA_Y = (PS_Y + 2*PS_HEIGHT)-1;
     PA_X = PS_X;
 
-    SET_HEIGHT = (WIN_HEIGHT/2)+4;
+    SET_HEIGHT = (WIN_HEIGHT/2);
     SET_WIDTH = WIN_WIDTH/3;
     SET_Y = WIN_HEIGHT/3;
     SET_X1 = WIN_WIDTH/9;
@@ -413,10 +413,10 @@ int Interface::range(int n, Game_settings *set, bool percent){
 		print_message(&RANGE, false);
 		choice = getch();
 		switch(choice){
-			case KEY_UP:
+			case KEY_DOWN:
 				if(focus > 1){focus--;} //tu peux monter plus haut que le ciel
 				break;
-			case KEY_DOWN:
+			case KEY_UP:
 				if(focus < n)
 					focus++; //tu peux pas descendre plus bas que terre
 				break;
@@ -661,7 +661,6 @@ bool Interface::verify_cara(char *c){
 }
 
 void Interface::set_settings(Game_settings *set){
-	//resize_win(); //maybe do the resize only if terminal change
 	box(_settings_win1, 0,0);
 	box(_settings_win2,0,0);
 	wrefresh(_settings_win1);
@@ -688,24 +687,24 @@ void Interface::set_settings(Game_settings *set){
 	buffer = caption[0] + std::to_string(set->nb_player);
 	x_courant = x - buffer.size()/2;
 	print_cara(_settings_win1,buffer.c_str(), x_courant, y_courant);
-	y_courant +=2;
+	y_courant += 2;
 
 	buffer = caption[1] + std::string(set->pseudo_hote);
 	x_courant = x - buffer.size()/2;
 	print_cara(_settings_win1,buffer.c_str(), x_courant, y_courant);
-	y_courant +=3;
+	y_courant += 2;
 
 	if(set->nb_player ==2){
 		buffer = caption[2] + std::string(set->pseudo_other);
 		x_courant = x - buffer.size()/2;
 		print_cara(_settings_win1,buffer.c_str(), x_courant, y_courant);
-		y_courant += 3;
+		y_courant += 2;
 	}
 
 	buffer = caption[5] + ally;
 	x_courant = x - buffer.size()/2;
 	print_cara(_settings_win1,buffer.c_str(), x_courant, y_courant);
-	y_courant +=3;
+	y_courant += 2;
 
 	//box two
 
@@ -713,12 +712,12 @@ void Interface::set_settings(Game_settings *set){
 	buffer = caption[4] + set->difficulty_str;
 	x_courant = x - buffer.size()/2;
 	print_cara(_settings_win2,buffer.c_str(), x_courant, y_courant);
-	y_courant +=3;
+	y_courant += 2;
 
 	buffer = caption[6] + std::to_string(set->nb_lives) + " lives";
 	x_courant = x - buffer.size()/2;
 	print_cara(_settings_win2,buffer.c_str(), x_courant, y_courant);
-	y_courant +=3;
+	y_courant += 2;
 
 	buffer = caption[3] + std::to_string(set->drop_rate) + " percent";
 	x_courant = x - buffer.size()/2;
@@ -726,9 +725,6 @@ void Interface::set_settings(Game_settings *set){
 
 	wattroff(_settings_win1, COLOR_PAIR(2));
 	wattroff(_settings_win2, COLOR_PAIR(2));
-
-
-
 }
 
 void Interface::print_message(std::string *msg1, bool up ){

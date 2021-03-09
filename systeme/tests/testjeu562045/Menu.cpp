@@ -130,10 +130,10 @@ int Menu::lobby(){
 				break;
 			case 4:	//difficulty
 				ret = window.print_menu(3, difficulty, LOBBY, &setting);
-				if(ret != -1)
-					//setting.difficulty_str = difficulty[ret];
+				if(ret != -1){
 					strcpy(setting.difficulty_str, difficulty[ret].c_str());
-					setting.diff = !strcmp(difficulty[ret].c_str(),"easy")? easy: !strcmp(difficulty[ret].c_str(),"medium")? medium :hard;
+					setting.diff = !strcmp(setting.difficulty_str,"easy")? easy: !strcmp(setting.difficulty_str,"medium")? medium :hard;
+				}
 				break;
 			case 5: 	//play
 				create_game_to_str(buffer,&setting);

@@ -22,7 +22,7 @@ namespace Screen{
 	//SAYING FOR MENU 
 	std::string HOME_SAYING = "May all who enter as guest leaves as regular user !";
 	std::string MAIN_SAYING = "Whoever said money can't buy hapiness";
-	std::string MAIN_SAYING2 = "has clearly never ...trouve la suite";
+	std::string MAIN_SAYING2 = "has clearly already played this game";
 	std::string Y_FRIENDS_SAYING = "A sweet friendship refreshes the soul, ";
 	std::string Y_FRIENDS_SAYING2 = " unless you created them yourself !";
 	std::string LOBBY_SAYING = "Winning is not everything, it's the only thing.";
@@ -36,7 +36,7 @@ namespace Screen{
 	std::string DEL_SAYING2 = "someone in real life as your're doing now.";
 	std::string REQUEST_SAYING = "Friends becomes our chosen family. So don't accept anyone !";
 	std::string FRIENDS_SAYING = "If you want the rainbow, you have to endure the rain.";
-	std::string PROFILE_SAYING = "Winner are losers who never quit. So try again to be the best !";
+	std::string PROFILE_SAYING = "Winners are losers who never quit. So try again to be the best !";
 	std::string PROFILE2_SAYING = "Would you like to be friend with this user ?";
 	std::string LEADBOARD_SAYING = "Win or learn ! Never lose. ";
 	std::string CHECK_USER_SAYING = "We are who we are. Not who we say we are.";
