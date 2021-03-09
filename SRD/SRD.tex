@@ -139,9 +139,9 @@ Le classement affiche le score de tous les utilisateurs. S'il le souhaite, l'uti
 
 Le lancement d’une partie se fait lorsque l’utilisateur crée une partie en gardant les paramètres de celle-ci par défaut ou en les redéfinissant. \\
 
-- Paramètres:
+- Profile:
 
-Dans les paramètres, l'utilisateur peut consulter les règles du jeu à l'aide le bouton "Help". Configurer ses préférences audiovisuelles lui sont également permises. Il a aussi la possibilité d'accéder à son profil afin de consulter ses informations de compte s'il le souhaite.
+Dans le profile, l'utilisateur peut consulter ses informations de compte s'il le souhaite.
 
 \subsubsection{Création de partie}
 La création d'une partie est une option qui envoie l'utilisateur vers une fenêtre de personnalisation permettant de modifier les paramètres du jeu.
@@ -150,20 +150,20 @@ S'il le souhaite, l'utilisateur peut définir :
 
 - Le nombre de joueurs: 
 
-L'utilisateur a la possibilité de choisir entre un ou deux participants. Dans le cas où le nombre de participants équivaut à deux, la deuxième personne est invitée à se connecter. L’invité ne peut pas modifier les paramètres que le premier joueur aura choisi. \\
+L'utilisateur a la possibilité de choisir entre un ou deux participants. Dans le cas où le nombre de participants équivaut à deux, la deuxième personne est invitée à se connecter.\\
 
 - La difficulté de la partie:
 
- L'utilisateur doit choisir une difficulté générale de sa partie. La difficulté de chaque niveau sera adaptée en fonction de ce choix, mais elle augmente progressivement au fur et à mesure, après chaque victoire de niveau. C'est également la difficulté de la partie qui va déterminer la probabilité qu'aura un ennemi de lâcher un bonus après sa destruction. \\
+ L'utilisateur doit choisir une difficulté générale de sa partie. La difficulté de chaque niveau sera adaptée en fonction de ce choix, mais elle augmente progressivement au fur et à mesure, après chaque victoire de niveau. \\
 
 - Le tir allié: 
 
 La possibilité d'activer le tir allié ne peut être accordée que dans le cas où le nombre de joueurs est supérieur à un.
-Le joueur aura donc le droit de choisir s'il souhaite que les projectiles de l'invité soient inoffensifs ou non et inversément, que ses projectiles le soient pour l'invité. \\
+Le joueur aura donc le droit de choisir s'il souhaite que les projectiles de l'invité soient inoffensifs ou non et inversément. Cette option active aussi la collision entre les joueurs  \\
 
 - Le nombre de vies: 
 
-Le choix du nombre de vies est décidé par l'utilisateur. \\
+Le choix du nombre de vies est limité à 3 pour l'utilisateur. \\
 
 \subsubsection{Jeu}
 
@@ -258,10 +258,9 @@ Toutes les fonctionnalités décrites dans la section 2.1 sont possibles :
     \item Ajouter ou supprimer un ami
 \end{itemize}
 
-Les actions citées ne sont possibles que si le client est connecté au serveur. Les entrées du client sont capturées par la classe Input.\\
-La classe Input est connectée au menu affiché à l'écran, ce qui permet de transmettre les entrées au client qui les enverra ensuite au serveur.\\
-La classe abstraite Menu a pour but de représenter une interface au niveau graphique ou terminal. Les classes héritières de la classe abstraite devront afficher le menu qui leur correspond et vérifier à la demande de la classe Input la validité d'une entrée.\\
-La classe Display permet de gérer l'affichage des objets du jeu pour le client.
+Les actions citées ne sont possibles que si le client est connecté au serveur. Les entrées du client sont capturées et envoyé par un pipe au serveur.\\
+Le client communique avec le serveur a travers divers pipes attribuer en fonction du PID.
+La classe Interface permet de gérer l'affichage des objets du jeu pour le client.
 
 
 \subsubsection{Gestion des comptes}
@@ -285,9 +284,9 @@ il aura la possibilité de choisir les paramètres de celle-ci comme expliqué p
 La partie ne peut pas commencer tant que le second joueur ne réussit pas à se connecter.
 \subsubsection{Gestion des amis}
 
-- Ajout: Lorsque l'utilisateur veut ajouter un ami, le serveur effectue des vérifications et envoie la demande, si elle est valide, à la personne concernée. Si la demande est acceptée, la liste d'amis des deux utilisateurs est mise à jour par le serveur.
+- Ajout: Lorsque l'utilisateur veut ajouter un ami, la requête est envoyé a la base de donnée via le serveur. Elle effectue des vérifications et envoie la demande, si elle est valide, à la personne concernée. Si la demande est acceptée, la liste d'amis des deux utilisateurs est mise à jour par la base de données.
 
-- Suppression: Le serveur fait une recherche de l'ami à supprimer et l'efface de la liste d'amis de l'utilisateur. L'utilisateur sera également supprimé de la liste de son ancien ami.
+- Suppression: La base de donnée fait une recherche de l'ami à supprimer et l'efface de la liste d'amis de l'utilisateur. L'utilisateur sera également supprimé de la liste de son ancien ami.
 
 
 \subsubsection{Classement}
@@ -296,7 +295,7 @@ Après chaque partie, le serveur met à jour le score de chaque joueur si celui-
 
 \subsection{Besoins non fonctionnels}
 
-- Le lancement du programme nécessite un environnement Linux.\\
+- Le lancement du programme nécessite un environnement Linux possédant un dossier nommé "tmp" à la racine, afin de pouvoir stocker et supprimer les pipes crée par le serveur.\\
 - Par souci de sécurité, toutes les requêtes d'un client doivent passer par le serveur.
 
 

@@ -20,14 +20,14 @@
 -obstacleStartHp: int
 -obstacleStartDamage: int
 -dif: difficulty
--bossSet: vector&lt;Boss*&gt;
--starsSet: vector&lt;Star*&gt;
--obstaclesSet: vector&lt;Obstacle*&gt;
--projectilesSet: vector&lt;Projectile*&gt;
--projectilesEnemySet: vector&lt;Projectile*&gt;
--playerShipsSet: vector&lt;PlayerShip*&gt;
--enemyShipsSet: vector&lt;EnemyShip*&gt;
--bonusesSet: vector&lt;Bonus*&gt;
+-bossSet[]: Boss
+-starsSet[]: Star
+-obstaclesSet[]: Obstacle
+-projectilesSet[]: Projectile
+-projectilesEnemySet[]: Projectile
+-playerShipsSet[]: PlayerShip
+-enemyShipsSet[]: EnemyShip
+-bonusesSet[]: Bonus
 --
 +update(type, int): void
 +erase(size_t, type): void
