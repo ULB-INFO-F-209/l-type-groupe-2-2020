@@ -64,4 +64,4 @@ run_client:
 	./process_client
 clean:
 	rm *.o
-	rm process_server process_client /tmp/pipefile* /tmp/connexion /tmp/reponse
+	rm /tmp/input_pipe_* /tmp/game_pipe_* /tmp/connexion /tmp/getrequest

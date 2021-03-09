@@ -39,24 +39,35 @@ private:
         ~PIDinGame()=default;
     };
     static std::vector<PIDinGame*> _pipe_running;    
-    static  Database _db;
+    static Database _db;
     static std::mutex mtx;
-
 
 public:
     Server();
-    ~Server(){_db.dbSave();};
-    static void close_me(int sig){mtx.lock(); _db.dbSave(); mtx.unlock(); mtx.lock(); for(size_t i=0;i < _pipe_running.size();i++){ kill(atoi(_pipe_running.at(i)->pid),SIGINT); } std::cout <<"\n *5 secondes avant la fermeture du serveur*\n " << std::endl;sleep(5); std::cout << "Bye Bye\n"<<std::endl;}// handle CTRL + C signal ==> save db
+    ~Server(){_db.dbSave();std::cout << "\n\n *   BYE BYE   *\n\n"<<std::endl;};
+    static void close_me(int sig){mtx.lock(); _db.dbSave(); mtx.unlock(); mtx.lock(); for(size_t i=0;i < _pipe_running.size();i++){ kill(atoi(_pipe_running.at(i)->pid),SIGINT); } std::cout <<"\n -----------------------|    FERMETURE EN COURS    |-----------------------\n\n " << std::endl;sleep(10);}// handle CTRL + C signal ==> save db
     bool static isServerActive() {return _is_active;}
     static void error_pip(int sig){std::cerr << "\n***  [ERROR PIPE]  ***\n";}
+
 private:
 	//connections
     void initConnexions();
     void createPipe(const char*);
+    void remove_pipe(std::string);
+
+    //response
+    void resClient(std::string* processId, char* res);
+    void resClient(std::string* processId, int res);
+    void resClient(std::string*, bool);
+    void resClient(char* pipe, settingArray *res);
+    void resClient(char* pipe, settingArray2* res);
+    void resClient(char* pipe, std::string* res);
+
     //inputs
     void handleIncommingMessages();
-    void catchInput(char *); // devrait se nommer handeInput(input)
-    void sendPositionBoard();
+    void catchInput(char *); 
+    int read_game_input(char * pipe);
+
     //queries
     bool signIn(char* );
     bool signUp(char* );
@@ -68,20 +79,16 @@ private:
     bool delFriendRequest(char*);
     int sendFriendRequest(char* );
     void viewProfile(char* );
-    void resClient(std::string* processId, char* res);
-    void resClient(std::string* processId, int res);
-    void resClient(std::string*, bool);
-    void client_exit(std::string* pid);
+
+    //server utils
     static void launch_db_save();
-    void launch_game(Game_settings* sett_game);
-    void get_game_settings(char* input, Game_settings* game_sett);
-    void resClient(char* pipe, settingArray *res);
-    void resClient(char* pipe, settingArray2* res);
-    void resClient(char* pipe, std::string* res);
-    int read_game_input(char * pipe);
-    void remove_pipe(std::string);
     void save_score(char* pseudo1, int score);
+    void get_game_settings(char* input, Game_settings* game_sett);
+    void launch_game(Game_settings* sett_game);
+    void client_exit(std::string* pid);
     void kill_process(const char* pipe);
+    
+    
 };
 
 

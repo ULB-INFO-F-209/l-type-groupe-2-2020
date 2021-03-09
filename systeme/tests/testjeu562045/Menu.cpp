@@ -133,6 +133,7 @@ int Menu::lobby(){
 				if(ret != -1)
 					//setting.difficulty_str = difficulty[ret];
 					strcpy(setting.difficulty_str, difficulty[ret].c_str());
+					setting.diff = !strcmp(difficulty[ret].c_str(),"easy")? easy: !strcmp(difficulty[ret].c_str(),"medium")? medium :hard;
 				break;
 			case 5: 	//play
 				create_game_to_str(buffer,&setting);
@@ -304,7 +305,6 @@ void Menu::launch_game(Game_settings* game_option){
 			_client.send_game_input(inp);
 			inp = setting_to_diplay.score_j1 + setting_to_diplay.score_j2;
 			_client.send_game_input(inp);
-			clear();
 			sleep(1);
 			werase(interface_game.get_game_window());
 			interface_game.display(&setting_to_diplay);

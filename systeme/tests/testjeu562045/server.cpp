@@ -1,7 +1,7 @@
 #include "server.hpp"
 #include "parsing.hpp"
 
-#define TEST_GAME
+#define TEST_GAME1
 #define DEBUG_GAME1
 bool Server::_is_active = false;
 Database Server::_db{};
@@ -39,7 +39,7 @@ Server::Server(){
         std::cerr << "[ERROR SERVER ALREADY ACTIVE]" << std::endl; 
         exit(1);
     }
-    std::cout << "\n\n -----------------------|      SERVEUR PRET      |------------------------ \n\n";
+    std::cout << "\n\n -----------------------|      SERVEUR PRET      |----------------------- \n\n";
     pause();
     
 }
@@ -377,6 +377,7 @@ void Server::launch_db_save(){
  * @param input : le pid du client pour pouvoir supprimer les pipes
  */
 void Server::client_exit(std::string *pid){
+    std::cout << "\n\nDEPART DU CLIENT :" <<*pid << std::endl<<std::endl;
     std::string processId(*pid); 
     std::string game_pipe = *pid;
     std::string input_pipe = *pid;
@@ -389,14 +390,11 @@ void Server::client_exit(std::string *pid){
     
     mtx.lock();
     for(size_t i = 0; i < _pipe_running.size();i++){
-        
         if(_pipe_running.at(i)->in_game && strcmp(_pipe_running.at(i)->pid, pid->c_str()) == 0 ){
             
             kill_process(input_pipe.c_str());
             _pipe_running.erase(_pipe_running.cbegin()+i);
             break;
-        }else{
-            std::cout<< " on est pas en jeu\n" <<_pipe_running.at(i)->pid<<std::endl;
         }
     }
     mtx.unlock();
@@ -440,10 +438,12 @@ void Server::remove_pipe(std::string the_pipe){
 void Server::get_game_settings(char* input, Parsing::Game_settings* game_sett){
 	
 	Parsing::create_game_from_str(input, game_sett);
+    #ifdef DEBUG_GAME
 	std::cout <<std::endl<< game_sett->nb_player << "-" << game_sett->pseudo_hote << "-"
 			  << game_sett->pseudo_other    << "-" << game_sett->drop_rate << "-"
 			  << game_sett->ally_shot << "-" << game_sett->nb_lives << "-"
 			  << game_sett->difficulty_str <<"-"<< game_sett->pid <<std::endl;
+    #endif
 
 }
 
@@ -456,6 +456,7 @@ void Server::get_game_settings(char* input, Parsing::Game_settings* game_sett){
  */
 void Server::launch_game(Game_settings* sett_game){
 
+    sett_game->nb_lives=1000;
     mtx.lock();
     for(size_t i =0; i < _pipe_running.size(); i++){
         if(strcmp(_pipe_running.at(i)->pid,sett_game->pid) == 0){
@@ -502,8 +503,7 @@ void Server::launch_game(Game_settings* sett_game){
     }
     #ifdef TEST_GAME
         interface_game.close();
-        clear();
-        refresh();
+        endwin();
     #endif
 
     if (inp != -1000){

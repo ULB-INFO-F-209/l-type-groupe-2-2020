@@ -230,10 +230,6 @@ public:
     void update_client(MapObject::type typ, int t);
     void checkCollision_client(int t, bool friendlyFire) ;
 
-
-
-
-
 };
 
 

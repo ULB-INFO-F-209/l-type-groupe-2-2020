@@ -138,7 +138,6 @@ void MapHandler::update_client(MapObject::type typ, int t) {
     if(typ == MapObject::star )
         stars_set.push_back(new Star(rand() % field_bounds.width(), 0));
     else if (typ == MapObject::enemyship && t%300==0 && !changingLevel&&!bossSpawned) {
-            
         if(enemyCount >= enemyLimit){
             changingLevel = true;
         }
@@ -251,6 +250,7 @@ void MapHandler::update(MapObject::type typ, int t) {
     else if (typ == MapObject::enemyship && t%300==0 && !changingLevel&&!bossSpawned) {
         enemy_ships_set.push_back(new EnemyShip(rand() % (field_bounds.width() - 1) + 1, 0, {{10 - 1, 5},{3,      2}}, '%', enemyStartHp,t + rand() % 100, enemyStartProjectileDamage));
         enemyCount++;
+        std::cout << "LE ENEMY COUN = " <<enemyCount << std::endl;
           if(enemyCount >= enemyLimit){
               changingLevel = true;
           }
@@ -1029,7 +1029,7 @@ void MapHandler::checkCollision_server(int t, bool friendlyFire,std::string * to
     for(PlayerShip* p : player_ships_set){
         for(auto & i : obstacles_set){
             if(p->getBounds().contains(i->getPos()) && p->getHp()>0){
-                //p->touched(i->get_damage());
+                p->touched(i->get_damage());
                 i->touched(i->getHp());
             }
         }
@@ -1059,7 +1059,7 @@ void MapHandler::checkCollision_server(int t, bool friendlyFire,std::string * to
     for(PlayerShip* p : player_ships_set){
         for(auto & e : enemy_ships_set){
             if(p->getBounds().contains(e->getBounds()) && p->getHp()>0){
-                //p->touched(p->getHp());
+                p->touched(p->getHp());
                 e->touched(p->getDammage());
             }
         }
@@ -1069,8 +1069,8 @@ void MapHandler::checkCollision_server(int t, bool friendlyFire,std::string * to
     if(player_ships_set.size() > 1 && friendlyFire){
     
         if(player_ships_set.at(0)->getBounds().contains(player_ships_set.at(1)->getBounds()) && player_ships_set.at(0)->getHp()>0){
-            //player_ships_set.at(0)->touched(player_ships_set.at(0)->getHp());
-            //player_ships_set.at(1)->touched(player_ships_set.at(1)->getHp());
+            player_ships_set.at(0)->touched(player_ships_set.at(0)->getHp());
+            player_ships_set.at(1)->touched(player_ships_set.at(1)->getHp());
         }
             
     }
@@ -1079,7 +1079,7 @@ void MapHandler::checkCollision_server(int t, bool friendlyFire,std::string * to
     for(PlayerShip* p : player_ships_set){
         for(auto & proj : projectilesEnemy_set){
             if(p->getBounds().contains(proj->getPos()) && p->getHp()>0){
-                //p->touched(proj->getDamage());
+                p->touched(proj->getDamage());
                 proj->touched(proj->getHp());
             }
         }
@@ -1170,7 +1170,7 @@ void MapHandler::checkCollision_server(int t, bool friendlyFire,std::string * to
     for(PlayerShip* p : player_ships_set){
         for(auto & b : boss_set){
             if(p->getBounds().contains(b->getBounds()) && p->getHp()>0){
-                //p->touched(p->getHp());
+                p->touched(p->getHp());
                 b->touched(p->getDammage());
             }
         }
