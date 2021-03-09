@@ -31,7 +31,14 @@ class Server{
 
 private:
     static bool _is_active; 
-    std::vector<std::string> _pipe_running;    
+    struct PIDinGame{
+        char pid[Constante::SIZE_pipe];
+        bool in_game;
+        PIDinGame()=default;
+        PIDinGame(char *p):in_game(false){strcpy(pid,p);std::cout << "my pid : " << pid << "  In game : "<< in_game <<std::endl; };
+        ~PIDinGame()=default;
+    };
+    static std::vector<PIDinGame*> _pipe_running;    
     static  Database _db;
     static std::mutex mtx;
 
@@ -39,7 +46,7 @@ private:
 public:
     Server();
     ~Server(){_db.dbSave();};
-    static void close_me(int sig){mtx.lock(); _db.dbSave(); mtx.unlock(); }// handle CTRL + C signal ==> save db
+    static void close_me(int sig){mtx.lock(); _db.dbSave(); mtx.unlock(); mtx.lock(); for(size_t i=0;i < _pipe_running.size();i++){ kill(atoi(_pipe_running.at(i)->pid),SIGINT); } std::cout <<"\n *5 secondes avant la fermeture du serveur*\n " << std::endl;sleep(5); std::cout << "Bye Bye\n"<<std::endl;}// handle CTRL + C signal ==> save db
     bool static isServerActive() {return _is_active;}
     static void error_pip(int sig){std::cerr << "\n***  [ERROR PIPE]  ***\n";}
 private:
@@ -64,7 +71,7 @@ private:
     void resClient(std::string* processId, char* res);
     void resClient(std::string* processId, int res);
     void resClient(std::string*, bool);
-    void client_exit(char *input);
+    void client_exit(std::string* pid);
     static void launch_db_save();
     void launch_game(Game_settings* sett_game);
     void get_game_settings(char* input, Game_settings* game_sett);

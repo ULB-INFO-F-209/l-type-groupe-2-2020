@@ -375,15 +375,15 @@ void CurrentGame::run_client(int move_to_exec,settingServer* settings){
 
     x1 = playership1->getPos().x;
     y1 = playership1->getPos().y;
+    execInput(move_to_exec, x1, y1, true);    // peut changer le exit_requested
     if(twoPlayers){
         x2 = playership2->getPos().x;
         y2 = playership2->getPos().y;
+        execInput(move_to_exec, x2, y2, false);
     }
 
 
     // fonction du switch
-    execInput(move_to_exec, x1, y1, true);    // peut changer le exit_requested
-    if(twoPlayers)execInput(move_to_exec, x2, y2, false);
 
 
     // update object field
