@@ -49,7 +49,7 @@
         
             {\\[2 cm] \Huge\\INFO-F209 - Projets d'informatique 2 \\ \\ Software Requirements Document \\ [1 cm]
             L-type\\[2 cm]}
-            {ABDOUL-AZIZ Aïssa \\[0,2 cm] ADEGNON Kokou  \\[0,2 cm] BARBER Jeremy \\[0,2 cm] DEMIREL Helin \\[0,2 cm] ELKENZE Camelia  \\[0,2 cm] KINSOEN Alexandre  \\[0,2 cm] LATOUNDJI Salim  \\[0,2 cm] MASSIMETTI Mario  \\[0,2 cm] VANNESTE Martin  \\ [3 cm] Décembre 2020}
+            {ABDOUL-AZIZ Aïssa \\[0,2 cm] ADEGNON Kokou  \\[0,2 cm] BARBER Jeremy \\[0,2 cm] DEMIREL Helin \\[0,2 cm] ELKENZE Camelia  \\[0,2 cm] KINSOEN Alexandre  \\[0,2 cm] LATOUNDJI Salim  \\[0,2 cm] MASSIMETTI Mario  \\[0,2 cm] VANNESTE Martin  \\ [3 cm] Mars 2021}
 
         \end{center}
 
@@ -96,8 +96,25 @@ Le jeu ne sera exécutable que sous le système d'exploitation Linux.
 		16/12/20 & Description du diagramme de classe & Helin, Mario, Salim, Aissa,
 		Alexandre, Jeremy, Martin\\
 	\hline
+\end{tabularx}
+
+
+\begin{tabularx}{15cm}{|c|c|X|}
+	\hline
+	    03/02/21 & Modifications concernant le SRD & Helin, Mario, Salim, Aissa,
+		Alexandre, Jeremy, Martin, Kokou, Camelia\\
+	\hline
+	    15/02/21 & Modification diagrammes de classe jeu & Alexandre, Mario, Salim\\
+	\hline
+    	26/02/21 & Modification diagrammes de classe
+	    jeu, client et serveur & Aissa, Jeremy, Helin, Camelia, Martin\\
+	\hline
+	    10/03/21 & Dernières vérifications & Kokou\\
+	\hline
 
 \end{tabularx}
+
+\newpage
 
 \section{Besoins utilisateur}
 
@@ -108,7 +125,7 @@ Le jeu ne sera exécutable que sous le système d'exploitation Linux.
 \begin{figure}[h!]
 \centering
 \includegraphics[width=15cm]{images/UserUseCase.jpg}
-\caption{Diagramme de Use Case côté utilisateur}
+\caption{Diagramme de use case côté utilisateur}
 \label{fig:UserUseCase}
 \end{figure}
 
@@ -126,21 +143,21 @@ Dans les deux cas, une option de retour à la page d'accueil sera disponible.
 - Gestion des amis:
 
 Dans cette option, l'utilisateur peut consulter sa liste d'amis et voir le score de ces derniers. Il à la possibilité d'envoyer 
-des demandes d'amitié , accepter ou refuser celles qu'il reçoit. L'utilisateur peut également supprimer des personnes de sa liste d'amis\\
+des demandes d'amitié, en accepter ou en refuser. L'utilisateur peut également supprimer des personnes de sa liste d'amis.\\
 
 - Consulter le classement:
 
 Le classement affiche tout les utilisateurs de l'application ainsi que leurs scores. La liste est trié du joueur ayant le plus haut score à celui avec le plus bas.  
-Cette option permet au client de prendre connaissance des pseudo des autres pour envoyer des demandes d'amitiés.\\
+Cette option permet au client de prendre connaissance des pseudonymes des autres pour envoyer des demandes d'amitiés.\\
 
 - Lancer une partie:
 
-Lorsque l'utilisateur souhaite crée une partie, il se trouve dans un lobby. Il peut y modifier les paramètres par défaut du jeu et inviter un second joueur.
+Lorsque l'utilisateur souhaite créer une partie, il se trouve dans un lobby. Il peut y modifier les paramètres par défaut du jeu et inviter un second joueur.
 La partie est lancée quand l'hôte appuie sur play.\\
 
 - Profile:
 
-Dans le profile, l'utilisateur peut consulter ses informations de compte s'il le souhaite. A savoir, son pseudo et son score.
+Dans le menu profile, l'utilisateur peut consulter ses informations de compte s'il le souhaite. A savoir, son pseudo et son score.
 
 \subsubsection{Création de partie}
 La création d'une partie est une option qui envoie l'utilisateur dans un lobby permettant de modifier les paramètres du jeu.
@@ -165,65 +182,77 @@ Le joueur aura donc le droit de choisir s'il souhaite que les projectiles de l'i
 
 Le choix du nombre de vies est limité à 3 pour l'utilisateur.  Il peut donc seulement la diminuer.\\
 
-- Bonus
+- Bonus :
 
 Le joueur peut choisir la probabilité d'apparition des bonus. Ainsi il peut rendre le jeu plus ou moins difficile. 
 
 \subsubsection{Jeu}
 
-\_Level:
+- Partie en cours:\\ \\
+Elle reçoit les actions effectuées par les joueurs ̀à travers le serveur et les applique au jeu. 
+Lors de sa création, elle possède les paramètres choisis par le joueur ainsi qu’un identifiant. 
+Ce dernier permet au serveur de déterminer à quelle partie il doit envoyer l’action d’un 
+utilisateur.\\
 
-Un jeu est composé de plusieurs niveaux. Les niveaux se différencient selon le nombre d'ennemis, leur résistance et la puissance de leurs projectiles. Le nombre d'obstacles varie également d'un niveau à l'autre.
+Le joueur commence chaque partie avec une à trois vies constituée(s) de 100 points de vie et
+contrôle un vaisseau avec lequel il peut tirer des projectiles vers des ennemis, ce qui 
+augmentera son score à chaque tir atteignant sa cible. Sa quantité de points de vie est réduite
+lorsqu’il subit des dégâts. S’il n’a plus de points de vie, le joueur perd une vie. Lorsque le 
+joueur n’a plus de vie, son vaisseau est détruit et si plus aucun joueur n’a de vie, la partie se 
+termine. Elle peut également s’arrêter en cas de déconnexion d’un utilisateur.\\
 
-\_MapObjects: 
+- Niveau:\\ \\
+La partie est divisée en 5 niveaux de difficulté croissante. Après les 5 niveaux, le(s) joueur(s) 
+devra/ont faire face à un Boss pour terminer la partie. En passant au niveau suivant, la santé, 
+les dégâts et le nombre d’ennemis accroissent.\\ \\
 
-Tous les objets apparaissant à l'écran et pouvant se déplacer sont des descendants de cette classe. 
-Parmi elles, il y a les vaisseaux, les bonus, les projectiles et les obstacles. 
+- Entités à l’écran:\\ \\
+Parmi les entités apparaissant à l’écran et pouvant se déplacer, il y a les vaisseaux, les bonus, 
+les projectiles et les obstacles.\\ \\
+• Ship: Dans ce jeu, il existe 3 types de ships : les PlayerShip, les EnemyShip et les 
+Boss. Tous ces vaisseaux peuvent se déplacer dans toutes les directions, ainsi que 
+subir et infliger des dégâts. Les PlayerShip sont les vaisseaux alliés, ce sont ceux que 
+les joueurs contrôlent. Les EnemyShip peuvent lâcher un bonus en se détruisant, la 
+probabilité de lâcher ce bonus est déterminée par l’utilisateur avant de lancer la partie. 
+Le Boss est l’ennemi final à affronter pour finir les niveaux.\\ 
 
-Les projectiles sont créés par les vaisseaux lorsque ces derniers tirent. Ils peuvent sortir de l'écran, s'annuler en rencontrant d'autres projectiles ou causer des dégâts en atteignant leurs cibles. 
+• Projectile: Les projectiles sont créés lorsque les vaisseaux tirent. Ils peuvent sortir de 
+l’écran, s’annuler en rencontrant d’autres projectiles ou causer des dégâts en atteignant 
+leur cible.\\
 
-Un vaisseau peut se déplacer dans toutes les directions, ainsi que subir et infliger des dégâts.
-Un vaisseau ennemi peut créer un bonus en se détruisant. La probabilité de lâcher ce bonus est déterminée par le niveau de difficulté choisi par l'utilisateur. Les bonus sont de plusieurs types et peuvent rapporter des améliorations d'armes au joueur qui réussit à les attraper.
-Le vaisseau d'un joueur ne peut pas lâcher de bonus mais peut en attraper.
-
-\_Player:
-
-Un joueur commence sa partie avec un nombre de vies prédéterminé et un score nul. 
-Il contrôle un vaisseau avec lequel il peut tirer des projectiles vers des ennemis, ce qui augmentera son score selon la quantité de dommages qu'il aura infligé. Son niveau de vie est réduit lorsqu'il subit des dégâts. Si ce niveau est nul, le vaisseau est détruit et le nombre de vies est décrémenté. Un nouveau vaisseau est attribué au joueur s'il possède encore au moins une vie. Sinon, la partie est terminée pour lui.
-
-\_MapHandler: 
-
-Le "MapHandler" gère tous les objets (MapObjects) se trouvant à l'écran. Il s'occupe de vérifier après chaque action si des objets n'entrent pas en collision. Cette classe gère la mise à jour des positions des MapObjects lorsqu'ils sont en déplacement.
-
-\_CurrentGame:
-
-La classe CurrentGame représente un jeu en cours. Elle reçoit les actions effectuées par les joueurs à travers le serveur et les applique au jeu. 
-Lors de sa création, elle possède les paramètres choisis par le joueur ainsi qu'un identifiant. Ce dernier permet au serveur de déterminer à quelle partie il doit envoyer l'action d'un utilisateur. Le jeu continue de s'exécuter tant qu'un joueur a au moins une vie et n'a pas terminé tous les niveaux. Elle peut également s'arrêter en cas de déconnexion d'un client.
+• Bonus: Les bonus sont de plusieurs types et peuvent rapporter des améliorations 
+d’armes et de santé au joueur qui réussit 
 
 \newpage
 \begin{figure}[hbtp]
 \centering
 \includegraphics[scale=0.5]{images/add_friend.jpg}
-\caption{Diagramme de Séquence pour l'ajout d'un ami }
+\caption{Diagramme de séquence pour l'ajout d'un ami }
 \end{figure}
 
 \begin{figure}[hbtp]
 \centering
 \includegraphics[scale=0.5]{images/del_friend.jpg}
-\caption{Diagramme de Séquence pour la suppression d'un ami }
+\caption{Diagramme de séquence pour la suppression d'un ami }
 \end{figure}
 
 
 \begin{figure}[hbtp]
 \centering
 \includegraphics[scale=0.3]{images/newGameClassDiagram.jpg}
-\caption{Diagramme de Classe du jeu}
+\caption{Diagramme de classe du jeu}
 \end{figure}
 
 \begin{figure}[hbtp]
 \centering
-\includegraphics[scale=0.3]{images/newClientClassDiagram.jpg}
-\caption{Diagramme de Classe côté Client}
+\includegraphics[scale=0.3]{images/mapHandlerDiagram.jpg}
+\caption{classe MapHandler}
+\end{figure}
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.3, angle=90]{images/newClientClassDiagram.jpg}
+\caption{Diagramme de classe côté client}
 \end{figure}
 
 \newpage
@@ -234,7 +263,7 @@ Lors de sa création, elle possède les paramètres choisis par le joueur ainsi 
 \begin{figure}[h!]
 \centering
 \includegraphics[width=16cm]{images/newSystemClassDiagram.jpg}
-\caption{Diagramme de Classe du Système}
+\caption{Diagramme de classe du système}
 \label{fig:UerUseCase}
 \end{figure}
 
@@ -242,36 +271,35 @@ Lors de sa création, elle possède les paramètres choisis par le joueur ainsi 
 Le serveur est la classe principale du système. Il va gérer la majorité des interactions du programme et va servir d'intermédiaire entre le client et toutes les fonctionnalités de l'application. Pour le bon fonctionnement du programme, cette classe devra toujours être active.\\
 
 - Communication client-serveur : \\
-Le programme client et le serveur communique entre eux à travers des tubes de communication privée et public. Les messages envoyés entre eux sont codifier et sont d'un nombre prédéfinis.
+Le programme client et le serveur communiquent entre eux à travers des tubes de communications privés et publics. Les messages envoyés entre eux sont codifiés et limités.
 Lorsqu'une session utilisateur est lancée, il notifie le serveur à travers un tube public en envoyant son identifiant (pid du processus). 
 Dés lors, le serveur lui crée des tubes privées pour conserver l'intégrité des données.\\
 
 - Connexion : \\
-Lorsqu'un client souhaite se connecter ou s'inscrire, il envoi son pseudo et mot de passe au serveur. Ce dernier se charge de vérifier l'existence ou la disponibilités de ces informations dans la base de données. 
-Et ainsi ouvrir une session utilisateur ou non. 
+Lorsqu'un client souhaite se connecter ou s'inscrire, il envoie son pseudo et mot de passe au serveur. Ce dernier se charge de vérifier l'existence ou la disponibilité de ces informations dans la base de données et ainsi ouvrir une session utilisateur ou non. 
 
 - Interactions entre utilisateurs : \\
 Un client peut ajouter et supprimer des amis ainsi que voir le classement de tous les utilisateurs. 
-Ces actions sont rendu possible grâce au serveur qui sert de lien entre tous les programmes client. 
-En effet, ces derniers envoies les messages correspondants à leurs requêtes et le serveur se charge d'interroger la base de donnée et d'envoyer les réponses adéquates. \\
+Ces actions sont rendues possibles grâce au serveur qui sert de lien entre tous les programmes clients. 
+En effet, ces derniers envoient les messages correspondants à leurs requêtes et le serveur se charge d'interroger la base de donnée et d'envoyer les réponses adéquates. \\
 
 - Jeu : \\
-Toutes les parties crée par les utilisateurs sont gérées par le serveur. En effet, il a pour rôle de décider de tous les actions indépendant du client et d'appliquer les mouvement du client. 
-Ce qui signifie que c'est lui qui crée les ennemies, les obstacles et les bonus. C'est aussi au serveur de recevoir les coups des joueurs et de les appliquer ainsi que de vérifier les collisions. 
+Toutes les parties lancées par les utilisateurs sont gérées par le serveur. En effet, il a pour rôle de décider de toutes les actions indépendantes du client et d'appliquer les mouvements de celui-ci.
+Ce qui signifie que c'est lui qui invoque les ennemis, les obstacles et les bonus. C'est aussi au serveur de recevoir les coups des joueurs, de les appliquer et de vérifier les collisions.
 Dés lors, le seul rôle du programme utilisateur est d'écouter les instructions du serveur et de les appliquer. 
 
-Une fois qu'une partie est terminée, le serveur se charge de mettre à jour le score des joueurs.
+Une fois qu'une partie est terminée, le serveur se charge de mettre à jour le score des joueurs. Le score final est commun et est la somme des scores de chaque joueur.
 
 - Terminaison : \\
-Lorsqu'une session cliente est terminée, le serveur est mis au courant et se charge donc de supprimer les tubes de communications. S'il y a une partie en cours, elle est arrêté. 
-Dans le cas, où le serveur s'arrête subitement ou par choix, tous les programmes utilisateurs ainsi que les parties lancées sont arrêtés et la base de donnée  est sauvegardée. \\
+Lorsqu'une session cliente est terminée, le serveur est mis au courant et se charge donc de supprimer les tubes de communications. S'il y a une partie en cours, elle est arrêtée. 
+Dans le cas où le serveur est arrêté, tous les programmes utilisateurs ainsi que les parties lancées sont stoppées et la base de données est sauvegardée. \\
 
 \subsubsection{DataBase}
 
 La base de données a pour rôle de sauvegarder les informations relatives aux utilisateurs. \\
 Un certains nombre d'opérations lui sont applicable à travers le serveur. En effet, ce dernier permet le transfert d'informations
 entre les clients et la base de données. 
-Les informations contenu dans la base de données sont les pseudonymes, mots de passe et score des client. 
+Les informations contenues dans la base de données sont les pseudonymes, mots de passe et le meilleur score de chaque compte. 
 
 \subsubsection{Client}
 La classe Client permet à l utilisateur de communiquer avec le serveur à travers diverses actions possibles affichées sur le menu.
@@ -287,18 +315,18 @@ Toutes les fonctionnalités décrites dans la section 2.1 sont possibles. A savo
 
 
 \subsubsection{Gestion des comptes}
-Un objet Account contient toutes les informations relatives à un utilisateur (pseudo, mot de passe et score, sa liste d'ami et ses requêtes). 
+Un objet Account contient toutes les informations relatives à un utilisateur (pseudo, mot de passe et score, sa liste d'amis et ses requêtes). 
 Ces informations sont stockées dans la base de données et les différentes demandes d'accès à celle-ci sont traitées par le serveur.
 
 - Accès:
 
-Lors de la création d'un compte, la disponibilité du pseudo est vérifiée par le serveur. Si celui-ci n'est pas trouvé, un nouveau compte est bien créé et ajouté dans la base de données.
+Lors de la création d'un compte, la disponibilité du pseudo est vérifiée par la base de données. Si celui-ci n'est pas trouvé, un nouveau compte est bien créé et ajouté dans la base.
 
 Lors de la connexion, c'est encore le serveur, à travers la base de données qui vérifie que le pseudo et le mot de passe saisis correspondent à un compte existant.
 
 - Contenu d'un compte:
 
-Chaque compte possède des informations sur l'utilisateur auquel il appartient, notamment ses identifiants (pseudo, mot de passe), son score (pour qu'il apparaisse dans le classement général des joueurs) et une liste d'amis qu'il peut consulter à tout moment.
+Chaque compte possède des informations sur l'utilisateur auquel il appartient, notamment ses identifiants (pseudo, mot de passe), son score (pour qu'il apparaisse dans le classement général des joueurs), une liste d'amis et une liste d'invitations qu'il peut consulter à tout moment.
 
 \subsubsection{Gestion d'une partie}
 
@@ -308,9 +336,9 @@ il aura la possibilité de choisir les paramètres de celle-ci comme expliqué p
 La partie ne peut pas commencer tant que le second joueur ne réussit pas à se connecter.
 \subsubsection{Gestion des amis}
 
-- Ajout: Lorsque l'utilisateur veut ajouter un ami, la requête est envoyé a la base de donnée via le serveur. Elle effectue des vérifications et envoie la demande, si elle est valide, à la personne concernée. Si la demande est acceptée, la liste d'amis des deux utilisateurs est mise à jour par la base de données.
+- Ajout: Lorsque l'utilisateur veut ajouter un ami, la requête est envoyée à la base de données via le serveur. Elle effectue des vérifications et envoie la demande, si elle est valide, à la personne concernée. Si la demande est acceptée, la liste d'amis des deux utilisateurs est mise à jour.
 
-- Suppression: La base de donnée fait une recherche de l'ami à supprimer et l'efface de la liste d'amis de l'utilisateur. L'utilisateur sera également supprimé de la liste de son ancien ami.
+- Suppression: La base de données fait une recherche de l'ami à supprimer et l'efface de la liste d'amis de l'utilisateur. L'utilisateur sera également supprimé de la liste de son ancien ami.
 
 \subsubsection{Classement}
 
@@ -319,33 +347,36 @@ Ce qui permet de garder le classement tous le temps à jour.
 
 \subsection{Besoins non fonctionnels}
 
-- Le lancement du programme nécessite un environnement Linux possédant un dossier nommé "tmp" à la racine, afin de pouvoir stocker et supprimer les pipes crée par le serveur.\\
-- Par souci de sécurité, toutes les requêtes d'un client doivent passer par le serveur.
+- Le lancement du programme nécessite un environnement Linux possédant un dossier nommé "tmp" à la racine, afin de pouvoir stocker et supprimer les tubes créés par le serveur.\\
+- Par souci de sécurité, toutes les requêtes d'un client doivent passer par le serveur.\\
+- Pour des raisons esthétiques, la taille du terminal doit être de 80x24.
+- La librairie open source "ncurses" est indispensable.
+
 
 \\
 \\\\
 \begin{figure}[hbtp]
 \centering
 \includegraphics[scale=0.3]{images/sequence_diagram_StartGame}
-\caption{Diagramme de Séquence de lancement du jeu}
+\caption{Diagramme de séquence de lancement du jeu}
 \end{figure}
 
 \begin{figure}[hbtp]
 \centering
 \includegraphics[scale=0.3]{images/player_shooting.jpg}
-\caption{Diagramme de Séquence d'un tir de joueur}
+\caption{Diagramme de séquence d'un tir de joueur}
 \end{figure}
 
 
 \begin{figure}[hbtp]
 \centering
 \includegraphics[scale=0.3]{images/enemy_shooting.jpg}
-\caption{Diagramme de Séquence d'un tir ennemi }
+\caption{Diagramme de séquence d'un tir ennemi }
 \end{figure}
 
 \newpage
 \section{Annexes}
-\subsection{ Description du diagramme Use Case utilisateur}
+\subsection{ Description du diagramme use case utilisateur}
 
 \begin{center}
 \begin{longtable}{|p{1,5cm}||p{3,5cm}|p{3,5cm}|p{3,5cm}|p{3,5cm}|}
