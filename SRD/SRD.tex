@@ -38,18 +38,18 @@
             \begin{figure}[H]
               \begin{minipage}[c]{.46\linewidth}
                     \centering
-                    \includegraphics[scale = 0.3]{images/ulb.png}
+                    \includegraphics[scale = 0.3]{images/sceau_ulb.png}
                 \end{minipage}
                 \hfill%
                 \begin{minipage}[c]{.46\linewidth}
                     \centering
-                    \includegraphics[scale=0.5]{images/ulb2.jpg}
+                    \includegraphics[scale=0.5]{images/logo_ulb.png}
                 \end{minipage}
             \end{figure}
         
             {\\[2 cm] \Huge\\INFO-F209 - Projets d'informatique 2 \\ \\ Software Requirements Document \\ [1 cm]
             L-type\\[2 cm]}
-            {Aïssa ABDOUL-AZIZ \\[0,2 cm] Kokou ADEGNON \\[0,2 cm] Jeremy BARBER \\[0,2 cm] Helin DEMIREL \\[0,2 cm] Camelia ELKENZE \\[0,2 cm] Alexandre KINSOEN \\[0,2 cm] Salim LATOUNDJI \\[0,2 cm] Mario MASSIMETTI \\[0,2 cm] Martin VANNESTE \\ [3 cm] Décembre 2020}
+            {ABDOUL-AZIZ Aïssa \\[0,2 cm] ADEGNON Kokou  \\[0,2 cm] BARBER Jeremy \\[0,2 cm] DEMIREL Helin \\[0,2 cm] ELKENZE Camelia  \\[0,2 cm] KINSOEN Alexandre  \\[0,2 cm] LATOUNDJI Salim  \\[0,2 cm] MASSIMETTI Mario  \\[0,2 cm] VANNESTE Martin  \\ [3 cm] Décembre 2020}
 
         \end{center}
 
@@ -123,30 +123,30 @@ Dans les deux cas, une option de retour à la page d'accueil sera disponible.
 
 \subsubsection{Menu principal}
 
-- Consulter amis:
+- Gestion des amis:
 
-La liste des amis de l'utilisateur est affichée lorsque cette option est sélectionnée. Il peut supprimer un ami, en ajouter un nouveau et aussi voir ses demandes d'amis. 
-
-La suppression d'un ami X par l'utilisateur Y implique également la suppression de Y dans la liste d'amis de X. 
-
-L'ajout d'un ami commence par une invitation. Le second utilisateur aura le choix d'accepter ou de refuser la demande. \\
+Dans cette option, l'utilisateur peut consulter sa liste d'amis et voir le score de ces derniers. Il à la possibilité d'envoyer 
+des demandes d'amitié , accepter ou refuser celles qu'il reçoit. L'utilisateur peut également supprimer des personnes de sa liste d'amis\\
 
 - Consulter le classement:
 
-Le classement affiche le score de tous les utilisateurs. S'il le souhaite, l'utilisateur peut afficher seulement le classement de ses amis. \\
+Le classement affiche tout les utilisateurs de l'application ainsi que leurs scores. La liste est trié du joueur ayant le plus haut score à celui avec le plus bas.  
+Cette option permet au client de prendre connaissance des pseudo des autres pour envoyer des demandes d'amitiés.\\
 
 - Lancer une partie:
 
-Le lancement d’une partie se fait lorsque l’utilisateur crée une partie en gardant les paramètres de celle-ci par défaut ou en les redéfinissant. \\
+Lorsque l'utilisateur souhaite crée une partie, il se trouve dans un lobby. Il peut y modifier les paramètres par défaut du jeu et inviter un second joueur.
+La partie est lancée quand l'hôte appuie sur play.\\
 
 - Profile:
 
-Dans le profile, l'utilisateur peut consulter ses informations de compte s'il le souhaite.
+Dans le profile, l'utilisateur peut consulter ses informations de compte s'il le souhaite. A savoir, son pseudo et son score.
 
 \subsubsection{Création de partie}
-La création d'une partie est une option qui envoie l'utilisateur vers une fenêtre de personnalisation permettant de modifier les paramètres du jeu.
+La création d'une partie est une option qui envoie l'utilisateur dans un lobby permettant de modifier les paramètres du jeu.
 Cette fenêtre contient déjà des paramètres par défaut.
-S'il le souhaite, l'utilisateur peut définir :
+
+S'il le souhaite, l'utilisateur peut modifier les options suivantes:
 
 - Le nombre de joueurs: 
 
@@ -154,16 +154,20 @@ L'utilisateur a la possibilité de choisir entre un ou deux participants. Dans l
 
 - La difficulté de la partie:
 
- L'utilisateur doit choisir une difficulté générale de sa partie. La difficulté de chaque niveau sera adaptée en fonction de ce choix, mais elle augmente progressivement au fur et à mesure, après chaque victoire de niveau. \\
+ L'utilisateur doit choisir le niveau de difficulté  de sa partie. La difficulté de chaque niveau sera adaptée en fonction de ce choix, mais elle augmente progressivement au fur et à mesure, après chaque victoire de niveau. \\
 
 - Le tir allié: 
 
 La possibilité d'activer le tir allié ne peut être accordée que dans le cas où le nombre de joueurs est supérieur à un.
-Le joueur aura donc le droit de choisir s'il souhaite que les projectiles de l'invité soient inoffensifs ou non et inversément. Cette option active aussi la collision entre les joueurs  \\
+Le joueur aura donc le droit de choisir s'il souhaite que les projectiles de l'invité soient inoffensifs ou non et inversement. Cette option active aussi la collision entre les joueurs. \\
 
 - Le nombre de vies: 
 
-Le choix du nombre de vies est limité à 3 pour l'utilisateur. \\
+Le choix du nombre de vies est limité à 3 pour l'utilisateur.  Il peut donc seulement la diminuer.\\
+
+- Bonus
+
+Le joueur peut choisir la probabilité d'apparition des bonus. Ainsi il peut rendre le jeu plus ou moins difficile. 
 
 \subsubsection{Jeu}
 
@@ -235,36 +239,56 @@ Lors de sa création, elle possède les paramètres choisis par le joueur ainsi 
 \end{figure}
 
 \subsubsection{Serveur}
-Le serveur est la classe principale du système. Il va gérer la majorité des interactions du programme et va servir d'intermédiaire entre le client et toutes les fonctionnalités du jeu. Pour le bon fonctionnement du programme, cette classe devra toujours être active.\\
-Parmi les fonctionnalités principales du serveur, on peut trouver:\\
-- La connexion entre client et serveur\\
-- L'interaction entre les utilisateurs\\
-- La gestion des données personnelles\\
-- La gestion de la partie en cours 
+Le serveur est la classe principale du système. Il va gérer la majorité des interactions du programme et va servir d'intermédiaire entre le client et toutes les fonctionnalités de l'application. Pour le bon fonctionnement du programme, cette classe devra toujours être active.\\
+
+- Communication client-serveur : \\
+Le programme client et le serveur communique entre eux à travers des tubes de communication privée et public. Les messages envoyés entre eux sont codifier et sont d'un nombre prédéfinis.
+Lorsqu'une session utilisateur est lancée, il notifie le serveur à travers un tube public en envoyant son identifiant (pid du processus). 
+Dés lors, le serveur lui crée des tubes privées pour conserver l'intégrité des données.\\
+
+- Connexion : \\
+Lorsqu'un client souhaite se connecter ou s'inscrire, il envoi son pseudo et mot de passe au serveur. Ce dernier se charge de vérifier l'existence ou la disponibilités de ces informations dans la base de données. 
+Et ainsi ouvrir une session utilisateur ou non. 
+
+- Interactions entre utilisateurs : \\
+Un client peut ajouter et supprimer des amis ainsi que voir le classement de tous les utilisateurs. 
+Ces actions sont rendu possible grâce au serveur qui sert de lien entre tous les programmes client. 
+En effet, ces derniers envoies les messages correspondants à leurs requêtes et le serveur se charge d'interroger la base de donnée et d'envoyer les réponses adéquates. \\
+
+- Jeu : \\
+Toutes les parties crée par les utilisateurs sont gérées par le serveur. En effet, il a pour rôle de décider de tous les actions indépendant du client et d'appliquer les mouvement du client. 
+Ce qui signifie que c'est lui qui crée les ennemies, les obstacles et les bonus. C'est aussi au serveur de recevoir les coups des joueurs et de les appliquer ainsi que de vérifier les collisions. 
+Dés lors, le seul rôle du programme utilisateur est d'écouter les instructions du serveur et de les appliquer. 
+
+Une fois qu'une partie est terminée, le serveur se charge de mettre à jour le score des joueurs.
+
+- Terminaison : \\
+Lorsqu'une session cliente est terminée, le serveur est mis au courant et se charge donc de supprimer les tubes de communications. S'il y a une partie en cours, elle est arrêté. 
+Dans le cas, où le serveur s'arrête subitement ou par choix, tous les programmes utilisateurs ainsi que les parties lancées sont arrêtés et la base de donnée  est sauvegardée. \\
+
 \subsubsection{DataBase}
-Cette classe sauvegardera toutes les informations persistantes et nécessaires au bon fonctionnement du jeu.\\
-Elle se chargera de:\\
-- préserver et manipuler les informations personnelles relatives à chaque joueur\\
-- la vérification de l'existence des données
+
+La base de données a pour rôle de sauvegarder les informations relatives aux utilisateurs. \\
+Un certains nombre d'opérations lui sont applicable à travers le serveur. En effet, ce dernier permet le transfert d'informations
+entre les clients et la base de données. 
+Les informations contenu dans la base de données sont les pseudonymes, mots de passe et score des client. 
 
 \subsubsection{Client}
-La classe Client permet à l'utilisateur de communiquer avec le serveur à travers diverses actions possibles affichées grâce au menu.
-Toutes les fonctionnalités décrites dans la section 2.1 sont possibles :
+La classe Client permet à l utilisateur de communiquer avec le serveur à travers diverses actions possibles affichées sur le menu.
+Toutes les fonctionnalités décrites dans la section 2.1 sont possibles. A savoir : 
 \begin{itemize}
     \item Se connecter
     \item S'inscrire
     \item Créer une partie
     \item Consulter le classement
-    \item Ajouter ou supprimer un ami
+    \item Gérer ses amis
+    \item Consulter son profile
 \end{itemize}
-
-Les actions citées ne sont possibles que si le client est connecté au serveur. Les entrées du client sont capturées et envoyé par un pipe au serveur.\\
-Le client communique avec le serveur a travers divers pipes attribuer en fonction du PID.
-La classe Interface permet de gérer l'affichage des objets du jeu pour le client.
 
 
 \subsubsection{Gestion des comptes}
-Un objet Account contient toutes les informations relatives à un utilisateur (pseudo, mot de passe, etc). Ces informations sont stockées dans la base de données et les différentes demandes d'accès à celle-ci sont traitées par le serveur.
+Un objet Account contient toutes les informations relatives à un utilisateur (pseudo, mot de passe et score, sa liste d'ami et ses requêtes). 
+Ces informations sont stockées dans la base de données et les différentes demandes d'accès à celle-ci sont traitées par le serveur.
 
 - Accès:
 
@@ -288,17 +312,18 @@ La partie ne peut pas commencer tant que le second joueur ne réussit pas à se 
 
 - Suppression: La base de donnée fait une recherche de l'ami à supprimer et l'efface de la liste d'amis de l'utilisateur. L'utilisateur sera également supprimé de la liste de son ancien ami.
 
-
 \subsubsection{Classement}
 
-Après chaque partie, le serveur met à jour le score de chaque joueur si celui-ci est supérieur à son score actuel.
+Après chaque partie, le serveur met à jour le score de chaque joueur si celui-ci est supérieur à son score actuel. 
+Ce qui permet de garder le classement tous le temps à jour. 
 
 \subsection{Besoins non fonctionnels}
 
 - Le lancement du programme nécessite un environnement Linux possédant un dossier nommé "tmp" à la racine, afin de pouvoir stocker et supprimer les pipes crée par le serveur.\\
 - Par souci de sécurité, toutes les requêtes d'un client doivent passer par le serveur.
 
-
+\\
+\\\\
 \begin{figure}[hbtp]
 \centering
 \includegraphics[scale=0.3]{images/sequence_diagram_StartGame}
@@ -351,11 +376,11 @@ USE CASE   &\center{Pré-conditions}   & \hfill Post-conditions \hfill\null & Ca
 \textbf{Delete friend}    & L'utilisateur doit être enregistré dans la base de données et avoir au moins un ami.   & Suppression dans la liste d’amis par le serveur(bidirectionnel)  & Entrer le pseudo d’un ami. Le serveur va rechercher dans la base de données si le pseudo existe et le supprimer.  & Supprimer un ami qui n’existe pas (affiche une erreur) \\
 \hline
 \hline
-\textbf{Settings}     & L'utilisateur doit être enregistré dans la base de données   & Mise à jour des changements  & L'utilisateur peut modifier ses paramètres de profil et/ou audiovisuels. Il peut également consulter les règles du jeu  & Néant\\
+\textbf{Profile}     & L'utilisateur doit être enregistré dans la base de données   & Mise à jour des changements  & L'utilisateur peut consulter ses informations de profile. Neant  & Néant\\
 \hline
 \hline
 \textbf{Ship’s controls}  & Créer une partie  & Actualisation de l’état de jeu  & Se déplacer, tirer recevoir des bonus  & Néant\\
-\hline
+\hlinehttps://fr.overleaf.com/project/6048c7f9f8c384f807254e17
 \hline
 \textbf{Leave party}      & Être en train de jouer   & Retour au menu principal  & Le joueur arrête la partie en cours.  & Néant\\
 \hline
