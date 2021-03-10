@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>11</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>473</x>
+      <y>836</y>
+      <w>242</w>
+      <h>286</h>
+    </coordinates>
+    <panel_attributes>User
+--
+-Player:Player
+-my_account= Account
+--
+createAccount()
+login()
+
+joinLobby()
+inviteLobby()
+startGame()
+sendM(Account,string)
+addFriend(string)
+delFriend(string)
+inviteFriend(string)
+joinFriend(string)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>330</x>
+      <y>451</y>
+      <w>242</w>
+      <h>209</h>
+    </coordinates>
+    <panel_attributes>currentGame
+--
+-nPlayers={1, 2}
+-state:bool
+-levels:list
+-dropRate:float
+-score_players:int
+--
+pause()
+endGame()
+askSettings()
+getScores()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>528</x>
+      <y>649</y>
+      <w>77</w>
+      <h>209</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=0..1
+start ^</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>660</x>
+      <y>198</y>
+      <w>33</w>
+      <h>165</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>836</y>
+      <w>209</w>
+      <h>286</h>
+    </coordinates>
+    <panel_attributes>Account
+--
+-name:string
+-pseudo:string
+-password:string
+-friends:list
+-currentScore:list
+-previousScore:list
+-rankingScore:list
+--
+getData(string)
+getData()
+verifyLogin()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>22</x>
+      <y>451</y>
+      <w>231</w>
+      <h>209</h>
+    </coordinates>
+    <panel_attributes>DataBase
+--
+list_account:Account list
+leaderboard:Player list
+file:File
+--
+dspPlayer(string)
+dbSave(DataBase)
+dbLoad(File)
+sendFriend_request()
+upadateFrindslist()
+removeFriend(User1,User2)
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>198</x>
+      <y>935</y>
+      <w>297</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=0..*
+m2=1
+&lt; own </panel_attributes>
+    <additional_attributes>10.0;20.0;250.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>110</x>
+      <y>649</y>
+      <w>33</w>
+      <h>209</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>803</x>
+      <y>451</y>
+      <w>242</w>
+      <h>209</h>
+    </coordinates>
+    <panel_attributes>Lobby
+--
+
+--
+sendM(Account,string)
+getIn()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>418</x>
+      <y>319</y>
+      <w>363</w>
+      <h>44</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;310.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>88</x>
+      <y>319</y>
+      <w>363</w>
+      <h>44</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;310.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>88</x>
+      <y>330</y>
+      <w>33</w>
+      <h>143</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>418</x>
+      <y>330</y>
+      <w>33</w>
+      <h>143</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>902</x>
+      <y>330</y>
+      <w>33</w>
+      <h>143</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1243</x>
+      <y>462</y>
+      <w>242</w>
+      <h>209</h>
+    </coordinates>
+    <panel_attributes>Chat
+--
+
+--
+get_m(Account)
+dsp_m(Screen)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>781</x>
+      <y>935</y>
+      <w>154</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>send_m() ne peut etre 
+executer que si on 
+est connecté</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>748</x>
+      <y>319</y>
+      <w>594</w>
+      <h>44</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;520.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1309</x>
+      <y>330</y>
+      <w>33</w>
+      <h>154</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1034</x>
+      <y>528</y>
+      <w>231</w>
+      <h>44</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=
+m2=
+own &gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;190.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>550</x>
+      <y>0</y>
+      <w>242</w>
+      <h>209</h>
+    </coordinates>
+    <panel_attributes>Server
+--
+addrese:string
+db_game:DataBase
+--
+startServer()
+createLobby()
+createGame()
+assigneUser(User)
+askSetting()
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

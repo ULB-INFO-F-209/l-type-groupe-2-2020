@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>11</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1419</x>
+      <y>594</y>
+      <w>242</w>
+      <h>220</h>
+    </coordinates>
+    <panel_attributes>Client
+--
+
+--
++joinLobby()
++inviteLobby(pseudo)
++openChat(pseudo)
++inviteFriend(pseudo)
++createGame()
++delFriend(pseudo)
++signIn()
++signUp()
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>913</x>
+      <y>1001</y>
+      <w>264</w>
+      <h>209</h>
+    </coordinates>
+    <panel_attributes>DataBase
+--
+-nbAccount:int
+-accountList[nbAccount]:Account
+-chatList[]:Chat
+--
++dspPlayer(string)
++dbSave(DataBase)
++dbLoad(File)
++createAccount(name, pseudo, pswd)
++find(pseudo):int
++verifyLogin(pseudo, pswd)
+
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1166</x>
+      <y>1089</y>
+      <w>286</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=0..*
+
+stores &gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;240.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>374</x>
+      <y>594</y>
+      <w>242</w>
+      <h>154</h>
+    </coordinates>
+    <panel_attributes>Chat
+--
+-user1:Account
+-user2:Account
+-messages[ ]: String
+--
++addMsg(mypseudo,msg)
++printChat()
+
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>605</x>
+      <y>660</y>
+      <w>330</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=2
+m2=0..*
+
+owns &gt;</panel_attributes>
+    <additional_attributes>280.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1430</x>
+      <y>946</y>
+      <w>242</w>
+      <h>275</h>
+    </coordinates>
+    <panel_attributes>Account
+--
+-name:string
+-pseudo:string
+-password:string
+-friends:list
+-currentScore:list
+-previousScore:list
+-rankingScore:list
+-chatList[]:*Chat
+--
++getData()
++removeFriend(pseudo)
++find_chat(pseudo)
++verifyFriendsList(pseudo)
++addFriend(pseudo)
+
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>913</x>
+      <y>594</y>
+      <w>264</w>
+      <h>209</h>
+    </coordinates>
+    <panel_attributes>Server
+--
+-dataBase:*DataBase
+-connectedClients[]:ConnectedClient
+--
++signIn()
++signUp()
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1023</x>
+      <y>792</y>
+      <w>88</w>
+      <h>231</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=
+m2=
+
+owns v</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;190.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1166</x>
+      <y>682</y>
+      <w>275</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=0..*
+&lt; use</panel_attributes>
+    <additional_attributes>10.0;20.0;230.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>913</x>
+      <y>352</y>
+      <w>264</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>ConnectedClient
+--
+-client:pidt
+-account:Account
+--
+
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1023</x>
+      <y>429</y>
+      <w>88</w>
+      <h>187</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=0..*
+
+owns ^</panel_attributes>
+    <additional_attributes>10.0;150.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1430</x>
+      <y>264</y>
+      <w>264</w>
+      <h>209</h>
+    </coordinates>
+    <panel_attributes>Lobby
+--
+
+
+
+
+--
+
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>242</x>
+      <y>0</y>
+      <w>242</w>
+      <h>176</h>
+    </coordinates>
+    <panel_attributes>Chat
+--
+-pseudo
+-chatFiles[ ]:string
+
+--
+FileExist(filename)
+ReadChat()
+AddMessage(message)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>363</x>
+      <y>242</y>
+      <w>264</w>
+      <h>231</h>
+    </coordinates>
+    <panel_attributes>DataBase
+--
+-nbAccount:int
+-accountList[nbAccount]:Account
+-chatFiles[ ]:string
+--
++dspPlayer(string)
++dbSave(DataBase)
++dbLoad(File)
++createAccount(name, pseudo, pswd)
++find(pseudo):int
++verifyLogin(pseudo, pswd)
++getChatNames(pseudo, list)
++createChatFile(chatName)
+
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>77</x>
+      <y>242</y>
+      <w>264</w>
+      <h>231</h>
+    </coordinates>
+    <panel_attributes>Server
+--
+-dataBase:*DataBase
+-fileName:string
+-connectedClients[]:ConnectedClient
+-connectedChats[ ]:Chat
+--
++signIn()
++signUp()
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

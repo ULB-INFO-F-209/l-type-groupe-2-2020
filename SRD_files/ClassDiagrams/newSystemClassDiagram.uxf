@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.3.0">
-  <help_text>++// Uncomment the following line to change the fontsize and font:
-// fontsize=14
+  <help_text>// Uncomment the following line to change the fontsize and font:
+fontsize=10
 // fontfamily=SansSerif //possible: SansSerif,Serif,Monospaced
 
 
@@ -10,13 +10,13 @@
 //
 // Double-click on elements to add them to the diagram, or to copy them
 // Edit elements by modifying the text in this panel
-// Hold Cmd to select multiple elements
-// Use Cmd+mouse to select via lasso
+// Hold Ctrl to select multiple elements
+// Use Ctrl+mouse to select via lasso
 //
-// Use +/- or Cmd+mouse wheel to zoom
+// Use +/- or Ctrl+mouse wheel to zoom
 // Drag a whole relation at its central square icon
 //
-// Press Cmd+C to copy the whole diagram to the system clipboard (then just paste it to, eg, Word)
+// Press Ctrl+C to copy the whole diagram to the system clipboard (then just paste it to, eg, Word)
 // Edit the files in the "palettes" directory to create your own element palettes
 //
 // Select "Custom Elements &gt; New..." to create new element types
@@ -31,7 +31,7 @@
       <x>524</x>
       <y>464</y>
       <w>96</w>
-      <h>20</h>
+      <h>16</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -75,7 +75,7 @@ stores &gt;</panel_attributes>
     <coordinates>
       <x>444</x>
       <y>332</y>
-      <w>16</w>
+      <w>12</w>
       <h>96</h>
     </coordinates>
     <panel_attributes>
@@ -106,7 +106,7 @@ lt=&lt;&lt;&lt;&lt;-</panel_attributes>
     <coordinates>
       <x>444</x>
       <y>76</y>
-      <w>28</w>
+      <w>20</w>
       <h>60</h>
     </coordinates>
     <panel_attributes>
@@ -197,7 +197,7 @@ lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
       <x>508</x>
       <y>168</y>
       <w>152</w>
-      <h>20</h>
+      <h>16</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -212,7 +212,7 @@ send Informations &gt;
       <x>508</x>
       <y>192</y>
       <w>152</w>
-      <h>20</h>
+      <h>16</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -280,7 +280,7 @@ m2=1..*
       <x>284</x>
       <y>476</y>
       <w>100</w>
-      <h>20</h>
+      <h>16</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
