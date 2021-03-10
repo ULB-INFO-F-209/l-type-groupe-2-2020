@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>360</x>
+      <y>100</y>
+      <w>340</w>
+      <h>500</h>
+    </coordinates>
+    <panel_attributes>MapHandler
+--
+-probaBonus: int
+-currentLevel: int
+-enemyCount: int
+-enemyLimit: int
+-enemyStartHp: int
+-enemyStartProjectileDamage: int
+-obstacleStartHp: int
+-obstacleStartDamage: int
+-dif: difficulty
+-bossSet[]: Boss
+-starsSet[]: Star
+-obstaclesSet[]: Obstacle
+-projectilesSet[]: Projectile
+-projectilesEnemySet[]: Projectile
+-playerShipsSet[]: PlayerShip
+-enemyShipsSet[]: EnemyShip
+-bonusesSet[]: Bonus
+--
++update(type, int): void
++erase(size_t, type): void
++spawnProjectile(x, y, damage, type, hp, player): void
++checkCollision(tick, firendlyFire): void
++field_bounds: rect
++playerInit(p1,p2): void
++updateBounds(): void
++enemyShoot(tick): void
++bossShoot(tick): void
++explosion(): void
++spawnBonuses(x, y): void
++changeLevel(): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
