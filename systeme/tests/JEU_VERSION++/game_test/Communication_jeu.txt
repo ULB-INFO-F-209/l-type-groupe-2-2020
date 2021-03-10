@@ -1,0 +1,14 @@
+
+Communication:
+
+    Delimiteur   : &
+
+
+    Spwan:
+        Obstacle : O|x
+        Ennemie  : E|x,tick
+        Boss     : B|tick
+        Bonus    : btype(int)|x,y
+
+
+    
