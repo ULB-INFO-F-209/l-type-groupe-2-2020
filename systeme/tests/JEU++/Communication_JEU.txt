@@ -39,11 +39,11 @@ CheckCollison:
 
         C|b|numP|bonus_type&
 
-        //collision Boss/projectile
+    //collision Boss/projectile
 
         C|B|P|Boss_index|proj_index&
 
-        //collision player/boss
+    //collision player/boss
 
         C|B|numP|Boss_index
 

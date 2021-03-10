@@ -334,8 +334,9 @@ void Menu::launch_game(Game_settings* game_option){
 			break;
 		}
 
-		Parsing::parsing_settings_game(val,&my_game);
-		my_game.run_client(inp,&setting_to_diplay);
+		//Parsing::parsing_settings_game(val,&my_game);
+
+		my_game.run_client(inp,&setting_to_diplay,val);
         interface_game.display(&setting_to_diplay);
 
 		refresh();

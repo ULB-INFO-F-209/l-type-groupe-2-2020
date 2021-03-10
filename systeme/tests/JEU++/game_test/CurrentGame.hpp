@@ -85,7 +85,7 @@ public:
     int getInput() const{return in_char;}
     void getSettings(settingServer* settings);
     std::string run_server(char move_to_exec,settingServer* settings);
-    void run_client(int  parametre_to_change,settingServer* settings);
+    void run_client(int  parametre_to_change,settingServer* settings,std::string val);
     void execInput(int inChar, uint_fast16_t x1, uint_fast16_t y1, bool firstPlayer,std::string to_fill);
     void spawnObstacle(int posx);
     void spawnEnemy(int posx,int tick);

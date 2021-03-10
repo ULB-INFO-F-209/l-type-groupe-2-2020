@@ -23,6 +23,7 @@
 #include "Client.hpp"
 #include "Interface.hpp"
 #include "parsing.hpp"
+#include "game_test/Interface_game.hpp"
 
 using namespace Parsing; //utilities
 using namespace Screen;

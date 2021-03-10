@@ -59,8 +59,6 @@ private:
     void resClient(std::string* processId, char* res);
     void resClient(std::string* processId, int res);
     void resClient(std::string*, bool);
-    void resClient(char* pipe, settingArray *res);
-    void resClient(char* pipe, settingArray2* res);
     void resClient(char* pipe, std::string* res);
 
     //inputs

@@ -70,6 +70,9 @@ std::vector<Profile> Database::getFriendList(char* pseudo){
                 friends.push_back(f);
             }
         }
+        std::sort(friends.begin(), friends.end(), [](Profile a, Profile b) {
+            return a.score > b.score;
+        });
     }
     return friends;
 }

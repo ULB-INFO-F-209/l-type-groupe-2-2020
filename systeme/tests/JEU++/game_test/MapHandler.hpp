@@ -194,15 +194,6 @@ public:
     std::vector<Boss*> getBoss() const;
     std::vector<PlayerShip*>  getListPlayer()const;
 
-    std::vector<PlayerShip*> * getPlayerShipPointeur(){return &player_ships_set;}
-    std::vector<Star*> *getStarsPointeur(){return &stars_set;} ;
-    std::vector<Obstacle*> *getObstaclesPointeur(){return &obstacles_set;} ;
-    std::vector<Projectile*>* getProjectilesPointeur(){return &projectiles_set;};
-    std::vector<Projectile*> *getProjectilesEnemyPointeur() {return &projectilesEnemy_set;};
-    std::vector<EnemyShip*> *getEnemyPointeur(){return &enemy_ships_set;} ;
-    std::vector<Bonus*> *getBonusPointeur(){return &bonuses_set;} ;
-    std::vector<Boss*> *getBossPointeur(){return &boss_set;} ;
-
     bool getBossSpawned() const{return bossSpawned;}
     void setBounds(rect);
     void spawnProjectile(int x, int y, int damage, bool type, int hp, int player);
@@ -229,6 +220,7 @@ public:
     void spawnBonus_client(int x, int y,int rand_spawn_bonus);
     void update_client(MapObject::type typ, int t);
     void checkCollision_client(int t, bool friendlyFire) ;
+    int parsing_in_game(std::string val);
 
 };
 

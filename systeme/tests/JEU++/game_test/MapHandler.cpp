@@ -1027,13 +1027,13 @@ void MapHandler::spawnProjectile_server(int x, int y, int damage, bool type, int
 void MapHandler::checkCollision_server(int t, bool friendlyFire,std::string * to_fill) {
     
     //collision player/obstacle
-    for(PlayerShip* p : player_ships_set){
-        for(size_t i=0; i < obstacles_set.size(); i++){
-            if(p->getBounds().contains(obstacles_set.at(i)->getPos()) && p->getHp()>0){
-                to_fill->append("C|O|"); to_fill->append(std::to_string(p->getPlayerNb()));
-                to_fill->append("|"); to_fill->append(std::to_string(i));to_fill->append("&");
-                p->touched(obstacles_set.at(i)->get_damage());
-                obstacles_set.at(i)->touched(obstacles_set.at(i)->getHp());
+    for(size_t i =0; i< player_ships_set.size();i++){
+        for(size_t j=0; j < obstacles_set.size(); j++){
+            if(player_ships_set.at(i)->getBounds().contains(obstacles_set.at(i)->getPos()) && player_ships_set.at(i)->getHp()>0){
+                to_fill->append("C|O|"); to_fill->append(std::to_string(i));
+                to_fill->append("|"); to_fill->append(std::to_string(j));to_fill->append("&");
+                player_ships_set.at(i)->touched(obstacles_set.at(j)->get_damage());
+                obstacles_set.at(j)->touched(obstacles_set.at(j)->getHp());
             }
         }
     }
@@ -1042,35 +1042,35 @@ void MapHandler::checkCollision_server(int t, bool friendlyFire,std::string * to
     for(size_t i=0; i < obstacles_set.size(); i++){
         for(size_t j=0; j < projectiles_set.size(); j++){
             if(!obstacles_set.empty() && !projectiles_set.empty()){ // sinon out of range
-                if(obstacles_set.at(i)->getPos().x == projectiles_set.at(i)->getPos().x && obstacles_set.at(i)->getPos().y == projectiles_set.at(i)->getPos().y){
+                if(obstacles_set.at(i)->getPos().x == projectiles_set.at(j)->getPos().x && obstacles_set.at(i)->getPos().y == projectiles_set.at(j)->getPos().y){
                     to_fill->append("C|O|P|"); to_fill->append(std::to_string(j));
                     to_fill->append("|"); to_fill->append(std::to_string(i));to_fill->append("&");
-                    obstacles_set.at(i)->touched(projectiles_set.at(i)->getDamage());
-                    projectiles_set.at(i)->touched(obstacles_set.at(i)->get_damage());
+                    obstacles_set.at(i)->touched(projectiles_set.at(j)->getDamage());
+                    projectiles_set.at(j)->touched(obstacles_set.at(i)->get_damage());
                 }
             }
         }
         for (size_t k=0; k < projectilesEnemy_set.size(); k++){
             if(!obstacles_set.empty() && !projectilesEnemy_set.empty()){ // sinon out of range
-                if(obstacles_set.at(i)->getPos().x == projectilesEnemy_set.at(i)->getPos().x && obstacles_set.at(i)->getPos().y == projectilesEnemy_set.at(i)->getPos().y){
+                if(obstacles_set.at(i)->getPos().x == projectilesEnemy_set.at(k)->getPos().x && obstacles_set.at(i)->getPos().y == projectilesEnemy_set.at(k)->getPos().y){
                     
                     to_fill->append("C|O|p|"); to_fill->append(std::to_string(k));
                     to_fill->append("|"); to_fill->append(std::to_string(i));to_fill->append("&");
-                    obstacles_set.at(i)->touched(projectilesEnemy_set.at(i)->getDamage());
-                    projectilesEnemy_set.at(i)->touched(obstacles_set.at(i)->get_damage());
+                    obstacles_set.at(i)->touched(projectilesEnemy_set.at(k)->getDamage());
+                    projectilesEnemy_set.at(k)->touched(obstacles_set.at(i)->get_damage());
                 }
             }
         }
     }
 
     // collision enemy/player
-    for(PlayerShip* p : player_ships_set){
+    for(size_t k =0; k< player_ships_set.size();k++){
         for(size_t i = 0; i < enemy_ships_set.size(); i++){
-            if(p->getBounds().contains(enemy_ships_set.at(i)->getBounds()) && p->getHp()>0){
-                to_fill->append("C|E|"); to_fill->append(std::to_string(p->getPlayerNb()));
+            if(player_ships_set.at(k)->getBounds().contains(enemy_ships_set.at(i)->getBounds()) && player_ships_set.at(k)->getHp()>0){
+                to_fill->append("C|E|"); to_fill->append(std::to_string(k));
                 to_fill->append("|"); to_fill->append(std::to_string(i));to_fill->append("&");
-                p->touched(p->getHp());
-                enemy_ships_set.at(i)->touched(p->getDammage());
+                player_ships_set.at(k)->touched(player_ships_set.at(k)->getHp());
+                enemy_ships_set.at(i)->touched(player_ships_set.at(k)->getDammage());
             }
         }
     }
@@ -1079,8 +1079,8 @@ void MapHandler::checkCollision_server(int t, bool friendlyFire,std::string * to
     if(player_ships_set.size() > 1 && friendlyFire){
     
         if(player_ships_set.at(0)->getBounds().contains(player_ships_set.at(1)->getBounds()) && player_ships_set.at(0)->getHp()>0){
-            to_fill->append("C|"); to_fill->append(std::to_string(player_ships_set.at(0)->getPlayerNb()));
-            to_fill->append("|"); to_fill->append(std::to_string(player_ships_set.at(1)->getPlayerNb()));to_fill->append("&");
+            to_fill->append("C|"); to_fill->append(std::to_string(0));
+            to_fill->append("|"); to_fill->append(std::to_string(1));to_fill->append("&");
             player_ships_set.at(0)->touched(player_ships_set.at(0)->getHp());
             player_ships_set.at(1)->touched(player_ships_set.at(1)->getHp());
         }
@@ -1088,21 +1088,21 @@ void MapHandler::checkCollision_server(int t, bool friendlyFire,std::string * to
     }
 
     // collision player/projectile
-    for(PlayerShip* p : player_ships_set){
+    for(size_t i =0; i< player_ships_set.size();i++){
         for(size_t j=0; j < projectilesEnemy_set.size(); j++){
-            if(p->getBounds().contains(projectilesEnemy_set.at(j)->getPos()) && p->getHp()>0){
-                to_fill->append("C|P|"); to_fill->append(std::to_string(p->getPlayerNb()));
+            if(player_ships_set.at(i)->getBounds().contains(projectilesEnemy_set.at(j)->getPos()) && player_ships_set.at(i)->getHp()>0){
+                to_fill->append("C|P|"); to_fill->append(std::to_string(i));
                 to_fill->append("|"); to_fill->append(std::to_string(j));to_fill->append("&");
-                p->touched(projectilesEnemy_set.at(j)->getDamage());
+                player_ships_set.at(i)->touched(projectilesEnemy_set.at(j)->getDamage());
                 projectilesEnemy_set.at(j)->touched(projectilesEnemy_set.at(j)->getHp());
             }
         }
         if(friendlyFire){
             for(size_t j=0; j < projectiles_set.size(); j++){
-                if(p->getBounds().contains(projectiles_set.at(j)->getPos()) && p->getHp()>0 && p->getPlayerNb()!=projectiles_set.at(j)->getPlayer()-1){
-                    to_fill->append("C|P|F|"); to_fill->append(std::to_string(p->getPlayerNb()));
+                if(player_ships_set.at(i)->getBounds().contains(projectiles_set.at(j)->getPos()) && player_ships_set.at(i)->getHp()>0 && player_ships_set.at(i)->getPlayerNb()!=projectiles_set.at(j)->getPlayer()-1){
+                    to_fill->append("C|P|F|"); to_fill->append(std::to_string(i));
                     to_fill->append("|"); to_fill->append(std::to_string(j));to_fill->append("&");
-                    p->touched(projectiles_set.at(j)->getDamage());
+                    player_ships_set.at(i)->touched(projectiles_set.at(j)->getDamage());
                     projectiles_set.at(j)->touched(projectiles_set.at(j)->getHp());
                 }
             }
@@ -1110,7 +1110,7 @@ void MapHandler::checkCollision_server(int t, bool friendlyFire,std::string * to
     }
 
     // collision projectile/projectile
-    for(size_t i=0; i < projectilesEnemy_set.size(); i++){
+    for(size_t i=0; i < projectiles_set.size(); i++){
         for(size_t j=0; j < projectilesEnemy_set.size(); j++){
             if (projectiles_set.at(i)->getPos().x == projectilesEnemy_set.at(j)->getPos().x
             && (projectiles_set.at(i)->getPos().y == projectilesEnemy_set.at(j)->getPos().y
@@ -1154,35 +1154,39 @@ void MapHandler::checkCollision_server(int t, bool friendlyFire,std::string * to
     }
 
     //collison player/bonus
-    for(PlayerShip* p : player_ships_set){
+    for(size_t i =0; i< player_ships_set.size();i++){
         for(size_t j =0; j < bonuses_set.size(); j++){
-            to_fill->append("C|b|"); to_fill->append(std::to_string(p->getPlayerNb()));
-            to_fill->append("|"); to_fill->append(std::to_string(j));to_fill->append("&");
-            if(p->getBounds().contains(bonuses_set.at(j)->getPos()) && p->getHp()>0){
-                p->catchBonus(bonuses_set.at(j));
+            to_fill->append("C|b|"); to_fill->append(std::to_string(i));
+            to_fill->append("|"); to_fill->append(std::to_string(bonuses_set.at(j)->getBonusType()));to_fill->append("&");
+            if(player_ships_set.at(i)->getBounds().contains(bonuses_set.at(j)->getPos()) && player_ships_set.at(i)->getHp()>0){
+                player_ships_set.at(i)->catchBonus(bonuses_set.at(j));
                 bonuses_set.at(j)->touched(bonuses_set.at(j)->getHp());
             }
         }
     }
 
     //collision Boss/projectile
-    for(Boss* b : boss_set){
-        for(auto & proj : projectiles_set){
-            if(b->getBounds().contains(proj->getPos()) && b->getHp()>0){
-                b->touched(proj->getDamage());
-                proj->touched(b->getDammage());
+    for(size_t i =0; i < boss_set.size(); i++){
+        for(size_t j =0; j < projectiles_set.size(); j++){
+            if(boss_set.at(i)->getBounds().contains(projectiles_set.at(j)->getPos()) && boss_set.at(i)->getHp()>0){
+                //C|B|P|Boss_index|proj_index&
+                to_fill->append("C|B|P|"); to_fill->append(std::to_string(i));
+                to_fill->append("|"); to_fill->append(std::to_string(j));to_fill->append("&");
+            
+                boss_set.at(i)->touched(projectiles_set.at(j)->getDamage());
+                projectiles_set.at(j)->touched(boss_set.at(i)->getDammage());
                 if(player_ships_set.size() == 2){
-                    player_ships_set.at(proj->getPlayer()-1)->setScore(player_ships_set.at(proj->getPlayer()-1)->getScore() + 10);
-                    if(b->getHp()==0 && player_ships_set.at(proj->getPlayer()-1)->getCurrentBonus()==lifeSteal && player_ships_set.at(proj->getPlayer()-1)->getHp()<100){
-                        if ((player_ships_set.at(proj->getPlayer()-1)->getHp()+10) <= 100)
-                            player_ships_set.at(proj->getPlayer()-1)->setHp(player_ships_set.at(proj->getPlayer()-1)->getHp()+10);
-                        else player_ships_set.at(proj->getPlayer()-1)->setHp(100);
+                    player_ships_set.at(projectiles_set.at(j)->getPlayer()-1)->setScore(player_ships_set.at(projectiles_set.at(j)->getPlayer()-1)->getScore() + 10);
+                    if(boss_set.at(i)->getHp()==0 && player_ships_set.at(projectiles_set.at(j)->getPlayer()-1)->getCurrentBonus()==lifeSteal && player_ships_set.at(projectiles_set.at(j)->getPlayer()-1)->getHp()<100){
+                        if ((player_ships_set.at(projectiles_set.at(j)->getPlayer()-1)->getHp()+10) <= 100)
+                            player_ships_set.at(projectiles_set.at(j)->getPlayer()-1)->setHp(player_ships_set.at(projectiles_set.at(j)->getPlayer()-1)->getHp()+10);
+                        else player_ships_set.at(projectiles_set.at(j)->getPlayer()-1)->setHp(100);
                     }
 
                 }
                 else if (player_ships_set.size() == 1) {
                     player_ships_set.at(0)->setScore(player_ships_set.at(0)->getScore() + 10);
-                    if(b->getHp()==0 && player_ships_set.at(0)->getCurrentBonus()==lifeSteal && player_ships_set.at(0)->getHp()<100)
+                    if(boss_set.at(i)->getHp()==0 && player_ships_set.at(0)->getCurrentBonus()==lifeSteal && player_ships_set.at(0)->getHp()<100)
                         player_ships_set.at(0)->setHp(player_ships_set.at(0)->getHp()+10);
                 }
             }
@@ -1190,11 +1194,15 @@ void MapHandler::checkCollision_server(int t, bool friendlyFire,std::string * to
     }
 
     //collision player/boss
-    for(PlayerShip* p : player_ships_set){
-        for(auto & b : boss_set){
-            if(p->getBounds().contains(b->getBounds()) && p->getHp()>0){
-                p->touched(p->getHp());
-                b->touched(p->getDammage());
+    for(size_t i =0; i< player_ships_set.size();i++){
+        for(size_t j=0; j< boss_set.size();j++){
+            if(player_ships_set.at(i)->getBounds().contains(boss_set.at(i)->getBounds()) && player_ships_set.at(i)->getHp()>0){
+                //C|B|numP|Boss_index
+                to_fill->append("C|B|"); to_fill->append(std::to_string(i));
+                to_fill->append("|"); to_fill->append(std::to_string(j));to_fill->append("&");
+            
+                player_ships_set.at(i)->touched(player_ships_set.at(i)->getHp());
+                boss_set.at(i)->touched(player_ships_set.at(i)->getDammage());
             }
         }
     }
@@ -1279,4 +1287,245 @@ void MapHandler::spawnBonus_client(int x, int y,int rand_spawn_bonus) {
     
 }
 
+int MapHandler::parsing_in_game(std::string to_parse){
+	char obstacle = 'O', enemy = 'E', boss = 'B', bonus = 'b', the_tick = 'T', collision = 'C';
+    char projectile = 'P', player1 = '1', player2 = '2', projectile_player = 'p', ally_shoot ='F';
+    int tick =0;
+	
+	while(!(to_parse.empty())){
+		
+		int index = to_parse.find("&"),idx = 0;
+		std::string to_spawn = to_parse.substr(0,index);
+		idx = to_spawn.find("|");
 
+		if(to_spawn[0] == obstacle ){
+			int val = std::stoi(to_spawn.substr(idx+1,to_spawn.length()));
+			spawnObstacle(val);
+		}
+		else if (to_spawn[0] == enemy){
+			to_spawn = to_spawn.substr(idx+1,to_spawn.length());
+			idx = to_spawn.find(",");
+			int x = std::stoi(to_spawn.substr(0,idx));
+			int tick = std::stoi(to_spawn.substr(idx+1,to_spawn.length()));
+			spawnEnemy(x,tick);
+			
+		}
+		else if(to_spawn[0] == boss){
+			int tick = std::stoi(to_spawn.substr(idx+1,to_spawn.length()));
+			spawnBoss(tick);
+		}
+		else if(to_spawn[0] == bonus){
+			int type_bonus = std::stoi(to_spawn.substr(1,idx));
+			int x = std::stoi(to_spawn.substr(idx+1,to_spawn.find(",")));
+			int y = std::stoi(to_spawn.substr(to_spawn.find(",")+1,to_spawn.length()));
+			spawnBonus_client(x,y,type_bonus);
+
+		}
+		else if(to_spawn[0] == the_tick){
+			int t = std::stoi(to_spawn.substr(idx+1,to_spawn.length()));
+            tick = t;
+		}
+        else if(to_spawn[0] == collision){
+
+            // collision projectiles/obstacles    C|O|P|P_index|O_index& ==> enemy projectile    C|O|p|P_index|O_index& ==> ally shoot projectile
+            //collision player/obstacle           C|O|numP|O_index&
+            if (to_spawn[idx+1] == obstacle){
+                to_spawn = to_spawn.substr(idx+1,to_spawn.length());
+                idx = to_spawn.find("|");
+                if (to_spawn[idx+1] == projectile){
+                    to_spawn = to_spawn.substr(idx+1,to_spawn.length());
+                    idx = to_spawn.find("|");
+
+                    int p_index = atoi(&to_spawn[idx+1]);
+
+                    to_spawn = to_spawn.substr(idx+1,to_spawn.length());
+                    idx = to_spawn.find("|");
+
+                    int o_index = atoi(&to_spawn[idx+1]);
+
+                    obstacles_set.erase(obstacles_set.begin()+o_index);
+                    projectilesEnemy_set.erase(projectilesEnemy_set.begin()+p_index);
+
+                }
+                else if(to_spawn[idx+1] == projectile_player){
+                    to_spawn = to_spawn.substr(idx+1,to_spawn.length());
+                    idx = to_spawn.find("|");
+
+                    int p_index = atoi(&to_spawn[idx+1]);
+
+                    to_spawn = to_spawn.substr(idx+1,to_spawn.length());
+                    idx = to_spawn.find("|");
+
+                    int o_index = atoi(&to_spawn[idx+1]);
+
+                    obstacles_set.erase(obstacles_set.begin()+o_index);
+                    projectilesEnemy_set.erase(projectilesEnemy_set.begin()+p_index);
+                }
+                else if(to_spawn[idx+1] == player1 || to_spawn[idx+1] == player2){
+                    int numP = atoi(&to_spawn[idx+1]);
+
+                    to_spawn = to_spawn.substr(idx+1,to_spawn.length());
+                    idx = to_spawn.find("|");
+
+                    int o_index = atoi(&to_spawn[idx+1]);
+
+                    player_ships_set.at(numP)->touched(obstacles_set.at(o_index)->get_damage());
+                    obstacles_set.erase(obstacles_set.begin()+o_index);                    
+                }
+            }
+
+            //collision enemy/projectile          C|E|P|proj_index|E_index
+            // collision enemy/player             C|E|numP|E_index&
+            else if (to_spawn[idx+1] == enemy){
+                to_spawn = to_spawn.substr(idx+1,to_spawn.length());
+                idx = to_spawn.find("|");
+                if(to_spawn[idx+1] == projectile){
+                    to_spawn = to_spawn.substr(idx+1,to_spawn.length());
+                    idx = to_spawn.find("|");
+
+                    int proj_index = atoi(&to_spawn[idx+1]);
+
+                   to_spawn = to_spawn.substr(idx+1,to_spawn.length());
+                   idx = to_spawn.find("|");
+
+                    int E_index = atoi(&to_spawn[idx+1]);
+
+                    enemy_ships_set.at(E_index)->touched(projectiles_set.at(proj_index)->getDamage());
+                    projectiles_set.at(proj_index)->touched(enemy_ships_set.at(E_index)->getDammage());
+                    if(enemy_ships_set.at(E_index)->getHp()==0 && player_ships_set.at(projectiles_set.at(proj_index)->getPlayer()-1)->getCurrentBonus()==lifeSteal && player_ships_set.at(projectiles_set.at(proj_index)->getPlayer()-1)->getHp()<100){
+                        if ((player_ships_set.at(projectiles_set.at(proj_index)->getPlayer()-1)->getHp()+10) <= 100)
+                            player_ships_set.at(projectiles_set.at(proj_index)->getPlayer()-1)->setHp(player_ships_set.at(projectiles_set.at(proj_index)->getPlayer()-1)->getHp()+10);
+                        else player_ships_set.at(projectiles_set.at(proj_index)->getPlayer()-1)->setHp(100);
+                    
+                    if(enemy_ships_set.at(proj_index)->getHp() < 0){
+                        enemy_ships_set.erase(enemy_ships_set.begin()+E_index);
+                    }
+                
+                }
+                else if(to_spawn[idx+1] == player1 || to_spawn[idx+1] == player2){
+                    int numP = atoi(&to_spawn[idx+1]);
+
+                    to_spawn = to_spawn.substr(idx+1,to_spawn.length());
+                    idx = to_spawn.find("|");
+
+                    int E_index = atoi(&to_spawn[idx+1]);
+                    
+                    player_ships_set.at(numP)->touched(player_ships_set.at(numP)->getHp());
+                    if(enemy_ships_set.at(proj_index)->getHp() < 0){
+                        enemy_ships_set.erase(enemy_ships_set.begin()+E_index);
+                    }
+                }
+            }
+
+            //collision player/player             C|numP|numP&
+            else if (to_spawn[idx+1] == player1 || to_spawn[idx+1] == player2){
+                int numP = atoi(&to_spawn[idx+1]);
+
+                to_spawn = to_spawn.substr(idx+1,to_spawn.length());
+                idx = to_spawn.find("|");
+
+                int numP2 = atoi(&to_spawn[idx+1]);
+                player_ships_set.at(0)->touched(player_ships_set.at(0)->getHp());
+                player_ships_set.at(1)->touched(player_ships_set.at(1)->getHp());
+            }
+
+            // collision projectile/projectile    C|P|P|proj_index1|proj_index2&
+            // collision player/projectile        C|P|nump|proj_index&  ou  C|P|F|nump|proj_index&
+            else if (to_spawn[idx+1] == projectile){
+                to_spawn = to_spawn.substr(idx+1,to_spawn.length());
+                idx = to_spawn.find("|");
+                if(to_spawn[idx+1] == projectile){
+                    to_spawn = to_spawn.substr(idx+1,to_spawn.length());
+                    idx = to_spawn.find("|");
+
+                    int proj_index = atoi(&to_spawn[idx+1]);
+
+                    to_spawn = to_spawn.substr(idx+1,to_spawn.length());
+                    idx = to_spawn.find("|");
+
+                    int proj_index2 = atoi(&to_spawn[idx+1]);
+
+                    projectiles_set.erase(projectiles_set.begin()+proj_index);
+                    projectiles_set.erase(projectiles_set.begin()+proj_index2);
+                }
+                else if(to_spawn[idx+1] ==ally_shoot){
+                    to_spawn = to_spawn.substr(idx+1,to_spawn.length());
+                    idx = to_spawn.find("|");
+
+                    int nump = atoi(&to_spawn[idx+1]);
+
+                    to_spawn = to_spawn.substr(idx+1,to_spawn.length());
+                    idx = to_spawn.find("|");
+
+                    int proj_index = atoi(&to_spawn[idx+1]);
+                    player_ships_set.at(nump)->touched(projectilesEnemy_set.at(proj_index)->getDamage());
+                    projectiles_set.erase(projectiles_set.begin()+proj_index);
+
+                }
+                else if(to_spawn[idx+1] == player1 || to_spawn[idx+1] == player2){
+                    int nump = atoi(&to_spawn[idx+1]);
+
+                    to_spawn = to_spawn.substr(idx+1,to_spawn.length());
+                    idx = to_spawn.find("|");
+
+                    int proj_index = atoi(&to_spawn[idx+1]);
+
+                    player_ships_set.at(nump)->touched(projectilesEnemy_set.at(proj_index)->getDamage());
+                    projectiles_set.erase(projectiles_set.begin()+proj_index);
+
+                }
+            }
+
+            //collison player/bonus               C|b|numP|bonus_type&
+            else if (to_spawn[idx+1] == bonus){
+                to_spawn = to_spawn.substr(idx+1,to_spawn.length());
+                idx = to_spawn.find("|");
+
+                int numP = atoi(&to_spawn[idx+1]);
+
+                to_spawn = to_spawn.substr(idx+1,to_spawn.length());
+                idx = to_spawn.find("|");
+
+                int bonus_type = atoi(&to_spawn[idx+1]);
+               
+                player_ships_set.at(numP)->catchBonus(bonuses_set.at(bonus_type));
+                bonuses_set.erase(bonuses_set.begin()+bonus_type);
+                
+            }
+
+            //collision Boss/projectile           C|B|P|Boss_index|proj_index&
+            //collision player/boss               C|B|numP|Boss_index&
+            else if (to_spawn[idx+1] == boss){
+                to_spawn = to_spawn.substr(idx+1,to_spawn.length());
+                idx = to_spawn.find("|");
+                if (to_spawn[idx+1] == projectile){
+                    to_spawn = to_spawn.substr(idx+1,to_spawn.length());
+                    idx = to_spawn.find("|");
+
+                    int boss_index = atoi(&to_spawn[idx+1]);
+
+                    to_spawn = to_spawn.substr(idx+1,to_spawn.length());
+                    idx = to_spawn.find("|");
+
+                    int proj_index = atoi(&to_spawn[idx+1]);
+                    boss_set.at(boss_index)->touched(projectiles_set.at(proj_index)->getDamage());
+                    projectiles_set.erase(projectiles_set.begin()+proj_index);
+                }
+                else if (to_spawn[idx+1] == player1 || to_spawn[idx+1] == player2){
+                    int numP = atoi(&to_spawn[idx+1]);
+
+                    to_spawn = to_spawn.substr(idx+1,to_spawn.length());
+                    idx = to_spawn.find("|");
+
+                    int Boss_index = atoi(&to_spawn[idx+1]);
+                    player_ships_set.at(numP)->touched(player_ships_set.at(numP)->getHp());
+                    boss_set.at(Boss_index)->touched(player_ships_set.at(numP)->getDammage());
+
+                }
+            }
+        }
+		to_parse = to_parse.substr(index+1,to_parse.length());
+	};
+    return tick;
+}
+}

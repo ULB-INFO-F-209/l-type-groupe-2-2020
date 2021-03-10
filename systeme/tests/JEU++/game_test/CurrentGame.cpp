@@ -364,7 +364,7 @@ std::string CurrentGame::run_server(char move_to_exec,settingServer* settings){
 };
 
 
-void CurrentGame::run_client(int move_to_exec,settingServer* settings){
+void CurrentGame::run_client(int move_to_exec,settingServer* settings,std::string val){
     
 
     uint_fast16_t x1,y1,x2,y2;
@@ -408,7 +408,9 @@ void CurrentGame::run_client(int move_to_exec,settingServer* settings){
     map.enemyShoot(tick);
     map.bossShoot(tick);
     map.updateBounds();     // update player bounds
-    map.checkCollision_client(tick, friendlyFire);
+    int tmp = map.parsing_in_game(val);
+    tick =  tmp == 0 ? tick: tmp;
+    //map.checkCollision_client(tick, friendlyFire);
 
     if(map.getBoss().empty() && map.getBossSpawned())
          game_over = true;
