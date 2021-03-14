@@ -94,13 +94,13 @@ void Account::removeFriend(char pseudo[20]){
 }
 
 std::ostream& operator<<(std::ostream& out, const Account& obj){
-    out << obj._bestScore << "\n" << obj._pseudo << "\n" << obj._pswd << "\n";
+    out << obj._bestScore << ", " << obj._pseudo << ", " << obj._pswd << ", ";
     // outputting _friends
     out << "[ ";
     for (size_t i = 0; i < obj._max_friend_nb; i++) {
         out << obj._friends[i] << ' ';
     }
-    out << "]" << "\n";
+    out << "]" << " , ";
     // outputting _friend_requests
     out << "[ ";
     for (size_t i = 0; i < obj._max_request_nb; i++) {

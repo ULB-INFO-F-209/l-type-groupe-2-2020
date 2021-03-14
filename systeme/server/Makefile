@@ -1,4 +1,4 @@
-FLAGS = -std=c++17 -masm=intel -fcoroutines -fconcepts -pthread \
+FLAGS = -std=c++17 -masm=intel -fconcepts -pthread \
 		-fopenacc -fopenmp -ggdb3 -Wpedantic -Wall -Wextra -Wconversion \
 		-Winline -Wsign-conversion -Weffc++ -Wstrict-null-sentinel -Wold-style-cast\
 		 -Wnoexcept -Wctor-dtor-privacy -Woverloaded-virtual -Wsign-promo -Wzero-as-null-pointer-constant\
@@ -20,4 +20,3 @@ parsing.o: parsing.hpp parsing.cpp
 	g++ $(FLAGS) -c parsing.cpp -o parsing.o
 clean:
 	rm *.o
-	rm pipefile*

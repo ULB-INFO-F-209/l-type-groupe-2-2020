@@ -24,6 +24,8 @@ public:
     Account(char* pseudo, char* pswd);
 
     // Getter
+    void getPseudo(char* buff){strcpy(buff, _pseudo);};
+    int getScore(){return _bestScore;};
     std::ptrdiff_t findFriend(char pseudo[20]);
     std::ptrdiff_t findRequest(char pseudo[20]);
 
