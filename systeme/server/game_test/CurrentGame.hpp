@@ -13,6 +13,7 @@
 #include "Interface_game.hpp"
 #include "InternGameObject.hpp"
 #include "GameConstante.hpp"
+#include "settingServer.hpp"
 
 class CurrentGame {
 
@@ -21,25 +22,25 @@ class CurrentGame {
     bool twoPlayers;
     bool friendlyFire;
     int dropRate;
-    difficulty dif{};
+    difficulty dif;
 
     MapHandler map;
 
-    int tick=0;
-    int finalScore1{};
-    int finalScore2{};
+    int tick;
+    int finalScore1;
+    int finalScore2;
 
     PlayerShip* playership1;
     Player* player1;
 
-    PlayerShip* playership2 = nullptr;
-    Player* player2 = nullptr;
+    PlayerShip* playership2;
+    Player* player2;
     
-    std::vector<Player*> listPlayer=std::vector<Player*>();
+    std::vector<Player*> listPlayer;
 
-    int in_char = 0;
-    bool exit_requested = false;
-    bool game_over = false;
+    int in_char;
+    bool exit_requested;
+    bool game_over;
 
     // méthodes privées
     void execInput(int inChar, uint_fast16_t x1, uint_fast16_t y1, bool firstPlayer);
@@ -47,40 +48,10 @@ class CurrentGame {
     void saveScore();
 
 public:
-    CurrentGame()=default;
-    CurrentGame(bool twoP, int dropR, difficulty d, bool ff):twoPlayers(twoP),dropRate(dropR),map(dropR,d){ dif=d; friendlyFire=ff;}
-    CurrentGame(bool twoP, int dropR, difficulty d, bool ff, Interface_game* anInterface):twoPlayers(twoP),dropRate(dropR),map(dropR,d){ dif=d; friendlyFire=ff;
-        playership1 = new PlayerShip(10, 5, { {10 - 1, 5 }, { 3, 2 } }, '0',100, 0,100,0);
-        player1 = new Player(1);
-        listPlayer.push_back(player1);
-
-        if(twoPlayers){
-            playership2 = new PlayerShip(50, 5, { { 50 - 1, 5 }, { 3, 2 } }, '1',100, 1,100,0);
-            player2 = new Player(1);
-            listPlayer.push_back(player2);
-        }
-        
-        map.playerInit(playership1,playership2);
-        map.setBounds(anInterface->get_game_area());
-        game_area = anInterface->get_game_area();
-        screen_area = anInterface->get_screen_area();
-    }
-    CurrentGame(Game_settings game_sett):twoPlayers(game_sett.nb_player == 2? true:false),friendlyFire(game_sett.ally_shot), dropRate(game_sett.drop_rate),dif(game_sett.diff),
-    screen_area( {0, 0}, {80, 24}),game_area( {0, 0}, {78, 16}),map(dropRate,dif) {
-        
-        playership1 = new PlayerShip(10, 5, { {9, 5 }, { 3, 2 } }, '0',100, 0,100,0);
-        player1 = new Player(game_sett.nb_lives);
-        listPlayer.push_back(player1);
-
-        if(twoPlayers){
-            playership2 = new PlayerShip(50, 5, { { 49, 5 }, { 3, 2 } }, '1',100, 1,100,0);
-            player2 = new Player(game_sett.nb_lives);
-            listPlayer.push_back(player2);
-        }
-        map.playerInit(playership1,playership2);
-        map.setBounds(game_area);
-        
-    }
+    CurrentGame()=delete;
+    CurrentGame(const CurrentGame&)=delete;
+    CurrentGame& operator=(const CurrentGame&)=delete;
+    CurrentGame(Game_settings game_sett);
     //void run_test(theSettings* setting_to_fill,char in_char);
     int getInput() const{return in_char;}
     void getSettings(settingServer* settings);
@@ -94,6 +65,7 @@ public:
     void set_client_tick(int t);
     
 
+    ~CurrentGame(){delete player1;delete playership1; if(twoPlayers){delete playership2; delete player2;} }
     void run();
 };
 

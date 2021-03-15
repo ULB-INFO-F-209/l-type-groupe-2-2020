@@ -8,9 +8,10 @@ class Player{
 
 public:
     Player()=default;
-    int getnLives(){return nLives;}
+    int getnLives()const {return nLives;}
+    void decLives(){nLives--;};
     void setnLives(int lives){nLives = lives;}
-    Player( int lives){nLives = lives;}
+    Player( int lives):nLives(lives){}
 };
 
 #endif

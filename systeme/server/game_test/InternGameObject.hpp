@@ -4,8 +4,8 @@
 #include <cstdint>
 // at least 16-bit int 2D vector
 typedef struct {
-    uint_fast16_t x;
-    uint_fast16_t y;
+    int x;
+    int y;
 } vec2i;
 
 // simple integer rectangle type

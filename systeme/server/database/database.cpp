@@ -195,7 +195,7 @@ void Database::dbLoad(){
         throw "Could not open file!";
     }
 
-    std::cout << "------------Load------------\n\n";
+    std::cout << "Load DB\n\n";
     Account account;
     while(fread(&account,sizeof(Account),1,f)){
         add(&account);
@@ -206,22 +206,21 @@ void Database::dbLoad(){
 
 void Database::dbSave(){
     // writing all accounts in _path file
-    std::cout << "\n------------Save------------\n";
+    std::cout << "\nSAVE DB\n";
     FILE* out = fopen(_path.c_str(),"wb");
     for (Account &acc : _data){
         fwrite(&acc,sizeof(Account),1,out);
     }
-    display();
+    //display();
     fclose(out);
-    std::cout << "\nSAVE FINNISH\n";
 }
 
 void Database::display(){
     if(_data.size()==0){
-        std::cout << "pas d'element \n";
+        std::cout << "\nDB VIDE \n";
         return;
     }
-    for (int i = 0; i < _data.size(); i++){
+    for (size_t i = 0; i < _data.size(); i++){
         std::cout << _data[i] << std::endl;
     }
 }

@@ -4,8 +4,8 @@
 #include "database/database.hpp" 
 #include "Constante.hpp"
 #include "parsing.hpp"
-// #include "game_test/settingServer.hpp"
-// #include "game_test/CurrentGame.hpp"
+#include "game_test/settingServer.hpp"
+#include "game_test/CurrentGame.hpp"
 
 // C++
 #include <thread>
@@ -46,7 +46,7 @@ private:
 public:
     Server();
     ~Server(){_db.dbSave();std::cout << "\n\n-----------------------|   HUUUUM C'EST TRES DELICIEUSE    |-----------------------\n\n"<<std::endl;};
-    static void close_me(int sig){mtx.lock(); _db.dbSave(); mtx.unlock(); mtx.lock(); for(size_t i=0;i < _pipe_running.size();i++){ kill(atoi(_pipe_running.at(i)->pid),SIGUSR1); } std::cout <<"\n -----------------------|    FERMETURE EN COURS    |-----------------------\n\n " << std::endl;sleep(5);}// handle CTRL + C signal ==> save db
+    static void close_me(int sig){std::cout << sig; for(size_t i=0;i < _pipe_running.size();i++){ kill(atoi(_pipe_running.at(i)->pid),SIGUSR1); } std::cout <<"\n -----------------------|    FERMETURE EN COURS    |-----------------------\n\n " << std::endl;sleep(5);}// handle CTRL + C signal ==> save db
     bool static isServerActive() {return _is_active;}
     static void error_pip(int sig){std::cerr << "\n***  [ERROR PIPE " << sig <<"]  ***\n";}
 
