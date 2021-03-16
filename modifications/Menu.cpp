@@ -283,6 +283,8 @@ void Menu::get_players(Game_settings*set){
 
 void Menu::launch_game(Game_settings* game_option){
     Interface_game interface_game;
+	DisplayGame display_game;
+	display_game.init();
     interface_game.init();
     interface_game.initialDraw();
     settingServer setting_to_diplay{};
@@ -331,8 +333,9 @@ void Menu::launch_game(Game_settings* game_option){
 
 		Parsing::parsing_settings_game(val,&my_game);
 		my_game.run_client(inp,&setting_to_diplay);
-        interface_game.display(&setting_to_diplay);
-
+		display_game.drawStar();
+		if(setting_to_diplay.tick % 7 == 0)
+			display_game.starHandler();
 		refresh();
         gameOn = !setting_to_diplay.game_over;
 		if (gameOn == false){

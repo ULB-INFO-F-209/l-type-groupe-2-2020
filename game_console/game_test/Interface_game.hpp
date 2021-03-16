@@ -14,6 +14,7 @@
 #include "MapHandler.hpp"
 #include "settingServer.hpp"
 
+
 class Interface_game  {
     WINDOW* main_wnd;
     WINDOW* game_wnd;
@@ -27,8 +28,8 @@ public:
     void display(settingServer* settings);
     void display(settingArray *);
     
-    void drawStar(MapHandler* m);
-    void drawStar(Star*,std::size_t);
+    void drawStar();
+    
 
     void drawObstacle(Obstacle*,std::size_t);
     void drawObstacle(MapHandler* m);
@@ -57,6 +58,7 @@ public:
     void drawGameOver(MapHandler* m, int score1);
     void drawGameOver(int score);
 
+    void starHandler();
     void refresh_wnd();
     void close();
     void drawEnergyBar(int);

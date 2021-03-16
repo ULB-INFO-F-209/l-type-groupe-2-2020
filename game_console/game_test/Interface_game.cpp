@@ -84,7 +84,7 @@ void Interface_game::display(MapHandler *m,int tick, std::vector<Player *> *list
 
     // l'affichage à chaque tour de boucle (server->game->server->client)
     werase(game_wnd); // attention ?
-    drawStar(m);
+    drawStar();
     drawProjectile(m);
     drawEnemy(m, tick, listPlayer);
     drawObstacle(m);
@@ -97,7 +97,9 @@ void Interface_game::display(MapHandler *m,int tick, std::vector<Player *> *list
 }
 void Interface_game::display(settingServer* settings){
     werase(game_wnd); // attention ?
-    drawStar(settings->object_map);
+    drawStar();
+    if(settings->tick%7 == 0)
+        starHandler();
     drawProjectile(settings->object_map);
     drawEnemy(settings->object_map, settings->tick, settings->list_player);
     drawObstacle(settings->object_map);
@@ -120,7 +122,7 @@ void Interface_game::display(settingArray *sett){
         refresh_wnd();
         return;
     }
-    drawStar(sett->stars_set,sett->my_size.stars_set_size);
+    drawStar();
     drawProjectile(sett->projectiles_set,sett->my_size.projectiles_set, sett->projectilesEnemy_set,sett->my_size.projectilesEnemy_set);
     drawEnemy(sett->enemy_ships_set, sett->tick, sett->list_player,sett->player_ships_set,sett->my_size.enemy_ships_set,sett->my_size.player_ships_set);
     drawObstacle(sett->obstacles_set,sett->my_size.obstacles_set);
@@ -131,9 +133,19 @@ void Interface_game::display(settingArray *sett){
     drawUI(sett->player_ships_set,sett->list_player,sett->score_j1,sett->score_j2 ,sett->tick, sett->two_players,sett->current_level,sett->my_size.player_ships_set);
     refresh_wnd();
 }
-void Interface_game::drawStar(MapHandler *m) {
-    for(auto s : m->getStars()){
-        mvwaddch(game_wnd, s->getPos().y, s->getPos().x, '.');
+void Interface_game::starHandler(){
+    
+    stars.push_back(new vec2i{rand() % game_area.width(), 0});
+    for(size_t i = 0; i < stars.size(); i++) {
+            stars.at(i)->y += 1;
+            if(stars.at(i)->y > game_area.bot() + 1)
+                stars.erase(stars.begin() + i);
+
+        }
+}
+void Interface_game::drawStar() {
+    for(auto s : stars){
+        mvwaddch(game_wnd, s->y-1, s->x, '.');
     }
 
 }
@@ -417,12 +429,7 @@ void Interface_game::drawGameOver(int score1){
     } 
 
 }
-void Interface_game::drawStar(Star*s,std::size_t size_s){
-    //if (size_s == 0) return;
-    for(std::size_t i =0; i< size_s;i++){
-        mvwaddch(game_wnd, s[i].getPos().y, s[i].getPos().x, '.');
-    }
-}
+
 void Interface_game::drawObstacle(Obstacle*o,std::size_t size_o){
     if (size_o == 0) return;
     for(std::size_t i =0; i< size_o;i++){
