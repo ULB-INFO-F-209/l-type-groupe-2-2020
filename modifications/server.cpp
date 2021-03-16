@@ -455,8 +455,6 @@ void Server::get_game_settings(char* input, Parsing::Game_settings* game_sett){
  * @param sett_game : les settings du jeu
  */
 void Server::launch_game(Game_settings* sett_game){
-
-    sett_game->nb_lives=1000;
     mtx.lock();
     for(size_t i =0; i < _pipe_running.size(); i++){
         if(strcmp(_pipe_running.at(i)->pid,sett_game->pid) == 0){
@@ -471,22 +469,12 @@ void Server::launch_game(Game_settings* sett_game){
     sprintf(send_response_pipe,"%s%s%s",Constante::PIPE_PATH,Constante::BASE_GAME_PIPE,sett_game->pid);
     bool gameOn = true;
 
-    #ifdef TEST_GAME
-        Interface_game interface_game;
-        interface_game.init();
-        interface_game.initialDraw();
-    #endif
-    settingServer setting_to_diplay{};
     int inp;
     while(gameOn){
         inp = read_game_input(input_pipe);
-        if(inp == -10){
-            inp = read_game_input(input_pipe);
-            setting_to_diplay.score_j1 = inp;
-            break;
-        };
+
         if(inp == -1000)break;
-        std::string resp = game.run_server(inp,&setting_to_diplay);
+        std::string resp = game.run_server(inp,&setting_to_diplay);     // enlever setting to display (settingServer)
         if(setting_to_diplay.game_over == true){
             resp = "END";
             resClient(send_response_pipe,&resp);

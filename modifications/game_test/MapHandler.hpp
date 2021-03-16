@@ -217,19 +217,17 @@ public:
     void changeLevel();
     //void getSettings(settingServer2* obj);
     ~MapHandler()= default;
-    void update_server(MapObject::type typ,int i,std::string *to_fill);
-    void spawnProjectile_server(int x, int y, int damage, bool type, int hp, int player,std::string *to_fill);
-    void bossShoot_server(int tick,std::string *to_fill);
-    void enemyShoot_server(int tick,std::string *to_fill);
-    void checkCollision_server(int t, bool friendlyFire,std::string * to_fill);
-    void add_object_server(MapObject::type type,int i, std::string *to_fill);
+    void update_server(MapObject::type typ,int i);
+    void spawnProjectile_server(int x, int y, int damage, bool type, int hp, int player);
+    void bossShoot_server(int tick);
+    void enemyShoot_server(int tick);
+    void checkCollision_server(int t, bool friendlyFire);
+    void add_object_server(MapObject::type type,int i);
     void spawnObstacle(int posx);
     void spawnEnemy(int posx,int tick);
     void spawnBoss(int tick);
-    void spawnBonus_client(int x, int y,int rand_spawn_bonus);
-    void update_client(MapObject::type typ, int t);
-    void checkCollision_client(int t, bool friendlyFire) ;
 
+    void getState(std::string*); // pour le server
 };
 
 
