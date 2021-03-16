@@ -53,7 +53,7 @@
 
 	Score joueur 1			: 			E_S1_valeur
 
-	Score joueur 1			: 			E_S2_valeur
+	Score joueur 2			: 			E_S2_valeur
 
 
 résumé en ceci par pure flemme de 
@@ -61,6 +61,6 @@ parsage et pour une question d'optimisation
 et d'ergonomie de code.
 
 ==> 	
-	État joueur2			: 			E_1_HP_Vies_Score
+	État joueur 1			: 			E_1_HP_Vies_Score
 	État joueur 2			: 			E_2_HP_Vies_Score
 

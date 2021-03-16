@@ -455,8 +455,6 @@ void Server::get_game_settings(char* input, Parsing::Game_settings* game_sett){
  * @param sett_game : les settings du jeu
  */
 void Server::launch_game(Game_settings* sett_game){
-
-    sett_game->nb_lives=1000;
     mtx.lock();
     for(size_t i =0; i < _pipe_running.size(); i++){
         if(strcmp(_pipe_running.at(i)->pid,sett_game->pid) == 0){
