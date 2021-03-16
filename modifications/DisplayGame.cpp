@@ -165,7 +165,7 @@ void DisplayGame::drawEnemy(int x, int y, int tick, bool isBlinking) {
 	wattroff(game_wnd, A_ALTCHARSET);
 
 	
-    //ajouter isBlinking chez le serveur
+    //ajouter isBlinking chez le server
 	if(isBlinking){
 		if(tick % 20 < 10) {
 			
