@@ -14,14 +14,14 @@
 //#include "settingServer.hpp"
 
 
-enum bonusType{damageUp, tripleShot, lifeSteal, minigun,noBonus};
+enum bonusType{damageUp, tripleShot, lifeSteal, minigun, noBonus};
 enum difficulty{easy, medium, hard};
 
 class MapObject{
 public:
-    MapObject(){
+    /*MapObject(){
         hp = 500;
-    }
+    }*/
     virtual void move();
     virtual vec2i getPos() const;
     void setPos(int x, int y){pos.x = x; pos.y = y;}
@@ -29,10 +29,7 @@ public:
     virtual void touched(int damage);
     virtual void setHp(int h){hp =h;}
     virtual int getHp(){return hp;}
-    virtual ~MapObject(){
-
-        std::cout << "JE suis le destructeur" <<std::endl;
-    };
+    virtual ~MapObject(){};
     type typ;
 
 protected:
