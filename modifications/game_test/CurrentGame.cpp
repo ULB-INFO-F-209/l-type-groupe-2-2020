@@ -270,10 +270,7 @@ void CurrentGame::run() {
     anInterface.close();
 }
 
-std::string CurrentGame::run_server(char move_to_exec,settingServer* settings){
-
-    std::string what_change;
-   
+std::string CurrentGame::run_server(char move_to_exec){
     uint_fast16_t x1,y1,x2,y2;
 
     x1 = playership1->getPos().x;
@@ -284,35 +281,29 @@ std::string CurrentGame::run_server(char move_to_exec,settingServer* settings){
         y2 = playership2->getPos().y;
         execInput(move_to_exec, x2, y2, false);
     }
-    
-    // fonction du switch
      
     // update object field
     if(tick % 7 == 0)
-        map.update_server(MapObject::star, tick,&what_change);
-    if(tick % 7 == 0)
-        map.update_server(MapObject::projectile, tick,&what_change);
-
-    if(tick > 100 && tick %50  == 0) {
-        map.update_server(MapObject::obstacle, tick,&what_change);
-    }
+        map.update_server(MapObject::projectile, tick);
+    if(tick > 100 && tick %50  == 0)
+        map.update_server(MapObject::obstacle, tick);
     if (tick > 100 && tick %150 ==0)
-        map.update_server(MapObject::enemyship, tick, &what_change);
+        map.update_server(MapObject::enemyship, tick);
     if(tick %50  == 0) {
-        map.update_server(MapObject::bonus, tick, &what_change);
+        map.update_server(MapObject::bonus, tick);
     }
     if(map.getCurrentLevel()==3 && tick%10==0 && !map.getChangingLevel()){
-        map.update_server(MapObject::boss,tick,&what_change);
+        map.update_server(MapObject::boss,tick);
     }
 
     for( PlayerShip* p : map.getListPlayer()){
         if (p->getCurrentBonus()==minigun && p->getHp()>0 && tick % 7 == 0)
             map.spawnProjectile_server(p->getPos().x, p->getPos().y, p->getShootDamage(), true, 10, p->getPlayerNb()+1,&what_change);
     }
-    map.enemyShoot_server(tick,&what_change);
-    map.bossShoot_server(tick,&what_change);
+    map.enemyShoot_server(tick);
+    map.bossShoot_server(tick);
     map.updateBounds();     // update player bounds
-    map.checkCollision_server(tick, friendlyFire,&what_change);
+    map.checkCollision_server(tick, friendlyFire);
 
     if(map.getBoss().empty() && map.getBossSpawned())
          game_over = true;
@@ -334,29 +325,6 @@ std::string CurrentGame::run_server(char move_to_exec,settingServer* settings){
             }
         }
 
-    
     saveScore(); // sauvegarde le score
-
-    if(exit_requested){
-        const char * tmp = what_change.c_str();
-        getSettings(settings);
-    
-    return what_change;
-    } 
-    if(game_over){
-        
-        const char * tmp = what_change.c_str();
-        getSettings(settings);
-    
-    return what_change;
-    }
-    
     tick++;
-    what_change.append("T|");
-    what_change.append(std::to_string(tick));
-    what_change.append("&");
-    getSettings(settings);
-    return what_change;
-    
-
 };
