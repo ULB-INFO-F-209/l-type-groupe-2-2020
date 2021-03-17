@@ -509,6 +509,7 @@ void Server::launch_game(Parsing::Game_settings* sett_game){
            _pipe_running.at(i)->in_game = false; break; // mettre le jeu a false pour lancer une autre partie
         }
     }
+    
     mtx_game.unlock();
 }
 
