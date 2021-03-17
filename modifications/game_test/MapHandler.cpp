@@ -1087,26 +1087,7 @@ std::string MapHandler::getState(int nlives_j1,int nlives_j2,int tick){
         state.append("&");
     }
 
-    // state                                /*E_1_HP1_Vies_Score_bonus_level_tick*/
     
-    for(PlayerShip* p : player_ships_set){
-        state.append("E_");
-        state.append(std::to_string(p->getPlayerNb()));
-        state.append("_");
-        state.append(std::to_string(p->getHp()));
-        state.append("_");
-        state.append(std::to_string(p->getPlayerNb() ==0 ? lives[0]: lives[1]));
-        state.append("_");
-        state.append(std::to_string(p->getScore()));
-        state.append("_");
-        state.append(std::to_string(p->getCurrentBonus()));
-        state.append("_");
-        state.append(std::to_string(currentLevel));
-        state.append("_");
-        state.append(std::to_string(tick));
-        state.append("&");
-
-    }
 
     return state;
 }

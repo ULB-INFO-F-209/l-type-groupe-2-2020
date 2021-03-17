@@ -46,6 +46,8 @@ class CurrentGame {
     void heal();
     void saveScore();
     void destroyPlayership();
+    std::string getPlayerState(std::string state);
+
 
 
 public:

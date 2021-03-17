@@ -215,8 +215,49 @@ std::string CurrentGame::run_server(char move_to_exec){
     saveScore();// sauvegarde le score
     destroyPlayership();
     tick++;
-    std::string to_ret = map.getState(player1->getnLives(), player2 == nullptr?0:player2->getnLives(),tick);
+    std::string to_ret = getPlayerState(map.getState(player1->getnLives(), player2 == nullptr?0:player2->getnLives(),tick));
     if(game_over) return "END GAME";
 
     return to_ret;
 };
+
+std::string CurrentGame::getPlayerState(std::string state){
+    // state                                /*E_1_HP1_Vies_Score_bonus_level_tick*/
+    
+
+    state.append("E_");
+    state.append(std::to_string(playership1->getPlayerNb()));
+    state.append("_");
+    state.append(std::to_string(playership1->getHp()));
+    state.append("_");
+    state.append(std::to_string(player1->getnLives()));
+    state.append("_");
+    state.append(std::to_string(playership1->getScore()));
+    state.append("_");
+    state.append(std::to_string(playership1->getCurrentBonus()));
+    state.append("_");
+    state.append(std::to_string(map.getCurrentLevel()));
+    state.append("_");
+    state.append(std::to_string(tick));
+    state.append("&");
+
+    if(twoPlayers){
+        state.append("E_");
+        state.append(std::to_string(playership2->getPlayerNb()));
+        state.append("_");
+        state.append(std::to_string(playership2->getHp()));
+        state.append("_");
+        state.append(std::to_string(player2->getnLives()));
+        state.append("_");
+        state.append(std::to_string(playership2->getScore()));
+        state.append("_");
+        state.append(std::to_string(playership1->getCurrentBonus()));
+        state.append("_");
+        state.append(std::to_string(map.getCurrentLevel()));
+        state.append("_");
+        state.append(std::to_string(tick));
+        state.append("&");
+    }
+    return state;
+    
+}
