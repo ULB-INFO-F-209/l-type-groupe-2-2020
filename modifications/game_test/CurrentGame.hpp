@@ -16,9 +16,9 @@
 
 
 class CurrentGame {
-
-    rect game_area;
-    rect screen_area;
+    // lance et gère la partie sur base des inputs du serveur
+    rect game_area; // cadre comprenant l'espace de jeu
+    rect screen_area; // cadre comprenant l'entièreté de la fenêtre
     bool twoPlayers;
     bool friendlyFire;
     int dropRate;
@@ -26,7 +26,7 @@ class CurrentGame {
 
     MapHandler map;
 
-    int tick=0;
+    int tick=0;  // 1 tick = 1 boucle du jeu
     int finalScore1{};
     int finalScore2{};
 
@@ -38,22 +38,21 @@ class CurrentGame {
     
     std::vector<Player*> listPlayer=std::vector<Player*>();
 
-    int in_char = 0;
     bool exit_requested = false;
     bool game_over = false;
 
-    // méthodes privées
     void execInput(int inChar, uint_fast16_t x1, uint_fast16_t y1, bool firstPlayer);
+    // Si Player a encore au moins 1 vie : reset les hp du PlayerShip à 100 après sa mort
     void heal();
     void saveScore();
+    void destroyPlayership();
+
 
 public:
     CurrentGame()=default;
     
     CurrentGame(Parsing::Game_settings);
     std::string run_server(char move_to_exec);
-    void execInput(int inChar, uint_fast16_t x1, uint_fast16_t y1, bool firstPlayer,std::string to_fill);
-
 };
 
 
