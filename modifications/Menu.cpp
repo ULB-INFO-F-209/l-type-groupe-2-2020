@@ -282,81 +282,24 @@ void Menu::get_players(Game_settings*set){
 }
 
 void Menu::launch_game(Game_settings* game_option){
-    Interface_game interface_game;
 	DisplayGame display_game;
 	display_game.init();
-    interface_game.init();
-    interface_game.initialDraw();
-    settingServer setting_to_diplay{};
-    CurrentGame my_game(*game_option);
     bool gameOn = true;
     int inp = -1;
-	std::string val{};
+	std::string string_game_to_display;
 
     while(gameOn){
 
-        gameOn = !setting_to_diplay.game_over;
-        inp = wgetch(interface_game.get_main_window());
-
-
-		if(setting_to_diplay.game_over == true){
-			inp = -10;
-			_client.send_game_input(inp);
-			inp = setting_to_diplay.score_j1 + setting_to_diplay.score_j2;
-			_client.send_game_input(inp);
-			sleep(1);
-			werase(interface_game.get_game_window());
-			interface_game.display(&setting_to_diplay);
-			refresh();
-			while(true){
-				char in_char = wgetch(interface_game.get_main_window());
-				if(in_char == 'p')break;
-			} 
-			break;
-		}
+        inp = display_game.getInput();
 
 		_client.send_game_input(inp);
-		val = _client.read_game_pipe();
-
-
-		if (val =="END"){
-			setting_to_diplay.game_over =true;
-			werase(interface_game.get_game_window());
-			interface_game.display(&setting_to_diplay);
-			refresh();
-			while(true){
-				char in_char = wgetch(interface_game.get_main_window());
-				if(in_char == 'p')break;
-			} 
-			break;
-		}
-
-		Parsing::parsing_settings_game(val,&my_game);
-		my_game.run_client(inp,&setting_to_diplay);
-		display_game.drawStar();
-		if(setting_to_diplay.tick % 7 == 0)
-			display_game.starHandler();
-		refresh();
-        gameOn = !setting_to_diplay.game_over;
-		if (gameOn == false){
-			inp = -10;
-			_client.send_game_input(inp);
-			inp = setting_to_diplay.score_j1 + setting_to_diplay.score_j2;
-			sleep(1);
-			_client.send_game_input(inp);
-			werase(interface_game.get_game_window());
-			interface_game.display(&setting_to_diplay);
-			refresh();
-			while(true){
-				char in_char = wgetch(interface_game.get_main_window());
-				if(in_char == 'p')break;
-			} 
-		}
-    
+		string_game_to_display = _client.read_game_pipe();
+		
+		display_game.parse_instruction(string_game_to_display);
 
     }
 
-    interface_game.close();
+    //interface_game.close();
 }
 
 

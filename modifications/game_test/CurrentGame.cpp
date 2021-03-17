@@ -11,8 +11,7 @@
  */
 #include "CurrentGame.hpp"
 //Constructeur
-CurrentGame::CurrentGame(Game_settings game_sett):twoPlayers(game_sett.nb_player == 2? true:false),friendlyFire(game_sett.ally_shot), dropRate(game_sett.drop_rate),dif(game_sett.diff),
-    screen_area( {0, 0}, {80, 24}),game_area( {0, 0}, {78, 16}),map(dropRate,dif) {
+CurrentGame::CurrentGame(Parsing::Game_settings game_sett):twoPlayers(game_sett.nb_player == 2? true:false),friendlyFire(game_sett.ally_shot), dropRate(game_sett.drop_rate),dif(game_sett.diff),screen_area( {0, 0}, {80, 24}),game_area( {0, 0}, {78, 16}),map(dropRate,dif) {
         
         playership1 = new PlayerShip(10, 5, { {9, 5 }, { 3, 2 } }, '0',100, 0,100,0);
         player1 = new Player(game_sett.nb_lives);
@@ -157,119 +156,6 @@ void CurrentGame::saveScore(){      //final score save
 }
 
 
-void CurrentGame::run() {
-
-    tick = 0;
-
-    playership1 = new PlayerShip(10, 5, { {10 - 1, 5 }, { 3, 2 } }, '0',100, 0,100,0);
-    player1 = new Player(3);
-    listPlayer.push_back(player1);
-
-    if(twoPlayers){
-        playership2 = new PlayerShip(50, 5, { { 50 - 1, 5 }, { 3, 2 } }, '1',100, 1,100,0);
-        player2 = new Player(3);
-        listPlayer.push_back(player2);
-    }
-      
-    Interface_game anInterface;
-    anInterface.init();
-    map.playerInit(playership1,playership2);
-    map.setBounds(anInterface.get_game_area());
-    anInterface.initialDraw();
-    game_area = anInterface.get_game_area();
-    screen_area = anInterface.get_screen_area();
-    while(true) {
-
-        // get input
-        in_char = wgetch(anInterface.get_main_window());
-        in_char = tolower(in_char);
-
-        uint_fast16_t x1,y1,x2,y2;
-
-        x1 = playership1->getPos().x;
-        y1 = playership1->getPos().y;
-        if(twoPlayers){
-            x2 = playership2->getPos().x;
-            y2 = playership2->getPos().y;
-        }
-
-
-        // fonction du switch
-        execInput(in_char, x1, y1, true);    // peut changer le exit_requested
-        if(twoPlayers)execInput(in_char, x2, y2, false);
-
-
-        // update object field
-        if(tick % 7 == 0)
-            map.update(MapObject::star, tick);
-        if(tick % 7 == 0)
-            map.update(MapObject::projectile, tick);
-
-        if(tick > 100 && tick %50  == 0) {
-            map.update(MapObject::obstacle, tick);
-        }
-        if (tick > 100 && tick %150 ==0)
-            map.update(MapObject::enemyship, tick);
-        if(tick %50  == 0) {
-            map.update(MapObject::bonus, tick);
-        }
-        if(map.getCurrentLevel()==6 && tick%10==0 && !map.getChangingLevel()){
-            map.update(MapObject::boss,tick);
-        }
-
-        for( PlayerShip* p : map.getListPlayer()){
-            if (p->getCurrentBonus()==minigun && p->getHp()>0 && tick % 7 == 0)
-                map.spawnProjectile(p->getPos().x, p->getPos().y, p->getShootDamage(), true, 10, p->getPlayerNb()+1);
-        }
-        map.enemyShoot(tick);
-        map.bossShoot(tick);
-        map.updateBounds();     // update player bounds
-        map.checkCollision(tick, friendlyFire);
-
-        if(map.getBoss().empty() && map.getBossSpawned())
-            game_over = true;
-
-        if(twoPlayers){
-            if (player1->getnLives() < 1 && player2->getnLives() < 1)
-                game_over = true;
-        }else{
-            if (player1->getnLives() < 1)
-                game_over = true;
-        }
-
-        heal(); // remet hp du player à 100 si encore vies
-
-        werase(anInterface.get_game_window());
-        anInterface.display(&map,tick,&listPlayer,playership1,playership2,player1,player2,finalScore1,finalScore2, twoPlayers);
-
-        if(map.getLevelTick() != 0 && tick <= map.getLevelTick() + 600 && tick > map.getLevelTick()+100){
-            anInterface.drawNewLevel(&map, tick);
-            if(tick == map.getLevelTick() + 600) {
-                map.changeLevel();
-                map.setChangingLevel(false);
-            }
-        }
-        anInterface.refresh_wnd();
-
-        saveScore(); // sauvegarde le score
-
-        if(exit_requested) break;
-        if(game_over){
-            
-            anInterface.drawGameOver(&map,finalScore1 + finalScore2);
-            anInterface.refresh_wnd();
-            while(true){
-                in_char = wgetch(anInterface.get_main_window());
-                if(in_char == 'p')break;
-            }
-            break;
-        }
-        tick++;
-
-    }
-    anInterface.close();
-}
-
 std::string CurrentGame::run_server(char move_to_exec){
     uint_fast16_t x1,y1,x2,y2;
 
@@ -298,7 +184,7 @@ std::string CurrentGame::run_server(char move_to_exec){
 
     for( PlayerShip* p : map.getListPlayer()){
         if (p->getCurrentBonus()==minigun && p->getHp()>0 && tick % 7 == 0)
-            map.spawnProjectile_server(p->getPos().x, p->getPos().y, p->getShootDamage(), true, 10, p->getPlayerNb()+1,&what_change);
+            map.spawnProjectile_server(p->getPos().x, p->getPos().y, p->getShootDamage(), true, 10, p->getPlayerNb()+1);
     }
     map.enemyShoot_server(tick);
     map.bossShoot_server(tick);
@@ -326,5 +212,7 @@ std::string CurrentGame::run_server(char move_to_exec){
         }
 
     saveScore(); // sauvegarde le score
+    std::string to_ret = map.getState(player1->getnLives(), player2 == nullptr?0:player2->getnLives(),tick);
     tick++;
+    return to_ret;
 };

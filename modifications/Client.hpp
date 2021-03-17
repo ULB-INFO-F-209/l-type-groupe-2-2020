@@ -17,7 +17,6 @@
 #include <thread>
 
 #include "Constante.hpp"
-#include "game_test/settingServer.hpp"
 #include "game_test/Interface_game.hpp"
 #include "game_test/MapHandler.hpp"
 
@@ -37,9 +36,6 @@ class Client{
     //files descriptors
     int _fd_send_query;
     int _fd_get_query;
-
-
-    settingArray2 game_sett;
     
 
 public:

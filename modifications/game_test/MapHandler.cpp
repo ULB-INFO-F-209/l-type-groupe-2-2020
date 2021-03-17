@@ -941,34 +941,37 @@ void MapHandler::spawnBoss(int tick){
 }
 
 
-void MapHandler::getState(std::string* state){
-    vec2i pos;
+std::string MapHandler::getState(int nlives_j1,int nlives_j2,int tick){
+    std::string state{};
+    vec2i pos{};
     std::string x, y;
-
+    int lives[2] = {nlives_j1,nlives_j2};
     // DISPLAY OBJECTS
+
 
     // boss_set;
     for (auto boss : boss_set){             // A_EB_x_y
         pos = boss->getPos();
         x = std::to_string(pos.x);
         y = std::to_string(pos.y);
-        state->append("A_EB_");
-        state->append(x);
-        state->append("_");
-        state->append(y);
-        state->append("&");
+        state.append("A_EB_");
+        state.append(x);
+        state.append("_");
+        state.append(y);
+        state.append("&");
     }
+   
     
     // obstacles_set;
     for (auto obst : obstacles_set){         // A_O_x_y
         pos = obst->getPos();
         x = std::to_string(pos.x);
         y = std::to_string(pos.y);
-        state->append("A_O_");
-        state->append(x);
-        state->append("_");
-        state->append(y);
-        state->append("&");
+        state.append("A_O_");
+        state.append(x);
+        state.append("_");
+        state.append(y);
+        state.append("&");
     }
 
     // projectiles_set;
@@ -976,24 +979,26 @@ void MapHandler::getState(std::string* state){
         pos = proj->getPos();
         x = std::to_string(pos.x);
         y = std::to_string(pos.y);
-        state->append("A_PJ_");
-        state->append(x);
-        state->append("_");
-        state->append(y);
-        state->append("&");
+        state.append("A_PJ_");
+        state.append(x);
+        state.append("_");
+        state.append(y);
+        state.append("&");
     }
+
 
     // projectilesEnemy_set;
     for (auto proj : projectilesEnemy_set){         // A_PE_x_y
         pos = proj->getPos();
         x = std::to_string(pos.x);
         y = std::to_string(pos.y);
-        state->append("A_PE_");
-        state->append(x);
-        state->append("_");
-        state->append(y);
-        state->append("&");
+        state.append("A_PE_");
+        state.append(x);
+        state.append("_");
+        state.append(y);
+        state.append("&");
     }
+
 
     // player_ships_set;
     for (auto player : player_ships_set){           // A_1_x_y_explosion  or  A_2_x_y_explosion
@@ -1002,41 +1007,60 @@ void MapHandler::getState(std::string* state){
         y = std::to_string(pos.y);
         std::string hp = std::to_string(player->getHp());
         int player_nb = player->getPlayerNb();
-        state->append("A_");
+        state.append("A_");
         if(player_nb == 0){
-            state->append("1_");
+            state.append("1_");
         }
         else if(player_nb == 1){
-            state->append("2_");
+            state.append("2_");
         }
-        state->append(x);
-        state->append("_");
-        state->append(y);
-        state->append("&");
+        state.append(x);
+        state.append("_");
+        state.append(y);
+        state.append("_");
 
-        // hp player                                E_H1_valeur  or  E_H2_valeur
-        state->append("E_H");
-        if(player_nb == 0){
-            state->append("1");
+        if(lives[player->getPlayerNb()] > 0){
+            // show player looses a life
+
+            if(tick % 100 < 50 && player->getHp()<=0 && tick < player->getKillTime()+300){
+                state.append(std::to_string(true));
+            }
+            else state.append(std::to_string(false));
         }
-        else if(player_nb == 1){
-            state->append("2");
-        }
-        state->append(hp);   
-        state->append("&");                                   
+        state.append("_");
+        state.append(std::to_string(tick));
+        state.append("&");
     }
 
-    // enemy_ships_set;
+
+    // enemy_ships_set
+    bool enemy_explosion= false;
+    for( PlayerShip* p : player_ships_set){
+        if(lives[p->getPlayerNb()] > 0){
+            if(tick % 20 < 10 && p->getHp()<=0 && tick<p->getKillTime()+100){
+                enemy_explosion = true;
+                break;
+            }
+
+        }
+    }
+
+
     for (auto enemy : enemy_ships_set){         // A_PE_x_y
         pos = enemy->getPos();
         x = std::to_string(pos.x);
         y = std::to_string(pos.y);
-        state->append("A_PE_");
-        state->append(x);
-        state->append("_");
-        state->append(y);
-        state->append("&");
+        state.append("A_E_");
+        state.append(x);
+        state.append("_");
+        state.append(y);
+        state.append("_");
+        state.append(std::to_string(enemy_explosion));
+        state.append("_");
+        state.append(std::to_string(tick));
+        state.append("&");
     }
+
 
     // bonuses_set;
     for (auto bonus : bonuses_set){         // A_B_x_y_type
@@ -1057,12 +1081,36 @@ void MapHandler::getState(std::string* state){
             res = "4";
         else if(typ == noBonus)
             res = "5";
-        state->append("A_B_");
-        state->append(x);
-        state->append("_");
-        state->append(y);
-        state->append("_");
-        state->append(res);
-        state->append("&");
+        state.append("A_B_");
+        state.append(x);
+        state.append("_");
+        state.append(y);
+        state.append("_");
+        state.append(res);
+        state.append("&");
     }
+
+    // state
+
+    /*E_1_HP1_Vies_Score_bonus_level_tick*/
+    for(PlayerShip* p : player_ships_set){
+        state.append("E_");
+        state.append(std::to_string(p->getPlayerNb()));
+        state.append("_");
+        state.append(std::to_string(p->getHp()));
+        state.append("_");
+        state.append(std::to_string(p->getPlayerNb() ==1 ? lives[0]: lives[1]));
+        state.append("_");
+        state.append(std::to_string(p->getScore()));
+        state.append("_");
+        state.append(std::to_string(p->getCurrentBonus()));
+        state.append("_");
+        state.append(std::to_string(currentLevel));
+        state.append("_");
+        state.append(std::to_string(tick));
+        state.append("&");
+
+    }
+
+    return state;
 }

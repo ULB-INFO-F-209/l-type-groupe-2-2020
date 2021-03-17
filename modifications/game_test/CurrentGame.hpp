@@ -10,9 +10,10 @@
 #include <string>
 #include <cstdlib>
 #include "MapHandler.hpp"
-#include "Interface_game.hpp"
 #include "InternGameObject.hpp"
 #include "GameConstante.hpp"
+#include "parsing.hpp"
+
 
 class CurrentGame {
 
@@ -49,13 +50,10 @@ class CurrentGame {
 public:
     CurrentGame()=default;
     
-    CurrentGame(Game_settings game_sett):twoPlayers(game_sett.nb_player == 2? true:false),friendlyFire(game_sett.ally_shot), dropRate(game_sett.drop_rate),dif(game_sett.diff),
-        screen_area( {0, 0}, {80, 24}),game_area( {0, 0}, {78, 16}),map(dropRate,dif)
-    int getInput() const{return in_char;}   //sert a quoi?
+    CurrentGame(Parsing::Game_settings);
     std::string run_server(char move_to_exec);
     void execInput(int inChar, uint_fast16_t x1, uint_fast16_t y1, bool firstPlayer,std::string to_fill);
-    
-    void run();
+
 };
 
 

@@ -11,14 +11,13 @@
 #include <string>
 #include <unistd.h>
 #include "database/database.hpp"
-#include "game_test/settingServer.hpp"
-#include "game_test/CurrentGame.hpp"
+#include "MapHandler.hpp"
 
 //enum difficulty{easy, medium, hard};
 
 namespace Parsing{
 	using Profile = Profile;
-	using Game_settings = Game_settings;
+	struct Game_settings;
 
 	//encodage
 	void profile_list_to_str(char *buffer,std::vector<Profile> *prof);
@@ -32,11 +31,22 @@ namespace Parsing{
 	void create_game_from_str(char *buffer, Game_settings * settings);
 	void parsing(char* str, char* token1, char* token2 = nullptr);
 
-	//game decodage
-	void parsing_settings_game(std::string sett,CurrentGame* game);
 
 }
 
+struct Parsing::Game_settings
+{
+	int nb_player = 1;
+	char pseudo_hote[20];
+	char pseudo_other[20] = {"Null"};
+	int drop_rate=100;
+	bool ally_shot=false;
+	int nb_lives=1;
+	char difficulty_str[20] = "easy";
+	difficulty diff{easy};
+    char pid[10];
+
+};
 
 
 #endif

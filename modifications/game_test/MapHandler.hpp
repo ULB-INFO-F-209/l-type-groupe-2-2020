@@ -194,15 +194,6 @@ public:
     std::vector<Boss*> getBoss() const;
     std::vector<PlayerShip*>  getListPlayer()const;
 
-    std::vector<PlayerShip*> * getPlayerShipPointeur(){return &player_ships_set;}
-    std::vector<Star*> *getStarsPointeur(){return &stars_set;} ;
-    std::vector<Obstacle*> *getObstaclesPointeur(){return &obstacles_set;} ;
-    std::vector<Projectile*>* getProjectilesPointeur(){return &projectiles_set;};
-    std::vector<Projectile*> *getProjectilesEnemyPointeur() {return &projectilesEnemy_set;};
-    std::vector<EnemyShip*> *getEnemyPointeur(){return &enemy_ships_set;} ;
-    std::vector<Bonus*> *getBonusPointeur(){return &bonuses_set;} ;
-    std::vector<Boss*> *getBossPointeur(){return &boss_set;} ;
-
     bool getBossSpawned() const{return bossSpawned;}
     void setBounds(rect);
     void spawnProjectile(int x, int y, int damage, bool type, int hp, int player);
@@ -227,7 +218,7 @@ public:
     void spawnEnemy(int posx,int tick);
     void spawnBoss(int tick);
 
-    void getState(std::string*); // pour le server
+    std::string getState(int nlives_j1,int nlives_j2,int tick); // pour le server
 };
 
 

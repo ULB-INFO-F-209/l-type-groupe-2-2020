@@ -1,25 +1,45 @@
 
 #include "DisplayGame.hpp"
 
-void DisplayGame::parse_instruction(char *buffer){  // A_B_type_x_y&E_H2_valeur&...
-	std::string chaine_instruction(buffer);
-
+void DisplayGame::parse_instruction(std::string chaine_instruction){  // A_B_type_x_y&E_H2_valeur&...
+	//std::string chaine_instruction(buffer);
+	eraseWnd();
 	while(chaine_instruction.size() > 1){ 
 		std::size_t idx = chaine_instruction.find(delimiteur_instruction);  //idx du premier delimiteur_instruction (&)
 		std::string instruction = chaine_instruction.substr(0,idx);     	// on retire une instruction
 		chaine_instruction = chaine_instruction.substr(idx+1,chaine_instruction.size()); // on garde la chaine sans l instruction
-		size_t idx = instruction.find(delimiteur_parametre); 				//on va voir le premier param de l instruction
+		idx = instruction.find(delimiteur_parametre); 				//on va voir le premier param de l instruction
 		std::string type_instruction = instruction.substr(0,idx); 		//on recupère le premier param de l instruction
-		instruction = chaine_instruction.substr(idx+1,instruction.size()); //on met à jour l'instruction
-
+		instruction = instruction.substr(idx+1,instruction.size()); //on met à jour l'instruction
+	
 		if (type_instruction == "A") 		//Affichage (utiliser des thread?)
 			parse_affichage(instruction);
 		else if (type_instruction == "E")	//Etat
 			parse_etat(instruction);
 
 	}
+	usleep(1000);
+	refreshWnd();
 }
 
+void DisplayGame::refreshWnd(){
+	wrefresh(main_wnd);
+    wrefresh(game_wnd);
+}
+
+void DisplayGame::eraseWnd(){
+	
+	werase(game_wnd);
+	
+}
+
+void DisplayGame::close(){
+    werase(game_wnd);
+    werase(main_wnd);
+    delwin(main_wnd);
+    delwin(game_wnd);
+    endwin();
+}
 
 void DisplayGame::parse_affichage(std::string instruction){
 	std::string objet; size_t idx ;
@@ -36,15 +56,31 @@ void DisplayGame::parse_affichage(std::string instruction){
 
 	//dans l'ordre de reccurence (pour eviter trop de comparaison)
 	if(objet=="PE") 			//projectile ennemie
-		drawProjectile(x,y);
+		drawProjectile(x,y,true,false);
 	else if(objet=="PJ")		//projectile joueur
-		drawProjectile(x,y,false);
-	else if(objet=="E")			//Vaisseau ennemie
-		drawEnemy(x,y);
-	else if(objet=="1") 		//Vaisseau joueur 1
-		drawPlayer(1,x,y);
-	else if(objet=="2")			//Vaisseau joueur 2
-		drawPlayer(2,x,y);
+		drawProjectile(x,y,false,true);
+	else if(objet=="E"){			//Vaisseau ennemie
+		int explo,tick;
+		idx = instruction.find(delimiteur_parametre);
+		explo = std::stoi(instruction.substr(0,idx));
+		tick = std::stoi(instruction.substr(idx+1,instruction.size()));
+		drawEnemy(x,y,tick,explo);
+	}
+	else if(objet=="1"){		//Vaisseau joueur 1     A_1_x_y_explosion_tick
+		int explo,tick;
+		idx = instruction.find(delimiteur_parametre);
+		explo = std::stoi(instruction.substr(0,idx));
+		tick = std::stoi(instruction.substr(idx+1,instruction.length()));
+		drawPlayer(1,x,y,tick,explo);
+	}	
+
+	else if(objet=="2"){		//Vaisseau joueur 2
+		int explo,tick;
+		idx = instruction.find(delimiteur_parametre);
+		explo = std::stoi(instruction.substr(0,idx));
+		tick = std::stoi(instruction.substr(idx+1,instruction.length()));
+		drawPlayer(2,x,y,tick,explo);
+	}			
 	else if(objet=="O")			//obstacle
 		drawObstacle(x,y);
 	else if(objet=="EB") 		//Boss
@@ -56,20 +92,38 @@ void DisplayGame::parse_affichage(std::string instruction){
 	}
 }
 void DisplayGame::parse_etat(std::string instruction){
+	//E_2_HP2_Vies_Score_bonus_level_tick
 	size_t idx;
-	int joueur,hp, vie, score;
+	int player,hp, life, score,level,tick,bonustype;
+
 	idx = instruction.find(delimiteur_parametre); 				//on va voir le premier param de l instruction
-	joueur = instruction.substr(0,idx); 		//on recupère le premier param de l instruction
+	player = std::stoi(instruction.substr(0,idx)); 		//on recupère le premier param de l instruction
+	
 	instruction = instruction.substr(idx+1,instruction.size()); //nettoie instruction
 	idx = instruction.find(delimiteur_parametre);
 	hp = std::stoi(instruction.substr(0,idx)); 		
+
 	instruction = instruction.substr(idx+1,instruction.size()); 
 	idx = instruction.find(delimiteur_parametre);
-	vie = std::stoi(instruction.substr(0,idx)); 	
+	life = std::stoi(instruction.substr(0,idx)); 	
+
 	instruction = instruction.substr(idx+1,instruction.size()); 
 	idx = instruction.find(delimiteur_parametre);	
 	score = std::stoi(instruction.substr(0,idx)); 
-	drawEtat(player,hp, score, vie);
+
+	instruction = instruction.substr(idx+1,instruction.size()); 
+	idx = instruction.find(delimiteur_parametre);
+	bonustype = std::stoi(instruction.substr(0,idx));
+
+	instruction = instruction.substr(idx+1,instruction.size()); 
+	idx = instruction.find(delimiteur_parametre);
+	level = std::stoi(instruction.substr(0,idx));
+
+	instruction = instruction.substr(idx+1,instruction.size()); 
+	idx = instruction.find(delimiteur_parametre);
+	tick = std::stoi(instruction.substr(0,idx));
+
+	drawUi(player,hp, score, life,bonustype,level,tick);
 }
 void DisplayGame::starHandler(){
     
@@ -140,9 +194,22 @@ int DisplayGame::init() {
 
     if(!has_colors()) {
         endwin();
-        printf("ERROR: Terminal does not support color.\n");
+        printf("ERROR: Terminal does not support color.\n"); // [TODO] modifier printf
         exit(1);
     }
+
+	wattron(main_wnd, A_BOLD);
+    box(main_wnd, 0, 0);
+    wattroff(main_wnd, A_BOLD);
+
+    // horizontal diving line
+    wmove(main_wnd, game_area.bot() + 3, 1);
+    whline(main_wnd, '-', screen_area.width()- 2);
+
+    // initial draw
+
+    wrefresh(main_wnd);
+    wrefresh(game_wnd);
     return 0;
 }
 void DisplayGame::drawObstacle(int x, int y) {
@@ -167,18 +234,18 @@ void DisplayGame::drawEnemy(int x, int y, int tick, bool isBlinking) {
 	
     //ajouter isBlinking chez le server
 	if(isBlinking){
-		if(tick % 20 < 10) {
-			
-			wattron(game_wnd, COLOR_PAIR(4));
-			mvwaddch(game_wnd, y, x, ' ');
-			wattroff(game_wnd, COLOR_PAIR(4));
+		
+		
+		wattron(game_wnd, COLOR_PAIR(4));
+		mvwaddch(game_wnd, y, x, ' ');
+		wattroff(game_wnd, COLOR_PAIR(4));
 
-			wattron(game_wnd, A_ALTCHARSET);
-			mvwaddch(game_wnd, y, x - 1, ' ');
-			mvwaddch(game_wnd, y, x + 1, ' ');
-			wattroff(game_wnd, A_ALTCHARSET);
-			
-		}
+		wattron(game_wnd, A_ALTCHARSET);
+		mvwaddch(game_wnd, y, x - 1, ' ');
+		mvwaddch(game_wnd, y, x + 1, ' ');
+		wattroff(game_wnd, A_ALTCHARSET);
+		
+	
 	}
     
 

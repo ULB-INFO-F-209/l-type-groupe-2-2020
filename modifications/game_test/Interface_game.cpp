@@ -95,42 +95,8 @@ void Interface_game::display(MapHandler *m,int tick, std::vector<Player *> *list
     drawUI(m,playership1,playership2,player1,player2,score1,score2,tick, twoPlayers);
     refresh_wnd();
 }
-void Interface_game::display(settingServer* settings){
-    werase(game_wnd); // attention ?
-    drawStar(settings->object_map);
-    drawProjectile(settings->object_map);
-    drawEnemy(settings->object_map, settings->tick, settings->list_player);
-    drawObstacle(settings->object_map);
-    drawBonus(settings->object_map);
-    drawPlayer(settings->object_map,settings->tick,settings->list_player);
-    drawBoss(settings->object_map);
-    drawNewLevel(settings->object_map,settings->tick);
-    drawUI(settings->object_map,settings->object_playership1,settings->object_playership2,settings->object_player1,settings->object_player2,settings->score_j1,settings->score_j2,settings->tick, settings->two_players);
-    if (settings->game_over){
-        drawGameOver(settings->object_map, (settings->score_j1+settings->score_j2));
-        return;
-    }
-    refresh_wnd();
-}
-void Interface_game::display(settingArray *sett){
-    werase(game_wnd); // attention ?
-    if (sett->game_over){
-        std::cout << sett->game_over << std::endl;
-        drawGameOver((sett->score_j1+sett->score_j2));
-        refresh_wnd();
-        return;
-    }
-    drawStar(sett->stars_set,sett->my_size.stars_set_size);
-    drawProjectile(sett->projectiles_set,sett->my_size.projectiles_set, sett->projectilesEnemy_set,sett->my_size.projectilesEnemy_set);
-    drawEnemy(sett->enemy_ships_set, sett->tick, sett->list_player,sett->player_ships_set,sett->my_size.enemy_ships_set,sett->my_size.player_ships_set);
-    drawObstacle(sett->obstacles_set,sett->my_size.obstacles_set);
-    drawBonus(sett->bonnuses_set,sett->my_size.bonnuses_set);
-    drawPlayer(sett->player_ships_set,sett->tick,sett->list_player,sett->my_size.player_ships_set,sett->my_size.list_player);
-    drawBoss(sett->boss_set,sett->my_size.boss_set);
-    drawNewLevel(sett->tick,sett->level_tick,sett->current_level);
-    drawUI(sett->player_ships_set,sett->list_player,sett->score_j1,sett->score_j2 ,sett->tick, sett->two_players,sett->current_level,sett->my_size.player_ships_set);
-    refresh_wnd();
-}
+
+
 void Interface_game::drawStar(MapHandler *m) {
     for(auto s : m->getStars()){
         mvwaddch(game_wnd, s->getPos().y, s->getPos().x, '.');

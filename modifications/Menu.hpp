@@ -22,7 +22,7 @@
 #include <vector>
 #include "Client.hpp"
 #include "Interface.hpp"
-#include "parsing.hpp"
+#include "game_test/parsing.hpp"
 #include "DisplayGame.hpp"
 
 using namespace Parsing; //utilities

@@ -5,11 +5,11 @@
 	A F F I C H A G E
 ***************************
 	
-	Joueur 1				:			A_1_x_y_explosion
+	Joueur 1				:			A_1_x_y_explosion_tick
 
-	Joueur 2				: 			A_2_x_y_explosion
+	Joueur 2				: 			A_2_x_y_explosion_tick
 
-	Ennemy					: 			A_E_x_y_explosion
+	Ennemy					: 			A_E_x_y_explosion_tick
 
 	Boss 					: 			A_EB_x_y
 
@@ -21,25 +21,6 @@
 
 	Projectile Joueur		:			A_PJ_x_y
 
-
-
-***************************			/* pas besoin de collision chez le client (sauf si vous voulez garder l explosion sinon inutile car
-	C O L L I S I O N			 	une collision ne s'affiche pas ta vu : genre ok un vaisseau et un projectile sont en collision. Et
-***************************			alors? Le client il fait quoi de cette information? (peut-être mettre un état to show changes) */
-
-						:			C|
-
-						: 			C|
-
-	 					: 			C|
-
-						:			C|
-
-						:			C|
-
-						:			C|
-
-						:			C|
 
 
 ***************************
@@ -66,8 +47,5 @@ parsage et pour une question d'optimisation
 et d'ergonomie de code.
 
 ==> 	
-	État joueur 1			: 			E_1_Vies_Score
-	État joueur 2			: 			E_2_Vies_Score
-	HP joueur 1 			:			E_H1_valeur
-	HP joueur 2				: 			E_H2_valeur
-	level					: 			E_L_level
+	État joueur 1			: 			E_1_HP1_Vies_Score_bonus_level_tick
+	État joueur 2			: 			E_2_HP2_Vies_Score_bonus_level_tick

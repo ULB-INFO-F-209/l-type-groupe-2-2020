@@ -1,8 +1,8 @@
 #include "server.hpp"
-#include "parsing.hpp"
+#include "game_test/parsing.hpp"
 
 #define TEST_GAME1
-#define DEBUG_GAME1
+#define DEBUG_GAME
 bool Server::_is_active = false;
 Database Server::_db{};
 std::mutex Server::mtx;
@@ -454,8 +454,9 @@ void Server::get_game_settings(char* input, Parsing::Game_settings* game_sett){
  * 
  * @param sett_game : les settings du jeu
  */
-void Server::launch_game(Game_settings* sett_game){
-    mtx.lock();
+void Server::launch_game(Parsing::Game_settings* sett_game){
+     
+    mtx.lock(); // mutex to lock the list of pipe
     for(size_t i =0; i < _pipe_running.size(); i++){
         if(strcmp(_pipe_running.at(i)->pid,sett_game->pid) == 0){
            _pipe_running.at(i)->in_game = true;
@@ -472,14 +473,8 @@ void Server::launch_game(Game_settings* sett_game){
     int inp;
     while(gameOn){
         inp = read_game_input(input_pipe);
-
-        if(inp == -1000)break;
-        std::string resp = game.run_server(inp,&setting_to_diplay);     // enlever setting to display (settingServer)
-        if(setting_to_diplay.game_over == true){
-            resp = "END";
-            resClient(send_response_pipe,&resp);
-            break;
-        }
+        std::string resp = game.run_server(inp);     // enlever setting to display (settingServer)
+        
         resClient(send_response_pipe,&resp);
 
         usleep(10000); // 10 ms
@@ -494,14 +489,9 @@ void Server::launch_game(Game_settings* sett_game){
         endwin();
     #endif
 
-    if (inp != -1000){
-        save_score(sett_game->pseudo_hote,setting_to_diplay.score_j1);
-        if(sett_game->nb_player == 2){
-            save_score(sett_game->pseudo_other,setting_to_diplay.score_j1);
-        };
-    }
+   
 
-    std::cout << "fin du jeu pour le pid : "<< sett_game->pid << "  score : " << setting_to_diplay.score_j1 << std::endl;
+    std::cout << "fin du jeu pour le pid : "<< sett_game->pid;
 
     mtx.lock();
     for(size_t i =0; i < _pipe_running.size(); i++){

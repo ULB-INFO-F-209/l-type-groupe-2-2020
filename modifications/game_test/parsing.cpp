@@ -168,46 +168,5 @@ void Parsing::parsing(char* str, char* token1, char* token2) {
 	}
 }
 
-void Parsing::parsing_settings_game(std::string sett,CurrentGame* game){
-	char obstacle = 'O', enemy = 'E', boss = 'B', bonus = 'b', the_tick = 'T';
-	
-	while(!(sett.empty())){
-		
-		int index = sett.find("&"),idx = 0;
 
-		std::string to_spawn = sett.substr(0,index);
-		idx = to_spawn.find("|");
-		if(to_spawn[0] == obstacle ){
-			int val = std::stoi(to_spawn.substr(idx+1,to_spawn.length()));
-			game->spawnObstacle(val);
-		}
-		else if (to_spawn[0] == enemy){
-			to_spawn = to_spawn.substr(idx+1,to_spawn.length());
-			idx = to_spawn.find(",");
-			int x = std::stoi(to_spawn.substr(0,idx));
-			int tick = std::stoi(to_spawn.substr(idx+1,to_spawn.length()));
-			game->spawnEnemy(x,tick);
-			
-		}
-		else if(to_spawn[0] == boss){
-			int tick = std::stoi(to_spawn.substr(idx+1,to_spawn.length()));
-			game->spawnBoss(tick);
-		}
-		else if(to_spawn[0] == bonus){
-			int type_bonus = std::stoi(to_spawn.substr(1,idx));
-			int x = std::stoi(to_spawn.substr(idx+1,to_spawn.find(",")));
-			int y = std::stoi(to_spawn.substr(to_spawn.find(",")+1,to_spawn.length()));
-			game->spawnBonus(x,y,type_bonus);
-
-		}
-		else if(to_spawn[0] == the_tick){
-			int t = std::stoi(to_spawn.substr(idx+1,to_spawn.length()));
-			game->set_client_tick(t);
-		}
-		sett = sett.substr(index+1,sett.length());
-		
-		
-
-	};
-}
 
