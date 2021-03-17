@@ -257,6 +257,7 @@ std::string CurrentGame::getPlayerState(std::string state){
         state.append("_");
         state.append(std::to_string(tick));
         state.append("&");
+        
     }
     return state;
     
