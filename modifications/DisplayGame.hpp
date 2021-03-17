@@ -33,6 +33,7 @@ public:
     void drawBoss(int x, int y);
     void drawUi(int player, int hp, int score, int lives, int bonusType, int level, int tick);
 	void drawEnergyBar(int a);
+	void drawEndGame(std::string score);
     //...
 	int inline getInput(){return wgetch(main_wnd);}
     

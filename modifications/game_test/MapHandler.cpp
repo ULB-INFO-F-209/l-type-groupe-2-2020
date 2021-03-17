@@ -544,16 +544,7 @@ void MapHandler::update_server(MapObject::type typ,int t){
         }
     }
     else if (typ == MapObject::projectile) {
-        for(size_t i = 0; i < projectiles_set.size(); i++) {
-            if(projectiles_set.at(i)->getPos().y > field_bounds.bot() + 1)
-                projectiles_set.erase(projectiles_set.begin() + i);
-
-        }
-        for(size_t e = 0; e < projectilesEnemy_set.size(); e++) {
-            if(projectilesEnemy_set.at(e)->getPos().y > field_bounds.bot() + 1)
-                projectilesEnemy_set.erase(projectilesEnemy_set.begin() + e);
-
-        }
+        
 
     }else if (typ == MapObject::enemyship) {
         for(size_t i = 0; i < enemy_ships_set.size(); i++) {
@@ -607,6 +598,18 @@ void MapHandler::update_server(MapObject::type typ,int t){
         }
         for(auto & e : projectilesEnemy_set) {
             e->move();
+        }
+        
+        for(size_t i = 0; i < projectiles_set.size(); ) {
+            if(projectiles_set.at(i)->getPos().y > field_bounds.bot() + 1)
+                projectiles_set.erase(projectiles_set.begin() + i);
+            else
+                ++i;
+        }
+        for(size_t e = 0; e < projectilesEnemy_set.size();) {
+            if(projectilesEnemy_set.at(e)->getPos().y > field_bounds.bot() + 1)
+                projectilesEnemy_set.erase(projectilesEnemy_set.begin() + e);
+            else ++e;
         }
     }
     else if (typ == MapObject::enemyship) {
@@ -961,7 +964,6 @@ std::string MapHandler::getState(int nlives_j1,int nlives_j2,int tick){
         state.append("&");
     }
    
-    
     // obstacles_set;
     for (auto obst : obstacles_set){         // A_O_x_y
         pos = obst->getPos();
@@ -986,7 +988,6 @@ std::string MapHandler::getState(int nlives_j1,int nlives_j2,int tick){
         state.append("&");
     }
 
-
     // projectilesEnemy_set;
     for (auto proj : projectilesEnemy_set){         // A_PE_x_y
         pos = proj->getPos();
@@ -998,7 +999,6 @@ std::string MapHandler::getState(int nlives_j1,int nlives_j2,int tick){
         state.append(y);
         state.append("&");
     }
-
 
     // player_ships_set;
     for (auto player : player_ships_set){           // A_1_x_y_explosion  or  A_2_x_y_explosion
@@ -1032,7 +1032,6 @@ std::string MapHandler::getState(int nlives_j1,int nlives_j2,int tick){
         state.append("&");
     }
 
-
     // enemy_ships_set
     bool enemy_explosion= false;
     for( PlayerShip* p : player_ships_set){
@@ -1044,7 +1043,6 @@ std::string MapHandler::getState(int nlives_j1,int nlives_j2,int tick){
 
         }
     }
-
 
     for (auto enemy : enemy_ships_set){         // A_PE_x_y
         pos = enemy->getPos();
@@ -1061,7 +1059,6 @@ std::string MapHandler::getState(int nlives_j1,int nlives_j2,int tick){
         state.append("&");
     }
 
-
     // bonuses_set;
     for (auto bonus : bonuses_set){         // A_B_x_y_type
         pos = bonus->getPos();
@@ -1069,7 +1066,7 @@ std::string MapHandler::getState(int nlives_j1,int nlives_j2,int tick){
         y = std::to_string(pos.y);
         bonusType typ = bonus->getBonusType();
         std::string res;
-        if(typ == damageUp)
+        if(typ == damageUp)  // [TODO]  pourquoi faire comme ca (-_-)
             res = "0";
         else if(typ == damageUp)
             res = "1";
@@ -1086,20 +1083,19 @@ std::string MapHandler::getState(int nlives_j1,int nlives_j2,int tick){
         state.append("_");
         state.append(y);
         state.append("_");
-        state.append(res);
+        state.append(std::to_string(bonus->getBonusType()));
         state.append("&");
     }
 
-    // state
-
-    /*E_1_HP1_Vies_Score_bonus_level_tick*/
+    // state                                /*E_1_HP1_Vies_Score_bonus_level_tick*/
+    
     for(PlayerShip* p : player_ships_set){
         state.append("E_");
         state.append(std::to_string(p->getPlayerNb()));
         state.append("_");
         state.append(std::to_string(p->getHp()));
         state.append("_");
-        state.append(std::to_string(p->getPlayerNb() ==1 ? lives[0]: lives[1]));
+        state.append(std::to_string(p->getPlayerNb() ==0 ? lives[0]: lives[1]));
         state.append("_");
         state.append(std::to_string(p->getScore()));
         state.append("_");

@@ -53,7 +53,7 @@ public:
     CurrentGame(Parsing::Game_settings);
     std::string run_server(char move_to_exec);
     void execInput(int inChar, uint_fast16_t x1, uint_fast16_t y1, bool firstPlayer,std::string to_fill);
-
+    int getScore(){return finalScore1+finalScore2;}
 };
 
 

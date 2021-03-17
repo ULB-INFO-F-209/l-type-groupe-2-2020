@@ -435,3 +435,15 @@ void DisplayGame::drawEnergyBar(int a) {
         wattroff(main_wnd, COLOR_PAIR(col_pair));
     }
 }
+
+void DisplayGame::drawEndGame(std::string score){
+	int score1 = std::stoi(score);
+	mvwprintw(game_wnd,8, 35,"GAME OVER");
+    mvwprintw(game_wnd,9, 35,"SCORE : %i", score1);
+    mvwprintw(game_wnd,12, 32,"press p to quit");
+    refreshWnd();
+    while(true){
+        char in_char = wgetch(main_wnd);
+        if(in_char == 'p')break;
+    }
+}

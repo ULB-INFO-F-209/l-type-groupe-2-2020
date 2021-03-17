@@ -191,6 +191,7 @@ std::string CurrentGame::run_server(char move_to_exec){
     map.updateBounds();     // update player bounds
     map.checkCollision_server(tick, friendlyFire);
 
+
     if(map.getBoss().empty() && map.getBossSpawned())
          game_over = true;
 
@@ -212,7 +213,9 @@ std::string CurrentGame::run_server(char move_to_exec){
         }
 
     saveScore(); // sauvegarde le score
-    std::string to_ret = map.getState(player1->getnLives(), player2 == nullptr?0:player2->getnLives(),tick);
     tick++;
+    std::string to_ret = map.getState(player1->getnLives(), player2 == nullptr?0:player2->getnLives(),tick);
+    if(game_over) return "END GAME";
+
     return to_ret;
 };

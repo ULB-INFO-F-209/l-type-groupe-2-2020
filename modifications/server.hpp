@@ -1,10 +1,12 @@
 #ifndef SERVER_HPP
 #define SERVER_HPP
 
+
 #include "game_test/database/database.hpp" 
 #include "Constante.hpp"
 #include "game_test/CurrentGame.hpp"
 #include "game_test/parsing.hpp"
+#include "DisplayGame.hpp"
 
 // C++
 #include <thread>
@@ -34,18 +36,20 @@ private:
     struct PIDinGame{
         char pid[Constante::SIZE_pipe];
         bool in_game;
+        std::thread game_thread;
         PIDinGame()=default;
-        PIDinGame(char *p):in_game(false){strcpy(pid,p);std::cout << "my pid : " << pid << "  In game : "<< in_game <<std::endl; };
+        PIDinGame(char *p):in_game(false),game_thread(){strcpy(pid,p);std::cout << "my pid : " << pid << "  In game : "<< in_game <<std::endl; };
         ~PIDinGame()=default;
     };
     static std::vector<PIDinGame*> _pipe_running;    
     static Database _db;
     static std::mutex mtx;
+    static std::mutex mtx_game;
 
 public:
     Server();
     ~Server(){_db.dbSave();std::cout << "\n\n *   BYE BYE   *\n\n"<<std::endl;};
-    static void close_me(int sig){for(size_t i=0;i < _pipe_running.size();i++){ kill(atoi(_pipe_running.at(i)->pid),SIGINT); } std::cout <<"\n -----------------------|    FERMETURE EN COURS    |-----------------------\n\n " << std::endl;sleep(5);}// handle CTRL + C signal ==> save db
+    static void close_me(int sig);
     bool static isServerActive() {return _is_active;}
     static void error_pip(int sig){std::cerr << "\n***  [ERROR PIPE]  ***\n";}
 

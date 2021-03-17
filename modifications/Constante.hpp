@@ -2,6 +2,7 @@
 #define CONSTANTE_HPP
 
 #include <cstddef>
+#include <string>
 
 /**
  * 
@@ -36,6 +37,10 @@ namespace Constante{
     //server
     const unsigned SERVER_SAVE_TIME = 9000;
     const bool GAME_CAN_BE_LAUNCH = true;
+    const int ERROR_PIPE_GAME = -100;
+    const int CLIENT_END_GAME = -101;
+    const int CLIENT_LEAVE_GAME = -1000;
+    const std::string GAME_END = "END GAME";
 
     // MENU
     constexpr char SIGN_IN = 'a';
