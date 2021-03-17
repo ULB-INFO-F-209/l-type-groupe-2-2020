@@ -1,16 +1,10 @@
-//
-// Created by jean on 19/02/2021.
-//
 /**
  * TODO:
  *  thread pour jouer en même temps (Aïssa)
  *  enlever static_cast !!
- * ERROR:
- *
- *
  */
 #include "CurrentGame.hpp"
-//Constructeur
+
 CurrentGame::CurrentGame(Parsing::Game_settings game_sett):twoPlayers(game_sett.nb_player == 2? true:false),friendlyFire(game_sett.ally_shot), dropRate(game_sett.drop_rate),dif(game_sett.diff),screen_area( {0, 0}, {80, 24}),game_area( {0, 0}, {78, 16}),map(dropRate,dif) {
         
         playership1 = new PlayerShip(10, 5, { {9, 5 }, { 3, 2 } }, '0',100, 0,100,0);
@@ -121,9 +115,11 @@ void CurrentGame::execInput(int inChar, uint_fast16_t x1, uint_fast16_t y1, bool
 }
 
 
-void CurrentGame::heal() {      // remet hp du player à 100 si encore vies
+void CurrentGame::heal() {
     for( PlayerShip* p : map.getListPlayer()){
         if(listPlayer.at(p->getPlayerNb())->getnLives() > 0){
+
+            // si hp à 0, PlayerShip clignote et crée une explosion
             if(p->getHp()<=0 && p->getIsAlive()){
                 map.explosion();
                 p->setisAlive(false);
@@ -131,6 +127,7 @@ void CurrentGame::heal() {      // remet hp du player à 100 si encore vies
                 listPlayer.at(p->getPlayerNb())->setnLives(listPlayer.at(p->getPlayerNb())->getnLives() - 1);
 
             }
+            // réanime PlayerShip après 3 sec
             if(tick==p->getKillTime()+300 && !p->getIsAlive()){
                 p->setisAlive(true);
                 p->setCurrentBonus(noBonus);
@@ -140,10 +137,15 @@ void CurrentGame::heal() {      // remet hp du player à 100 si encore vies
     }
 }
 
-void CurrentGame::saveScore(){      //final score save
+void CurrentGame::saveScore(){
     for( PlayerShip* p : map.getListPlayer()){
         if(p->getPlayerNb() == 0)finalScore1 = p->getScore();
         if(p->getPlayerNb() == 1)finalScore2 = p->getScore();
+    }
+}
+
+void CurrentGame::destroyPlayership(){
+    for( PlayerShip* p : map.getListPlayer()){
         if(listPlayer.at(p->getPlayerNb())->getnLives() < 1){
             if (map.getListPlayer().size() == 2) {
                 map.erase(p->getPlayerNb(), MapObject::playership);
@@ -157,18 +159,13 @@ void CurrentGame::saveScore(){      //final score save
 
 
 std::string CurrentGame::run_server(char move_to_exec){
-    uint_fast16_t x1,y1,x2,y2;
-
-    x1 = playership1->getPos().x;
-    y1 = playership1->getPos().y;
-    execInput(move_to_exec, x1, y1, true);
+    // TODO: renommer move_to_exec (ambigu)
+    execInput(move_to_exec, playership1->getPos().x, playership1->getPos().y, true);
     if(twoPlayers){
-        x2 = playership2->getPos().x;
-        y2 = playership2->getPos().y;
-        execInput(move_to_exec, x2, y2, false);
+        execInput(move_to_exec, playership2->getPos().x, playership2->getPos().y, false);
     }
      
-    // update object field
+    // mise à jour des positions des objets
     if(tick % 7 == 0)
         map.update_server(MapObject::projectile, tick);
     if(tick > 100 && tick %50  == 0)
@@ -188,12 +185,13 @@ std::string CurrentGame::run_server(char move_to_exec){
     }
     map.enemyShoot_server(tick);
     map.bossShoot_server(tick);
-    map.updateBounds();     // update player bounds
+    map.updateBounds();
     map.checkCollision_server(tick, friendlyFire);
 
 
     if(map.getBoss().empty() && map.getBossSpawned())
-         game_over = true;
+        game_over = true;
+        //TODO: map.setBossSpawned(False) + créer setter dans mapHandler
 
     if(twoPlayers){
         if (player1->getnLives() < 1 && player2->getnLives() < 1)
@@ -203,8 +201,9 @@ std::string CurrentGame::run_server(char move_to_exec){
             game_over = true;
     }
 
-    heal(); // remet hp du player à 100 si encore vies
+    heal(); 
 
+    // Fait une pause de 5 sec 1 sec après avoir tué tous les ennemis, puis passe au niveau suivant
     if(map.getLevelTick() != 0 && tick <= map.getLevelTick() + 600 && tick > map.getLevelTick()+100){
             if(tick == map.getLevelTick() + 600) {
                 map.changeLevel();
@@ -212,7 +211,9 @@ std::string CurrentGame::run_server(char move_to_exec){
             }
         }
 
-    saveScore(); // sauvegarde le score
+
+    saveScore();// sauvegarde le score
+    destroyPlayership();
     tick++;
     std::string to_ret = map.getState(player1->getnLives(), player2 == nullptr?0:player2->getnLives(),tick);
     if(game_over) return "END GAME";

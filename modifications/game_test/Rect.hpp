@@ -5,6 +5,7 @@
 #include <cstdint>
 
 class rect {
+    //représente la taille et la position d'un rectangle
     vec2i offset;
     vec2i bounds;
 public:
