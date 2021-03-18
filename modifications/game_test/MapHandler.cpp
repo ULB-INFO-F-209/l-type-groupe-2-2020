@@ -22,7 +22,7 @@ void MapHandler::erase(size_t i, MapObject::type typ) { //1ier elem=index(0)
 }
 
 
-std::vector<Star*> MapHandler::getStars() const  { return stars_set; } // renvoyer le vect du map handler
+std::vector<Star*> MapHandler::getStars() const  { return stars_set; }
 
 std::vector<Obstacle*> MapHandler::getObstacles() const  { return obstacles_set; }
 
@@ -53,6 +53,11 @@ void MapObject::touched(int dam) {
 
 
 void MapHandler::update(MapObject::type typ, int t) {
+    //TODO: supprimer des parties de codes qui reviennent inutilement comme 63-66 et 117 -118
+    /*
+    On vérifie si la position de l'objet dépasse la hauteur de la map,
+    si oui on efface l'objet de la liste à laquelle il appartient.
+    */
     if (typ == MapObject::star) {
         for(size_t i = 0; i < stars_set.size(); i++) {
             if(stars_set.at(i)->getPos().y > field_bounds.bot() + 1)
@@ -99,7 +104,11 @@ void MapHandler::update(MapObject::type typ, int t) {
 
         }
     }
-    // update existing objects
+
+    /*
+    On update la position de chaque objet faisant un move en y
+    */
+
     if (typ == MapObject::star) {
         for(size_t i = 0; i < stars_set.size(); i++) {
             stars_set.at(i)->move();
@@ -112,9 +121,9 @@ void MapHandler::update(MapObject::type typ, int t) {
     if (typ==MapObject::boss){
         for (auto & i : boss_set) {
             i->move();
-            if (i->getPos().x > field_bounds.right()-19)
+            if (i->getPos().x > field_bounds.right()-19)  //si le boss atteint la limite à droite de l'écran
                 i->setMovingRight(false);
-            else if(i->getPos().x <= field_bounds.left())
+            else if(i->getPos().x <= field_bounds.left()) //si le boss atteint la limite à gauche de l'écran
                 i->setMovingRight(true);
         }
     }
@@ -147,10 +156,10 @@ void MapHandler::update(MapObject::type typ, int t) {
         }
     }
 
-    // spawn a new object
+    // spawn un nouvel objet
 
     if(typ == MapObject::star )
-        stars_set.push_back(new Star(rand() % field_bounds.width(), 0));
+        stars_set.push_back(new Star(rand() % field_bounds.width(), 0));    //on utilise rand() pour spawn les étoiles à des x aléatoires
     else if(typ == MapObject::obstacle && t % 200 == 0 && !changingLevel && !bossSpawned)
         obstacles_set.push_back(new Obstacle(rand() % (field_bounds.width()-1)+1, 0, obstacleStartDamage,obstacleStartHp));
     else if (typ == MapObject::enemyship && t%300==0 && !changingLevel&&!bossSpawned) {
@@ -255,15 +264,15 @@ void MapHandler::checkCollision(int t, bool friendlyFire) {
             }
         }
     }
-    
+
     //collision player/player
     if(player_ships_set.size() > 1 && friendlyFire){
-    
+
         if(player_ships_set.at(0)->getBounds().contains(player_ships_set.at(1)->getBounds()) && player_ships_set.at(0)->getHp()>0){
             player_ships_set.at(0)->touched(player_ships_set.at(0)->getHp());
             player_ships_set.at(1)->touched(player_ships_set.at(1)->getHp());
         }
-            
+
     }
 
     // collision player/projectile
@@ -467,7 +476,7 @@ void MapHandler::explosion() {
 }
 int MapHandler::spawnBonuses(int x, int y) {
     int rand_spawn_bonus = rand()%4; // à changer si nombre de bonus change
-    auto bonusT = bonusType(rand_spawn_bonus); 
+    auto bonusT = bonusType(rand_spawn_bonus);
     bonuses_set.push_back(new Bonus(x, y, bonusT ));
     return rand_spawn_bonus;
 }
@@ -528,7 +537,7 @@ void PlayerShip::catchBonus(const Bonus* b) {
 
 
 void MapHandler::update_server(MapObject::type typ,int t){
-    
+
     if (typ == MapObject::star) {
         for(size_t i = 0; i < stars_set.size(); i++) {
             if(stars_set.at(i)->getPos().y > field_bounds.bot() + 1)
@@ -544,7 +553,7 @@ void MapHandler::update_server(MapObject::type typ,int t){
         }
     }
     else if (typ == MapObject::projectile) {
-        
+
 
     }else if (typ == MapObject::enemyship) {
         for(size_t i = 0; i < enemy_ships_set.size(); i++) {
@@ -599,7 +608,7 @@ void MapHandler::update_server(MapObject::type typ,int t){
         for(auto & e : projectilesEnemy_set) {
             e->move();
         }
-        
+
         for(size_t i = 0; i < projectiles_set.size(); ) {
             if(projectiles_set.at(i)->getPos().y > field_bounds.bot() + 1)
                 projectiles_set.erase(projectiles_set.begin() + i);
@@ -650,7 +659,7 @@ void MapHandler::add_object_server(MapObject::type typ,int t){
         boss_set.push_back(new Boss(0,0,{{0, 0},{18,6}},'&',1000,t + 100, enemyStartProjectileDamage));
         bossSpawned=true;
     }
-    
+
 }
 
 void MapHandler::bossShoot_server(int tick) {
@@ -662,7 +671,7 @@ void MapHandler::bossShoot_server(int tick) {
             spawnProjectile(posx+11,posy+5,b->getShootDamage(),false,b->getProjectileHp(),0);
 
             b->setShootTime(tick);
-            
+
         }
     }
 }
@@ -765,15 +774,15 @@ void MapHandler::checkCollision_server(int t, bool friendlyFire) {
             }
         }
     }
-    
+
     //collision player/player
     if(player_ships_set.size() > 1 && friendlyFire){
-    
+
         if(player_ships_set.at(0)->getBounds().contains(player_ships_set.at(1)->getBounds()) && player_ships_set.at(0)->getHp()>0){
             player_ships_set.at(0)->touched(player_ships_set.at(0)->getHp());
             player_ships_set.at(1)->touched(player_ships_set.at(1)->getHp());
         }
-            
+
     }
 
     // collision player/projectile
@@ -963,7 +972,7 @@ std::string MapHandler::getState(int nlives_j1,int nlives_j2,int tick){
         state.append(y);
         state.append("&");
     }
-   
+
     // obstacles_set;
     for (auto obst : obstacles_set){         // A_O_x_y
         pos = obst->getPos();
@@ -1087,7 +1096,7 @@ std::string MapHandler::getState(int nlives_j1,int nlives_j2,int tick){
         state.append("&");
     }
 
-    
+
 
     return state;
 }
