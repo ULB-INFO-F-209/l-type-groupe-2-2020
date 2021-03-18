@@ -191,7 +191,6 @@ public:
     void setLevelTick(int t){levelTick = t;}
     bool getChangingLevel() const{return changingLevel;}
     void setChangingLevel(bool c){changingLevel = c;}
-    void update(MapObject::type, int);
     void erase(size_t, MapObject::type);
     std::vector<Star*> getStars() const;
     std::vector<Obstacle*> getObstacles() const;
@@ -205,19 +204,16 @@ public:
     bool getBossSpawned() const{return bossSpawned;}
     void setBounds(rect);
     void spawnProjectile(int x, int y, int damage, bool type, int hp, int player);
-    void checkCollision(int t, bool firendlyFire);
     rect field_bounds;
     void playerInit(PlayerShip* p1,PlayerShip* p2); // insertion des playership dans le vecteur
     void updateBounds(); // mise à jour de l'emplacement du rectangle du ship
-    void enemyShoot(int tick); // tire automatique des ennemis
     void bossShoot(int tick);
     void explosion(); // lorsque Playership meurt, tous les ennemyShips perdent des HP
     int spawnBonuses(int x, int y);
     void changeLevel(); // changement des paramètres en fonction du niveau
     void update_server(MapObject::type typ,int i);
-    void spawnProjectile_server(int x, int y, int damage, bool type, int hp, int player);
     void bossShoot_server(int tick);
-    void enemyShoot_server(int tick);
+    void enemyShoot_server(int tick); // tire automatique des ennemis
     void checkCollision_server(int t, bool friendlyFire);
     void add_object_server(MapObject::type type,int i);
     void spawnObstacle(int posx);

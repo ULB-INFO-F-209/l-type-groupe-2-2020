@@ -509,9 +509,9 @@ void Interface::print_error(int error){
 	start_color(); 
 	init_pair(2, COLOR_RED, COLOR_BLACK);
 	wattron(_main_win, COLOR_PAIR(2));
-	std::string effacer = "unechainejustepoureffacerlaprecendenteerreur";
+	//std::string effacer = "unechainejustepoureffacerlaprecendenteerreur";
 	wattron(_main_win, A_INVIS);
-	print_cara(_main_win, effacer.c_str(),_error_x, _error_y);
+	//print_cara(_main_win, effacer.c_str(),_error_x, _error_y);
 	wattroff(_main_win, A_INVIS);
 	switch(error){
 		case LEN_ERROR:

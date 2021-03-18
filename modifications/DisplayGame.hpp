@@ -18,6 +18,7 @@ class DisplayGame
 	const char delimiteur_instruction = '&';
 	const char delimiteur_parametre	  = '_';
 	std::vector<vec2i*> stars;
+	int tickStar;
 public:
 	//Constructor
 	DisplayGame()=default;
@@ -34,7 +35,8 @@ public:
     void drawUi(int player, int hp, int score, int lives, int bonusType, int level, int tick);
 	void drawEnergyBar(int a);
 	void drawEndGame(std::string score);
-    //...
+	void drawNewLevel(int tick,int levelTick,int currentLevel);
+	//...
 	int inline getInput(){return wgetch(main_wnd);}
     
 	//Destructor

@@ -21,7 +21,7 @@
 
 	Projectile Joueur		:			A_PJ_x_y
 
-
+	Level					:			A_L_tick_levelTick_currentLevel
 
 ***************************
 	É T A T S
@@ -49,3 +49,4 @@ et d'ergonomie de code.
 ==> 	
 	État joueur 1			: 			E_1_HP1_Vies_Score_bonus_level_tick
 	État joueur 2			: 			E_2_HP2_Vies_Score_bonus_level_tick
+	

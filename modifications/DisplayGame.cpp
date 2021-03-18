@@ -18,6 +18,10 @@ void DisplayGame::parse_instruction(std::string chaine_instruction){  // A_B_typ
 			parse_etat(instruction);
 
 	}
+	if (tickStar%7==0)
+		starHandler();
+	drawStar();
+	tickStar++;
 	usleep(1000);
 	refreshWnd();
 }
@@ -90,6 +94,13 @@ void DisplayGame::parse_affichage(std::string instruction){
 		int type = std::stoi(instruction.substr(0,idx));  
 		drawBonus(type,x,y);
 	}
+	else if (objet=="L"){
+		idx = instruction.find(delimiteur_parametre);
+		int currentLevel = std::stoi(instruction.substr(0,idx));
+		drawNewLevel(x,y,currentLevel);
+	}
+
+
 }
 void DisplayGame::parse_etat(std::string instruction){
 	//E_2_HP2_Vies_Score_bonus_level_tick
@@ -140,6 +151,12 @@ void DisplayGame::drawStar() {
         mvwaddch(game_wnd, s->y-1, s->x, '.');
     }
 
+}
+
+void DisplayGame::drawNewLevel(int tick,int levelTick,int currentLevel) {
+    if(levelTick != 0 && tick <= levelTick + 600 && tick > levelTick+100){
+        mvwprintw(game_wnd, 8, 35, "level %i", currentLevel);
+    }
 }
 
 int DisplayGame::init() {

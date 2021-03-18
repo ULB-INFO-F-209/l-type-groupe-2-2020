@@ -296,6 +296,7 @@ void Menu::launch_game(Game_settings* game_option){
 		string_game_to_display = _client.read_game_pipe();
 		if (string_game_to_display == Constante::GAME_END) break;
 		display_game.parse_instruction(string_game_to_display);
+		
 
     }
 	string_game_to_display = _client.read_game_pipe();

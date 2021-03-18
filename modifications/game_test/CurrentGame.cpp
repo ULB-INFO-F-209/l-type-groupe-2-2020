@@ -181,7 +181,7 @@ std::string CurrentGame::run_server(char move_to_exec){
 
     for( PlayerShip* p : map.getListPlayer()){
         if (p->getCurrentBonus()==minigun && p->getHp()>0 && tick % 7 == 0)
-            map.spawnProjectile_server(p->getPos().x, p->getPos().y, p->getShootDamage(), true, 10, p->getPlayerNb()+1);
+            map.spawnProjectile(p->getPos().x, p->getPos().y, p->getShootDamage(), true, 10, p->getPlayerNb()+1);
     }
     map.enemyShoot_server(tick);
     map.bossShoot_server(tick);
@@ -191,7 +191,6 @@ std::string CurrentGame::run_server(char move_to_exec){
 
     if(map.getBoss().empty() && map.getBossSpawned())
         game_over = true;
-        //TODO: map.setBossSpawned(False) + créer setter dans mapHandler
 
     if(twoPlayers){
         if (player1->getnLives() < 1 && player2->getnLives() < 1)
@@ -216,7 +215,7 @@ std::string CurrentGame::run_server(char move_to_exec){
     destroyPlayership();
     tick++;
     std::string to_ret = getPlayerState(map.getState(player1->getnLives(), player2 == nullptr?0:player2->getnLives(),tick));
-    if(game_over) return "END GAME";
+    if(game_over || exit_requested) return "END GAME";
 
     return to_ret;
 };
