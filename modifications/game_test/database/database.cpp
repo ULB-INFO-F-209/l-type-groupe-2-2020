@@ -2,10 +2,11 @@
 
 void Database::add(Account* account){
     _data.push_back(*account);
-    _size++;
 }
 
 //getters
+
+// retourne -1 si pseudo n'existe pas, l'indice dans _data sinon
 std::ptrdiff_t Database::find(char* pseudo){
     std::ptrdiff_t idx = 0;
 	bool continuer = true;
@@ -13,7 +14,7 @@ std::ptrdiff_t Database::find(char* pseudo){
 		continuer = !(strcmp(pseudo, _data[idx]._pseudo) == 0);
         if (continuer){idx++;}
 	}
- 	return !continuer ? idx : -1;       // -1 if not found, idx in db if found
+ 	return !continuer ? idx : -1;
 }
 
 bool Database::verifyLogin(char* pseudo, char* pswd){
@@ -23,11 +24,11 @@ bool Database::verifyLogin(char* pseudo, char* pswd){
         std::cout << pseudo << " does not exist" << std::endl;
     } else{
         res = strcmp(pseudo, _data[idx]._pseudo) == 0 && strcmp(pswd, _data[idx]._pswd) == 0;
-        if (!res){ std::cout << "incorrect password" << std::endl; }
     }
     return res;
 }
 
+// retourne le Profile (pseudo+score) associé a pseudo
 Profile Database::getProfile(char* pseudo){
     std::ptrdiff_t idx = find(pseudo);
     Profile res;
@@ -40,6 +41,7 @@ Profile Database::getProfile(char* pseudo){
     return res;
 }
 
+// retourne les requetes de pseudo sous forme de vecteur de Profile 
 std::vector<Profile> Database::getFriendRequest(char* pseudo){
     std::vector<Profile> requests;
     std::ptrdiff_t idx = find(pseudo);
@@ -57,6 +59,7 @@ std::vector<Profile> Database::getFriendRequest(char* pseudo){
     return requests;
 }
 
+// retourne les amis de pseudo sous forme de vecteur de Profile 
 std::vector<Profile> Database::getFriendList(char* pseudo){
     std::vector<Profile> friends;
     std::ptrdiff_t idx = find(pseudo);
@@ -74,14 +77,18 @@ std::vector<Profile> Database::getFriendList(char* pseudo){
     return friends;
 }
 
+// retourne le leaderboard sous forme de vecteur de Profile 
 std::vector<Profile> Database::checkLeaderboard(){
+	// on parcourt la base de données et on ajoute chaque account sous forme de Profile dans le vect
     _profiles.clear();
     for (Account &acc : _data){
         _profiles.push_back(Profile{acc._pseudo, acc._bestScore});
     }
+    // tri du vecteur dans l'ordre decroissant des scores
     std::sort(_profiles.begin(), _profiles.end(), [](Profile a, Profile b) {
         return a.score > b.score;
     });
+    // affichage
     for (auto x : _profiles)
         std::cout << x.pseudo << " -> " << x.score << std::endl;
     std::cout << "-----------------" << std::endl;
@@ -177,10 +184,12 @@ int Database::removeFriend(char* pseudo1, char* pseudo2){
 }
 
 // File management
+
+// chargement de la base de données à partir d'un fichier .bin
 void Database::dbLoad(){
     FILE* f;
     const char* c_path = _path.c_str();
-    // File existence
+    // verif existence du fichier
     struct stat buffer;
     if (!(stat (c_path, &buffer) == 0)){
     	f = fopen(c_path, "wb");
@@ -197,6 +206,7 @@ void Database::dbLoad(){
 
     std::cout << "------------Load------------\n\n";
     Account account;
+    // chargement
     while(fread(&account,sizeof(Account),1,f)){
         add(&account);
     }
@@ -204,8 +214,8 @@ void Database::dbLoad(){
     fclose(f);
 }
 
+// ecriture des accounts dans le fichier _path
 void Database::dbSave(){
-    // writing all accounts in _path file
     std::cout << "\n------------Save------------\n";
     FILE* out = fopen(_path.c_str(),"wb");
     for (Account &acc : _data){

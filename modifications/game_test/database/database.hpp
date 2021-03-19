@@ -22,7 +22,6 @@ struct Profile
 class Database{
     const std::string _path = "accounts.bin";
     std::vector<Account> _data{};
-	unsigned _size = 0;
 	std::vector<Profile> _profiles{};
 
     void add(Account* account);
