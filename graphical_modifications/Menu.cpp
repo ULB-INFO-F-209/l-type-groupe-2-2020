@@ -284,7 +284,7 @@ void Menu::get_players(Game_settings*set){
 void Menu::launch_game(Game_settings* game_option){
 	DisplayGame display_game;
 	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-	display_game.init();
+	display_game.init(); 
 	display_game.initGraphics();
     bool gameOn = true;
     int inp = -1;
