@@ -1,7 +1,7 @@
 #include "Client.hpp"
 
 
-//constructor
+//constructor 
 Client::Client():_pid(getpid()){
 
 	//pipe's name
