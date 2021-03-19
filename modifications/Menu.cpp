@@ -291,7 +291,7 @@ void Menu::launch_game(Game_settings* game_option){
     while(gameOn){
 
         inp = display_game.getInput();
-
+		
 		_client.send_game_input(inp);
 		string_game_to_display = _client.read_game_pipe();
 		if (string_game_to_display == Constante::GAME_END) break;

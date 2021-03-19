@@ -94,8 +94,8 @@ namespace Screen{
 	const int NO_ERROR = -1, YOURSELF_ERROR = 8;
 
 	//CONSTANTES
-	const int NB_MIN_CARA = 7;
-	const int NB_MAX_CARA = 15;
+	const int NB_MIN_CARA = 2;
+	const int NB_MAX_CARA = 7;
 }
 
 
