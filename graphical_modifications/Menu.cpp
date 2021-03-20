@@ -283,16 +283,27 @@ void Menu::get_players(Game_settings*set){
 
 void Menu::launch_game(Game_settings* game_option){
 	DisplayGame display_game;
-	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
+	sf::RenderWindow window(sf::VideoMode(1600, 1000), "SFML works!");
 	display_game.init(); 
 	display_game.initGraphics();
     bool gameOn = true;
     int inp = -1;
 	std::string string_game_to_display;
 	
+	sf::CircleShape shape(100.f);
+    shape.setFillColor(sf::Color::Green);
 
-    while(gameOn){
-		
+    while(gameOn && window.isOpen()){ //fenetre fermé -> terminal freeze
+		sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+
+        // window.clear();
+        // window.draw(shape);
+        // window.display();
 
         inp = display_game.getInput();
 		

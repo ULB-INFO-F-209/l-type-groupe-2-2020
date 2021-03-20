@@ -11,7 +11,7 @@
 class DisplayGame
 {
 	//Game's windows
-	sf::RenderWindow* window;  
+	sf::RenderWindow* window;
 	WINDOW* main_wnd;
     WINDOW* game_wnd;
 	rect game_area;

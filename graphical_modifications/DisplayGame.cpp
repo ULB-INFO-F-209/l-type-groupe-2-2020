@@ -159,6 +159,9 @@ void DisplayGame::drawNewLevel(int tick,int levelTick,int currentLevel) {
     }
 }
 void DisplayGame::initGraphics(){
+	window= new sf::RenderWindow window(sf::VideoMode(1600, 1000), "SFML works!");
+
+
 }
 int DisplayGame::init() {
 	srand(time(0)); // ??????
