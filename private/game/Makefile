@@ -1,20 +1,22 @@
-CFLAGS = -std=c++11 -Wall -pedantic
+CFLAGS = -std=c++17 -Wall -pedantic
 
-bin/main: bin/main.o bin/game.o bin/MapHandler.o bin/Player.o
-	g++ -g -o bin/main bin/main.o bin/game.o bin/MapHandler.o bin/Player.o $(CFLAGS) -lncurses
+main: main.cpp	CurrentGame.o MapHandler.o Interface.o Player.o
+	g++ -g  -o main main.cpp CurrentGame.o MapHandler.o Interface.o Player.o $(CFLAGS) -lncurses
 
-bin/main.o: src/main.cpp
-	mkdir -p bin	
-	g++ -g -c -o bin/main.o src/main.cpp $(CFLAGS) 
+test_fichier_binaire: test_ficheir_binaire.cpp Player.o
+	g++ test_ficheir_binaire.cpp $(CFLAGS) -o test_fichier_binaire
 
-bin/game.o: src/game.cpp src/game.hpp src/MapHandler.hpp
-	mkdir -p bin	
-	g++ -g -c -o bin/game.o src/game.cpp $(CFLAGS)
+Interface.o: Interface.cpp MapHandler.hpp Player.hpp CurrentGame.hpp 
+	g++ -g -c -o Interface.o Interface.cpp $(CFLAGS)
 
-bin/MapHandler.o: src/MapHandler.cpp src/MapHandler.hpp
-	mkdir -p bin	
-	g++ -g -c -o bin/MapHandler.o src/MapHandler.cpp $(CFLAGS)
+CurrentGame.o: CurrentGame.cpp MapHandler.hpp Interface.hpp Player.hpp
+	g++ -g -c -o CurrentGame.o CurrentGame.cpp $(CFLAGS)
 
-bin/Player.o: src/Player.cpp src/Player.hpp
-	mkdir -p bin	
-	g++ -g -c -o bin/Player.o src/Player.cpp $(CFLAGS)
+MapHandler.o: MapHandler.cpp Rect.hpp InternGameObject.hpp Player.hpp
+	g++ -g -c -o MapHandler.o MapHandler.cpp $(CFLAGS)
+
+Player.o: Player.cpp Player.hpp
+	g++ -g -c -o Player.o Player.cpp $(CFLAGS)
+
+clean:
+	rm *.o
