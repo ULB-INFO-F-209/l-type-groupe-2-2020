@@ -50,7 +50,15 @@ class Menu : public QMainWindow{
 								   "Profile", "Log out"};
 	std::string settings_menu[SIZE_SETTINGS] = {"Players", "Drop rate","Ally shot",
 									 "Lives", "Difficulty", "Play", "Quit lobby"};	
-	
+
+	//Button 
+	QPushButton *home_button[SIZE_HOME];
+	QPushButton *main_button[SIZE_MAIN_MENU];
+	QPushButton *settings_button[SIZE_SETTINGS];
+	QPushButton *friends_button[SIZE_FRIENDS_MENU];
+
+	//widget
+	QWidget *centralWidget;
 
 public:
 	Menu();

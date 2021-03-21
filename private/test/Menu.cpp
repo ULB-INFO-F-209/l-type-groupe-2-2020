@@ -8,6 +8,14 @@ Menu::Menu(): QMainWindow(){
     this->resize(1000, 600);
     this->setStyleSheet(QString::fromUtf8("background-color:lightsalmon"));
 
+    //Widget 
+    centralWidget = new QWidget(this);
+    this->setCentralWidget(centralWidget);
+
+    //Home button initializing	
+	for (int i = 0; i < SIZE_HOME; ++i){
+		home_button[i] = new QPushButton(QString::fromStdString(connexion_menu[i]));
+	}
 }
 
 void Menu::start_session(){
@@ -17,17 +25,30 @@ void Menu::start_session(){
 
 Menu::~Menu(){}
 
-void Menu::home(){
-	QWidget *centralWidget = new QWidget(this);
-	QVBoxLayout *buttonsVerticalLayout = new QVBoxLayout();
-	QPushButton *home_button[SIZE_HOME];
-	for (int i = 0; i < SIZE_HOME; ++i)
-	{
-		home_button[i] = new QPushButton(QString::fromStdString(connexion_menu[i]));
-		buttonsVerticalLayout->addWidget(home_button[i]);
+void Menu::home(){	
+	QWidget *horizontalLayoutWidget = new QWidget(centralWidget);
+	QWidget *verticalLayoutWidget = new QWidget(centralWidget);
+ 
+    /*horizontalLayoutWidget->setGeometry(QRect(80, 30, 851, 80));
+    QHBoxLayout *horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
+    horizontalLayout->setSpacing(6);
+    horizontalLayout->setContentsMargins(11, 11, 11, 11);
+    horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+    horizontalLayout->setContentsMargins(0, 0, 0, 0);
+	*/
+
+
+   	verticalLayoutWidget->setGeometry(QRect(370,300,80, 80));
+	QVBoxLayout *button_VLayout = new QVBoxLayout(verticalLayoutWidget);
+	button_VLayout->setSpacing(8);
+    button_VLayout->setContentsMargins(11, 11, 11, 11);
+    button_VLayout->setSizeConstraint(QLayout::SetDefaultConstraint);
+    button_VLayout->setContentsMargins(40, 20, 2, 20);
+	
+	for (int i = 0; i < SIZE_HOME; ++i){
+		button_VLayout->addWidget(home_button[i]);
 	}
-	centralWidget->setLayout(buttonsVerticalLayout);
-	this->setCentralWidget(centralWidget);
+
 }
 /*Menu::~Menu(){}
 
