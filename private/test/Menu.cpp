@@ -2,9 +2,7 @@
 
 
 Menu::Menu(): QMainWindow(){
-	if (this->objectName().isEmpty())
-        this->setObjectName(QString::fromUtf8("L-Type"));
-     this->setWindowTitle(QApplication::translate("L-Type", "L-Type", nullptr));
+    this->setWindowTitle(QApplication::translate("L-Type", "L-Type", nullptr));
     this->resize(1000, 600);
     this->setStyleSheet(QString::fromUtf8("background-color:lightsalmon"));
 
@@ -19,14 +17,14 @@ Menu::Menu(): QMainWindow(){
 }
 
 void Menu::start_session(){
-	home();
+	connexion();
 	this->show();
 }
 
 Menu::~Menu(){}
 
 void Menu::home(){	
-	QWidget *horizontalLayoutWidget = new QWidget(centralWidget);
+	//QWidget *horizontalLayoutWidget = new QWidget(centralWidget);
 	QWidget *verticalLayoutWidget = new QWidget(centralWidget);
  
     /*horizontalLayoutWidget->setGeometry(QRect(80, 30, 851, 80));
@@ -37,8 +35,11 @@ void Menu::home(){
     horizontalLayout->setContentsMargins(0, 0, 0, 0);
 	*/
 
+    QSize size = this->size();
+    int x = size.height()/2;
+    int y = size.width()/2;
 
-   	verticalLayoutWidget->setGeometry(QRect(370,300,80, 80));
+   	verticalLayoutWidget->setGeometry(QRect(350, 150, 300, 300));
 	QVBoxLayout *button_VLayout = new QVBoxLayout(verticalLayoutWidget);
 	button_VLayout->setSpacing(8);
     button_VLayout->setContentsMargins(11, 11, 11, 11);
@@ -48,6 +49,18 @@ void Menu::home(){
 	for (int i = 0; i < SIZE_HOME; ++i){
 		button_VLayout->addWidget(home_button[i]);
 	}
+
+}
+
+void Menu::connexion(){
+    QString conn("CONNEXION");
+    QString psd("pseudo");
+    QString psw("password");
+    QGroupBox* box = new QGroupBox(conn, centralWidget);
+    QLineEdit* pseudo = new QLineEdit(psd, box);
+    QLineEdit* pswd = new QLineEdit(psw, box);
+
+
 
 }
 /*Menu::~Menu(){}

@@ -30,6 +30,7 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QLineEdit>
+#include <QGroupBox>
 
 class Menu : public QMainWindow{
 
@@ -69,6 +70,7 @@ public:
 	int  main_m();
 	int friends();
 	int lobby();
+	void connexion();
 	
 };
 
