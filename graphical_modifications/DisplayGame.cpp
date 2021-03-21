@@ -44,7 +44,90 @@ void DisplayGame::close(){
     delwin(game_wnd);
     endwin();
 }
-
+int DisplayGame::getInputWindow(){
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+	{
+		return 'q';
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
+	{
+		return 'z';
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+	{
+		return 's';
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+	{
+		return 'd';
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+	{
+		return 'e';
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+	{
+		return 'a';
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	{
+		return 'w';
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::C))
+	{
+		return 'c';
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+	{
+		return 'q';
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
+	{
+		return 'z';
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
+	{
+		return 'f';
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::T))
+	{
+		return 't';
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::G))
+	{
+		return 'g';
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::H))
+	{
+		return 'h';
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+	{
+		return 'r';
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Y))
+	{
+		return 'y';
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::N))
+	{
+		return 'n';
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::V))
+	{
+		return 'v';
+	}else if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
+	{
+		return 'm';
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	{
+		return ' ';
+	}
+	else{
+		return -1;
+	}
+}
 void DisplayGame::parse_affichage(std::string instruction){
 	std::string objet; size_t idx ;
 	int x, y;
@@ -164,7 +247,7 @@ void DisplayGame::drawNewLevel(int tick,int levelTick,int currentLevel) {
 }
 void DisplayGame::initGraphics(){
 	window = new sf::RenderWindow(sf::VideoMode(1600, 1000), "L-TYPE");
-
+	window->setVerticalSyncEnabled(false);
 
 }
 int DisplayGame::init() {
@@ -281,7 +364,7 @@ void DisplayGame::drawProjectile(int x, int y, bool enemy, bool player1){
     
 }
 void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinking){
-
+		/*
         // draw player body
         int player_color;
 		char player_char;
@@ -326,7 +409,16 @@ void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinkin
             
         }
 
-        wattroff(game_wnd, A_ALTCHARSET);
+        wattroff(game_wnd, A_ALTCHARSET);*/
+		sf::CircleShape shape(10.f);
+		shape.setPosition(sf::Vector2f(x * 10, y * 10));
+		if (player==1){
+            shape.setFillColor(sf::Color::Blue);
+        }
+        else{
+			shape.setFillColor(sf::Color::Green);
+		}
+		window->draw(shape);
  
 }
 void DisplayGame::drawBonus(int type, int x, int y){

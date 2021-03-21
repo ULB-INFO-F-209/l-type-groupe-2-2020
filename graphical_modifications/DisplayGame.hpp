@@ -40,6 +40,7 @@ public:
 	void drawEndGame(std::string score);
 	void drawNewLevel(int tick,int levelTick,int currentLevel);
 	//...
+	int getInputWindow();
 	int inline getInput(){return wgetch(main_wnd);}
     
 	//Destructor
