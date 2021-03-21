@@ -18,7 +18,7 @@ void DisplayGame::parse_instruction(std::string chaine_instruction){  // A_B_typ
 			parse_etat(instruction);
 
 	}
-	if (tickStar%7==0)
+	if (tickStar%2==0)
 		starHandler();
 	drawStar();
 	tickStar++;
@@ -138,17 +138,21 @@ void DisplayGame::parse_etat(std::string instruction){
 }
 void DisplayGame::starHandler(){
     
-    stars.push_back(new vec2i{rand() % game_area.width(), 0});
+    stars.push_back(new vec2i{rand() % window->getSize().x, 0});
     for(size_t i = 0; i < stars.size(); i++) {
-            stars.at(i)->y += 1;
-            if(stars.at(i)->y > game_area.bot() + 1)
+            stars.at(i)->y += 20;
+            if(stars.at(i)->y > window->getSize().y + 1)
                 stars.erase(stars.begin() + i);
-
         }
 }
 void DisplayGame::drawStar() {
     for(auto s : stars){
-        mvwaddch(game_wnd, s->y-1, s->x, '.');
+        //mvwaddch(game_wnd, s->y-1, s->x, '.');
+		sf::CircleShape shape(2.f);
+		shape.setPosition(sf::Vector2f(s->x, s->y));
+		// change la couleur de la forme pour du vert
+		shape.setFillColor(sf::Color::White);
+		window->draw(shape);
     }
 
 }
@@ -159,7 +163,7 @@ void DisplayGame::drawNewLevel(int tick,int levelTick,int currentLevel) {
     }
 }
 void DisplayGame::initGraphics(){
-	window= new sf::RenderWindow window(sf::VideoMode(1600, 1000), "SFML works!");
+	window = new sf::RenderWindow(sf::VideoMode(1600, 1000), "L-TYPE");
 
 
 }
