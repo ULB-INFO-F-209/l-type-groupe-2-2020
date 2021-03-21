@@ -1,13 +1,13 @@
 /********************************************************************************
-** Form generated from reading UI file 'interfaceGui.ui'
+** Form generated from reading UI file 'connexionmenu.ui'
 **
 ** Created by: Qt User Interface Compiler version 5.12.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef INTERFACEGUI_H
-#define INTERFACEGUI_H
+#ifndef UI_CONNEXIONMENU_H
+#define UI_CONNEXIONMENU_H
 
 #include <QtCore/QVariant>
 #include <QtGui/QIcon>
@@ -15,14 +15,13 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QPushButton>
-#include <QtWidgets/QStatusBar>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
 
-
-class Ui_InterafaceGui{
+class Ui_ConnexionMenu
+{
 public:
     QWidget *centralWidget;
     QWidget *verticalLayoutWidget;
@@ -32,38 +31,37 @@ public:
     QPushButton *Quit;
     QWidget *horizontalLayoutWidget;
     QHBoxLayout *horizontalLayout;
-    QStatusBar *statusBar;
 
-    void setupUi(QMainWindow *interafaceGui)
+    void setupUi(QMainWindow *ConnexionMenu)
     {
-        // setup de l'interface 
-        if (interafaceGui->objectName().isEmpty())
-            interafaceGui->setObjectName(QString::fromUtf8("interafaceGui"));
-        interafaceGui->resize(1000, 600);
-        interafaceGui->setAutoFillBackground(false);
-        interafaceGui->setStyleSheet(QString::fromUtf8("background-color:lightsalmon"));
-
-        centralWidget = new QWidget(interafaceGui);
+        if (ConnexionMenu->objectName().isEmpty())
+            ConnexionMenu->setObjectName(QString::fromUtf8("ConnexionMenu"));
+        ConnexionMenu->resize(1000, 600);
+        ConnexionMenu->setStyleSheet(QString::fromUtf8("background-color:lightsalmon"));
+        centralWidget = new QWidget(ConnexionMenu);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
-
         verticalLayoutWidget = new QWidget(centralWidget);
         verticalLayoutWidget->setObjectName(QString::fromUtf8("verticalLayoutWidget"));
-        verticalLayoutWidget->setGeometry(QRect(390, 210, 241, 301));
-        
-        // creation et settings de la layout pour les bouttons
+        verticalLayoutWidget->setGeometry(QRect(380, 180, 241, 301));
         buttonsVerticalLayout = new QVBoxLayout(verticalLayoutWidget);
         buttonsVerticalLayout->setSpacing(8);
         buttonsVerticalLayout->setContentsMargins(11, 11, 11, 11);
         buttonsVerticalLayout->setObjectName(QString::fromUtf8("buttonsVerticalLayout"));
         buttonsVerticalLayout->setSizeConstraint(QLayout::SetDefaultConstraint);
         buttonsVerticalLayout->setContentsMargins(40, 20, 2, 20);
-        
-        //Creations PushButton
-        
         SignIn = new QPushButton(verticalLayoutWidget);
         SignIn->setObjectName(QString::fromUtf8("SignIn"));
         SignIn->setMaximumSize(QSize(165, 61));
-        
+        QIcon icon;
+        QString iconThemeName = QString::fromUtf8("image/sign_in");
+        if (QIcon::hasThemeIcon(iconThemeName)) {
+            icon = QIcon::fromTheme(iconThemeName);
+        } else {
+            icon.addFile(QString::fromUtf8("../../../../../../media/sf_Partage_Ubuntu"), QSize(), QIcon::Normal, QIcon::Off);
+        }
+        SignIn->setIcon(icon);
+        SignIn->setFlat(false);
+
         buttonsVerticalLayout->addWidget(SignIn);
 
         SignUp = new QPushButton(verticalLayoutWidget);
@@ -78,54 +76,36 @@ public:
 
         buttonsVerticalLayout->addWidget(Quit);
 
-        // layout vertical pour le texte je pense 
-        horizontalLayoutWidget = new QWidget(centralWidget); // creation d'un widget qui sera occuper par un layout le widget ce trouve lui meme dans le widget centrale
+        horizontalLayoutWidget = new QWidget(centralWidget);
         horizontalLayoutWidget->setObjectName(QString::fromUtf8("horizontalLayoutWidget"));
-        horizontalLayoutWidget->setGeometry(QRect(50, 20, 851, 80));
-        
+        horizontalLayoutWidget->setGeometry(QRect(80, 30, 851, 80));
         horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
         horizontalLayout->setSpacing(6);
         horizontalLayout->setContentsMargins(11, 11, 11, 11);
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         horizontalLayout->setContentsMargins(0, 0, 0, 0);
+        ConnexionMenu->setCentralWidget(centralWidget);
 
+        retranslateUi(ConnexionMenu);
+        QObject::connect(Quit, SIGNAL(clicked()), ConnexionMenu, SLOT(close()));
 
-        interafaceGui->setCentralWidget(centralWidget); // setup du widget centrale qui contient tout 
-        statusBar = new QStatusBar(interafaceGui);
-        statusBar->setObjectName(QString::fromUtf8("statusBar"));
-        interafaceGui->setStatusBar(statusBar);
-
-        retranslateUi(interafaceGui);
-
-        QMetaObject::connectSlotsByName(interafaceGui);
+        QMetaObject::connectSlotsByName(ConnexionMenu);
     } // setupUi
 
-    void retranslateUi(QMainWindow *interafaceGui)
+    void retranslateUi(QMainWindow *ConnexionMenu)
     {
-        interafaceGui->setWindowTitle(QApplication::translate("interafaceGui", "Interface", nullptr));
-        SignIn->setText(QApplication::translate("interafaceGui", "Sign in", nullptr));
-        SignUp->setText(QApplication::translate("interafaceGui", "Sign up", nullptr));
-        Quit->setText(QApplication::translate("interafaceGui", "Quit", nullptr));
+        ConnexionMenu->setWindowTitle(QApplication::translate("ConnexionMenu", "ConnexionMenu", nullptr));
+        SignIn->setText(QApplication::translate("ConnexionMenu", "Sign in", nullptr));
+        SignUp->setText(QApplication::translate("ConnexionMenu", "Sign up", nullptr));
+        Quit->setText(QApplication::translate("ConnexionMenu", "Quit", nullptr));
     } // retranslateUi
 
 };
 
 namespace Ui {
-
-    class InterafaceGui: public QMainWindow{
-
-    private:
-        Q_OBJECT
-        Ui_InterafaceGui *ui;
-    public:
-        InterafaceGui();
-        ~InterafaceGui();
-
-    };
-
+    class ConnexionMenu: public Ui_ConnexionMenu {};
 } // namespace Ui
-
 
 QT_END_NAMESPACE
 
-#endif // INTERFACEGUI_H
+#endif // UI_CONNEXIONMENU_H
