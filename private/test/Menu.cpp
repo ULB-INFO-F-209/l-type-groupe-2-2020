@@ -18,7 +18,7 @@ void Menu::start_session(){
 Menu::~Menu(){}
 
 void Menu::home(){
-	QWidget centralWidget = new QWidget(this);
+	QWidget *centralWidget = new QWidget(this);
 	QVBoxLayout *buttonsVerticalLayout = new QVBoxLayout();
 	QPushButton *home_button[SIZE_HOME];
 	for (int i = 0; i < SIZE_HOME; ++i)
