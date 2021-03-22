@@ -8,7 +8,7 @@ Menu::Menu(): QMainWindow(){
 }
 
 void Menu::start_session(){
-	connexion();
+	home();
 	this->show();
 }
 
@@ -78,11 +78,36 @@ void Menu::connexion(){
     this->setCentralWidget(centralwidget);
 
 }
+void Menu::main_m(){
+    QWidget *centralwidget = new QWidget(this);
+
+    QLabel *label = new QLabel(QString::fromStdString("MAIN MENU"),centralwidget);
+    label->setGeometry(QRect(100, 30, 591, 61));
+    label->setFrameShape(QFrame::WinPanel);
+    label->setTextFormat(Qt::RichText);
+    label->setAlignment(Qt::AlignCenter);
+
+    QWidget *verticalLayoutWidget  = new QWidget(centralwidget);
+    verticalLayoutWidget->setGeometry(QRect(80, 160, 651, 351));
+
+    QVBoxLayout *verticalLayout  = new QVBoxLayout(verticalLayoutWidget);
+    verticalLayout->setContentsMargins(100, 0, 100, 0);
+
+    QPushButton *main_button[SIZE_MAIN_MENU];
+    for (size_t i = 0; i < SIZE_MAIN_MENU; ++i){
+       main_button[i] = new QPushButton(QString::fromStdString(main_menu[i]),verticalLayoutWidget);
+       main_button[i]->setMinimumSize(QSize(25, 50));
+       verticalLayout->addWidget(main_button[i]);
+    }
+
+    this->setCentralWidget(centralwidget);
+
+}
 /*
 
 void Menu::start_session(){}
 
-int  Menu::main_m(){}
+
 int Menu::Menu::friends(){}
 int Menu::lobby(){}
 */

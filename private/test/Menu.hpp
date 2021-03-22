@@ -63,7 +63,7 @@ public:
 
 	void start_session();
 	void home();
-	int  main_m();
+	void  main_m();
 	int friends();
 	int lobby();
 	void connexion();
