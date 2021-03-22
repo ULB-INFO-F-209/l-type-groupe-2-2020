@@ -8,7 +8,7 @@ Menu::Menu(): QMainWindow(){
 }
 
 void Menu::start_session(){
-	home();
+	connexion();
 	this->show();
 }
 
@@ -38,14 +38,44 @@ void Menu::home(){
 }
 
 void Menu::connexion(){
-    /*QString conn("CONNEXION");
-    QString psd("pseudo");
-    QString psw("password");
-    QGroupBox* box = new QGroupBox(conn, centralWidget);
-    QLineEdit* pseudo = new QLineEdit(psd, box);
-    QLineEdit* pswd = new QLineEdit(psw, box);*/
+    QWidget *centralwidget = new QWidget(this);
+
+    QLineEdit *pseudo_line = new QLineEdit(centralwidget);
+    pseudo_line->setGeometry(QRect(230, 270, 400, 45));
+    pseudo_line->setMaxLength(15);
+
+    QLineEdit *pswd_line = new QLineEdit(centralwidget);
+    pswd_line->setGeometry(QRect(230, 370, 400, 45));
+    pswd_line->setMaxLength(15);
+
+    QLabel *title_label = new QLabel(QString::fromStdString("CONNEXION"), centralwidget);
+    title_label->setGeometry(QRect(70, 47, 691, 81));
+    title_label->setFrameShape(QFrame::WinPanel);
+    //title_label->setTextFormat(Qt::MarkdownText);
+    title_label->setAlignment(Qt::AlignCenter);
+
+    QLabel *pseudo_label = new QLabel(QString::fromStdString("USERNAME : "),centralwidget);
+    pseudo_label->setGeometry(QRect(140, 270, 91, 45));
+
+    QLabel *pswd_label = new QLabel(QString::fromStdString("PASSWORD : "),centralwidget);
+    pswd_label->setGeometry(QRect(130, 370, 101, 45));
+
+    QWidget *horizontalLayoutWidget = new QWidget(centralwidget);
+    horizontalLayoutWidget->setGeometry(QRect(110, 470, 641, 80));
+    QHBoxLayout *horizontalLayout =  new QHBoxLayout(horizontalLayoutWidget);
+    horizontalLayout->setSpacing(50);
+    horizontalLayout->setContentsMargins(11, 11, 11, 11);
+
+    QPushButton *ok_button =  new QPushButton(QString::fromStdString("Ok"),horizontalLayoutWidget);
+    ok_button->setMinimumSize(QSize(25, 50));
+    horizontalLayout->addWidget(ok_button);
 
 
+    QPushButton *cancel_button = new QPushButton(QString::fromStdString("Cancel"),horizontalLayoutWidget);
+    cancel_button->setMinimumSize(QSize(25, 50));
+    horizontalLayout->addWidget(cancel_button);
+
+    this->setCentralWidget(centralwidget);
 
 }
 /*

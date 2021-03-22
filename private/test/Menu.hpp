@@ -31,6 +31,7 @@
 #include <QStatusBar>
 #include <QVBoxLayout>
 #include <QWidget>
+#include <QLineEdit>
 
 //QT_BEGIN_NAMESPACE
 
