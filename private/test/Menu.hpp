@@ -19,18 +19,20 @@
 
 
 #include <iostream>
-#include <QtCore/QVariant>
-#include <QtGui/QIcon>
+#include <QVariant>
+#include <QAction>
 #include <QApplication>
-#include <QHBoxLayout>
+#include <QButtonGroup>
+#include <QHeaderView>
+#include <QLabel>
 #include <QMainWindow>
+#include <QMenuBar>
 #include <QPushButton>
+#include <QStatusBar>
 #include <QVBoxLayout>
 #include <QWidget>
-#include <QGridLayout>
-#include <QLabel>
-#include <QLineEdit>
-#include <QGroupBox>
+
+//QT_BEGIN_NAMESPACE
 
 class Menu : public QMainWindow{
 
@@ -52,18 +54,11 @@ class Menu : public QMainWindow{
 	std::string settings_menu[SIZE_SETTINGS] = {"Players", "Drop rate","Ally shot",
 									 "Lives", "Difficulty", "Play", "Quit lobby"};	
 
-	//Button 
-	QPushButton *home_button[SIZE_HOME];
-	QPushButton *main_button[SIZE_MAIN_MENU];
-	QPushButton *settings_button[SIZE_SETTINGS];
-	QPushButton *friends_button[SIZE_FRIENDS_MENU];
-
-	//widget
-	QWidget *centralWidget;
+	//Q_OBJECT;
 
 public:
 	Menu();
-	~Menu();
+	virtual ~Menu(){}
 
 	void start_session();
 	void home();
@@ -74,6 +69,6 @@ public:
 	
 };
 
-
+//QT_END_NAMESPACE
 
 #endif //MENU_HPP

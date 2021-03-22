@@ -15,3 +15,6 @@ ex : menu.o main.o
 run:
 	make ex
 	./ex
+
+clean:
+	rm ex menu.o main.o
