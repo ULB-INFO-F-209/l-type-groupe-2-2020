@@ -1,5 +1,11 @@
 #include "Menu.hpp"
 
+/******************** TODO ********************************************
+        *  23/03 : Reunir sign in, sign up using lambda function
+        *    
+        *
+ ***********************************************************************/
+
 
 Menu::Menu(): QMainWindow(){
     this->setWindowTitle(QApplication::translate("L-Type", "L-Type", nullptr));
@@ -30,14 +36,22 @@ void Menu::home(){
        home_button[i]->setMinimumSize(QSize(165, 65));
        button_v_layout->addWidget(home_button[i]);
     }
-    QLabel *title_label = new QLabel(QString::fromStdString("HOME"),centralwidget);
+    //button clicked connect (lambda statement)
+   /* connect(&home_button[0],SIGNAL(clicked()), SIGNAL([this]() {
+       connexion(true);
+   }));*/
+    //connect(*home_button[0], SIGNAL(clicked()), this, SLOT(connexion()));
+   // connect(*home_button[0],  SIGNAL(clicked()), this, SLOT(Menu::connexion()));
+
+    //title section
+    QLabel *title_label = new QLabel(QString::fromStdString(HOME_TITLE),centralwidget);
     title_label->setGeometry(QRect(110, 20, 579, 78));
     title_label->setFrameShape(QFrame::WinPanel);
     title_label->setAlignment(Qt::AlignCenter);
     this->setCentralWidget(centralwidget);
 }
 
-void Menu::connexion(){
+void Menu::connexion(bool sign_in){
     QWidget *centralwidget = new QWidget(this);
 
     QLineEdit *pseudo_line = new QLineEdit(centralwidget);
@@ -103,6 +117,8 @@ void Menu::main_m(){
     this->setCentralWidget(centralwidget);
 
 }
+
+
 /*
 
 void Menu::start_session(){}

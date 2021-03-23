@@ -17,31 +17,27 @@
 #ifndef Menu_HPP
 #define Menu_HPP
 
-#include "Client.hpp"
-#include "screen.hpp"
-
 #include <iostream>
-#include <QVariant>
-#include <QAction>
-#include <QApplication>
-#include <QButtonGroup>
-#include <QHeaderView>
-#include <QLabel>
-#include <QMainWindow>
-#include <QMenuBar>
-#include <QPushButton>
-#include <QStatusBar>
-#include <QVBoxLayout>
-#include <QWidget>
-#include <QLineEdit>
-//#include <QObject>
+#include <sys/types.h>
+#include <vector>
+#include "Client.hpp"
+#include "Interface.hpp"
+#include "game_test/parsing.hpp"
+#include "DisplayGame.hpp"
 
-
+using namespace Parsing; //utilities
 using namespace Screen;
 
-class Menu : public QMainWindow{
+class Menu{
 
+	//who
 	Client _client{};
+
+	//all menu
+	static const int HOME = 0;
+	static const int MAIN  = 1;
+	static const int FRIENDS = 2; 
+	static const int SETTINGS = 3;
 
 	//size menu
 	static const size_t SIZE_HOME = 3;
@@ -56,27 +52,43 @@ class Menu : public QMainWindow{
 	std::string main_menu[SIZE_MAIN_MENU] = {"New game", "Friends", "Leaderboard",
 								   "Profile", "Log out"};
 	std::string settings_menu[SIZE_SETTINGS] = {"Players", "Drop rate","Ally shot",
-									 "Lives", "Difficulty", "Play", "Quit lobby"};	
-
-	//Q_OBJECT;
-
+									 "Lives", "Difficulty", "Play", "Quit lobby"};				   
+	//console
+	static Interface window;
+	
 public:
-	Menu();
-	virtual ~Menu(){}
-
+	Menu()=default;
 	void start_session();
+	~Menu()=default;
+
 private:
-	//menu
-	void home();
-	void  main_m();
+	//all menu
+	int home();
+	int  main_m();
 	int friends();
 	int lobby();
-	void connexion(bool sign_in=true);
 
-	//utilities
-	void sign_in();
-	void sign_up();
+	//format
+	bool verify_pseudo_format(char *pseudo);
+	bool verify_pswd_format(char*pswd);
+
+	//Home utilities
+	int connexion(bool sign_in=true);
+
+	//Friends utilities
+	void afficher_friends();
+	void request_management();
+	void add_del_friends(bool add=true);
+
+	//Game utilities
+	void get_players(Game_settings *set);
+	void launch_game(Game_settings *);
+
+	static void handle_SIGINT(int sig);
+
+	
 };
+
 
 
 #endif //MENU_HPP
