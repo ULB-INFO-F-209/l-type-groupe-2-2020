@@ -46,7 +46,7 @@ class Menu : public QMainWindow{
 	//size menu
 	static const size_t SIZE_HOME = 3;
 	static const size_t SIZE_FRIENDS_MENU = 5; 
-	static const size_t SIZE_MAIN_MENU = 5;
+	static const size_t SIZE_MAIN_MENU = 6;				// ajout de LEVEL EDITOR
 	static const size_t SIZE_SETTINGS = 7;
 
 	//choices
@@ -54,7 +54,7 @@ class Menu : public QMainWindow{
 	std::string friends_menu[SIZE_FRIENDS_MENU] = {"Friends list", "Friends requests", "Add friend",
 								   "Remove friend", "Back"};
 	std::string main_menu[SIZE_MAIN_MENU] = {"New game", "Friends", "Leaderboard",
-								   "Profile", "Log out"};
+								   "Profile", "Level Editor", "Log out"};
 	std::string settings_menu[SIZE_SETTINGS] = {"Players", "Drop rate","Ally shot",\
 									 "Lives", "Difficulty", "Play", "Quit lobby"};	
 	//Q_OBJECT;
@@ -78,6 +78,7 @@ private:
 private slots:
 	void connexion(bool sign_in=true);
 	void check_data(bool sign_in=true);
+	void print_profile();
 };
 
 

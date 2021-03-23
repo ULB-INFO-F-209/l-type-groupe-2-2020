@@ -117,7 +117,9 @@ void Menu::connexion(bool sign_in){
 
     QPushButton *cancel_button = new QPushButton(QString::fromStdString("Cancel"),horizontalLayoutWidget);
     cancel_button->setMinimumSize(QSize(25, 50));
-    connect(ok_button, &QPushButton::clicked, this, [this]()
+    connect(cancel_button, &QPushButton::clicked, this, [this](){
+        home();
+    });
     horizontalLayout->addWidget(cancel_button);
 
     this->setCentralWidget(centralwidget);
@@ -146,11 +148,26 @@ void Menu::main_m(){
        main_button[i]->setMinimumSize(QSize(25, 50));
        verticalLayout->addWidget(main_button[i]);
     }
-
     this->setCentralWidget(centralwidget);
-
+    QPushButton *new_game = (main_button[0]);
+    QPushButton *friends = (main_button[1]);
+    QPushButton *leaderboard = (main_button[2]);
+    QPushButton *profile = (main_button[3]);
+    QPushButton *level = (main_button[4]);
+    QPushButton *log_out = (main_button[5]);
+    connect(profile, &QPushButton::clicked, this,  [this]() {
+           print_profile();});
+    connect(log_out, &QPushButton::clicked, this,  [this]() {
+           home();});
 }
 
+void Menu::print_profile(){
+    Profile profile; char buffer[Constante::CHAR_SIZE];
+    _client.get_profile(buffer);
+    profile_from_str(buffer, &profile);
+
+    
+}
 
 /*
 
