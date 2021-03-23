@@ -165,8 +165,59 @@ void Menu::print_profile(){
     Profile profile; char buffer[Constante::CHAR_SIZE];
     _client.get_profile(buffer);
     profile_from_str(buffer, &profile);
-
+    std::string pseudo = profile.pseudo, score =  std::to_string(profile.score);
     
+    QWidget *centralwidget = new QWidget(this);
+    QLabel *title = new QLabel(QString::fromStdString(PROFILE),centralwidget);
+    title->setGeometry(QRect(40, 20, 721, 61));
+    QFont font;
+    font.setPointSize(24);
+    title->setFont(font);
+    title->setFrameShape(QFrame::WinPanel);
+    title->setTextFormat(Qt::RichText);
+    title->setAlignment(Qt::AlignCenter);
+
+    QWidget *gridLayoutWidget = new QWidget(centralwidget);
+    gridLayoutWidget->setGeometry(QRect(40, 110, 731, 431));
+    QGridLayout *gridLayout = new QGridLayout(gridLayoutWidget);
+    gridLayout->setContentsMargins(0, 0, 0, 0);
+    QLabel *username = new QLabel((QString::fromStdString("USERNAME :")),gridLayoutWidget);
+    QFont font1;
+    font1.setFamily(QStringLiteral("Ubuntu"));
+    font1.setPointSize(16);
+    font1.setBold(false);
+    font1.setWeight(50);
+    username->setFont(font1);
+    gridLayout->addWidget(username, 0, 0, 1, 1);
+
+    QPushButton *back = new QPushButton((QString::fromStdString("Back")),gridLayoutWidget);
+    back->setMinimumSize(QSize(0, 45));
+    connect(back, &QPushButton::clicked, this,&Menu::main_m);
+
+    gridLayout->addWidget(back, 3, 0, 1, 3);
+
+    QLabel *pseudo_label= new QLabel(QString::fromStdString(pseudo),gridLayoutWidget);
+    QFont font2;
+    font2.setFamily(QStringLiteral("aakar"));
+    font2.setPointSize(16);
+    pseudo_label->setFont(font2);
+
+    gridLayout->addWidget(pseudo_label, 0, 1, 1, 1);
+
+    QLabel *score_label = new QLabel(QString::fromStdString(score),gridLayoutWidget);
+    score_label->setFont(font2);
+
+    gridLayout->addWidget(score_label, 2, 1, 1, 1);
+
+    QLabel *label_3 = new QLabel(QString::fromStdString("SCORE :"),gridLayoutWidget);
+    QFont font3;
+    font3.setPointSize(16);
+    label_3->setFont(font3);
+    gridLayout->addWidget(label_3, 2, 0, 1, 1);
+
+    this->setCentralWidget(centralwidget);
+    //this->update();
+    this->show();
 }
 
 /*

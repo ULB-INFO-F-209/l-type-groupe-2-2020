@@ -14,11 +14,13 @@
 
 */
 
-#ifndef Menu_HPP
+#ifndef Menu_HPP#include "screen.hpp"
 #define Menu_HPP
 
 #include "Client.hpp"
 #include "screen.hpp"
+#include "parsing.hpp"
+
 
 #include <iostream>
 #include <QVariant>
@@ -38,6 +40,7 @@
 
 
 using namespace Screen;
+using namespace Parsing;
 
 class Menu : public QMainWindow{
 

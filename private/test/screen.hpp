@@ -17,7 +17,7 @@ namespace Screen{
 	const std::string  DEL_FRIEND = "D E L  F R I E N D";
 	const std::string  REQUEST = "Y O U R  F R I E N D 'S  R E Q U E S T S";
 	const std::string  YOUR_FRIENDS ="Y O U R  F R I E N D S";
-	const std::string  PROFILE = "Y O U R  P R O F I L E";
+	const std::string  PROFILE = "Y O U R   P R O F I L E";
 	const std::string  PROFILE2 = "P R O F I L E";
 	const std::string  LEADERBOARD =" L E A D E R B O A R D";
 	const std::string  CHECK_USER = "I D E N T I T Y  V E R I F I C A T I O N ";
