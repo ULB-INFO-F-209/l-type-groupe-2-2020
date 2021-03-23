@@ -18,9 +18,9 @@ void DisplayGame::parse_instruction(std::string chaine_instruction){  // A_B_typ
 			parse_etat(instruction);
 
 	}
-	if (tickStar%2==0)
-		starHandler();
-	drawStar();
+	//if (tickStar%2==0)
+	//	starHandler();
+	//drawStar();
 	tickStar++;
 	usleep(1000);
 	refreshWnd();
@@ -304,6 +304,20 @@ int DisplayGame::init() {
         printf("ERROR: Terminal does not support color.\n");
         exit(1);
     }
+
+	wattron(main_wnd, A_BOLD);
+    box(main_wnd, 0, 0);
+    wattroff(main_wnd, A_BOLD);
+
+    // horizontal diving line
+    wmove(main_wnd, game_area.bot() + 3, 1);
+    whline(main_wnd, '-', screen_area.width()- 2);
+
+    // initial draw
+
+    wrefresh(main_wnd);
+    wrefresh(game_wnd);
+
     return 0;
 
 }
@@ -364,7 +378,7 @@ void DisplayGame::drawProjectile(int x, int y, bool enemy, bool player1){
     
 }
 void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinking){
-		/*
+		
         // draw player body
         int player_color;
 		char player_char;
@@ -409,7 +423,8 @@ void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinkin
             
         }
 
-        wattroff(game_wnd, A_ALTCHARSET);*/
+        wattroff(game_wnd, A_ALTCHARSET);
+		/*
 		sf::CircleShape shape(10.f);
 		shape.setPosition(sf::Vector2f(x * 10, y * 10));
 		if (player==1){
@@ -419,6 +434,7 @@ void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinkin
 			shape.setFillColor(sf::Color::Green);
 		}
 		window->draw(shape);
+		*/
  
 }
 void DisplayGame::drawBonus(int type, int x, int y){

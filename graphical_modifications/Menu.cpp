@@ -284,8 +284,8 @@ void Menu::get_players(Game_settings*set){
 void Menu::launch_game(Game_settings* game_option){
 	DisplayGame display_game;
 	display_game.init(); 
-	display_game.initGraphics();
-	sf::RenderWindow* window = display_game.getWindow();
+	//display_game.initGraphics();
+	//sf::RenderWindow* window = display_game.getWindow();
 
     bool gameOn = true;
     int inp = -1;
@@ -294,7 +294,9 @@ void Menu::launch_game(Game_settings* game_option){
 	//sf::CircleShape shape(100.f);
     //shape.setFillColor(sf::Color::Green);
 
-    while(gameOn && window->isOpen()){ //fenetre fermé -> terminal freeze
+    //while(gameOn && window->isOpen()){ //fenetre fermé -> terminal freeze
+	while(gameOn){
+		/*
 		sf::Event event;
         while (window->pollEvent(event))
         {
@@ -304,16 +306,16 @@ void Menu::launch_game(Game_settings* game_option){
 
         
 		window->clear();
-
+		*/
         
 
-        inp = display_game.getInputWindow();
+        inp = display_game.getInput();
 		
 		_client.send_game_input(inp);
 		string_game_to_display = _client.read_game_pipe();
 		if (string_game_to_display == Constante::GAME_END) break;
 		display_game.parse_instruction(string_game_to_display);
-		window->display();
+		//window->display();
 
     }
 	string_game_to_display = _client.read_game_pipe();
