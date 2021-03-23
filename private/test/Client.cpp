@@ -42,7 +42,7 @@ void Client::communication(char *buffer){
 }
 
 //Communication
-bool Client::signIn(char *pseudo, char *pswd, bool true_connexion){
+bool Client::signIn(const char *pseudo, const char *pswd, bool true_connexion){
 	char buffer[Constante::CHAR_SIZE];
 	sprintf(buffer, "Ma&%s&%s&%d", pseudo, pswd, _pid);
 	communication(buffer);
@@ -52,7 +52,7 @@ bool Client::signIn(char *pseudo, char *pswd, bool true_connexion){
 	return success; 
 }
 
-bool Client::signUp(char *pseudo, char *pswd){
+bool Client::signUp(const char *pseudo, const char *pswd){
 	char buffer[Constante::CHAR_SIZE];
 	sprintf(buffer, "Mb&%s&%s&%d", pseudo, pswd, _pid);
 	communication(buffer);

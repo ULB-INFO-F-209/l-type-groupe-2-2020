@@ -55,10 +55,12 @@ class Menu : public QMainWindow{
 								   "Remove friend", "Back"};
 	std::string main_menu[SIZE_MAIN_MENU] = {"New game", "Friends", "Leaderboard",
 								   "Profile", "Log out"};
-	std::string settings_menu[SIZE_SETTINGS] = {"Players", "Drop rate","Ally shot",
+	std::string settings_menu[SIZE_SETTINGS] = {"Players", "Drop rate","Ally shot",\
 									 "Lives", "Difficulty", "Play", "Quit lobby"};	
-
 	//Q_OBJECT;
+	QLineEdit *pseudo_line;
+	QLineEdit *pswd_line;
+
 
 public:
 	Menu();
@@ -71,11 +73,11 @@ private:
 	void  main_m();
 	int friends();
 	int lobby();
-	void connexion(bool sign_in=true);
 
-	//utilities
-	void sign_in();
-	void sign_up();
+
+private slots:
+	void connexion(bool sign_in=true);
+	void check_data(bool sign_in=true);
 };
 
 

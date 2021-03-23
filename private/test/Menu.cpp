@@ -41,7 +41,15 @@ void Menu::home(){
        connexion(true);
    }));*/
     //connect(*home_button[0], SIGNAL(clicked()), this, SLOT(connexion()));
-   // connect(*home_button[0],  SIGNAL(clicked()), this, SLOT(Menu::connexion()));
+    //connect(home_button[0],  SIGNAL(clicked()), this, SLOT(connexion()));
+    connect(home_button[0], &QPushButton::clicked, this, [this]() {
+       connexion(true);
+   });
+    connect(home_button[1], &QPushButton::clicked, this, [this]() {
+       connexion(false);
+   });
+    connect(home_button[2], &QPushButton::clicked, this,  &Menu::close);
+
 
     //title section
     QLabel *title_label = new QLabel(QString::fromStdString(HOME_TITLE),centralwidget);
@@ -51,21 +59,37 @@ void Menu::home(){
     this->setCentralWidget(centralwidget);
 }
 
+void Menu::check_data(bool sign_in){
+    std::string pseudo = (pseudo_line->text()).toUtf8().constData();
+    std::string pswd = (pswd_line->text()).toUtf8().constData();
+    std::cout<<"is sign in = "<<sign_in<<std::endl;
+    int success;
+    if(sign_in){
+        success = _client.signIn(pseudo.c_str(), pswd.c_str());
+        if(success)
+            main_m();
+    }
+    else{
+        success = _client.signUp(pseudo.c_str(), pswd.c_str());
+        if(success)
+            main_m();
+    }
+}
+
 void Menu::connexion(bool sign_in){
     QWidget *centralwidget = new QWidget(this);
 
-    QLineEdit *pseudo_line = new QLineEdit(centralwidget);
+    pseudo_line = new QLineEdit(centralwidget);
     pseudo_line->setGeometry(QRect(230, 270, 400, 45));
     pseudo_line->setMaxLength(15);
 
-    QLineEdit *pswd_line = new QLineEdit(centralwidget);
+    pswd_line = new QLineEdit(centralwidget);
     pswd_line->setGeometry(QRect(230, 370, 400, 45));
     pswd_line->setMaxLength(15);
 
     QLabel *title_label = new QLabel(QString::fromStdString("CONNEXION"), centralwidget);
     title_label->setGeometry(QRect(70, 47, 691, 81));
     title_label->setFrameShape(QFrame::WinPanel);
-    //title_label->setTextFormat(Qt::MarkdownText);
     title_label->setAlignment(Qt::AlignCenter);
 
     QLabel *pseudo_label = new QLabel(QString::fromStdString("USERNAME : "),centralwidget);
@@ -83,13 +107,22 @@ void Menu::connexion(bool sign_in){
     QPushButton *ok_button =  new QPushButton(QString::fromStdString("Ok"),horizontalLayoutWidget);
     ok_button->setMinimumSize(QSize(25, 50));
     horizontalLayout->addWidget(ok_button);
-
+    if(sign_in)
+        connect(ok_button, &QPushButton::clicked, this,  [this]() {
+            check_data(true);});
+    else
+        connect(ok_button, &QPushButton::clicked, this, [this]() {
+            check_data(false);});
+    
 
     QPushButton *cancel_button = new QPushButton(QString::fromStdString("Cancel"),horizontalLayoutWidget);
     cancel_button->setMinimumSize(QSize(25, 50));
+    connect(ok_button, &QPushButton::clicked, this, [this]()
     horizontalLayout->addWidget(cancel_button);
 
     this->setCentralWidget(centralwidget);
+    //this->update();
+    this->show();
 
 }
 void Menu::main_m(){
