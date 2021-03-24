@@ -1,5 +1,5 @@
 /********************************************************************************
-** Form generated from reading UI file 'leaderboard.ui'
+** Form generated from reading UI file 'lead.ui'
 **
 ** Created by: Qt User Interface Compiler version 5.12.2
 **
@@ -11,146 +11,132 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QListWidget>
+#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMenuBar>
+#include <QtWidgets/QStatusBar>
+#include <QtWidgets/QTableWidget>
+#include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
 
-class Ui_Leaderboard
+class Ui_Lead
 {
 public:
     QWidget *centralWidget;
-    QLabel *label;
-    QListWidget *listWidget;
-    QLabel *LABELL;
+    QTableWidget *tableWidget;
+    QMenuBar *menuBar;
+    QToolBar *mainToolBar;
+    QStatusBar *statusBar;
 
-    void setupUi(QMainWindow *Leaderboard)
+    void setupUi(QMainWindow *Lead)
     {
-        if (Leaderboard->objectName().isEmpty())
-            Leaderboard->setObjectName(QString::fromUtf8("Leaderboard"));
-        Leaderboard->resize(902, 604);
-        centralWidget = new QWidget(Leaderboard);
+        if (Lead->objectName().isEmpty())
+            Lead->setObjectName(QString::fromUtf8("Lead"));
+        Lead->resize(900, 594);
+        centralWidget = new QWidget(Lead);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
-        label = new QLabel(centralWidget);
-        label->setObjectName(QString::fromUtf8("label"));
-        label->setGeometry(QRect(110, 20, 661, 81));
-        QFont font;
-        font.setPointSize(24);
-        font.setBold(true);
-        font.setWeight(75);
-        label->setFont(font);
-        label->setFrameShape(QFrame::Box);
-        label->setLineWidth(5);
-        label->setAlignment(Qt::AlignCenter);
-        listWidget = new QListWidget(centralWidget);
-        new QListWidgetItem(listWidget);
-        new QListWidgetItem(listWidget);
-        new QListWidgetItem(listWidget);
-        new QListWidgetItem(listWidget);
-        new QListWidgetItem(listWidget);
-        new QListWidgetItem(listWidget);
-        new QListWidgetItem(listWidget);
-        new QListWidgetItem(listWidget);
-        new QListWidgetItem(listWidget);
-        new QListWidgetItem(listWidget);
-        new QListWidgetItem(listWidget);
-        new QListWidgetItem(listWidget);
-        new QListWidgetItem(listWidget);
-        new QListWidgetItem(listWidget);
-        new QListWidgetItem(listWidget);
-        new QListWidgetItem(listWidget);
-        new QListWidgetItem(listWidget);
-        new QListWidgetItem(listWidget);
-        new QListWidgetItem(listWidget);
-        new QListWidgetItem(listWidget);
-        new QListWidgetItem(listWidget);
-        new QListWidgetItem(listWidget);
-        new QListWidgetItem(listWidget);
-        new QListWidgetItem(listWidget);
-        new QListWidgetItem(listWidget);
-        new QListWidgetItem(listWidget);
-        listWidget->setObjectName(QString::fromUtf8("listWidget"));
-        listWidget->setGeometry(QRect(115, 200, 661, 351));
-        LABELL = new QLabel(centralWidget);
-        LABELL->setObjectName(QString::fromUtf8("LABELL"));
-        LABELL->setGeometry(QRect(90, 130, 80, 21));
-        Leaderboard->setCentralWidget(centralWidget);
+        tableWidget = new QTableWidget(centralWidget);
+        if (tableWidget->columnCount() < 2)
+            tableWidget->setColumnCount(2);
+        QTableWidgetItem *__qtablewidgetitem = new QTableWidgetItem();
+        tableWidget->setHorizontalHeaderItem(0, __qtablewidgetitem);
+        QTableWidgetItem *__qtablewidgetitem1 = new QTableWidgetItem();
+        tableWidget->setHorizontalHeaderItem(1, __qtablewidgetitem1);
+        if (tableWidget->rowCount() < 12)
+            tableWidget->setRowCount(12);
+        QTableWidgetItem *__qtablewidgetitem2 = new QTableWidgetItem();
+        tableWidget->setVerticalHeaderItem(0, __qtablewidgetitem2);
+        QTableWidgetItem *__qtablewidgetitem3 = new QTableWidgetItem();
+        tableWidget->setVerticalHeaderItem(1, __qtablewidgetitem3);
+        QTableWidgetItem *__qtablewidgetitem4 = new QTableWidgetItem();
+        tableWidget->setVerticalHeaderItem(2, __qtablewidgetitem4);
+        QTableWidgetItem *__qtablewidgetitem5 = new QTableWidgetItem();
+        tableWidget->setVerticalHeaderItem(3, __qtablewidgetitem5);
+        QTableWidgetItem *__qtablewidgetitem6 = new QTableWidgetItem();
+        tableWidget->setVerticalHeaderItem(4, __qtablewidgetitem6);
+        QTableWidgetItem *__qtablewidgetitem7 = new QTableWidgetItem();
+        tableWidget->setVerticalHeaderItem(5, __qtablewidgetitem7);
+        QTableWidgetItem *__qtablewidgetitem8 = new QTableWidgetItem();
+        tableWidget->setVerticalHeaderItem(6, __qtablewidgetitem8);
+        QTableWidgetItem *__qtablewidgetitem9 = new QTableWidgetItem();
+        tableWidget->setVerticalHeaderItem(7, __qtablewidgetitem9);
+        QTableWidgetItem *__qtablewidgetitem10 = new QTableWidgetItem();
+        tableWidget->setVerticalHeaderItem(8, __qtablewidgetitem10);
+        QTableWidgetItem *__qtablewidgetitem11 = new QTableWidgetItem();
+        tableWidget->setVerticalHeaderItem(9, __qtablewidgetitem11);
+        QTableWidgetItem *__qtablewidgetitem12 = new QTableWidgetItem();
+        tableWidget->setVerticalHeaderItem(10, __qtablewidgetitem12);
+        QTableWidgetItem *__qtablewidgetitem13 = new QTableWidgetItem();
+        tableWidget->setVerticalHeaderItem(11, __qtablewidgetitem13);
+        QTableWidgetItem *__qtablewidgetitem14 = new QTableWidgetItem();
+        tableWidget->setItem(7, 0, __qtablewidgetitem14);
+        QTableWidgetItem *__qtablewidgetitem15 = new QTableWidgetItem();
+        tableWidget->setItem(7, 1, __qtablewidgetitem15);
+        QTableWidgetItem *__qtablewidgetitem16 = new QTableWidgetItem();
+        tableWidget->setItem(8, 0, __qtablewidgetitem16);
+        QTableWidgetItem *__qtablewidgetitem17 = new QTableWidgetItem();
+        tableWidget->setItem(8, 1, __qtablewidgetitem17);
+        tableWidget->setObjectName(QString::fromUtf8("tableWidget"));
+        tableWidget->setGeometry(QRect(60, 30, 781, 501));
+        Lead->setCentralWidget(centralWidget);
+        menuBar = new QMenuBar(Lead);
+        menuBar->setObjectName(QString::fromUtf8("menuBar"));
+        menuBar->setGeometry(QRect(0, 0, 900, 26));
+        Lead->setMenuBar(menuBar);
+        mainToolBar = new QToolBar(Lead);
+        mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
+        Lead->addToolBar(Qt::TopToolBarArea, mainToolBar);
+        statusBar = new QStatusBar(Lead);
+        statusBar->setObjectName(QString::fromUtf8("statusBar"));
+        Lead->setStatusBar(statusBar);
 
-        retranslateUi(Leaderboard);
+        retranslateUi(Lead);
 
-        QMetaObject::connectSlotsByName(Leaderboard);
+        QMetaObject::connectSlotsByName(Lead);
     } // setupUi
 
-    void retranslateUi(QMainWindow *Leaderboard)
+    void retranslateUi(QMainWindow *Lead)
     {
-        Leaderboard->setWindowTitle(QApplication::translate("Leaderboard", "Leaderboard", nullptr));
-        label->setText(QApplication::translate("Leaderboard", "Leaderboard", nullptr));
+        Lead->setWindowTitle(QApplication::translate("Lead", "Lead", nullptr));
+        QTableWidgetItem *___qtablewidgetitem = tableWidget->horizontalHeaderItem(0);
+        ___qtablewidgetitem->setText(QApplication::translate("Lead", "Nom", nullptr));
+        QTableWidgetItem *___qtablewidgetitem1 = tableWidget->horizontalHeaderItem(1);
+        ___qtablewidgetitem1->setText(QApplication::translate("Lead", "Score", nullptr));
+        QTableWidgetItem *___qtablewidgetitem2 = tableWidget->verticalHeaderItem(0);
+        ___qtablewidgetitem2->setText(QApplication::translate("Lead", "New Row", nullptr));
+        QTableWidgetItem *___qtablewidgetitem3 = tableWidget->verticalHeaderItem(1);
+        ___qtablewidgetitem3->setText(QApplication::translate("Lead", "New Row", nullptr));
+        QTableWidgetItem *___qtablewidgetitem4 = tableWidget->verticalHeaderItem(2);
+        ___qtablewidgetitem4->setText(QApplication::translate("Lead", "New Row", nullptr));
+        QTableWidgetItem *___qtablewidgetitem5 = tableWidget->verticalHeaderItem(8);
+        ___qtablewidgetitem5->setText(QApplication::translate("Lead", "New Row", nullptr));
+        QTableWidgetItem *___qtablewidgetitem6 = tableWidget->verticalHeaderItem(9);
+        ___qtablewidgetitem6->setText(QApplication::translate("Lead", "New Row", nullptr));
+        QTableWidgetItem *___qtablewidgetitem7 = tableWidget->verticalHeaderItem(10);
+        ___qtablewidgetitem7->setText(QApplication::translate("Lead", "New Row", nullptr));
+        QTableWidgetItem *___qtablewidgetitem8 = tableWidget->verticalHeaderItem(11);
+        ___qtablewidgetitem8->setText(QApplication::translate("Lead", "New Row", nullptr));
 
-        const bool __sortingEnabled = listWidget->isSortingEnabled();
-        listWidget->setSortingEnabled(false);
-        QListWidgetItem *___qlistwidgetitem = listWidget->item(0);
-        ___qlistwidgetitem->setText(QApplication::translate("Leaderboard", "fghdfhdfghfg", nullptr));
-        QListWidgetItem *___qlistwidgetitem1 = listWidget->item(1);
-        ___qlistwidgetitem1->setText(QApplication::translate("Leaderboard", "New Item", nullptr));
-        QListWidgetItem *___qlistwidgetitem2 = listWidget->item(2);
-        ___qlistwidgetitem2->setText(QApplication::translate("Leaderboard", "New Item", nullptr));
-        QListWidgetItem *___qlistwidgetitem3 = listWidget->item(3);
-        ___qlistwidgetitem3->setText(QApplication::translate("Leaderboard", "New Item", nullptr));
-        QListWidgetItem *___qlistwidgetitem4 = listWidget->item(4);
-        ___qlistwidgetitem4->setText(QApplication::translate("Leaderboard", "New Item", nullptr));
-        QListWidgetItem *___qlistwidgetitem5 = listWidget->item(5);
-        ___qlistwidgetitem5->setText(QApplication::translate("Leaderboard", "New Item", nullptr));
-        QListWidgetItem *___qlistwidgetitem6 = listWidget->item(6);
-        ___qlistwidgetitem6->setText(QApplication::translate("Leaderboard", "New fghfgh", nullptr));
-        QListWidgetItem *___qlistwidgetitem7 = listWidget->item(7);
-        ___qlistwidgetitem7->setText(QApplication::translate("Leaderboard", "New Item", nullptr));
-        QListWidgetItem *___qlistwidgetitem8 = listWidget->item(8);
-        ___qlistwidgetitem8->setText(QApplication::translate("Leaderboard", "fdhfg", nullptr));
-        QListWidgetItem *___qlistwidgetitem9 = listWidget->item(9);
-        ___qlistwidgetitem9->setText(QApplication::translate("Leaderboard", "New Item", nullptr));
-        QListWidgetItem *___qlistwidgetitem10 = listWidget->item(10);
-        ___qlistwidgetitem10->setText(QApplication::translate("Leaderboard", "New Item", nullptr));
-        QListWidgetItem *___qlistwidgetitem11 = listWidget->item(11);
-        ___qlistwidgetitem11->setText(QApplication::translate("Leaderboard", "New Item", nullptr));
-        QListWidgetItem *___qlistwidgetitem12 = listWidget->item(12);
-        ___qlistwidgetitem12->setText(QApplication::translate("Leaderboard", "New Item", nullptr));
-        QListWidgetItem *___qlistwidgetitem13 = listWidget->item(13);
-        ___qlistwidgetitem13->setText(QApplication::translate("Leaderboard", "New Item", nullptr));
-        QListWidgetItem *___qlistwidgetitem14 = listWidget->item(14);
-        ___qlistwidgetitem14->setText(QApplication::translate("Leaderboard", "New Item", nullptr));
-        QListWidgetItem *___qlistwidgetitem15 = listWidget->item(15);
-        ___qlistwidgetitem15->setText(QApplication::translate("Leaderboard", "New Item", nullptr));
-        QListWidgetItem *___qlistwidgetitem16 = listWidget->item(16);
-        ___qlistwidgetitem16->setText(QApplication::translate("Leaderboard", "New Item", nullptr));
-        QListWidgetItem *___qlistwidgetitem17 = listWidget->item(17);
-        ___qlistwidgetitem17->setText(QApplication::translate("Leaderboard", "(\302\247''\"'(\302\247\"'", nullptr));
-        QListWidgetItem *___qlistwidgetitem18 = listWidget->item(18);
-        ___qlistwidgetitem18->setText(QApplication::translate("Leaderboard", "New Item", nullptr));
-        QListWidgetItem *___qlistwidgetitem19 = listWidget->item(19);
-        ___qlistwidgetitem19->setText(QApplication::translate("Leaderboard", "New Item", nullptr));
-        QListWidgetItem *___qlistwidgetitem20 = listWidget->item(20);
-        ___qlistwidgetitem20->setText(QApplication::translate("Leaderboard", "New Item", nullptr));
-        QListWidgetItem *___qlistwidgetitem21 = listWidget->item(21);
-        ___qlistwidgetitem21->setText(QApplication::translate("Leaderboard", "rtutr", nullptr));
-        QListWidgetItem *___qlistwidgetitem22 = listWidget->item(22);
-        ___qlistwidgetitem22->setText(QApplication::translate("Leaderboard", "New Item", nullptr));
-        QListWidgetItem *___qlistwidgetitem23 = listWidget->item(23);
-        ___qlistwidgetitem23->setText(QApplication::translate("Leaderboard", "New Item", nullptr));
-        QListWidgetItem *___qlistwidgetitem24 = listWidget->item(24);
-        ___qlistwidgetitem24->setText(QApplication::translate("Leaderboard", "dsfgdfgdfsgdf", nullptr));
-        QListWidgetItem *___qlistwidgetitem25 = listWidget->item(25);
-        ___qlistwidgetitem25->setText(QApplication::translate("Leaderboard", "New Item", nullptr));
-        listWidget->setSortingEnabled(__sortingEnabled);
+        const bool __sortingEnabled = tableWidget->isSortingEnabled();
+        tableWidget->setSortingEnabled(false);
+        QTableWidgetItem *___qtablewidgetitem9 = tableWidget->item(7, 0);
+        ___qtablewidgetitem9->setText(QApplication::translate("Lead", "Caligula", nullptr));
+        QTableWidgetItem *___qtablewidgetitem10 = tableWidget->item(7, 1);
+        ___qtablewidgetitem10->setText(QApplication::translate("Lead", "80", nullptr));
+        QTableWidgetItem *___qtablewidgetitem11 = tableWidget->item(8, 0);
+        ___qtablewidgetitem11->setText(QApplication::translate("Lead", "Aissa", nullptr));
+        QTableWidgetItem *___qtablewidgetitem12 = tableWidget->item(8, 1);
+        ___qtablewidgetitem12->setText(QApplication::translate("Lead", "40", nullptr));
+        tableWidget->setSortingEnabled(__sortingEnabled);
 
-        LABELL->setText(QApplication::translate("Leaderboard", "TextLabel", nullptr));
     } // retranslateUi
 
 };
 
 namespace Ui {
-    class Leaderboard: public Ui_Leaderboard {};
+    class Lead: public Ui_Lead {};
 } // namespace Ui
 
 QT_END_NAMESPACE
