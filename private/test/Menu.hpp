@@ -14,7 +14,7 @@
 
 */
 
-#ifndef Menu_HPP#include "screen.hpp"
+#ifndef Menu_HPP
 #define Menu_HPP
 
 #include "Client.hpp"
@@ -36,6 +36,7 @@
 #include <QVBoxLayout>
 #include <QWidget>
 #include <QLineEdit>
+#include <QTableWidget>
 //#include <QObject>
 
 
@@ -82,6 +83,7 @@ private slots:
 	void connexion(bool sign_in=true);
 	void check_data(bool sign_in=true);
 	void print_profile();
+	void print_leaderboard();
 };
 
 

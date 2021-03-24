@@ -159,6 +159,8 @@ void Menu::main_m(){
            print_profile();});
     connect(log_out, &QPushButton::clicked, this,  [this]() {
            home();});
+    connect(leaderboard, &QPushButton::clicked, this,  [this]() {
+           print_leaderboard();});
 }
 
 void Menu::print_profile(){
@@ -215,6 +217,51 @@ void Menu::print_profile(){
     label_3->setFont(font3);
     gridLayout->addWidget(label_3, 2, 0, 1, 1);
 
+    this->setCentralWidget(centralwidget);
+    //this->update();
+    this->show();
+}
+void Menu::print_leaderboard(){
+    std::vector<Profile> profile_list;
+    char buffer[Constante::CHAR_SIZE];
+    _client.checkLeaderboard(buffer);
+    profile_list_from_str(buffer, &profile_list);
+
+    QWidget *centralwidget = new QWidget(this);
+    QLabel *title = new QLabel(QString::fromStdString(LEADERBOARD),centralwidget);
+    title->setGeometry(QRect(40, 20, 721, 61));
+    QFont font;
+    font.setPointSize(24);
+    title->setFont(font);
+    title->setFrameShape(QFrame::WinPanel);
+    title->setTextFormat(Qt::RichText);
+    title->setAlignment(Qt::AlignCenter);
+    QTableWidget* tableWidget = new QTableWidget(centralWidget);
+    if (tableWidget->columnCount() < 2)
+        tableWidget->setColumnCount(2);
+    QTableWidgetItem *__qtablewidgetitem = new QTableWidgetItem();
+        tableWidget->setHorizontalHeaderItem(0, __qtablewidgetitem)->setText(QApplication::translate("Lead", "Caligula", nullptr));;
+    QTableWidgetItem *__qtablewidgetitem = new QTableWidgetItem();
+        tableWidget->setHorizontalHeaderItem(1, __qtablewidgetitem);
+    if (tableWidget->rowCount() < 12)
+            tableWidget->setRowCount(12);
+    
+
+    QStringList m_TableHeader;
+    m_TableHeader <<"#"<<"Name"<<"Text";
+    tableWidget->setHorizontalHeaderLabels(m_TableHeader);
+    tableWidget->verticalHeader()->setVisible(false);
+    tableWidget->setShowGrid(false);
+    //tableWidget->setGeometry(QApplication::desktop()->screenGeometry());
+    tableWidget->setGeometry(QRect(115, 200, 661, 351));
+    for(auto prof:profile_list) {
+        new QListWidgetItem(QString::fromStdString(prof.pseudo),listWidget);
+        QTableWidgetItem *__qtablewidgetitem = new QTableWidgetItem();
+        tableWidget->setVerticalHeaderItem(9, __qtablewidgetitem11);
+
+        QTableWidgetItem *___qtablewidgetitem10 = tableWidget->item(1, 1);
+        ___qtablewidgetitem10->setText(QApplication::translate("Lead", "80", nullptr));
+    }
     this->setCentralWidget(centralwidget);
     //this->update();
     this->show();
