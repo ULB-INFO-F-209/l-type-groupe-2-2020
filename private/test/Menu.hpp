@@ -14,8 +14,12 @@
 
 */
 
-#ifndef Menu_HPP
+#ifndef Menu_HPP#include "screen.hpp"
 #define Menu_HPP
+
+#include "Client.hpp"
+#include "screen.hpp"
+#include "parsing.hpp"
 
 
 #include <iostream>
@@ -32,18 +36,20 @@
 #include <QVBoxLayout>
 #include <QWidget>
 #include <QLineEdit>
+//#include <QObject>
 
-//QT_BEGIN_NAMESPACE
+
+using namespace Screen;
+using namespace Parsing;
 
 class Menu : public QMainWindow{
 
-	//who
-	//Client _client{};
+	Client _client{};
 
 	//size menu
 	static const size_t SIZE_HOME = 3;
 	static const size_t SIZE_FRIENDS_MENU = 5; 
-	static const size_t SIZE_MAIN_MENU = 5;
+	static const size_t SIZE_MAIN_MENU = 6;				// ajout de LEVEL EDITOR
 	static const size_t SIZE_SETTINGS = 7;
 
 	//choices
@@ -51,25 +57,32 @@ class Menu : public QMainWindow{
 	std::string friends_menu[SIZE_FRIENDS_MENU] = {"Friends list", "Friends requests", "Add friend",
 								   "Remove friend", "Back"};
 	std::string main_menu[SIZE_MAIN_MENU] = {"New game", "Friends", "Leaderboard",
-								   "Profile", "Log out"};
-	std::string settings_menu[SIZE_SETTINGS] = {"Players", "Drop rate","Ally shot",
+								   "Profile", "Level Editor", "Log out"};
+	std::string settings_menu[SIZE_SETTINGS] = {"Players", "Drop rate","Ally shot",\
 									 "Lives", "Difficulty", "Play", "Quit lobby"};	
-
 	//Q_OBJECT;
+	QLineEdit *pseudo_line;
+	QLineEdit *pswd_line;
+
 
 public:
 	Menu();
 	virtual ~Menu(){}
 
 	void start_session();
+private:
+	//menu
 	void home();
 	void  main_m();
 	int friends();
 	int lobby();
-	void connexion();
-	
+
+
+private slots:
+	void connexion(bool sign_in=true);
+	void check_data(bool sign_in=true);
+	void print_profile();
 };
 
-//QT_END_NAMESPACE
 
 #endif //MENU_HPP
