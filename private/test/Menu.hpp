@@ -75,7 +75,7 @@ private:
 	//menu
 	void home();
 	void  main_m();
-	int friends();
+	void print_friends();
 	int lobby();
 
 

@@ -10,7 +10,7 @@
 Menu::Menu(): QMainWindow(){
     this->setWindowTitle(QApplication::translate("L-Type", "L-Type", nullptr));
     this->resize(800, 600);
-    this->setStyleSheet(QStringLiteral("background-color:salmon;"));
+    this->setStyleSheet(QStringLiteral("background-color:grey;"));
 }
 
 void Menu::start_session(){
@@ -155,12 +155,16 @@ void Menu::main_m(){
     QPushButton *profile = (main_button[3]);
     QPushButton *level = (main_button[4]);
     QPushButton *log_out = (main_button[5]);
+
+    connect(friends, &QPushButton::clicked, this,  [this]() {
+           print_friends();});
+    connect(leaderboard, &QPushButton::clicked, this,  [this]() {
+           print_leaderboard();});
     connect(profile, &QPushButton::clicked, this,  [this]() {
            print_profile();});
     connect(log_out, &QPushButton::clicked, this,  [this]() {
            home();});
-    connect(leaderboard, &QPushButton::clicked, this,  [this]() {
-           print_leaderboard();});
+
 }
 
 void Menu::print_profile(){
@@ -236,37 +240,123 @@ void Menu::print_leaderboard(){
     title->setFrameShape(QFrame::WinPanel);
     title->setTextFormat(Qt::RichText);
     title->setAlignment(Qt::AlignCenter);
-    QTableWidget* tableWidget = new QTableWidget(centralWidget);
-    if (tableWidget->columnCount() < 2)
-        tableWidget->setColumnCount(2);
-    QTableWidgetItem *__qtablewidgetitem = new QTableWidgetItem();
-        tableWidget->setHorizontalHeaderItem(0, __qtablewidgetitem)->setText(QApplication::translate("Lead", "Caligula", nullptr));;
-    QTableWidgetItem *__qtablewidgetitem = new QTableWidgetItem();
-        tableWidget->setHorizontalHeaderItem(1, __qtablewidgetitem);
-    if (tableWidget->rowCount() < 12)
-            tableWidget->setRowCount(12);
-    
+
+    QWidget * verticalLayoutWidget = new QWidget(centralwidget);
+    verticalLayoutWidget->setObjectName(QString::fromUtf8("verticalLayoutWidget"));
+    verticalLayoutWidget->setGeometry(QRect(80, 110, 620, 500));
+    QVBoxLayout* verticalLayout = new QVBoxLayout(verticalLayoutWidget);
+    verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+    verticalLayout->setContentsMargins(0, 0, 0, 0);
+    QVBoxLayout* verticalLayout_2 = new QVBoxLayout();
+    verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
+    QHBoxLayout* horizontalLayout = new QHBoxLayout();
+    horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+    QTableWidget* tableWidget = new QTableWidget(verticalLayoutWidget);
+    tableWidget->setColumnCount(2);
+    tableWidget->setMaximumSize(QSize(220, 190));
+    tableWidget->setRowCount(profile_list.size());
+
+    horizontalLayout->addWidget(tableWidget);
+
+    verticalLayout_2->addLayout(horizontalLayout);
+
+    verticalLayout->addLayout(verticalLayout_2);
+
+    QPushButton* back = new QPushButton((QString::fromStdString("Back")), verticalLayoutWidget);
+    back->setMaximumSize(QSize(1000, 45));
+    connect(back, &QPushButton::clicked, this,&Menu::main_m);
+
+    verticalLayout->addWidget(back);
 
     QStringList m_TableHeader;
-    m_TableHeader <<"#"<<"Name"<<"Text";
+    m_TableHeader <<"Pseudo"<<"Score";
     tableWidget->setHorizontalHeaderLabels(m_TableHeader);
     tableWidget->verticalHeader()->setVisible(false);
     tableWidget->setShowGrid(false);
     //tableWidget->setGeometry(QApplication::desktop()->screenGeometry());
-    tableWidget->setGeometry(QRect(115, 200, 661, 351));
-    for(auto prof:profile_list) {
-        new QListWidgetItem(QString::fromStdString(prof.pseudo),listWidget);
-        QTableWidgetItem *__qtablewidgetitem = new QTableWidgetItem();
-        tableWidget->setVerticalHeaderItem(9, __qtablewidgetitem11);
-
-        QTableWidgetItem *___qtablewidgetitem10 = tableWidget->item(1, 1);
-        ___qtablewidgetitem10->setText(QApplication::translate("Lead", "80", nullptr));
+    tableWidget->setGeometry(QRect(300, 150, 22, 190));
+    tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
+    tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
+    tableWidget->setShowGrid(false);
+    for (size_t i = 0; i < profile_list.size(); i++){
+        tableWidget->setItem(i, 0, new QTableWidgetItem(profile_list[i].pseudo));
+        int score = profile_list[i].score;
+        char buff[20];
+        sprintf(buff, "%d", score);
+        tableWidget->setItem(i, 1, new QTableWidgetItem(buff));
     }
     this->setCentralWidget(centralwidget);
     //this->update();
     this->show();
 }
 
+void Menu::print_friends(){
+	char buffer[Constante::CHAR_SIZE];
+	std::vector<Profile> vect;
+	_client.getFriendList(buffer);
+	profile_list_from_str(buffer, &vect); //parsing
+
+    QWidget *centralwidget = new QWidget(this);
+    QLabel *title = new QLabel(QString::fromStdString(LEADERBOARD),centralwidget);
+    title->setGeometry(QRect(40, 20, 721, 61));
+    QFont font;
+    font.setPointSize(24);
+    title->setFont(font);
+    title->setFrameShape(QFrame::WinPanel);
+    title->setTextFormat(Qt::RichText);
+    title->setAlignment(Qt::AlignCenter);
+
+    QWidget * verticalLayoutWidget = new QWidget(centralwidget);
+    verticalLayoutWidget->setObjectName(QString::fromUtf8("verticalLayoutWidget"));
+    verticalLayoutWidget->setGeometry(QRect(80, 110, 620, 500));
+    QVBoxLayout* verticalLayout = new QVBoxLayout(verticalLayoutWidget);
+    verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+    verticalLayout->setContentsMargins(0, 0, 0, 0);
+    QVBoxLayout* verticalLayout_2 = new QVBoxLayout();
+    verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
+    QHBoxLayout* horizontalLayout = new QHBoxLayout();
+    horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+    QTableWidget* tableWidget = new QTableWidget(verticalLayoutWidget);
+    tableWidget->setColumnCount(2);
+    tableWidget->setMaximumSize(QSize(220, 190));
+    tableWidget->setRowCount(vect.size());
+
+    horizontalLayout->addWidget(tableWidget);
+
+    verticalLayout_2->addLayout(horizontalLayout);
+
+    verticalLayout->addLayout(verticalLayout_2);
+
+    QPushButton* back = new QPushButton((QString::fromStdString("Back")), verticalLayoutWidget);
+    back->setMaximumSize(QSize(1000, 45));
+    connect(back, &QPushButton::clicked, this,&Menu::main_m);
+
+    verticalLayout->addWidget(back);
+
+    QStringList m_TableHeader;
+    m_TableHeader <<"Pseudo"<<"Score";
+    tableWidget->setHorizontalHeaderLabels(m_TableHeader);
+    tableWidget->verticalHeader()->setVisible(false);
+    tableWidget->setShowGrid(false);
+    //tableWidget->setGeometry(QApplication::desktop()->screenGeometry());
+    tableWidget->setGeometry(QRect(300, 150, 22, 190));
+    tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
+    tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
+    tableWidget->setShowGrid(false);
+    for (size_t i = 0; i < vect.size(); i++){
+        tableWidget->setItem(i, 0, new QTableWidgetItem(vect[i].pseudo));
+        int score = vect[i].score;
+        char buff[20];
+        sprintf(buff, "%d", score);
+        tableWidget->setItem(i, 1, new QTableWidgetItem(buff));
+    }
+    this->setCentralWidget(centralwidget);
+    //this->update();
+    this->show();
+
+}
 /*
 
 void Menu::start_session(){}
