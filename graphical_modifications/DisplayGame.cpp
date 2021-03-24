@@ -1,3 +1,5 @@
+//TODO: Stars ?
+
 
 #include "DisplayGame.hpp"
 
@@ -18,9 +20,9 @@ void DisplayGame::parse_instruction(std::string chaine_instruction){  // A_B_typ
 			parse_etat(instruction);
 
 	}
-	//if (tickStar%2==0)
-	//	starHandler();
-	//drawStar();
+	if (tickStar%2==0)
+		starHandler();
+	drawStar();
 	tickStar++;
 	usleep(1000);
 	refreshWnd();
@@ -246,8 +248,10 @@ void DisplayGame::drawNewLevel(int tick,int levelTick,int currentLevel) {
     }
 }
 void DisplayGame::initGraphics(){
-	window = new sf::RenderWindow(sf::VideoMode(1600, 1000), "L-TYPE");
+	window = new sf::RenderWindow(sf::VideoMode(680, 480), "L-TYPE");
 	window->setVerticalSyncEnabled(false);
+
+
 
 }
 int DisplayGame::init() {
@@ -424,17 +428,18 @@ void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinkin
         }
 
         wattroff(game_wnd, A_ALTCHARSET);
-		/*
+		
 		sf::CircleShape shape(10.f);
-		shape.setPosition(sf::Vector2f(x * 10, y * 10));
+		shape.setPosition(sf::Vector2f(x*8.5, y*20));
 		if (player==1){
             shape.setFillColor(sf::Color::Blue);
         }
         else{
 			shape.setFillColor(sf::Color::Green);
 		}
+
 		window->draw(shape);
-		*/
+	
  
 }
 void DisplayGame::drawBonus(int type, int x, int y){
@@ -467,7 +472,23 @@ void DisplayGame::drawBoss(int x, int y){
         wattroff(main_wnd, COLOR_PAIR(4));
 }
 void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType, int level, int tick){
+		sf::RectangleShape cadre(sf::Vector2f(670, 470));
+		cadre.setFillColor(sf::Color::Transparent);
+		cadre.setOutlineThickness(2);
+		cadre.setOutlineColor(sf::Color::Cyan);
+		cadre.setPosition(sf::Vector2f(5, 5));
+		window->draw(cadre);
+
+		sf::RectangleShape line(sf::Vector2f(670, 2));
+		line.setFillColor(sf::Color::Cyan);
+		//cadre.setOutlineColor(sf::Color::Cyan);
+		line.setPosition(sf::Vector2f(5, 370));
+		window->draw(line);
+	
 	if(player == 0){
+
+		
+		/*
 		wmove(main_wnd, 20, 1);
 		whline(main_wnd, ' ', 25); // health bar is 25 chars long
 		wmove(main_wnd, 20, 1);
@@ -497,6 +518,7 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 			mvwprintw(main_wnd, 22, 16, "  B%d: L",player + 1);
 		else if (bonusType == noBonus)
 			mvwprintw(main_wnd, 22, 16, "  B%d:  ",player + 1);
+	*/
 	}
     if(player == 1){
         // energy bar player2
