@@ -536,22 +536,22 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 
 		
 		sf::Sprite sprite;
-		sprite.setScale(sf::Vector2f(0.15,0.15));
+		sprite.setScale(sf::Vector2f(0.17,0.17));
 		sprite.setPosition(sf::Vector2f(7,390));
 		sprite.setTexture(texture);
 		window->draw(sprite);
 		//score
-		sf::Text text;
+		sf::Text score_txt;
 		// choix de la police à utiliser
-		text.setFont(font);
+		score_txt.setFont(font);
 		// choix de la chaîne de caractères à afficher
-		text.setString("Score: "+std::to_string(score));
+		score_txt.setString("Score: "+std::to_string(score));
 		// choix de la taille des caractères
-		text.setCharacterSize(20); // exprimée en pixels, pas en points !
+		score_txt.setCharacterSize(20); // exprimée en pixels, pas en points !
 		// choix de la couleur du texte
-		text.setColor(sf::Color::White);		
-		text.setPosition(sf::Vector2f(7,430));
-		window->draw(text);
+		score_txt.setColor(sf::Color::White);		
+		score_txt.setPosition(sf::Vector2f(7,430));
+		window->draw(score_txt);
 		//life
 		sf::Text life_percentage;
 		life_percentage.setFont(font); // font est un sf::Font
@@ -560,6 +560,14 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 		life_percentage.setColor(sf::Color::White);		
 		life_percentage.setPosition(sf::Vector2f(63,393));
 		window->draw(life_percentage);
+		//n lives
+		sf::Text n_lives;
+		n_lives.setFont(font); // font est un sf::Font
+		n_lives.setString(std::to_string(lives));
+		n_lives.setCharacterSize(20); // exprimée en pixels, pas en points !
+		n_lives.setColor(sf::Color::Black);		
+		n_lives.setPosition(sf::Vector2f(23,395));
+		window->draw(n_lives);
 		//Bonus
 		sf::Text bonus_txt;
 		bonus_txt.setFont(font); // font est un sf::Font
@@ -614,23 +622,23 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
             mvwprintw(main_wnd, 22, 69, "  B%d:  ", player + 1);
 		
 		sf::Sprite sprite2;
-		sprite2.setScale(sf::Vector2f(0.15,0.15));
+		sprite2.setScale(sf::Vector2f(0.17,0.17));
 		sprite2.setPosition(sf::Vector2f(460,390));
 		sprite2.setTexture(texture);
 		window->draw(sprite2);
 
 		//score
-		sf::Text text;
+		sf::Text score_txt;
 		// choix de la police à utiliser
-		text.setFont(font); // font est un sf::Font
+		score_txt.setFont(font); // font est un sf::Font
 		// choix de la chaîne de caractères à afficher
-		text.setString("Score: "+std::to_string(score));
+		score_txt.setString("Score: "+std::to_string(score));
 		// choix de la taille des caractères
-		text.setCharacterSize(20); // exprimée en pixels, pas en points !
+		score_txt.setCharacterSize(20); // exprimée en pixels, pas en points !
 		// choix de la couleur du texte
-		text.setColor(sf::Color::White);		
-		text.setPosition(sf::Vector2f(465,430));
-		window->draw(text);
+		score_txt.setColor(sf::Color::White);		
+		score_txt.setPosition(sf::Vector2f(465,430));
+		window->draw(score_txt);
 		//life
 		sf::Text life_percentage;
 		life_percentage.setFont(font); // font est un sf::Font
@@ -639,6 +647,14 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 		life_percentage.setColor(sf::Color::White);		
 		life_percentage.setPosition(sf::Vector2f(526,393));
 		window->draw(life_percentage);
+		//n lives
+		sf::Text n_lives;
+		n_lives.setFont(font); // font est un sf::Font
+		n_lives.setString(std::to_string(lives));
+		n_lives.setCharacterSize(20); // exprimée en pixels, pas en points !
+		n_lives.setColor(sf::Color::Black);		
+		n_lives.setPosition(sf::Vector2f(476,395));
+		window->draw(n_lives);
 		//Bonus
 		sf::Text bonus_txt;
 		bonus_txt.setFont(font); // font est un sf::Font
