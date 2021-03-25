@@ -8,14 +8,14 @@
 void DisplayGame::parse_instruction(std::string chaine_instruction){  // A_B_type_x_y&E_H2_valeur&...
 	//std::string chaine_instruction(buffer);
 	eraseWnd();
-	while(chaine_instruction.size() > 1){ 
+	while(chaine_instruction.size() > 1){
 		std::size_t idx = chaine_instruction.find(delimiteur_instruction);  //idx du premier delimiteur_instruction (&)
 		std::string instruction = chaine_instruction.substr(0,idx);     	// on retire une instruction
 		chaine_instruction = chaine_instruction.substr(idx+1,chaine_instruction.size()); // on garde la chaine sans l instruction
 		idx = instruction.find(delimiteur_parametre); 				//on va voir le premier param de l instruction
 		std::string type_instruction = instruction.substr(0,idx); 		//on recupère le premier param de l instruction
 		instruction = instruction.substr(idx+1,instruction.size()); //on met à jour l'instruction
-	
+
 		if (type_instruction == "A") 		//Affichage (utiliser des thread?)
 			parse_affichage(instruction);
 		else if (type_instruction == "E")	//Etat
@@ -36,9 +36,9 @@ void DisplayGame::refreshWnd(){
 }
 
 void DisplayGame::eraseWnd(){
-	
+
 	werase(game_wnd);
-	
+
 }
 
 void DisplayGame::close(){
@@ -143,7 +143,7 @@ void DisplayGame::parse_affichage(std::string instruction){
 	instruction = instruction.substr(idx+1,instruction.size());
 	idx = instruction.find(delimiteur_parametre);
 	y = std::stoi(instruction.substr(0,idx));
-	instruction = instruction.substr(idx+1,instruction.size()); 
+	instruction = instruction.substr(idx+1,instruction.size());
 
 	//dans l'ordre de reccurence (pour eviter trop de comparaison)
 	if(objet=="PE") 			//projectile ennemie
@@ -163,7 +163,7 @@ void DisplayGame::parse_affichage(std::string instruction){
 		explo = std::stoi(instruction.substr(0,idx));
 		tick = std::stoi(instruction.substr(idx+1,instruction.length()));
 		drawPlayer(1,x,y,tick,explo);
-	}	
+	}
 
 	else if(objet=="2"){		//Vaisseau joueur 2
 		int explo,tick;
@@ -171,14 +171,14 @@ void DisplayGame::parse_affichage(std::string instruction){
 		explo = std::stoi(instruction.substr(0,idx));
 		tick = std::stoi(instruction.substr(idx+1,instruction.length()));
 		drawPlayer(2,x,y,tick,explo);
-	}			
+	}
 	else if(objet=="O")			//obstacle
 		drawObstacle(x,y);
 	else if(objet=="EB") 		//Boss
 		drawBoss(x,y);
 	else if(objet=="B"){		//Bonus
 		idx = instruction.find(delimiteur_parametre);
-		int type = std::stoi(instruction.substr(0,idx));  
+		int type = std::stoi(instruction.substr(0,idx));
 		drawBonus(type,x,y);
 	}
 	else if (objet=="L"){
@@ -196,35 +196,35 @@ void DisplayGame::parse_etat(std::string instruction){
 
 	idx = instruction.find(delimiteur_parametre); 				//on va voir le premier param de l instruction
 	player = std::stoi(instruction.substr(0,idx)); 		//on recupère le premier param de l instruction
-	
+
 	instruction = instruction.substr(idx+1,instruction.size()); //nettoie instruction
 	idx = instruction.find(delimiteur_parametre);
-	hp = std::stoi(instruction.substr(0,idx)); 		
+	hp = std::stoi(instruction.substr(0,idx));
 
-	instruction = instruction.substr(idx+1,instruction.size()); 
+	instruction = instruction.substr(idx+1,instruction.size());
 	idx = instruction.find(delimiteur_parametre);
-	life = std::stoi(instruction.substr(0,idx)); 	
+	life = std::stoi(instruction.substr(0,idx));
 
-	instruction = instruction.substr(idx+1,instruction.size()); 
-	idx = instruction.find(delimiteur_parametre);	
-	score = std::stoi(instruction.substr(0,idx)); 
+	instruction = instruction.substr(idx+1,instruction.size());
+	idx = instruction.find(delimiteur_parametre);
+	score = std::stoi(instruction.substr(0,idx));
 
-	instruction = instruction.substr(idx+1,instruction.size()); 
+	instruction = instruction.substr(idx+1,instruction.size());
 	idx = instruction.find(delimiteur_parametre);
 	bonustype = std::stoi(instruction.substr(0,idx));
 
-	instruction = instruction.substr(idx+1,instruction.size()); 
+	instruction = instruction.substr(idx+1,instruction.size());
 	idx = instruction.find(delimiteur_parametre);
 	level = std::stoi(instruction.substr(0,idx));
 
-	instruction = instruction.substr(idx+1,instruction.size()); 
+	instruction = instruction.substr(idx+1,instruction.size());
 	idx = instruction.find(delimiteur_parametre);
 	tick = std::stoi(instruction.substr(0,idx));
 
 	drawUi(player,hp, score, life,bonustype,level,tick);
 }
 void DisplayGame::starHandler(){
-    
+
     stars.push_back(new vec2i{rand() % window->getSize().x, 0});
     for(size_t i = 0; i < stars.size(); i++) {
             stars.at(i)->y += 20;
@@ -276,7 +276,7 @@ int DisplayGame::init() {
     screen_area = { {0, 0}, {80, 24}};
 
     //wresize(main_wnd, screen_area.height(), screen_area.width());
-    
+
 
     // initialize window areas
     int infopanel_height = 4;
@@ -328,14 +328,14 @@ int DisplayGame::init() {
 
 }
 void DisplayGame::drawObstacle(int x, int y) {
-    
+
 	wattron(game_wnd, COLOR_PAIR(1));
 	mvwaddch(game_wnd, y, x, '#');
 	wattroff(game_wnd, COLOR_PAIR(1));
-  
+
 }
 void DisplayGame::drawEnemy(int x, int y, int tick, bool isBlinking) {
-    
+
 	wattron(game_wnd, COLOR_PAIR(4));
 	mvwaddch(game_wnd, y, x, '%');
 	wattroff(game_wnd, COLOR_PAIR(4));
@@ -346,11 +346,11 @@ void DisplayGame::drawEnemy(int x, int y, int tick, bool isBlinking) {
 	mvwaddch(game_wnd, y, x + 1, ACS_RARROW);
 	wattroff(game_wnd, A_ALTCHARSET);
 
-	
+
     //ajouter isBlinking chez le server
 	if(isBlinking){
-		
-		
+
+
 		wattron(game_wnd, COLOR_PAIR(4));
 		mvwaddch(game_wnd, y, x, ' ');
 		wattroff(game_wnd, COLOR_PAIR(4));
@@ -359,10 +359,10 @@ void DisplayGame::drawEnemy(int x, int y, int tick, bool isBlinking) {
 		mvwaddch(game_wnd, y, x - 1, ' ');
 		mvwaddch(game_wnd, y, x + 1, ' ');
 		wattroff(game_wnd, A_ALTCHARSET);
-		
-	
+
+
 	}
-    
+
 
 }
 void DisplayGame::drawProjectile(int x, int y, bool enemy, bool player1){
@@ -380,11 +380,11 @@ void DisplayGame::drawProjectile(int x, int y, bool enemy, bool player1){
 		wattron(game_wnd, COLOR_PAIR(2));
 		mvwaddch(game_wnd, y, x, '*');
 		wattroff(game_wnd, COLOR_PAIR(2));
-	}          
-    
+	}
+
 }
 void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinking){
-		
+
         // draw player body
         int player_color;
 		char player_char;
@@ -403,7 +403,7 @@ void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinkin
         wattron(game_wnd, A_ALTCHARSET);
         mvwaddch(game_wnd, y, x - 1, ACS_LARROW);
         mvwaddch(game_wnd, y, x + 1, ACS_RARROW);
-		//ajouter isBlinking chez le serveur	
+		//ajouter isBlinking chez le serveur
 		// draw engines flames
 		if((tick % 10) / 3 && !isBlinking) {
                 wattron(game_wnd, COLOR_PAIR(tick % 2 ? 3 : 4));
@@ -425,12 +425,12 @@ void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinkin
                 wattroff(game_wnd, A_ALTCHARSET);
             }
 
-            
-            
+
+
         }
 
         wattroff(game_wnd, A_ALTCHARSET);
-		
+
 		sf::CircleShape shape(10.f);
 		shape.setPosition(sf::Vector2f(x*8.5, y*20));
 		if (player==1){
@@ -441,11 +441,11 @@ void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinkin
 		}
 
 		window->draw(shape);
-	
- 
+
+
 }
 void DisplayGame::drawBonus(int type, int x, int y){
-	
+
 	wattron(game_wnd, A_BOLD);
 	if(type==lifeSteal){
 		mvwaddch(game_wnd, y, x, 'L');
@@ -489,7 +489,12 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 
 		//TODO: A metre dans init !
 		sf::Texture texture;
-		if (!texture.loadFromFile("health_bar.png"))
+		if (!texture.loadFromFile("Health_bar_New.png"))
+		{
+			// error...
+		}
+		sf::Texture heart;
+		if (!heart.loadFromFile("heart.png"))
 		{
 			// error...
 		}
@@ -501,8 +506,8 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 
 	if(player == 0){
 
-		
-		
+
+
 		wmove(main_wnd, 20, 1);
 		whline(main_wnd, ' ', 25); // health bar is 25 chars long
 		wmove(main_wnd, 20, 1);
@@ -532,14 +537,20 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 			mvwprintw(main_wnd, 22, 16, "  B%d: L",player + 1);
 		else if (bonusType == noBonus)
 			mvwprintw(main_wnd, 22, 16, "  B%d:  ",player + 1);
-	
 
-		
+
+
 		sf::Sprite sprite;
-		sprite.setScale(sf::Vector2f(0.17,0.17));
-		sprite.setPosition(sf::Vector2f(7,390));
+		sprite.setScale(sf::Vector2f(0.35,0.35));
+		sprite.setPosition(sf::Vector2f(3,380));
 		sprite.setTexture(texture);
 		window->draw(sprite);
+
+		sf::Sprite heartSprite;
+		heartSprite.setScale(sf::Vector2f(0.17,0.17));
+		heartSprite.setPosition(sf::Vector2f(3,390));
+		heartSprite.setTexture(heart);
+		//window->draw(heartSprite);
 		//score
 		sf::Text score_txt;
 		// choix de la police à utiliser
@@ -549,7 +560,7 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 		// choix de la taille des caractères
 		score_txt.setCharacterSize(20); // exprimée en pixels, pas en points !
 		// choix de la couleur du texte
-		score_txt.setColor(sf::Color::White);		
+		score_txt.setColor(sf::Color::White);
 		score_txt.setPosition(sf::Vector2f(7,430));
 		window->draw(score_txt);
 		//life
@@ -557,7 +568,7 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 		life_percentage.setFont(font); // font est un sf::Font
 		life_percentage.setString(std::to_string(hp)+"%");
 		life_percentage.setCharacterSize(18); // exprimée en pixels, pas en points !
-		life_percentage.setColor(sf::Color::White);		
+		life_percentage.setColor(sf::Color::White);
 		life_percentage.setPosition(sf::Vector2f(63,393));
 		window->draw(life_percentage);
 		//n lives
@@ -565,7 +576,7 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 		n_lives.setFont(font); // font est un sf::Font
 		n_lives.setString(std::to_string(lives));
 		n_lives.setCharacterSize(20); // exprimée en pixels, pas en points !
-		n_lives.setColor(sf::Color::Black);		
+		n_lives.setColor(sf::Color::Black);
 		n_lives.setPosition(sf::Vector2f(23,395));
 		window->draw(n_lives);
 		//Bonus
@@ -582,20 +593,20 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 		else if (bonusType == noBonus)
 			bonus_txt.setString("  B"+std::to_string(player+1)+":  ");
 		bonus_txt.setCharacterSize(20); // exprimée en pixels, pas en points !
-		bonus_txt.setColor(sf::Color::White);		
+		bonus_txt.setColor(sf::Color::White);
 		bonus_txt.setPosition(sf::Vector2f(250,430));
 		window->draw(bonus_txt);
 
-		
+
 	}
     if(player == 1){
-		
+
         // energy bar player2
         wmove(main_wnd, 20, 54);
         whline(main_wnd, ' ', 25); // health bar is 25 chars long
         wmove(main_wnd, 20, 54);
         drawEnergyBar(hp);
-        //score  
+        //score
         mvwprintw(main_wnd, 22, 54, "  score: %i", score);
         // draw static string to hold percentage
         mvwprintw(main_wnd, 21, 54, "- P2 HP                -");
@@ -620,9 +631,9 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
             mvwprintw(main_wnd, 22, 69, "  B%d: L", player + 1);
         else if (bonusType == noBonus)
             mvwprintw(main_wnd, 22, 69, "  B%d:  ", player + 1);
-		
+
 		sf::Sprite sprite2;
-		sprite2.setScale(sf::Vector2f(0.17,0.17));
+		sprite2.setScale(sf::Vector2f(0.35,0.35));
 		sprite2.setPosition(sf::Vector2f(460,390));
 		sprite2.setTexture(texture);
 		window->draw(sprite2);
@@ -636,7 +647,7 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 		// choix de la taille des caractères
 		score_txt.setCharacterSize(20); // exprimée en pixels, pas en points !
 		// choix de la couleur du texte
-		score_txt.setColor(sf::Color::White);		
+		score_txt.setColor(sf::Color::White);
 		score_txt.setPosition(sf::Vector2f(465,430));
 		window->draw(score_txt);
 		//life
@@ -644,7 +655,7 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 		life_percentage.setFont(font); // font est un sf::Font
 		life_percentage.setString(std::to_string(hp)+"%");
 		life_percentage.setCharacterSize(18); // exprimée en pixels, pas en points !
-		life_percentage.setColor(sf::Color::White);		
+		life_percentage.setColor(sf::Color::White);
 		life_percentage.setPosition(sf::Vector2f(526,393));
 		window->draw(life_percentage);
 		//n lives
@@ -652,7 +663,7 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 		n_lives.setFont(font); // font est un sf::Font
 		n_lives.setString(std::to_string(lives));
 		n_lives.setCharacterSize(20); // exprimée en pixels, pas en points !
-		n_lives.setColor(sf::Color::Black);		
+		n_lives.setColor(sf::Color::Black);
 		n_lives.setPosition(sf::Vector2f(476,395));
 		window->draw(n_lives);
 		//Bonus
@@ -669,12 +680,12 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 		else if (bonusType == noBonus)
 			bonus_txt.setString("  B"+std::to_string(player+1)+":  ");
 		bonus_txt.setCharacterSize(20); // exprimée en pixels, pas en points !
-		bonus_txt.setColor(sf::Color::White);		
+		bonus_txt.setColor(sf::Color::White);
 		bonus_txt.setPosition(sf::Vector2f(310,430));
 		window->draw(bonus_txt);
 
     }
-    
+
     //level
     mvwprintw(main_wnd,20,33," LEVEL : %i", level);
 
