@@ -1,144 +1,181 @@
 /********************************************************************************
-** Form generated from reading UI file 'lead.ui'
+** Form generated from reading UI file 'friend_interfaceTxZMfe.ui'
 **
 ** Created by: Qt User Interface Compiler version 5.12.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef LEADERBOARD1_H
-#define LEADERBOARD1_H
+#ifndef FRIEND_INTERFACETXZMFE_H
+#define FRIEND_INTERFACETXZMFE_H
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
-#include <QtWidgets/QMenuBar>
-#include <QtWidgets/QStatusBar>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QTableWidget>
-#include <QtWidgets/QToolBar>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
 
-class Ui_Lead
+class Ui_MainWindow
 {
 public:
-    QWidget *centralWidget;
+    QWidget *centralwidget;
+    QWidget *gridLayoutWidget;
+    QGridLayout *gridLayout;
+    QListWidget *listWidget;
+    QPushButton *pushButton_2;
     QTableWidget *tableWidget;
-    QMenuBar *menuBar;
-    QToolBar *mainToolBar;
-    QStatusBar *statusBar;
+    QLabel *label;
+    QLabel *label_2;
+    QVBoxLayout *verticalLayout;
+    QPushButton *pushButton;
 
-    void setupUi(QMainWindow *Lead)
+    void setupUi(QMainWindow *MainWindow)
     {
-        if (Lead->objectName().isEmpty())
-            Lead->setObjectName(QString::fromUtf8("Lead"));
-        Lead->resize(900, 594);
-        centralWidget = new QWidget(Lead);
-        centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
-        tableWidget = new QTableWidget(centralWidget);
+        if (MainWindow->objectName().isEmpty())
+            MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
+        MainWindow->resize(1008, 800);
+        centralwidget = new QWidget(MainWindow);
+        centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
+        gridLayoutWidget = new QWidget(centralwidget);
+        gridLayoutWidget->setObjectName(QString::fromUtf8("gridLayoutWidget"));
+        gridLayoutWidget->setGeometry(QRect(40, 50, 941, 701));
+        gridLayout = new QGridLayout(gridLayoutWidget);
+        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
+        gridLayout->setContentsMargins(0, 0, 0, 0);
+        listWidget = new QListWidget(gridLayoutWidget);
+        new QListWidgetItem(listWidget);
+        new QListWidgetItem(listWidget);
+        new QListWidgetItem(listWidget);
+        new QListWidgetItem(listWidget);
+        new QListWidgetItem(listWidget);
+        new QListWidgetItem(listWidget);
+        new QListWidgetItem(listWidget);
+        new QListWidgetItem(listWidget);
+        listWidget->setObjectName(QString::fromUtf8("listWidget"));
+        listWidget->setMaximumSize(QSize(16777215, 500));
+
+        gridLayout->addWidget(listWidget, 1, 1, 1, 1, Qt::AlignHCenter);
+
+        pushButton_2 = new QPushButton(gridLayoutWidget);
+        pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
+        pushButton_2->setMinimumSize(QSize(0, 50));
+        pushButton_2->setMaximumSize(QSize(16777215, 50));
+
+        gridLayout->addWidget(pushButton_2, 2, 0, 1, 3);
+
+        tableWidget = new QTableWidget(gridLayoutWidget);
         if (tableWidget->columnCount() < 2)
             tableWidget->setColumnCount(2);
         QTableWidgetItem *__qtablewidgetitem = new QTableWidgetItem();
         tableWidget->setHorizontalHeaderItem(0, __qtablewidgetitem);
         QTableWidgetItem *__qtablewidgetitem1 = new QTableWidgetItem();
         tableWidget->setHorizontalHeaderItem(1, __qtablewidgetitem1);
-        if (tableWidget->rowCount() < 12)
-            tableWidget->setRowCount(12);
+        if (tableWidget->rowCount() < 1)
+            tableWidget->setRowCount(1);
         QTableWidgetItem *__qtablewidgetitem2 = new QTableWidgetItem();
         tableWidget->setVerticalHeaderItem(0, __qtablewidgetitem2);
         QTableWidgetItem *__qtablewidgetitem3 = new QTableWidgetItem();
-        tableWidget->setVerticalHeaderItem(1, __qtablewidgetitem3);
+        __qtablewidgetitem3->setTextAlignment(Qt::AlignCenter);
+        tableWidget->setItem(0, 0, __qtablewidgetitem3);
         QTableWidgetItem *__qtablewidgetitem4 = new QTableWidgetItem();
-        tableWidget->setVerticalHeaderItem(2, __qtablewidgetitem4);
-        QTableWidgetItem *__qtablewidgetitem5 = new QTableWidgetItem();
-        tableWidget->setVerticalHeaderItem(3, __qtablewidgetitem5);
-        QTableWidgetItem *__qtablewidgetitem6 = new QTableWidgetItem();
-        tableWidget->setVerticalHeaderItem(4, __qtablewidgetitem6);
-        QTableWidgetItem *__qtablewidgetitem7 = new QTableWidgetItem();
-        tableWidget->setVerticalHeaderItem(5, __qtablewidgetitem7);
-        QTableWidgetItem *__qtablewidgetitem8 = new QTableWidgetItem();
-        tableWidget->setVerticalHeaderItem(6, __qtablewidgetitem8);
-        QTableWidgetItem *__qtablewidgetitem9 = new QTableWidgetItem();
-        tableWidget->setVerticalHeaderItem(7, __qtablewidgetitem9);
-        QTableWidgetItem *__qtablewidgetitem10 = new QTableWidgetItem();
-        tableWidget->setVerticalHeaderItem(8, __qtablewidgetitem10);
-        QTableWidgetItem *__qtablewidgetitem11 = new QTableWidgetItem();
-        tableWidget->setVerticalHeaderItem(9, __qtablewidgetitem11);
-        QTableWidgetItem *__qtablewidgetitem12 = new QTableWidgetItem();
-        tableWidget->setVerticalHeaderItem(10, __qtablewidgetitem12);
-        QTableWidgetItem *__qtablewidgetitem13 = new QTableWidgetItem();
-        tableWidget->setVerticalHeaderItem(11, __qtablewidgetitem13);
-        QTableWidgetItem *__qtablewidgetitem14 = new QTableWidgetItem();
-        tableWidget->setItem(7, 0, __qtablewidgetitem14);
-        QTableWidgetItem *__qtablewidgetitem15 = new QTableWidgetItem();
-        tableWidget->setItem(7, 1, __qtablewidgetitem15);
-        QTableWidgetItem *__qtablewidgetitem16 = new QTableWidgetItem();
-        tableWidget->setItem(8, 0, __qtablewidgetitem16);
-        QTableWidgetItem *__qtablewidgetitem17 = new QTableWidgetItem();
-        tableWidget->setItem(8, 1, __qtablewidgetitem17);
+        __qtablewidgetitem4->setTextAlignment(Qt::AlignCenter);
+        tableWidget->setItem(0, 1, __qtablewidgetitem4);
         tableWidget->setObjectName(QString::fromUtf8("tableWidget"));
-        tableWidget->setGeometry(QRect(60, 30, 781, 501));
-        Lead->setCentralWidget(centralWidget);
-        menuBar = new QMenuBar(Lead);
-        menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 900, 26));
-        Lead->setMenuBar(menuBar);
-        mainToolBar = new QToolBar(Lead);
-        mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
-        Lead->addToolBar(Qt::TopToolBarArea, mainToolBar);
-        statusBar = new QStatusBar(Lead);
-        statusBar->setObjectName(QString::fromUtf8("statusBar"));
-        Lead->setStatusBar(statusBar);
+        tableWidget->setMinimumSize(QSize(0, 500));
+        tableWidget->setMaximumSize(QSize(16777215, 500));
 
-        retranslateUi(Lead);
+        gridLayout->addWidget(tableWidget, 1, 0, 1, 1, Qt::AlignHCenter|Qt::AlignVCenter);
 
-        QMetaObject::connectSlotsByName(Lead);
+        label = new QLabel(gridLayoutWidget);
+        label->setObjectName(QString::fromUtf8("label"));
+        label->setAlignment(Qt::AlignCenter);
+
+        gridLayout->addWidget(label, 0, 0, 1, 1);
+
+        label_2 = new QLabel(gridLayoutWidget);
+        label_2->setObjectName(QString::fromUtf8("label_2"));
+        label_2->setAlignment(Qt::AlignCenter);
+
+        gridLayout->addWidget(label_2, 0, 1, 1, 1);
+
+        verticalLayout = new QVBoxLayout();
+        verticalLayout->setSpacing(7);
+        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+        pushButton = new QPushButton(gridLayoutWidget);
+        pushButton->setObjectName(QString::fromUtf8("pushButton"));
+        pushButton->setMinimumSize(QSize(200, 50));
+        pushButton->setMaximumSize(QSize(200, 50));
+
+        verticalLayout->addWidget(pushButton);
+
+
+        gridLayout->addLayout(verticalLayout, 0, 2, 1, 1);
+
+        MainWindow->setCentralWidget(centralwidget);
+
+        retranslateUi(MainWindow);
+
+        QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
 
-    void retranslateUi(QMainWindow *Lead)
+    void retranslateUi(QMainWindow *MainWindow)
     {
-        Lead->setWindowTitle(QApplication::translate("Lead", "Lead", nullptr));
+        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", nullptr));
+
+        const bool __sortingEnabled = listWidget->isSortingEnabled();
+        listWidget->setSortingEnabled(false);
+        QListWidgetItem *___qlistwidgetitem = listWidget->item(0);
+        ___qlistwidgetitem->setText(QApplication::translate("MainWindow", "Aissa", nullptr));
+        QListWidgetItem *___qlistwidgetitem1 = listWidget->item(1);
+        ___qlistwidgetitem1->setText(QApplication::translate("MainWindow", "Vinove", nullptr));
+        QListWidgetItem *___qlistwidgetitem2 = listWidget->item(2);
+        ___qlistwidgetitem2->setText(QApplication::translate("MainWindow", "Caligula2", nullptr));
+        QListWidgetItem *___qlistwidgetitem3 = listWidget->item(3);
+        ___qlistwidgetitem3->setText(QApplication::translate("MainWindow", "Caligula23", nullptr));
+        QListWidgetItem *___qlistwidgetitem4 = listWidget->item(4);
+        ___qlistwidgetitem4->setText(QApplication::translate("MainWindow", "Caligula4", nullptr));
+        QListWidgetItem *___qlistwidgetitem5 = listWidget->item(5);
+        ___qlistwidgetitem5->setText(QApplication::translate("MainWindow", "Caligula25", nullptr));
+        QListWidgetItem *___qlistwidgetitem6 = listWidget->item(6);
+        ___qlistwidgetitem6->setText(QApplication::translate("MainWindow", "Caligula29", nullptr));
+        QListWidgetItem *___qlistwidgetitem7 = listWidget->item(7);
+        ___qlistwidgetitem7->setText(QApplication::translate("MainWindow", "Caligula27", nullptr));
+        listWidget->setSortingEnabled(__sortingEnabled);
+
+        pushButton_2->setText(QApplication::translate("MainWindow", "back", nullptr));
         QTableWidgetItem *___qtablewidgetitem = tableWidget->horizontalHeaderItem(0);
-        ___qtablewidgetitem->setText(QApplication::translate("Lead", "Nom", nullptr));
+        ___qtablewidgetitem->setText(QApplication::translate("MainWindow", "Pseudo", nullptr));
         QTableWidgetItem *___qtablewidgetitem1 = tableWidget->horizontalHeaderItem(1);
-        ___qtablewidgetitem1->setText(QApplication::translate("Lead", "Score", nullptr));
-        QTableWidgetItem *___qtablewidgetitem2 = tableWidget->verticalHeaderItem(0);
-        ___qtablewidgetitem2->setText(QApplication::translate("Lead", "New Row", nullptr));
-        QTableWidgetItem *___qtablewidgetitem3 = tableWidget->verticalHeaderItem(1);
-        ___qtablewidgetitem3->setText(QApplication::translate("Lead", "New Row", nullptr));
-        QTableWidgetItem *___qtablewidgetitem4 = tableWidget->verticalHeaderItem(2);
-        ___qtablewidgetitem4->setText(QApplication::translate("Lead", "New Row", nullptr));
-        QTableWidgetItem *___qtablewidgetitem5 = tableWidget->verticalHeaderItem(8);
-        ___qtablewidgetitem5->setText(QApplication::translate("Lead", "New Row", nullptr));
-        QTableWidgetItem *___qtablewidgetitem6 = tableWidget->verticalHeaderItem(9);
-        ___qtablewidgetitem6->setText(QApplication::translate("Lead", "New Row", nullptr));
-        QTableWidgetItem *___qtablewidgetitem7 = tableWidget->verticalHeaderItem(10);
-        ___qtablewidgetitem7->setText(QApplication::translate("Lead", "New Row", nullptr));
-        QTableWidgetItem *___qtablewidgetitem8 = tableWidget->verticalHeaderItem(11);
-        ___qtablewidgetitem8->setText(QApplication::translate("Lead", "New Row", nullptr));
+        ___qtablewidgetitem1->setText(QApplication::translate("MainWindow", "Score", nullptr));
 
-        const bool __sortingEnabled = tableWidget->isSortingEnabled();
+        const bool __sortingEnabled1 = tableWidget->isSortingEnabled();
         tableWidget->setSortingEnabled(false);
-        QTableWidgetItem *___qtablewidgetitem9 = tableWidget->item(7, 0);
-        ___qtablewidgetitem9->setText(QApplication::translate("Lead", "Caligula", nullptr));
-        QTableWidgetItem *___qtablewidgetitem10 = tableWidget->item(7, 1);
-        ___qtablewidgetitem10->setText(QApplication::translate("Lead", "80", nullptr));
-        QTableWidgetItem *___qtablewidgetitem11 = tableWidget->item(8, 0);
-        ___qtablewidgetitem11->setText(QApplication::translate("Lead", "Aissa", nullptr));
-        QTableWidgetItem *___qtablewidgetitem12 = tableWidget->item(8, 1);
-        ___qtablewidgetitem12->setText(QApplication::translate("Lead", "40", nullptr));
-        tableWidget->setSortingEnabled(__sortingEnabled);
+        QTableWidgetItem *___qtablewidgetitem2 = tableWidget->item(0, 0);
+        ___qtablewidgetitem2->setText(QApplication::translate("MainWindow", "Caligula", nullptr));
+        QTableWidgetItem *___qtablewidgetitem3 = tableWidget->item(0, 1);
+        ___qtablewidgetitem3->setText(QApplication::translate("MainWindow", "1500", nullptr));
+        tableWidget->setSortingEnabled(__sortingEnabled1);
 
+        label->setText(QApplication::translate("MainWindow", "Friends", nullptr));
+        label_2->setText(QApplication::translate("MainWindow", "Futur Friend", nullptr));
+        pushButton->setText(QApplication::translate("MainWindow", "Add friend", nullptr));
     } // retranslateUi
 
 };
 
 namespace Ui {
-    class Lead: public Ui_Lead {};
+    class MainWindow: public Ui_MainWindow {};
 } // namespace Ui
 
 QT_END_NAMESPACE
 
-#endif // LEADERBOARD1_H
+#endif // FRIEND_INTERFACETXZMFE_H
+
