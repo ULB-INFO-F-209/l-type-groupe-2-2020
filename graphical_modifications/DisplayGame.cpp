@@ -8,7 +8,7 @@
 void DisplayGame::parse_instruction(std::string chaine_instruction){  // A_B_type_x_y&E_H2_valeur&...
 	//std::string chaine_instruction(buffer);
 	eraseWnd();
-	while(chaine_instruction.size() > 1){  
+	while(chaine_instruction.size() > 1){ 
 		std::size_t idx = chaine_instruction.find(delimiteur_instruction);  //idx du premier delimiteur_instruction (&)
 		std::string instruction = chaine_instruction.substr(0,idx);     	// on retire une instruction
 		chaine_instruction = chaine_instruction.substr(idx+1,chaine_instruction.size()); // on garde la chaine sans l instruction
