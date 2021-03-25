@@ -291,8 +291,6 @@ void Menu::launch_game(Game_settings* game_option){
     int inp = -1;
 	std::string string_game_to_display;
 	
-	//sf::CircleShape shape(100.f);
-    //shape.setFillColor(sf::Color::Green);
 
     while(gameOn && window->isOpen()){ //fenetre fermé -> terminal freeze
 	
@@ -301,14 +299,16 @@ void Menu::launch_game(Game_settings* game_option){
         {
             if (event.type == sf::Event::Closed)
                 window->close();
+			if (event.type == sf::Event::KeyPressed)
+				inp = display_game.getInputWindow();
+				
+
         }
       
 		window->clear();
         
-
-        inp = display_game.getInputWindow();
-		
 		_client.send_game_input(inp);
+		inp = -1;
 		string_game_to_display = _client.read_game_pipe();
 		if (string_game_to_display == Constante::GAME_END) break;
 		display_game.parse_instruction(string_game_to_display);

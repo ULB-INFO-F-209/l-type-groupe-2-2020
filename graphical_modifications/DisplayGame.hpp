@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <SFML/Graphics.hpp>
 
+
 class DisplayGame
 {
 	//Game's windows
