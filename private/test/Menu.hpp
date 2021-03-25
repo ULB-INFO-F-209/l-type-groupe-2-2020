@@ -37,6 +37,10 @@
 #include <QWidget>
 #include <QLineEdit>
 #include <QTableWidget>
+#include <QListWidget>
+#include <QDialog>
+#include <QDialogButtonBox>
+#include <QSignalMapper>
 //#include <QObject>
 
 
@@ -64,7 +68,7 @@ class Menu : public QMainWindow{
 	//Q_OBJECT;
 	QLineEdit *pseudo_line;
 	QLineEdit *pswd_line;
-
+	QLabel *error;
 
 public:
 	Menu();
@@ -84,6 +88,8 @@ private slots:
 	void check_data(bool sign_in=true);
 	void print_profile();
 	void print_leaderboard();
+	void add_friend();
+	void verif_friend(QDialog*);
 };
 
 

@@ -293,46 +293,59 @@ void Menu::print_leaderboard(){
 
 void Menu::print_friends(){
 	char buffer[Constante::CHAR_SIZE];
-	std::vector<Profile> vect;
+	std::vector<Profile> friendlist;
 	_client.getFriendList(buffer);
-	profile_list_from_str(buffer, &vect); //parsing
+	profile_list_from_str(buffer, &friendlist);
+
+    char buffer2[Constante::CHAR_SIZE];
+	std::vector<Profile> requestlist;
+	_client.getFriendRequest(buffer2);
+	profile_list_from_str(buffer2, &requestlist);
 
     QWidget *centralwidget = new QWidget(this);
-    QLabel *title = new QLabel(QString::fromStdString(LEADERBOARD),centralwidget);
-    title->setGeometry(QRect(40, 20, 721, 61));
-    QFont font;
-    font.setPointSize(24);
-    title->setFont(font);
-    title->setFrameShape(QFrame::WinPanel);
-    title->setTextFormat(Qt::RichText);
-    title->setAlignment(Qt::AlignCenter);
+    QWidget *gridLayoutWidget = new QWidget(centralwidget);
+    gridLayoutWidget->setGeometry(QRect(60, 10, 661, 581));
+    QGridLayout *gridLayout = new QGridLayout(gridLayoutWidget);
+    gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
+    gridLayout->setContentsMargins(0, 0, 0, 0);
+    QListWidget *listWidget = new QListWidget(gridLayoutWidget);
 
-    QWidget * verticalLayoutWidget = new QWidget(centralwidget);
-    verticalLayoutWidget->setObjectName(QString::fromUtf8("verticalLayoutWidget"));
-    verticalLayoutWidget->setGeometry(QRect(80, 110, 620, 500));
-    QVBoxLayout* verticalLayout = new QVBoxLayout(verticalLayoutWidget);
-    verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
-    verticalLayout->setContentsMargins(0, 0, 0, 0);
-    QVBoxLayout* verticalLayout_2 = new QVBoxLayout();
-    verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
-    QHBoxLayout* horizontalLayout = new QHBoxLayout();
-    horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
-    QTableWidget* tableWidget = new QTableWidget(verticalLayoutWidget);
+    gridLayout->addWidget(listWidget, 1, 1, 1, 1, Qt::AlignHCenter);
+
+    QPushButton* back = new QPushButton((QString::fromStdString("Back")), gridLayoutWidget);
+    back->setMinimumSize(QSize(0, 50));
+    back->setMaximumSize(QSize(16777215, 50));
+    gridLayout->addWidget(back, 2, 0, 1, 3);
+    connect(back, &QPushButton::clicked, this, &Menu::main_m);
+
+    QTableWidget* tableWidget = new QTableWidget(gridLayoutWidget);
     tableWidget->setColumnCount(2);
     tableWidget->setMaximumSize(QSize(220, 190));
-    tableWidget->setRowCount(vect.size());
+    tableWidget->setRowCount(friendlist.size());
+    tableWidget->setMinimumSize(QSize(0, 500));
 
-    horizontalLayout->addWidget(tableWidget);
+    gridLayout->addWidget(tableWidget, 1, 0, 1, 1, Qt::AlignHCenter|Qt::AlignVCenter);
 
-    verticalLayout_2->addLayout(horizontalLayout);
+    QLabel *label = new QLabel(QString::fromStdString("Friends"),gridLayoutWidget);
+    label->setAlignment(Qt::AlignCenter);
 
-    verticalLayout->addLayout(verticalLayout_2);
+    gridLayout->addWidget(label, 0, 0, 1, 1);
 
-    QPushButton* back = new QPushButton((QString::fromStdString("Back")), verticalLayoutWidget);
-    back->setMaximumSize(QSize(1000, 45));
-    connect(back, &QPushButton::clicked, this,&Menu::main_m);
+    QLabel *label_2 = new QLabel(QString::fromStdString("Requests"),gridLayoutWidget);
+    label_2->setAlignment(Qt::AlignCenter);
 
-    verticalLayout->addWidget(back);
+    gridLayout->addWidget(label_2, 0, 1, 1, 1);
+
+    QVBoxLayout *verticalLayout = new QVBoxLayout();
+    verticalLayout->setSpacing(7);
+    QPushButton* add_button = new QPushButton((QString::fromStdString("Add Friend")), gridLayoutWidget);
+    add_button->setMinimumSize(QSize(200, 50));
+    add_button->setMaximumSize(QSize(200, 50));
+    connect(add_button, &QPushButton::clicked, this, &Menu::add_friend);
+
+    gridLayout->addWidget(add_button, 1, 2, 1, 1);
+
+    gridLayout->addLayout(verticalLayout, 0, 2, 1, 1);
 
     QStringList m_TableHeader;
     m_TableHeader <<"Pseudo"<<"Score";
@@ -345,17 +358,89 @@ void Menu::print_friends(){
     tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
     tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
     tableWidget->setShowGrid(false);
-    for (size_t i = 0; i < vect.size(); i++){
-        tableWidget->setItem(i, 0, new QTableWidgetItem(vect[i].pseudo));
-        int score = vect[i].score;
+    for (size_t i = 0; i < friendlist.size(); i++){
+        tableWidget->setItem(i, 0, new QTableWidgetItem(friendlist[i].pseudo));
+        int score = friendlist[i].score;
         char buff[20];
         sprintf(buff, "%d", score);
         tableWidget->setItem(i, 1, new QTableWidgetItem(buff));
     }
-    this->setCentralWidget(centralwidget);
-    //this->update();
-    this->show();
+    for (size_t i = 0; i < requestlist.size(); i++){
+        listWidget->addItem(requestlist[i].pseudo);
+    }
 
+    this->setCentralWidget(centralwidget);
+    this->show();
+}
+
+void Menu::add_friend(){
+    QDialog *Dialog = new QDialog(this);
+    QWidget *verticalLayoutWidget;
+    QVBoxLayout *verticalLayout;
+    QLabel *label;
+    QDialogButtonBox *buttonBox;
+
+    Dialog->resize(400, 300);
+    Dialog->setModal(true);
+    verticalLayoutWidget = new QWidget(Dialog);
+    verticalLayoutWidget->setGeometry(QRect(100, 100, 211, 101));
+    verticalLayout = new QVBoxLayout(verticalLayoutWidget);
+    verticalLayout->setContentsMargins(0, 0, 0, 0);
+    label = new QLabel(QString::fromStdString("ADD YOUR FRIEND"),verticalLayoutWidget);
+
+    verticalLayout->addWidget(label);
+
+    error = new QLabel(verticalLayoutWidget);
+    verticalLayout->addWidget(error);
+
+    pseudo_line = new QLineEdit(verticalLayoutWidget);
+
+    verticalLayout->addWidget(pseudo_line);
+
+    buttonBox = new QDialogButtonBox(verticalLayoutWidget);
+    buttonBox->setOrientation(Qt::Horizontal);
+    buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
+
+
+    connect(buttonBox, SIGNAL(rejected()), Dialog, SLOT(reject()));
+    connect(buttonBox, SIGNAL(accepted()), []{
+        verif_friend(Dialog);
+    });
+
+    verticalLayout->addWidget(buttonBox);
+    Dialog->show();
+
+}
+
+void Menu::verif_friend(QDialog* dialog){
+    std::cout << "je rentre" << std::endl;
+    const char* pseudo = (pseudo_line->text()).toUtf8().constData(); 
+    char* pseudo2 = const_cast<char*>(pseudo);
+
+	int success; 
+    success = _client.sendFriendRequest(pseudo2);
+    if(success==1){
+        char* err;
+        sprintf(err, "You already requested to be %s's friend", pseudo2);
+        error->setText(QString::fromStdString(err));
+    }
+    else if (success==2){
+        char* err;
+        sprintf(err, "You're already friends with %s", pseudo2);
+        error->setText(QString::fromStdString(err));
+    }
+    else if(success==3){
+        char* err;
+        sprintf(err, "%s does not exist", pseudo2);
+        error->setText(QString::fromStdString(err));
+    }
+    else if(success==4){
+        char* err;
+        sprintf(err, "You can't be friends with yourself", pseudo2);
+        error->setText(QString::fromStdString(err));
+    }
+    else
+        dialog->accepted();
 }
 /*
 
