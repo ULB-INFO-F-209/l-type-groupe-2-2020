@@ -100,3 +100,9 @@ namespace Screen{
 
 
 #endif
+
+/*void accept_friend(){
+    const char* pseudo = (pseudo_line->text()).toUtf8().constData(); 
+    std::cout << "pseudo   : "<< pseudo<<std::endl;
+    _client.addFriend(pseudo);
+}*/

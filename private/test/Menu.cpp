@@ -84,7 +84,6 @@ void Menu::home(){
 void Menu::check_data(bool sign_in){
     std::string pseudo = (pseudo_line->text()).toUtf8().constData();
     std::string pswd = (pswd_line->text()).toUtf8().constData();
-    std::cout<<"is sign in = "<<sign_in<<std::endl;
     int success;
     if(sign_in){
         success = _client.signIn(pseudo.c_str(), pswd.c_str());
@@ -180,14 +179,12 @@ void Menu::main_m(){
     QPushButton *level = (main_button[4]);
     QPushButton *log_out = (main_button[5]);
 
-    connect(friends, &QPushButton::clicked, this,  [this]() {
-           print_friends();});
-    connect(leaderboard, &QPushButton::clicked, this,  [this]() {
-           print_leaderboard();});
-    connect(profile, &QPushButton::clicked, this,  [this]() {
-           print_profile();});
-    connect(log_out, &QPushButton::clicked, this,  [this]() {
-           home();});
+    connect(friends, &QPushButton::clicked, this, &Menu::print_friends);
+    connect(leaderboard, &QPushButton::clicked, this,&Menu::print_leaderboard);
+    connect(profile, &QPushButton::clicked, this, &Menu::print_profile);
+    connect(log_out, &QPushButton::clicked, this,&Menu::home);
+    connect(new_game, &QPushButton::clicked, this,&Menu::lobby);
+
 
 }
 
@@ -358,19 +355,29 @@ void Menu::print_friends(){
 
     gridLayout->addWidget(label, 0, 0, 1, 1);
 
-    QLabel *label_2 = new QLabel(QString::fromStdString("Requests"),gridLayoutWidget);
-    label_2->setAlignment(Qt::AlignCenter);
+    QLabel *request_label = new QLabel(QString::fromStdString("Requests"),gridLayoutWidget);
+    request_label->setAlignment(Qt::AlignCenter);
 
-    gridLayout->addWidget(label_2, 0, 1, 1, 1);
+    gridLayout->addWidget(request_label, 0, 1, 1, 1);
 
     QVBoxLayout *verticalLayout = new QVBoxLayout();
     verticalLayout->setSpacing(7);
     QPushButton* add_button = new QPushButton((QString::fromStdString("Add Friend")), gridLayoutWidget);
     add_button->setMinimumSize(QSize(200, 50));
     add_button->setMaximumSize(QSize(200, 50));
-    connect(add_button, &QPushButton::clicked, this, &Menu::add_friend);
+    connect(add_button, &QPushButton::clicked, this, [this]() {
+           add_del_friend(true);});
 
-    gridLayout->addWidget(add_button, 1, 2, 1, 1);
+    QPushButton* del_button = new QPushButton((QString::fromStdString("Del Friend")), gridLayoutWidget);
+    del_button->setMinimumSize(QSize(200, 50));
+    del_button->setMaximumSize(QSize(200, 50));
+    connect(del_button, &QPushButton::clicked, this, [this]() {
+           add_del_friend(false);});
+
+    QVBoxLayout *vLayout = new QVBoxLayout(gridLayoutWidget);
+    gridLayout->addLayout(vLayout, 1, 2, 1, 1);
+    vLayout->addWidget(add_button);
+    vLayout->addWidget(del_button);
 
     gridLayout->addLayout(verticalLayout, 0, 2, 1, 1);
 
@@ -440,6 +447,8 @@ void Menu::request_list(const QModelIndex &index){
     font1.setPointSize(13);
 
     char pseudo_char[25];
+    char pseudo_char2[25];
+    strcpy(pseudo_char2,requestlist.at(index.row()).pseudo); //to use later
     sprintf(pseudo_char,"Pseudo : %s",requestlist.at(index.row()).pseudo);
     pseudo = new QLabel(QString::fromStdString(pseudo_char),horizontalLayoutWidget);
     pseudo->setFont(font1);
@@ -461,17 +470,32 @@ void Menu::request_list(const QModelIndex &index){
     font.setPointSize(12);
     action_button->setFont(font);
     action_button->setOrientation(Qt::Vertical);
-    action_button->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ignore|QDialogButtonBox::No|QDialogButtonBox::Yes);
-    action_button->setCenterButtons(true);
+    action_button->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::No|QDialogButtonBox::Yes);
+    //action_button->setCenterButtons(true);
 
+    //connect(action_button, SIGNAL(rejected()), Dialog, SLOT(reject()));
     connect(action_button, SIGNAL(rejected()), Dialog, SLOT(reject()));
+    connect(action_button, &QDialogButtonBox::accepted,this, [this,pseudo_char2,action_button]{
+        char* pseudo2 = const_cast<char*>(pseudo_char2);
+        _client.addFriend(pseudo2); 
+        action_button->rejected();
+        print_friends();
+    });
+
+    QPushButton *okButton =  action_button->button(QDialogButtonBox::No);
+    connect(okButton, &QPushButton::clicked, this, [this,pseudo_char2, action_button]{
+        char* pseudo2 = const_cast<char*>(pseudo_char2);
+        _client.delFriendRequest(pseudo2); 
+        action_button->rejected();
+        print_friends();
+    });
 
 
     horizontalLayout->addWidget(action_button);
     Dialog->show();
 }
 
-void Menu::add_friend(){
+void Menu::add_del_friend(bool adding){
     this->setStyleSheet(QStringLiteral("background-color:grey;"));
     QDialog *Dialog = new QDialog(this);
     QWidget *verticalLayoutWidget;
@@ -485,7 +509,11 @@ void Menu::add_friend(){
     verticalLayoutWidget->setGeometry(QRect(20, 20, 361, 261));
     verticalLayout = new QVBoxLayout(verticalLayoutWidget);
     verticalLayout->setContentsMargins(0, 0, 0, 0);
-    label = new QLabel(QString::fromStdString("ADD YOUR FRIEND"),verticalLayoutWidget);
+    if(adding)
+        label = new QLabel(QString::fromStdString("ADD YOUR FRIEND"),verticalLayoutWidget);
+    else
+        label = new QLabel(QString::fromStdString("DEL A FRIEND"),verticalLayoutWidget);
+
     QFont font;
     font.setPointSize(17);
     font.setBold(true);
@@ -517,40 +545,128 @@ void Menu::add_friend(){
 
 
     connect(buttonBox, SIGNAL(rejected()), Dialog, SLOT(reject()));
-    connect(buttonBox, &QDialogButtonBox::accepted,this, [this,Dialog]{
-        verif_friend(Dialog);});
+    if(adding)
+        connect(buttonBox, &QDialogButtonBox::accepted,this, [this,Dialog]{
+            verif_friend(Dialog);});
+    else
+        connect(buttonBox, &QDialogButtonBox::accepted,this, [this,Dialog]{
+            verif_friend(Dialog,false);});
 
     verticalLayout->addWidget(buttonBox);
     Dialog->show();
 
 }
 
-void Menu::verif_friend(QDialog* dialog){
+void Menu::verif_friend(QDialog* dialog, bool adding){
     //Aissa: all error are already in screen ==> c'est pas écrit pour decorer :-)
     const char* pseudo = (pseudo_line->text()).toUtf8().constData(); 
     char* pseudo2 = const_cast<char*>(pseudo);
 
 	int success; 
-    success = _client.sendFriendRequest(pseudo2);
-    char err[45];
-    if(success==1){
-        sprintf(err, "You already requested to be %s's friend", pseudo2);
-        error->setText(QString::fromStdString(err));
-    }
-    else if (success==2){
-        sprintf(err, "Find new friends please : %s ",pseudo2);
-        error->setText(QString::fromStdString(err));
-    }
-    else if(success==3){
-        sprintf(err, "%s does not exist", pseudo2);
-        error->setText(QString::fromStdString(err));
-    }
-    else if(success==4){
-        sprintf(err, "You can't be friends with yourself", pseudo2);
-        error->setText(QString::fromStdString(err));
+    if(adding){
+        success = _client.sendFriendRequest(pseudo2);
+        if(success==1)
+        error->setText(QString::fromStdString(ALREADY_REQUESTED));
+        else if (success==2)
+            error->setText(QString::fromStdString(ALREADY_FRIENDS));
+        else if(success==3)
+            error->setText(QString::fromStdString(NO_USER_MSG));
+        else if(success==4)
+            error->setText(QString::fromStdString(YOURSEL_MSG));
+        else
+            dialog->hide();
     }
     else
-        dialog->hide();
+        success = _client.delFriend(pseudo2);
+        if(success==1)
+        error->setText(QString::fromStdString(NOT_FRIENDS));
+        else if (success==2)
+            error->setText(QString::fromStdString(NO_USER_MSG));
+        else if(success==3)
+            error->setText(QString::fromStdString(YOURSEL_MSG));
+        else{
+            dialog->hide();
+            print_friends();
+        }
+
+
+}
+void Menu::lobby(){
+    this->setStyleSheet(QStringLiteral("background-color:grey;"));
+    QWidget *centralwidget =  new QWidget(this);
+
+    QLabel *title_label = new QLabel(QString::fromStdString(LOBBY_TITLE),centralwidget);
+    title_label->setGeometry(QRect(90, 20, 611, 61));
+    title_label->setFrameShape(QFrame::WinPanel);
+    title_label->setAlignment(Qt::AlignCenter);
+
+    QWidget *gridLayoutWidget = new QWidget(centralwidget);
+    gridLayoutWidget->setGeometry(QRect(20, 120, 771, 311));
+    QGridLayout *gridLayout = new QGridLayout(gridLayoutWidget);
+    gridLayout->setContentsMargins(0, 0, 0, 0);
+
+    QComboBox *players_box  = new QComboBox(gridLayoutWidget);
+    players_box->clear();
+    players_box->addItem(QString::fromStdString(" 1 "));
+    players_box->addItem(QString::fromStdString(" 2"));
+
+    QLabel *lives_label = new QLabel(QString::fromStdString("Lives : "),gridLayoutWidget);
+    QLabel *dropRate_label  = new QLabel(QString::fromStdString("Drop rate : "),gridLayoutWidget);
+    QSpinBox *spinBox_2  = new QSpinBox(gridLayoutWidget);
+
+    QComboBox *Ally_shot_box  = new QComboBox(gridLayoutWidget);
+    Ally_shot_box->clear();
+    Ally_shot_box->addItem(QString::fromStdString("Yes"));
+    Ally_shot_box->addItem(QString::fromStdString("No"));
+
+    QLabel *allyShot_label = new QLabel(QString::fromStdString("Ally shot : "),gridLayoutWidget);;
+    QLabel *playersLabel = new QLabel(QString::fromStdString("Player's number : "),gridLayoutWidget);
+    QSpinBox *spinBox = new QSpinBox(gridLayoutWidget);
+    QLabel *difficulty_label  = new QLabel(QString::fromStdString("Difficulty"),gridLayoutWidget);
+
+    QComboBox *difficulty_box =  new QComboBox(gridLayoutWidget);
+    difficulty_box->clear();
+    difficulty_box->addItem(QString::fromStdString("Easy"));
+    difficulty_box->addItem(QString::fromStdString("Normal"));
+    difficulty_box->addItem(QString::fromStdString("Hard"));
+
+    QWidget *horizontalLayoutWidget = new QWidget(centralwidget);
+    horizontalLayoutWidget->setGeometry(QRect(60, 450, 681, 80));
+    QHBoxLayout *horizontalLayout  = new QHBoxLayout(horizontalLayoutWidget);
+    horizontalLayout->setContentsMargins(3, 0, 3, 0);
+    horizontalLayout->setSpacing(36);
+    
+    QPushButton *play_button = new QPushButton(QString::fromStdString("Play"),horizontalLayoutWidget);;
+    play_button->setMinimumSize(QSize(300, 45));
+    play_button->setMaximumSize(QSize(300, 45));
+    QPushButton *back_button = new QPushButton(QString::fromStdString("Back"),horizontalLayoutWidget);
+    back_button->setMinimumSize(QSize(300, 45));
+    back_button->setMaximumSize(QSize(300, 45));
+
+    //hlayout adding
+    horizontalLayout->addWidget(play_button);
+    horizontalLayout->addWidget(back_button);
+
+    //operations
+    gridLayout->addWidget(players_box, 0, 1, 1, 1);
+    gridLayout->addWidget(lives_label, 3, 3, 1, 1);
+    gridLayout->addWidget(dropRate_label, 3, 0, 1, 1);
+    gridLayout->addWidget(spinBox_2, 3, 4, 1, 1); //a trouver c'est lequel
+    gridLayout->addWidget(Ally_shot_box, 0, 4, 1, 1);
+    gridLayout->addWidget(allyShot_label, 0, 3, 1, 1);
+    gridLayout->addWidget(playersLabel, 0, 0, 1, 1);
+    gridLayout->addWidget(spinBox, 3, 1, 1, 1);
+    gridLayout->addWidget(difficulty_label, 2, 0, 1, 1);
+    gridLayout->addWidget(difficulty_box, 2, 1, 1, 1);
+
+    //connections
+    std::cout << "rentree "<<std::endl;
+    connect(back_button, &QPushButton::clicked, this,&Menu::main_m);
+    //connect(play_button, &QPushButton::clicked, this,&Menu::main_m)
+
+    
+    this->setCentralWidget(centralwidget);
+    this->show();
 
 }
 /*
@@ -559,5 +675,5 @@ void Menu::start_session(){}
 
 
 int Menu::Menu::friends(){}
-int Menu::lobby(){}
+
 */

@@ -42,6 +42,8 @@
 #include <QDialog>
 #include <QDialogButtonBox>
 #include <QSignalMapper>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QSpinBox>
 //#include <QObject>
 
 
@@ -81,7 +83,7 @@ private:
 	void home();
 	void  main_m();
 	void print_friends();
-	int lobby();
+	void lobby();
 
 
 private slots:
@@ -89,9 +91,10 @@ private slots:
 	void check_data(bool sign_in=true);
 	void print_profile();
 	void print_leaderboard();
-	void add_friend();
-	void verif_friend(QDialog*);
+	void add_del_friend(bool adding=true);
+	void verif_friend(QDialog*, bool adding=true);
 	void request_list(const QModelIndex &index);
+	void accept_friend();
 };
 
 
