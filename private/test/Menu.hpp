@@ -90,6 +90,7 @@ private slots:
 	void print_leaderboard();
 	void add_friend();
 	void verif_friend(QDialog*);
+	void request_list(const QModelIndex &index);
 };
 
 

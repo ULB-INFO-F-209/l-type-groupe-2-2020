@@ -358,19 +358,90 @@ void Menu::print_friends(){
     tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
     tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
     tableWidget->setShowGrid(false);
+    tableWidget->setMinimumSize(QSize(255, 500));
     for (size_t i = 0; i < friendlist.size(); i++){
+        QTableWidgetItem *item;
         tableWidget->setItem(i, 0, new QTableWidgetItem(friendlist[i].pseudo));
+        item = tableWidget->item(i, 0);
+        item->setTextAlignment(Qt::AlignCenter);
         int score = friendlist[i].score;
         char buff[20];
         sprintf(buff, "%d", score);
         tableWidget->setItem(i, 1, new QTableWidgetItem(buff));
+        item = tableWidget->item(i, 1);
+        item->setTextAlignment(Qt::AlignCenter);
     }
     for (size_t i = 0; i < requestlist.size(); i++){
         listWidget->addItem(requestlist[i].pseudo);
+        QListWidgetItem *item;
+        item = listWidget->item(i);      
+        item->setTextAlignment(Qt::AlignCenter);
     }
+    QFont font;
+    font.setPointSize(13);
+    listWidget->setFont(font);
+    connect(listWidget,&QAbstractItemView::doubleClicked,this,&Menu::request_list);
 
     this->setCentralWidget(centralwidget);
     this->show();
+}
+void Menu::request_list(const QModelIndex &index){
+
+    QWidget *horizontalLayoutWidget;
+    QHBoxLayout *horizontalLayout;
+    QVBoxLayout *verticalLayout;
+    QLabel *pseudo;
+    QLabel *score;
+    QDialogButtonBox *action_button;
+    QDialog *Dialog;
+
+    char buffer2[Constante::CHAR_SIZE]; // Peut etre a modifier ...
+	std::vector<Profile> requestlist;
+	_client.getFriendRequest(buffer2);
+	profile_list_from_str(buffer2, &requestlist);
+
+    Dialog = new QDialog;
+    Dialog->setModal(true);
+    Dialog->resize(400, 300);
+    horizontalLayoutWidget = new QWidget(Dialog);
+    horizontalLayoutWidget->setGeometry(QRect(38, 26, 351, 251));
+    horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
+    horizontalLayout->setContentsMargins(0, 0, 0, 0);
+    verticalLayout = new QVBoxLayout();
+
+    QFont font1;
+    font1.setPointSize(13);
+
+    char pseudo_char[25];
+    sprintf(pseudo_char,"Pseudo : %s",requestlist.at(index.row()).pseudo);
+    pseudo = new QLabel(QString::fromStdString(pseudo_char),horizontalLayoutWidget);
+    pseudo->setFont(font1);
+    verticalLayout->addWidget(pseudo);
+
+
+    char score_char[25];
+    sprintf(score_char,"Score   : %d",requestlist.at(index.row()).score);
+    score = new QLabel(QString::fromStdString(score_char),horizontalLayoutWidget);
+    
+    score->setFont(font1);
+    verticalLayout->addWidget(score);
+
+
+    horizontalLayout->addLayout(verticalLayout);
+
+    action_button = new QDialogButtonBox(horizontalLayoutWidget);
+    QFont font;
+    font.setPointSize(12);
+    action_button->setFont(font);
+    action_button->setOrientation(Qt::Vertical);
+    action_button->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ignore|QDialogButtonBox::No|QDialogButtonBox::Yes);
+    action_button->setCenterButtons(true);
+
+    connect(action_button, SIGNAL(rejected()), Dialog, SLOT(reject()));
+
+
+    horizontalLayout->addWidget(action_button);
+    Dialog->show();
 }
 
 void Menu::add_friend(){
@@ -383,19 +454,34 @@ void Menu::add_friend(){
     Dialog->resize(400, 300);
     Dialog->setModal(true);
     verticalLayoutWidget = new QWidget(Dialog);
-    verticalLayoutWidget->setGeometry(QRect(100, 100, 211, 101));
+    verticalLayoutWidget->setGeometry(QRect(20, 20, 361, 261));
     verticalLayout = new QVBoxLayout(verticalLayoutWidget);
     verticalLayout->setContentsMargins(0, 0, 0, 0);
     label = new QLabel(QString::fromStdString("ADD YOUR FRIEND"),verticalLayoutWidget);
-
+    QFont font;
+    font.setPointSize(17);
+    font.setBold(true);
+    font.setItalic(false);
+    font.setUnderline(false);
+    font.setWeight(75);
+    label->setFont(font);
+    label->setAlignment(Qt::AlignCenter);
     verticalLayout->addWidget(label);
-
-    error = new QLabel(verticalLayoutWidget);
-    verticalLayout->addWidget(error);
 
     pseudo_line = new QLineEdit(verticalLayoutWidget);
 
     verticalLayout->addWidget(pseudo_line);
+
+    error = new QLabel(QString::fromStdString(""),verticalLayoutWidget);
+    QFont font1;
+    font1.setPointSize(11);
+    font1.setBold(true);
+    font1.setWeight(75);
+    error->setFont(font1);
+    error->setStyleSheet(QString::fromUtf8("color: rgb(239, 41, 41);"));
+    error->setAlignment(Qt::AlignCenter);
+
+    verticalLayout->addWidget(error);
 
     buttonBox = new QDialogButtonBox(verticalLayoutWidget);
     buttonBox->setOrientation(Qt::Horizontal);
@@ -403,9 +489,8 @@ void Menu::add_friend(){
 
 
     connect(buttonBox, SIGNAL(rejected()), Dialog, SLOT(reject()));
-    connect(buttonBox, SIGNAL(accepted()), []{
-        verif_friend(Dialog);
-    });
+    connect(buttonBox, &QDialogButtonBox::accepted,this, [this,Dialog]{
+        verif_friend(Dialog);});
 
     verticalLayout->addWidget(buttonBox);
     Dialog->show();
@@ -413,34 +498,31 @@ void Menu::add_friend(){
 }
 
 void Menu::verif_friend(QDialog* dialog){
-    std::cout << "je rentre" << std::endl;
     const char* pseudo = (pseudo_line->text()).toUtf8().constData(); 
     char* pseudo2 = const_cast<char*>(pseudo);
 
 	int success; 
     success = _client.sendFriendRequest(pseudo2);
+    char err[45];
     if(success==1){
-        char* err;
         sprintf(err, "You already requested to be %s's friend", pseudo2);
         error->setText(QString::fromStdString(err));
     }
     else if (success==2){
-        char* err;
-        sprintf(err, "You're already friends with %s", pseudo2);
+        sprintf(err, "Find new friends please : %s ",pseudo2);
         error->setText(QString::fromStdString(err));
     }
     else if(success==3){
-        char* err;
         sprintf(err, "%s does not exist", pseudo2);
         error->setText(QString::fromStdString(err));
     }
     else if(success==4){
-        char* err;
         sprintf(err, "You can't be friends with yourself", pseudo2);
         error->setText(QString::fromStdString(err));
     }
     else
-        dialog->accepted();
+        dialog->hide();
+
 }
 /*
 
