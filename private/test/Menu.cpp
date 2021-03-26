@@ -434,14 +434,28 @@ void Menu::request_list(const QModelIndex &index){
     font.setPointSize(12);
     action_button->setFont(font);
     action_button->setOrientation(Qt::Vertical);
-    action_button->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ignore|QDialogButtonBox::No|QDialogButtonBox::Yes);
+    action_button->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::No|QDialogButtonBox::Yes);
     action_button->setCenterButtons(true);
 
     connect(action_button, SIGNAL(rejected()), Dialog, SLOT(reject()));
+    connect(action_button, &QDialogButtonBox::rejected, this, [this,&request_list,index,Dialog]{
+        accepte_friend_request(requestlist.at(index.row()),Dialog);});
 
+    connect(action_button, &QDialogButtonBox::accepted, this,[this,&request_list,index]{
+        delete_friend_request(requestlist.at(index.row()),Dialog);});
 
     horizontalLayout->addWidget(action_button);
     Dialog->show();
+}
+
+void Menu::accepte_friend_request(Profile futur_friend,QDialog *Dialog){
+    _client.addFriend(futur_friend.pseudo);
+    Dialog->hide();
+}
+
+void Menu::delete_friend_request(Profile futur_enemy,QDialog *Dialog){
+    _client.delFriendRequest(futur_enemy.pseudo);
+    Dialog->hide();
 }
 
 void Menu::add_friend(){

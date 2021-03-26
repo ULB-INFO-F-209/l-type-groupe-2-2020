@@ -91,6 +91,8 @@ private slots:
 	void add_friend();
 	void verif_friend(QDialog*);
 	void request_list(const QModelIndex &index);
+	void accepte_friend_request(Profile,QDialog *Dialog);
+	void delete_friend_request(Profile,QDialog *Dialog);
 };
 
 
