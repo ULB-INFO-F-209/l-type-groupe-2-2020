@@ -22,6 +22,9 @@ class DisplayGame
 	const char delimiteur_parametre	  = '_';
 	std::vector<vec2i*> stars;
 	int tickStar;
+	sf::Texture texture;	
+	sf::Texture heart;
+	sf::Font font;
 public:
 	//Constructor
 	DisplayGame()=default;

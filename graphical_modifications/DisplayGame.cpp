@@ -252,7 +252,21 @@ void DisplayGame::drawNewLevel(int tick,int levelTick,int currentLevel) {
 void DisplayGame::initGraphics(){
 	window = new sf::RenderWindow(sf::VideoMode(680, 480), "L-TYPE");
 	window->setVerticalSyncEnabled(false);
-
+	
+	if (!texture.loadFromFile("Health_bar_New.png"))
+	{
+		// error...
+	}
+	
+	if (!heart.loadFromFile("heart.png"))
+	{
+		// error...
+	}
+	
+	if (!font.loadFromFile("space_age.ttf"))
+	{
+		// erreur...
+	}
 
 
 }
@@ -487,7 +501,7 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 		line.setPosition(sf::Vector2f(5, 370));
 		window->draw(line);
 
-		//TODO: A metre dans init !
+		/*//TODO: A metre dans init !
 		sf::Texture texture;
 		if (!texture.loadFromFile("Health_bar_New.png"))
 		{
@@ -502,7 +516,7 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 		if (!font.loadFromFile("space_age.ttf"))
 		{
 			// erreur...
-		}
+		}*/
 
 	if(player == 0){
 
@@ -688,6 +702,7 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 
     //level
     mvwprintw(main_wnd,20,33," LEVEL : %i", level);
+
 
 }
 void DisplayGame::drawEnergyBar(int a) {
