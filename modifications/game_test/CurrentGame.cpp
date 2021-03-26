@@ -250,7 +250,7 @@ std::string CurrentGame::getPlayerState(std::string state){
         state.append("_");
         state.append(std::to_string(playership2->getScore()));
         state.append("_");
-        state.append(std::to_string(playership1->getCurrentBonus()));
+        state.append(std::to_string(playership2->getCurrentBonus()));
         state.append("_");
         state.append(std::to_string(map.getCurrentLevel()));
         state.append("_");
