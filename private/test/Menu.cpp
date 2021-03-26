@@ -2,7 +2,8 @@
 
 /******************** TODO ********************************************
         *  23/03 : Reunir sign in, sign up using lambda function
-        *    
+        *  23/03 : Maybe mettre tous les widget important en attribut?
+        *  26/03 : Design fade like r-type or fun like neon?   
         *
  ***********************************************************************/
 
@@ -20,20 +21,28 @@ void Menu::start_session(){
 
 
 void Menu::home(){	
+    this->setStyleSheet(QStringLiteral("background-color:black;"));
     QWidget *centralwidget = new QWidget(this);
+
 
     //layout box
     QWidget *verticalLayoutWidget = new QWidget(centralwidget);
-    verticalLayoutWidget->setGeometry(QRect(240, 230, 321, 301));
+    verticalLayoutWidget->setGeometry(QRect(50, 110, 700, 450));
     //layout button
-    QVBoxLayout *button_v_layout = new QVBoxLayout(verticalLayoutWidget);
+    QHBoxLayout *button_v_layout = new QHBoxLayout(verticalLayoutWidget);
     button_v_layout->setContentsMargins(11, 11, 11, 11);
     //home button
     QPushButton *home_button[SIZE_HOME];
+    QPixmap pix_home_button[SIZE_HOME] = {QPixmap("images/sign_in"),QPixmap("images/sign_up"),QPixmap("images/home_quit")};
+    QIcon icon_home[SIZE_HOME];
     for (size_t i = 0; i < SIZE_HOME; ++i)
     {
-       home_button[i] = new QPushButton(QString::fromStdString(connexion_menu[i]),verticalLayoutWidget);
-       home_button[i]->setMinimumSize(QSize(165, 65));
+       home_button[i] = new QPushButton(verticalLayoutWidget);
+       home_button[i]->setMinimumSize(QSize(165, 165));
+       icon_home[i] = QIcon(pix_home_button[i]);
+       home_button[i]->setIcon(icon_home[i]);
+       home_button[i]->setIconSize(QSize(165, 165));
+       home_button[i]->setFlat(true);
        button_v_layout->addWidget(home_button[i]);
     }
     //button clicked connect (lambda statement)
@@ -52,11 +61,24 @@ void Menu::home(){
 
 
     //title section
-    QLabel *title_label = new QLabel(QString::fromStdString(HOME_TITLE),centralwidget);
-    title_label->setGeometry(QRect(110, 20, 579, 78));
-    title_label->setFrameShape(QFrame::WinPanel);
+    QLabel *title_label = new QLabel(centralwidget);
+    title_label->setGeometry(QRect(110, 50, 579, 78));
+    //title_label->setFrameShape(QFrame::WinPanel);
     title_label->setAlignment(Qt::AlignCenter);
+    QPixmap pix_home_title("images/home_title");
+    title_label->setPixmap( pix_home_title);
+
+        //exageration
+    /*QLabel *lbl = new QLabel(centralwidget);
+    QMovie *mv = new QMovie("images/stars_rain.gif");
+    lbl->setGeometry(QRect(70, 0, 1000, 1000));
+    mv->start();
+    lbl->setAttribute(Qt::WA_TranslucentBackground);
+    lbl->setMovie(mv);*/
+
+
     this->setCentralWidget(centralwidget);
+
 }
 
 void Menu::check_data(bool sign_in){
@@ -77,6 +99,7 @@ void Menu::check_data(bool sign_in){
 }
 
 void Menu::connexion(bool sign_in){
+    this->setStyleSheet(QStringLiteral("background-color:grey;"));
     QWidget *centralwidget = new QWidget(this);
 
     pseudo_line = new QLineEdit(centralwidget);
@@ -128,6 +151,7 @@ void Menu::connexion(bool sign_in){
 
 }
 void Menu::main_m(){
+    this->setStyleSheet(QStringLiteral("background-color:grey;"));
     QWidget *centralwidget = new QWidget(this);
 
     QLabel *label = new QLabel(QString::fromStdString("MAIN MENU"),centralwidget);
@@ -168,6 +192,7 @@ void Menu::main_m(){
 }
 
 void Menu::print_profile(){
+    this->setStyleSheet(QStringLiteral("background-color:grey;"));
     Profile profile; char buffer[Constante::CHAR_SIZE];
     _client.get_profile(buffer);
     profile_from_str(buffer, &profile);
@@ -226,6 +251,7 @@ void Menu::print_profile(){
     this->show();
 }
 void Menu::print_leaderboard(){
+    this->setStyleSheet(QStringLiteral("background-color:grey;"));
     std::vector<Profile> profile_list;
     char buffer[Constante::CHAR_SIZE];
     _client.checkLeaderboard(buffer);
@@ -292,6 +318,7 @@ void Menu::print_leaderboard(){
 }
 
 void Menu::print_friends(){
+    this->setStyleSheet(QStringLiteral("background-color:grey;"));
 	char buffer[Constante::CHAR_SIZE];
 	std::vector<Profile> friendlist;
 	_client.getFriendList(buffer);
@@ -386,7 +413,7 @@ void Menu::print_friends(){
     this->show();
 }
 void Menu::request_list(const QModelIndex &index){
-
+    this->setStyleSheet(QStringLiteral("background-color:grey;"));
     QWidget *horizontalLayoutWidget;
     QHBoxLayout *horizontalLayout;
     QVBoxLayout *verticalLayout;
@@ -459,6 +486,7 @@ void Menu::delete_friend_request(Profile futur_enemy,QDialog *Dialog){
 }
 
 void Menu::add_friend(){
+    this->setStyleSheet(QStringLiteral("background-color:grey;"));
     QDialog *Dialog = new QDialog(this);
     QWidget *verticalLayoutWidget;
     QVBoxLayout *verticalLayout;
@@ -512,6 +540,7 @@ void Menu::add_friend(){
 }
 
 void Menu::verif_friend(QDialog* dialog){
+    //Aissa: all error are already in screen ==> c'est pas écrit pour decorer :-)
     const char* pseudo = (pseudo_line->text()).toUtf8().constData(); 
     char* pseudo2 = const_cast<char*>(pseudo);
 
