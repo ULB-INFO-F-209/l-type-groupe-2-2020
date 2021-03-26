@@ -253,7 +253,7 @@ void DisplayGame::initGraphics(){
 	window = new sf::RenderWindow(sf::VideoMode(680, 480), "L-TYPE");
 	window->setVerticalSyncEnabled(false);
 	
-	if (!texture.loadFromFile("Health_bar_New.png"))
+	if (!texture.loadFromFile("healthbar.png"))
 	{
 		// error...
 	}
@@ -491,32 +491,16 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 		sf::RectangleShape cadre(sf::Vector2f(670, 470));
 		cadre.setFillColor(sf::Color::Transparent);
 		cadre.setOutlineThickness(2);
-		cadre.setOutlineColor(sf::Color::Cyan);
+		cadre.setOutlineColor(sf::Color::Magenta);
 		cadre.setPosition(sf::Vector2f(5, 5));
 		window->draw(cadre);
 
 		sf::RectangleShape line(sf::Vector2f(670, 2));
-		line.setFillColor(sf::Color::Cyan);
+		line.setFillColor(sf::Color::Magenta);
 		//cadre.setOutlineColor(sf::Color::Cyan);
 		line.setPosition(sf::Vector2f(5, 370));
 		window->draw(line);
 
-		/*//TODO: A metre dans init !
-		sf::Texture texture;
-		if (!texture.loadFromFile("Health_bar_New.png"))
-		{
-			// error...
-		}
-		sf::Texture heart;
-		if (!heart.loadFromFile("heart.png"))
-		{
-			// error...
-		}
-		sf::Font font;
-		if (!font.loadFromFile("space_age.ttf"))
-		{
-			// erreur...
-		}*/
 
 	if(player == 0){
 
@@ -555,7 +539,7 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 
 
 		sf::Sprite sprite;
-		sprite.setScale(sf::Vector2f(0.35,0.35));
+		sprite.setScale(sf::Vector2f(0.22,0.22));
 		sprite.setPosition(sf::Vector2f(3,380));
 		sprite.setTexture(texture);
 		window->draw(sprite);
@@ -575,7 +559,7 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 		score_txt.setCharacterSize(20); // exprimée en pixels, pas en points !
 		// choix de la couleur du texte
 		score_txt.setColor(sf::Color::White);
-		score_txt.setPosition(sf::Vector2f(7,430));
+		score_txt.setPosition(sf::Vector2f(13,440));
 		window->draw(score_txt);
 		//life
 		sf::Text life_percentage;
@@ -583,29 +567,29 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 		life_percentage.setString(std::to_string(hp)+"%");
 		life_percentage.setCharacterSize(18); // exprimée en pixels, pas en points !
 		life_percentage.setColor(sf::Color::White);
-		life_percentage.setPosition(sf::Vector2f(63,393));
+		life_percentage.setPosition(sf::Vector2f(83,386));
 		window->draw(life_percentage);
 		//n lives
-		sf::Text n_lives;
-		n_lives.setFont(font); // font est un sf::Font
-		n_lives.setString(std::to_string(lives));
-		n_lives.setCharacterSize(20); // exprimée en pixels, pas en points !
-		n_lives.setColor(sf::Color::Black);
-		n_lives.setPosition(sf::Vector2f(23,395));
-		window->draw(n_lives);
+		sf::Text n_player;
+		n_player.setFont(font); // font est un sf::Font
+		n_player.setString("P1");
+		n_player.setCharacterSize(19); // exprimée en pixels, pas en points !
+		n_player.setColor(sf::Color::White);
+		n_player.setPosition(sf::Vector2f(15,387));
+		window->draw(n_player);
 		//Bonus
 		sf::Text bonus_txt;
 		bonus_txt.setFont(font); // font est un sf::Font
 		if (bonusType == minigun)
-			bonus_txt.setString("  B"+std::to_string(player+1)+": M");
+			bonus_txt.setString("  B"+std::to_string(player+1)+":M");
 		else if (bonusType == damageUp)
-			bonus_txt.setString("  B"+std::to_string(player+1)+": D");
+			bonus_txt.setString("  B"+std::to_string(player+1)+":D");
 		else if (bonusType == tripleShot)
-			bonus_txt.setString("  B"+std::to_string(player+1)+": T");
+			bonus_txt.setString("  B"+std::to_string(player+1)+":T");
 		else if (bonusType == lifeSteal)
-			bonus_txt.setString("  B"+std::to_string(player+1)+": L");
+			bonus_txt.setString("  B"+std::to_string(player+1)+":L");
 		else if (bonusType == noBonus)
-			bonus_txt.setString("  B"+std::to_string(player+1)+":  ");
+			bonus_txt.setString("  B"+std::to_string(player+1)+": ");
 		bonus_txt.setCharacterSize(20); // exprimée en pixels, pas en points !
 		bonus_txt.setColor(sf::Color::White);
 		bonus_txt.setPosition(sf::Vector2f(250,430));
@@ -647,8 +631,8 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
             mvwprintw(main_wnd, 22, 69, "  B%d:  ", player + 1);
 
 		sf::Sprite sprite2;
-		sprite2.setScale(sf::Vector2f(0.35,0.35));
-		sprite2.setPosition(sf::Vector2f(460,390));
+		sprite2.setScale(sf::Vector2f(0.22,0.22));
+		sprite2.setPosition(sf::Vector2f(460,380));
 		sprite2.setTexture(texture);
 		window->draw(sprite2);
 
@@ -662,7 +646,7 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 		score_txt.setCharacterSize(20); // exprimée en pixels, pas en points !
 		// choix de la couleur du texte
 		score_txt.setColor(sf::Color::White);
-		score_txt.setPosition(sf::Vector2f(465,430));
+		score_txt.setPosition(sf::Vector2f(466,440));
 		window->draw(score_txt);
 		//life
 		sf::Text life_percentage;
@@ -670,29 +654,29 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 		life_percentage.setString(std::to_string(hp)+"%");
 		life_percentage.setCharacterSize(18); // exprimée en pixels, pas en points !
 		life_percentage.setColor(sf::Color::White);
-		life_percentage.setPosition(sf::Vector2f(526,393));
+		life_percentage.setPosition(sf::Vector2f(546,386));
 		window->draw(life_percentage);
 		//n lives
-		sf::Text n_lives;
-		n_lives.setFont(font); // font est un sf::Font
-		n_lives.setString(std::to_string(lives));
-		n_lives.setCharacterSize(20); // exprimée en pixels, pas en points !
-		n_lives.setColor(sf::Color::Black);
-		n_lives.setPosition(sf::Vector2f(476,395));
-		window->draw(n_lives);
+		sf::Text n_player;
+		n_player.setFont(font); // font est un sf::Font
+		n_player.setString("P2");
+		n_player.setCharacterSize(18); // exprimée en pixels, pas en points !
+		n_player.setColor(sf::Color::White);
+		n_player.setPosition(sf::Vector2f(468,387));
+		window->draw(n_player);
 		//Bonus
 		sf::Text bonus_txt;
 		bonus_txt.setFont(font); // font est un sf::Font
 		if (bonusType == minigun)
-			bonus_txt.setString("  B"+std::to_string(player+1)+": M");
+			bonus_txt.setString("  B"+std::to_string(player+1)+":M");
 		else if (bonusType == damageUp)
-			bonus_txt.setString("  B"+std::to_string(player+1)+": D");
+			bonus_txt.setString("  B"+std::to_string(player+1)+":D");
 		else if (bonusType == tripleShot)
-			bonus_txt.setString("  B"+std::to_string(player+1)+": T");
+			bonus_txt.setString("  B"+std::to_string(player+1)+":T");
 		else if (bonusType == lifeSteal)
-			bonus_txt.setString("  B"+std::to_string(player+1)+": L");
+			bonus_txt.setString("  B"+std::to_string(player+1)+":L");
 		else if (bonusType == noBonus)
-			bonus_txt.setString("  B"+std::to_string(player+1)+":  ");
+			bonus_txt.setString("  B"+std::to_string(player+1)+": ");
 		bonus_txt.setCharacterSize(20); // exprimée en pixels, pas en points !
 		bonus_txt.setColor(sf::Color::White);
 		bonus_txt.setPosition(sf::Vector2f(310,430));
