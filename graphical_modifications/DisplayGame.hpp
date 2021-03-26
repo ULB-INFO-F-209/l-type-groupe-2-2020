@@ -25,6 +25,11 @@ class DisplayGame
 	sf::Texture texture;	
 	sf::Texture heart;
 	sf::Font font;
+	sf::Text guiText;
+	sf::Sprite heartSprite;
+	sf::Sprite health_bar;
+	sf::Sprite health_bar2;
+
 public:
 	//Constructor
 	DisplayGame()=default;
