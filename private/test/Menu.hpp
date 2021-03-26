@@ -29,6 +29,7 @@
 #include <QButtonGroup>
 #include <QHeaderView>
 #include <QLabel>
+#include <QMovie>
 #include <QMainWindow>
 #include <QMenuBar>
 #include <QPushButton>
