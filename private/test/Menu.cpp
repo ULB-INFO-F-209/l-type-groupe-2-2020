@@ -613,6 +613,7 @@ void Menu::lobby(){
     QLabel *lives_label = new QLabel(QString::fromStdString("Lives : "),gridLayoutWidget);
     QLabel *dropRate_label  = new QLabel(QString::fromStdString("Drop rate : "),gridLayoutWidget);
     QSpinBox *lives_spin  = new QSpinBox(gridLayoutWidget);
+    lives_spin->setMaximum(3); 
 
     QComboBox *Ally_shot_box  = new QComboBox(gridLayoutWidget);
     Ally_shot_box->clear();
@@ -622,6 +623,8 @@ void Menu::lobby(){
     QLabel *allyShot_label = new QLabel(QString::fromStdString("Ally shot : "),gridLayoutWidget);;
     QLabel *playersLabel = new QLabel(QString::fromStdString("Player's number : "),gridLayoutWidget);
     QSpinBox *droprate_spin = new QSpinBox(gridLayoutWidget);
+    droprate_spin->setMaximum(100); 
+    droprate_spin->setSuffix(" %"); //fait pas att à la surbrillance : juste une fail
     QLabel *difficulty_label  = new QLabel(QString::fromStdString("Difficulty"),gridLayoutWidget);
 
     QLabel *space_label = new QLabel(gridLayoutWidget);
@@ -645,39 +648,38 @@ void Menu::lobby(){
     back_button->setMinimumSize(QSize(300, 45));
     back_button->setMaximumSize(QSize(300, 45));
 
+    //players label
+    QLabel *player1Title_label = new QLabel(QString::fromStdString("Player 1 :"),gridLayoutWidget);;
+    char pseudo[15];
+    _client.get_pseudo(pseudo);
+    QLabel *player1Name = new QLabel(pseudo,gridLayoutWidget);
+
     //hlayout adding
     horizontalLayout->addWidget(play_button);
     horizontalLayout->addWidget(back_button);
 
     //operations
     gridLayout->addWidget(players_box, 0, 1, 1, 1);
-    gridLayout->addWidget(lives_label, 3, 3, 1, 1);
-    gridLayout->addWidget(dropRate_label, 3, 0, 1, 1);
-    gridLayout->addWidget(lives_spin, 3, 4, 1, 1); //a trouver c'est lequel
+    gridLayout->addWidget(lives_label, 4, 3, 1, 1);
+    gridLayout->addWidget(dropRate_label, 4, 0, 1, 1);
+    gridLayout->addWidget(lives_spin, 4, 4, 1, 1); 
     gridLayout->addWidget(Ally_shot_box, 0, 4, 1, 1);
     gridLayout->addWidget(allyShot_label, 0, 3, 1, 1);
     gridLayout->addWidget(playersLabel, 0, 0, 1, 1);
-    gridLayout->addWidget(droprate_spin, 3, 1, 1, 1);
+    gridLayout->addWidget(droprate_spin, 4, 1, 1, 1);
     gridLayout->addWidget(difficulty_label, 2, 3, 1, 1);
     gridLayout->addWidget(difficulty_box, 2, 4, 1, 1);
     gridLayout->addWidget(space_label, 2, 2, 1, 1); //invisible
-
+    gridLayout->addWidget(player1Title_label, 2, 0, 1, 1);
+    gridLayout->addWidget(player1Name, 2, 1, 1, 1);
     //connections
-    std::cout << "rentree "<<std::endl;
     connect(back_button, &QPushButton::clicked, this,&Menu::main_m);
     connect(play_button, &QPushButton::clicked, this,[this, players_box, lives_spin, Ally_shot_box,droprate_spin, difficulty_box](){
-        int players,drop_rate, lives; 
-        bool Ally_shot;
+        int drop_rate = droprate_spin->value() , lives = lives_spin->value(); 
         int players = (players_box->currentText()).toInt();
-        std::string difficulty = (difficulty_box->currentText()).toUtf8().constData();
-
-        std::cout << "players : "<<players<<std::endl;
-        /*std::cout << "drop rate : "<<drop_rate<<std::endl;
-        std::cout << "lives : "<<lives<<std::endl;
-        std::cout << "ally shot  : "<<ally_shot<<std::endl;
-        std::cout << "difficulty : "<<difficulty<<std::endl;*/
-
-        //launch_game(players, drop_rate, lives, difficulty.c_str(),ally_shot)
+        std::string difficulty = (difficulty_box->currentText()).toStdString();
+        bool ally_shot = ((Ally_shot_box->currentText()).toStdString()).compare("Yes") == 0;
+        launch_game(players, drop_rate, lives, difficulty,ally_shot);
        
     });
 
@@ -689,4 +691,55 @@ void Menu::lobby(){
 
 
 
-//void Menu::launch_game(int players, int drop_rate, int lives, char *difficulty, bool ally_shot){}
+void Menu::launch_game(int players, int drop_rate, int lives, std::string difficulty, bool ally_shot){
+    Game_settings setting;
+    strcpy(setting.difficulty_str, difficulty.c_str());
+    setting.diff = !strcmp(setting.difficulty_str,"easy")? easy: !strcmp(setting.difficulty_str,"medium")? medium :hard;
+    setting.drop_rate = drop_rate;
+    setting.ally_shot = ally_shot;
+    setting.nb_player = players;
+
+    if(players==2){
+        QDialogButtonBox *buttonBox;
+        QLabel *label;
+        QLabel *pseudo;
+        QLabel *pswd;
+        QLineEdit *pseudoLine;
+        QLineEdit *pswdLine;
+        QDialog *Dialog = new QDialog(this);
+        Dialog->resize(400, 300);
+
+        buttonBox = new QDialogButtonBox(Dialog);
+        buttonBox->setGeometry(QRect(30, 240, 341, 32));
+        buttonBox->setOrientation(Qt::Horizontal);
+        buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
+        label = new QLabel("CONNEXION",Dialog);
+        label->setGeometry(QRect(30, 20, 331, 31));
+        label->setFrameShape(QFrame::WinPanel);
+        label->setAlignment(Qt::AlignCenter);
+        pseudo = new QLabel("Username: ",Dialog);
+        pseudo->setGeometry(QRect(25, 100, 91, 31));
+        pswd = new QLabel("Password : ",Dialog);
+        pswd->setGeometry(QRect(25, 170, 81, 31));
+        pseudoLine = new QLineEdit(Dialog);
+        pseudoLine->setGeometry(QRect(125, 100, 231, 25));
+        pswdLine = new QLineEdit(Dialog);
+        pswdLine->setGeometry(QRect(125, 170, 231, 25));
+
+
+        //connection 
+        connect(buttonBox, SIGNAL(rejected()), Dialog, SLOT(reject()));
+        connect(buttonBox, &QDialogButtonBox::accepted,this, [this,buttonBox,pseudoLine,pswdLine](){
+            std::string pseudo = (pseudoLine->text()).toUtf8().constData();
+            std::string pswd = (pswdLine->text()).toUtf8().constData();
+            char y_pseudo[15]; bool success =0;
+            _client.get_pseudo(y_pseudo);
+            if(pseudo.compare(std::string(y_pseudo)) != 0)
+                success= _client.signIn(pseudo.c_str(), pswd.c_str(), false); 
+            if(success)
+                buttonBox->rejected();
+    });
+        Dialog->show();
+
+    }
+}

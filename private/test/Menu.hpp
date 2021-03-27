@@ -95,7 +95,7 @@ private slots:
 	void verif_friend(QDialog*, bool adding=true);
 	void request_list(const QModelIndex &index);
 	void accept_friend();
-	void launch_game(int players, int drop_rate, int lives, char *difficulty, bool ally_shot);
+	void launch_game(int players, int drop_rate, int lives, std::string difficulty, bool ally_shot);
 
 };
 

@@ -43,76 +43,7 @@
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="1">
-      <widget class="QComboBox" name="comboBox">
-       <item>
-        <property name="text">
-         <string>1</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>2</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item row="3" column="3">
-      <widget class="QLabel" name="label_6">
-       <property name="text">
-        <string>Lives : </string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>Drop rate :</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="4">
-      <widget class="QSpinBox" name="spinBox_2"/>
-     </item>
-     <item row="0" column="4">
-      <widget class="QComboBox" name="comboBox_2">
-       <item>
-        <property name="text">
-         <string>Yes</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string> No</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>Ally shot : </string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="playersLabel">
-       <property name="text">
-        <string>Players  :</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QSpinBox" name="spinBox"/>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Difficulty : </string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
+     <item row="2" column="4">
       <widget class="QComboBox" name="comboBox_3">
        <item>
         <property name="text">
@@ -129,6 +60,122 @@
          <string>Hard</string>
         </property>
        </item>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="player1Title_label">
+       <property name="text">
+        <string>Player 1 : </string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="droprate_label">
+       <property name="text">
+        <string>Drop rate :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="players_box">
+       <item>
+        <property name="text">
+         <string>1</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>2</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="playersLabel">
+       <property name="text">
+        <string>Players  :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="4">
+      <widget class="QSpinBox" name="livesspin"/>
+     </item>
+     <item row="4" column="3">
+      <widget class="QLabel" name="lives_lable">
+       <property name="text">
+        <string>Lives : </string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QSpinBox" name="droprate_spin"/>
+     </item>
+     <item row="0" column="3">
+      <widget class="QLabel" name="allyShot_label">
+       <property name="text">
+        <string>Ally shot : </string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="3">
+      <widget class="QLabel" name="difficulty_label">
+       <property name="text">
+        <string>Difficulty : </string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QComboBox" name="allyShot_box">
+       <item>
+        <property name="text">
+         <string>Yes</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string> No</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="2" column="2">
+      <widget class="QLabel" name="space_label">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="player2Title_label">
+       <property name="minimumSize">
+        <size>
+         <width>70</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>70</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>players 2: </string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLabel" name="player1Name">
+       <property name="text">
+        <string>persone1</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLabel" name="player2Name">
+       <property name="text">
+        <string>No player</string>
+       </property>
       </widget>
      </item>
     </layout>
