@@ -1,6 +1,6 @@
 #include "Menu.hpp"
 
-/******************** TODO ********************************************
+/********************* TODO ********************************************
         *  23/03 : Reunir sign in, sign up using lambda function
         *  23/03 : Maybe mettre tous les widget important en attribut?
         *  26/03 : Design fade like r-type or fun like neon?   
@@ -184,8 +184,6 @@ void Menu::main_m(){
     connect(profile, &QPushButton::clicked, this, &Menu::print_profile);
     connect(log_out, &QPushButton::clicked, this,&Menu::home);
     connect(new_game, &QPushButton::clicked, this,&Menu::lobby);
-
-
 }
 
 void Menu::print_profile(){
@@ -419,6 +417,7 @@ void Menu::print_friends(){
     this->setCentralWidget(centralwidget);
     this->show();
 }
+
 void Menu::request_list(const QModelIndex &index){
     this->setStyleSheet(QStringLiteral("background-color:grey;"));
     QWidget *horizontalLayoutWidget;
@@ -608,12 +607,12 @@ void Menu::lobby(){
 
     QComboBox *players_box  = new QComboBox(gridLayoutWidget);
     players_box->clear();
-    players_box->addItem(QString::fromStdString(" 1 "));
-    players_box->addItem(QString::fromStdString(" 2"));
+    players_box->addItem(QString::fromStdString("1"));
+    players_box->addItem(QString::fromStdString("2"));
 
     QLabel *lives_label = new QLabel(QString::fromStdString("Lives : "),gridLayoutWidget);
     QLabel *dropRate_label  = new QLabel(QString::fromStdString("Drop rate : "),gridLayoutWidget);
-    QSpinBox *spinBox_2  = new QSpinBox(gridLayoutWidget);
+    QSpinBox *lives_spin  = new QSpinBox(gridLayoutWidget);
 
     QComboBox *Ally_shot_box  = new QComboBox(gridLayoutWidget);
     Ally_shot_box->clear();
@@ -622,8 +621,10 @@ void Menu::lobby(){
 
     QLabel *allyShot_label = new QLabel(QString::fromStdString("Ally shot : "),gridLayoutWidget);;
     QLabel *playersLabel = new QLabel(QString::fromStdString("Player's number : "),gridLayoutWidget);
-    QSpinBox *spinBox = new QSpinBox(gridLayoutWidget);
+    QSpinBox *droprate_spin = new QSpinBox(gridLayoutWidget);
     QLabel *difficulty_label  = new QLabel(QString::fromStdString("Difficulty"),gridLayoutWidget);
+
+    QLabel *space_label = new QLabel(gridLayoutWidget);
 
     QComboBox *difficulty_box =  new QComboBox(gridLayoutWidget);
     difficulty_box->clear();
@@ -652,29 +653,40 @@ void Menu::lobby(){
     gridLayout->addWidget(players_box, 0, 1, 1, 1);
     gridLayout->addWidget(lives_label, 3, 3, 1, 1);
     gridLayout->addWidget(dropRate_label, 3, 0, 1, 1);
-    gridLayout->addWidget(spinBox_2, 3, 4, 1, 1); //a trouver c'est lequel
+    gridLayout->addWidget(lives_spin, 3, 4, 1, 1); //a trouver c'est lequel
     gridLayout->addWidget(Ally_shot_box, 0, 4, 1, 1);
     gridLayout->addWidget(allyShot_label, 0, 3, 1, 1);
     gridLayout->addWidget(playersLabel, 0, 0, 1, 1);
-    gridLayout->addWidget(spinBox, 3, 1, 1, 1);
-    gridLayout->addWidget(difficulty_label, 2, 0, 1, 1);
-    gridLayout->addWidget(difficulty_box, 2, 1, 1, 1);
+    gridLayout->addWidget(droprate_spin, 3, 1, 1, 1);
+    gridLayout->addWidget(difficulty_label, 2, 3, 1, 1);
+    gridLayout->addWidget(difficulty_box, 2, 4, 1, 1);
+    gridLayout->addWidget(space_label, 2, 2, 1, 1); //invisible
 
     //connections
     std::cout << "rentree "<<std::endl;
     connect(back_button, &QPushButton::clicked, this,&Menu::main_m);
-    //connect(play_button, &QPushButton::clicked, this,&Menu::main_m)
+    connect(play_button, &QPushButton::clicked, this,[this, players_box, lives_spin, Ally_shot_box,droprate_spin, difficulty_box](){
+        int players,drop_rate, lives; 
+        bool Ally_shot;
+        int players = (players_box->currentText()).toInt();
+        std::string difficulty = (difficulty_box->currentText()).toUtf8().constData();
+
+        std::cout << "players : "<<players<<std::endl;
+        /*std::cout << "drop rate : "<<drop_rate<<std::endl;
+        std::cout << "lives : "<<lives<<std::endl;
+        std::cout << "ally shot  : "<<ally_shot<<std::endl;
+        std::cout << "difficulty : "<<difficulty<<std::endl;*/
+
+        //launch_game(players, drop_rate, lives, difficulty.c_str(),ally_shot)
+       
+    });
 
     
     this->setCentralWidget(centralwidget);
     this->show();
 
 }
-/*
-
-void Menu::start_session(){}
 
 
-int Menu::Menu::friends(){}
 
-*/
+//void Menu::launch_game(int players, int drop_rate, int lives, char *difficulty, bool ally_shot){}
