@@ -25,12 +25,15 @@ class DisplayGame
 	sf::Texture texture;	
 	sf::Texture heart;
 	sf::Texture asteroid;
+	sf::Texture ship1;
 	sf::Font font;
 	sf::Text guiText;
 	sf::Sprite heartSprite;
 	sf::Sprite health_bar;
 	sf::Sprite health_bar2;
 	sf::Sprite asteroidSprite;
+	sf::Sprite ship1Sprite;
+	
 
 public:
 	//Constructor

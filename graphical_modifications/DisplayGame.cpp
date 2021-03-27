@@ -255,7 +255,7 @@ void DisplayGame::drawNewLevel(int tick,int levelTick,int currentLevel) {
     }
 }
 void DisplayGame::initGraphics(){
-	window = new sf::RenderWindow(sf::VideoMode(680, 480), "L-TYPE");
+	window = new sf::RenderWindow(sf::VideoMode(1000, 480), "L-TYPE");
 	window->setVerticalSyncEnabled(false);
 	
 	if (!texture.loadFromFile("healthbar.png"))
@@ -278,6 +278,11 @@ void DisplayGame::initGraphics(){
 		// erreur...
 	}
 
+	if (!ship1.loadFromFile("player1.png"))
+	{
+		// erreur...
+	}
+
 	heartSprite.setScale(sf::Vector2f(0.03,0.03));
 	heartSprite.setTexture(heart);
 
@@ -287,8 +292,11 @@ void DisplayGame::initGraphics(){
 	health_bar2.setScale(sf::Vector2f(0.22,0.22));
 	health_bar2.setTexture(texture);
 
-	asteroidSprite.setScale(sf::Vector2f(0.2, 0.2));
+	asteroidSprite.setScale(sf::Vector2f(0.14, 0.16));
 	asteroidSprite.setTexture(asteroid);
+
+	ship1Sprite.setScale(sf::Vector2f(0.19,0.19));
+	ship1Sprite.setTexture(ship1);
 	guiText.setFont(font);
 
 }
@@ -368,10 +376,13 @@ void DisplayGame::drawObstacle(int x, int y) {
 	wattron(game_wnd, COLOR_PAIR(1));
 	mvwaddch(game_wnd, y, x, '#');
 	wattroff(game_wnd, COLOR_PAIR(1));
-
-
-	asteroidSprite.setPosition(x*8.5, y*20);
-	window->draw(asteroidSprite);
+	asteroidSprite.setPosition(sf::Vector2f((x+1)*12.5-4.5,y*20));
+	sf::RectangleShape asteroidShape(sf::Vector2f(12.5*1.5,20*1.5));
+	asteroidShape.setFillColor(sf::Color(102,51,0));
+	asteroidShape.setPosition(sf::Vector2f((x+1)*12.5-3,y*20));
+	
+	if(y*20 < 350)
+		window->draw(asteroidSprite);
 
 }
 void DisplayGame::drawEnemy(int x, int y, int tick, bool isBlinking) {
@@ -402,26 +413,38 @@ void DisplayGame::drawEnemy(int x, int y, int tick, bool isBlinking) {
 
 
 	}
-
+	sf::RectangleShape enemyShape(sf::Vector2f(12.5*3,20));
+	enemyShape.setFillColor(sf::Color::Red);
+	enemyShape.setPosition(sf::Vector2f(x*12.5,5 + y*20));
+	if(y*20 < 350)
+		window->draw(enemyShape);
 
 }
 void DisplayGame::drawProjectile(int x, int y, bool enemy, bool player1){
+	sf::RectangleShape projectileShape(sf::Vector2f(12.5,20));
+	
+	projectileShape.setPosition(sf::Vector2f((x+1)*12.5,5 + y*20));
+	
+	
 	if(enemy){
+		projectileShape.setFillColor(sf::Color::Red);
 		wattron(game_wnd, COLOR_PAIR(4));
         mvwaddch(game_wnd, y, x, '*');
         wattroff(game_wnd, COLOR_PAIR(4));
 	}
 	else if (player1) {
+		projectileShape.setFillColor(sf::Color::Blue);
 		wattron(game_wnd, COLOR_PAIR(5));
 		mvwaddch(game_wnd, y, x, '*');
 		wattroff(game_wnd, COLOR_PAIR(5));
 	}
 	else{
+		projectileShape.setFillColor(sf::Color::Green);
 		wattron(game_wnd, COLOR_PAIR(2));
 		mvwaddch(game_wnd, y, x, '*');
 		wattroff(game_wnd, COLOR_PAIR(2));
 	}
-
+	window->draw(projectileShape);
 }
 void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinking){
 
@@ -471,16 +494,17 @@ void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinkin
 
         wattroff(game_wnd, A_ALTCHARSET);
 
-		sf::RectangleShape playerShipShape(sf::Vector2f(8.5*3,20*2));
-		playerShipShape.setPosition(sf::Vector2f(x*8.5, y*20));
+		sf::RectangleShape playerShipShape(sf::Vector2f(12.5*3,20*2));
+		playerShipShape.setPosition(sf::Vector2f(x*12.5,5 + y*20));
 		if (player==1){
             playerShipShape.setFillColor(sf::Color::Blue);
         }
         else{
 			playerShipShape.setFillColor(sf::Color::Green);
 		}
-
-		window->draw(playerShipShape);
+		ship1Sprite.setPosition(sf::Vector2f(x*12.5-30,5 + y*20-25));
+		//window->draw(playerShipShape);
+		window->draw(ship1Sprite);
 
 
 }
@@ -500,7 +524,11 @@ void DisplayGame::drawBonus(int type, int x, int y){
 		mvwaddch(game_wnd, y, x, 'T');
 	}
 	wattroff(game_wnd, A_BOLD);
-
+	sf::RectangleShape bonusShape(sf::Vector2f(12.5,20));
+	bonusShape.setFillColor(sf::Color::Yellow);
+	bonusShape.setPosition(sf::Vector2f((x+1)*12.5,5 + y*20));
+	
+	window->draw(bonusShape);
 }
 
 void DisplayGame::drawBoss(int x, int y){
@@ -514,14 +542,14 @@ void DisplayGame::drawBoss(int x, int y){
         wattroff(main_wnd, COLOR_PAIR(4));
 }
 void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType, int level, int tick){
-		sf::RectangleShape cadre(sf::Vector2f(670, 470));
+		sf::RectangleShape cadre(sf::Vector2f(990, 470));
 		cadre.setFillColor(sf::Color::Transparent);
 		cadre.setOutlineThickness(2);
 		cadre.setOutlineColor(sf::Color::Magenta);
 		cadre.setPosition(sf::Vector2f(5, 5));
 		window->draw(cadre);
 
-		sf::RectangleShape line(sf::Vector2f(670, 2));
+		sf::RectangleShape line(sf::Vector2f(990, 2));
 		line.setFillColor(sf::Color::Magenta);
 		//cadre.setOutlineColor(sf::Color::Cyan);
 		line.setPosition(sf::Vector2f(5, 370));

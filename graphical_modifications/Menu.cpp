@@ -12,8 +12,8 @@ void drawGrid(sf::RenderWindow& win, int rows, int cols){
     for(int i=0; i < rows-1; i++){
         int r = i+1;
         float rowY = rowH*r;
-        grid[i*2].position = {0, rowY};
-        grid[i*2+1].position = {size.x, rowY};
+        grid[i*2].position = {0, 5 + rowY};
+        grid[i*2+1].position = {size.x, 5 +rowY};
     }
     // column separators
     for(int i=rows-1; i < numLines; i++){
@@ -344,7 +344,7 @@ void Menu::launch_game(Game_settings* game_option){
 			break;
 			//gameOn = false;
 		display_game.parse_instruction(string_game_to_display);
-		drawGrid(*window,16,78);
+		//drawGrid(*window,18,80);
 		window->display();
 
     }
