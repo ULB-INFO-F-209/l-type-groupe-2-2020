@@ -1,6 +1,5 @@
 //TODO:
 // Stars ?
-// ctrl-c GUI
 // ajouter un tour de boucle pour l'affichage
 
 
@@ -121,13 +120,18 @@ int DisplayGame::getInputWindow(){
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::V))
 	{
 		return 'v';
-	}else if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
 	{
 		return 'm';
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
 		return ' ';
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::P))
+	{
+		return 'p';
 	}
 	else{
 		return -1;
@@ -268,6 +272,12 @@ void DisplayGame::initGraphics(){
 	{
 		// erreur...
 	}
+
+	if (!asteroid.loadFromFile("asteroid.png"))
+	{
+		// erreur...
+	}
+
 	heartSprite.setScale(sf::Vector2f(0.03,0.03));
 	heartSprite.setTexture(heart);
 
@@ -277,6 +287,8 @@ void DisplayGame::initGraphics(){
 	health_bar2.setScale(sf::Vector2f(0.22,0.22));
 	health_bar2.setTexture(texture);
 
+	asteroidSprite.setScale(sf::Vector2f(0.2, 0.2));
+	asteroidSprite.setTexture(asteroid);
 	guiText.setFont(font);
 
 }
@@ -356,6 +368,10 @@ void DisplayGame::drawObstacle(int x, int y) {
 	wattron(game_wnd, COLOR_PAIR(1));
 	mvwaddch(game_wnd, y, x, '#');
 	wattroff(game_wnd, COLOR_PAIR(1));
+
+
+	asteroidSprite.setPosition(x*8.5, y*20);
+	window->draw(asteroidSprite);
 
 }
 void DisplayGame::drawEnemy(int x, int y, int tick, bool isBlinking) {
@@ -455,16 +471,16 @@ void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinkin
 
         wattroff(game_wnd, A_ALTCHARSET);
 
-		sf::CircleShape shape(10.f);
-		shape.setPosition(sf::Vector2f(x*8.5, y*20));
+		sf::RectangleShape playerShipShape(sf::Vector2f(8.5*3,20*2));
+		playerShipShape.setPosition(sf::Vector2f(x*8.5, y*20));
 		if (player==1){
-            shape.setFillColor(sf::Color::Blue);
+            playerShipShape.setFillColor(sf::Color::Blue);
         }
         else{
-			shape.setFillColor(sf::Color::Green);
+			playerShipShape.setFillColor(sf::Color::Green);
 		}
 
-		window->draw(shape);
+		window->draw(playerShipShape);
 
 
 }
@@ -734,8 +750,5 @@ void DisplayGame::drawEndGame(std::string score){
     mvwprintw(game_wnd,9, 35,"SCORE : %i", score1);
     mvwprintw(game_wnd,12, 32,"press p to quit");
     refreshWnd();
-    while(true){
-        char in_char = wgetch(main_wnd);
-        if(in_char == 'p')break;
-    }
+    
 }

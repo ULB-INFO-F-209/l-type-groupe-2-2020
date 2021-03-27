@@ -1,5 +1,34 @@
 #include "Menu.hpp"
 
+void drawGrid(sf::RenderWindow& win, int rows, int cols){
+    // initialize values
+    int numLines = rows+cols-2;
+    sf::VertexArray grid(sf::Lines, 2*(numLines));
+    win.setView(win.getDefaultView());
+    auto size = win.getView().getSize();
+    float rowH = 370/rows;
+    float colW = size.x/cols;
+    // row separators
+    for(int i=0; i < rows-1; i++){
+        int r = i+1;
+        float rowY = rowH*r;
+        grid[i*2].position = {0, rowY};
+        grid[i*2+1].position = {size.x, rowY};
+    }
+    // column separators
+    for(int i=rows-1; i < numLines; i++){
+        int c = i-rows+2;
+        float colX = colW*c;
+        grid[i*2].position = {colX, 0};
+        grid[i*2+1].position = {colX, size.y};
+    }
+    // draw it
+    win.draw(grid);
+}
+
+
+
+
 Interface Menu::window = Interface();
 
 void Menu::start_session(){
@@ -293,7 +322,8 @@ void Menu::launch_game(Game_settings* game_option){
 	
 
     while(gameOn && window->isOpen()){ //fenetre fermé -> terminal freeze
-	
+
+
 		sf::Event event;
         while (window->pollEvent(event))
         {
@@ -310,15 +340,32 @@ void Menu::launch_game(Game_settings* game_option){
 		_client.send_game_input(inp);
 		inp = -1;
 		string_game_to_display = _client.read_game_pipe();
-		if (string_game_to_display == Constante::GAME_END) break;
+		if (string_game_to_display == Constante::GAME_END)
+			break;
+			//gameOn = false;
 		display_game.parse_instruction(string_game_to_display);
+		drawGrid(*window,16,78);
 		window->display();
 
     }
 	string_game_to_display = _client.read_game_pipe();
 	std::cout << string_game_to_display;
 	display_game.drawEndGame(string_game_to_display);
+
+	sf::Event event;
+	
+	while(true){
+		char in_char = -1;
+		while (window->pollEvent(event))
+        {
+			if (event.type == sf::Event::KeyPressed)
+				in_char = display_game.getInputWindow();
+        }
+        if(in_char == 'p')break;
+    }
+
     display_game.close();
+	window->close();
 }
 
 

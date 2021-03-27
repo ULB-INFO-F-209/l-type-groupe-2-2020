@@ -24,11 +24,13 @@ class DisplayGame
 	int tickStar;
 	sf::Texture texture;	
 	sf::Texture heart;
+	sf::Texture asteroid;
 	sf::Font font;
 	sf::Text guiText;
 	sf::Sprite heartSprite;
 	sf::Sprite health_bar;
 	sf::Sprite health_bar2;
+	sf::Sprite asteroidSprite;
 
 public:
 	//Constructor
