@@ -471,7 +471,8 @@ void Menu::request_list(const QModelIndex &index){
     action_button->setFont(font);
     action_button->setOrientation(Qt::Vertical);
     action_button->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::No|QDialogButtonBox::Yes);
-    //action_button->setCenterButtons(true);
+
+    action_button->setCenterButtons(true);
 
     //connect(action_button, SIGNAL(rejected()), Dialog, SLOT(reject()));
     connect(action_button, SIGNAL(rejected()), Dialog, SLOT(reject()));
@@ -490,10 +491,10 @@ void Menu::request_list(const QModelIndex &index){
         print_friends();
     });
 
-
     horizontalLayout->addWidget(action_button);
     Dialog->show();
 }
+
 
 void Menu::add_del_friend(bool adding){
     this->setStyleSheet(QStringLiteral("background-color:grey;"));
