@@ -63,11 +63,9 @@ std::vector<Profile> Database::getFriendRequest(char* pseudo){
         std::cout << pseudo << " does not exist" << std::endl;
     } else{
         for (auto req : _data[idx]._requests_vector){
-            if(req[0] != '\0'){
-                idx = find(req.c_str());
-                Profile prof{_data[idx].acc};
-                requests.push_back(prof);
-            }
+            idx = find(req.c_str());
+            Profile prof{_data[idx].acc};
+            requests.push_back(prof);
         }
     }
     return requests;
@@ -129,7 +127,7 @@ bool Database::updateScore(int score, char* pseudo){
     if (idx == -1){
         std::cout << pseudo << " does not exist" << std::endl;
     } else{
-        if(_data[idx].acc._bestScore < score){_data[idx].acc._bestScore = score;}
+        _data[idx].acc.setScore(score);
         res = true;
     }
     return res;
@@ -140,19 +138,7 @@ int Database::friendRequest(char* pseudoSrc, char* pseudoDest){
     std::ptrdiff_t idxSrc = find(pseudoSrc);
     std::ptrdiff_t idxDest = find(pseudoDest);
     if (idxSrc != -1 && idxDest != -1 && idxSrc != idxDest){
-        res = _data[idxDest].acc.addRequest(pseudoSrc);     // res=0 if request is sent, res=1 if already requested
-        
-        if (res == 1){return res;}
-        // -------------------      nouvel ajout       -----------------------
-        int index = 0;
-        bool found = false;
-        while (index < _data[idxDest]._requests_vector.size() && !found)
-        {
-            //found = (strcmp(pseudoSrc, _data[idxDest]._requests_vector[index]) == 0);
-            found = (strcmp(pseudoSrc, _data[idxDest]._requests_vector[index].c_str()) == 0);
-            if (!found){index++;}
-        }
-        if (!found){_data[idxDest]._requests_vector.push_back(pseudoSrc);}
+        res = _data[idxDest].addRequest(pseudoSrc);     // res=0 if request is sent, res=1 if already requested
     }                                                   // res=2 if already friends
     if (idxSrc == -1){std::cout << pseudoSrc << " does not exist" << std::endl; res = 3;}  // res=3 if pseudo doesn't exist
     if (idxDest == -1){std::cout << pseudoDest << " does not exist" << std::endl; res = 3;}
@@ -165,29 +151,13 @@ bool Database::addFriend(char* pseudo1, char* pseudo2){
     std::ptrdiff_t idx2 = find(pseudo2);
     bool res = false;
     if (idx1 != -1 && idx2 != -1){
-        _data[idx1].acc.addFriend(pseudo2);
-        _data[idx1].acc.removeRequest(pseudo2);             // supprimer la requete de la liste
-        _data[idx2].acc.addFriend(pseudo1);
+        _data[idx1].addFriend(pseudo2);
+        _data[idx2].addFriend(pseudo1);
+        _data[idx1].removeRequest(pseudo2);             // supprimer la requete de la liste
         res = true;
-        
-        // -------------------      nouvel ajout       -----------------------
-        _data[idx1]._friends_vector.push_back(pseudo2);
-        _data[idx2]._friends_vector.push_back(pseudo1);
-        int index = 0;
-        bool found = false;
-        while (index < _data[idx1]._requests_vector.size() && !found){
-            //found = (strcmp(pseudo2, _data[idx1]._requests_vector[index]) == 0);
-            found = (strcmp(pseudo2, _data[idx1]._requests_vector[index].c_str()) == 0);
-
-            if (!found){index++;}
-        }
-        if (found){_data[idx1]._requests_vector.erase(_data[idx1]._requests_vector.begin()+index);}
-        
-        // -------------------     fin    -----------------------
     }
     if (idx1 == -1){std::cout << pseudo1 << " does not exist" << std::endl;}
     if (idx2 == -1){std::cout << pseudo2 << " does not exist" << std::endl;}
-    std::cout << res << std::endl;
     return res;
 }
 
@@ -197,21 +167,8 @@ bool Database::delFriendRequest(char *pseudo1, char *pseudo2){
     std::ptrdiff_t idx2 = find(pseudo2);
     bool res = false;
     if (idx1 != -1 && idx2 != -1){
-        _data[idx1].acc.removeRequest(pseudo2);
+        _data[idx1].removeRequest(pseudo2);
         res = true;
-
-        // -------------------      nouvel ajout       -----------------------
-        int index = 0;
-        bool found = false;
-        while (index < _data[idx1]._requests_vector.size() && !found)
-        {
-            //found = (strcmp(pseudo2, _data[idx1]._requests_vector[index]) == 0);
-            found = (strcmp(pseudo2, _data[idx1]._requests_vector[index].c_str()) == 0);
-
-            if (!found){index++;}
-        }
-        _data[idx1]._requests_vector.erase(_data[idx1]._requests_vector.begin()+index);
-        // -------------------     fin    -----------------------
     }
     if (idx1 == -1){std::cout << pseudo1 << " does not exist" << std::endl;}
     if (idx2 == -1){std::cout << pseudo2 << " does not exist" << std::endl;}
@@ -223,30 +180,10 @@ int Database::removeFriend(char* pseudo1, char* pseudo2){
     std::ptrdiff_t idx2 = find(pseudo2);
     int res = 2; //already friend
     if (idx1 != -1 && idx2 != -1){
-        if(_data[idx1].acc.findFriend(pseudo2) != -1){
-            _data[idx1].acc.removeFriend(pseudo2);
-            _data[idx2].acc.removeFriend(pseudo1);
-            res = 0; //bien supp
-
-            // -------------------      nouvel ajout       -----------------------
-            int index = 0;
-            bool found = false;
-            while (index < _data[idx1]._friends_vector.size() && !found)
-            {
-                found = (strcmp(pseudo2, _data[idx1]._friends_vector[index].c_str()) == 0);
-                if (!found){index++;}
-            }
-            _data[idx1]._friends_vector.erase(_data[idx1]._friends_vector.begin()+index);
-
-            index = 0;
-            found = false;
-            while (index < _data[idx2]._friends_vector.size() && !found)
-            {
-                found = (strcmp(pseudo1, _data[idx2]._friends_vector[index].c_str()) == 0);
-                if (!found){index++;}
-            }
-            _data[idx2]._friends_vector.erase(_data[idx2]._friends_vector.begin()+index);
-            // -------------------     fin    -----------------------
+        if(_data[idx1].findFriend(pseudo2) != -1){
+            _data[idx1].removeFriend(pseudo2);
+            _data[idx2].removeFriend(pseudo1);
+            res = 0; //bien supprimé
         }
         else
             res = 1;
@@ -348,7 +285,6 @@ void Database::dbSave(){
 
         for (auto req_in_vect : account._requests_vector){
             Request req(pseudo, req_in_vect.c_str());
-            std::cout << "moi : " << req._pseudo << " ami :" << req_in_vect << std::endl;
             fwrite(&req,sizeof(Request),1,out_req);
         }
     }
@@ -367,7 +303,7 @@ void Database::display(){
     for (int i = 0; i < _data.size(); i++){
         std::cout << _data[i].acc;
 
-        std::cout << "friends : [";
+        std::cout << "\nfriends : [";
         for (auto frnd: _data[i]._friends_vector){
             std::cout << (frnd) << ", ";
         }

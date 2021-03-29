@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "account.hpp"
+#include "accountandvectors.hpp"
 
 struct Profile{
 	char pseudo[20];
