@@ -13,7 +13,7 @@ int main()
 	db.createAccount("Vin", "toto");
 	db.createAccount("poubelle", "mdp");
 
-	/*
+	
 	std::cout << "db.find(\"Vin\") : " << db.find("Vin") << std::endl;
     std::cout << "db.find(\"haha\") : " << db.find("haha") << std::endl;
 
@@ -28,10 +28,14 @@ int main()
 
     std::cout << "db.addFriend(\"helin\", \"aissa\") : " << db.addFriend("helin", "aissa") << std::endl;
     std::cout << "db.addFriend(\"helin\", \"Vin\") : " << db.addFriend("helin", "Vin") << std::endl;
+       
+
     std::cout << "db.addFriend(\"helin\", \"poubelle\") : " << db.addFriend("helin", "poubelle") << std::endl;
 
-    std::cout << "db.removeFriend(\"Vin\", \"helin\") : " << db.removeFriend("Vin", "helin") << std::endl;
-	*/
+    db.removeFriend("Vin", "helin");
+    //std::cout << "db.removeFriend(\"Vin\", \"helin\") : " << std::endl;
+	
+
 	db.updateScore(666, "helin");
 	db.updateScore(45, "aissa");
 	db.updateScore(3, "Vin");
