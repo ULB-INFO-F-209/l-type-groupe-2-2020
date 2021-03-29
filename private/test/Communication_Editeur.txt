@@ -1,0 +1,20 @@
+1.Une fois dans level editor, avoir trois options:
+	a. Voir tt les level editer par les autres joueurs
+	b. Voir ses propres level
+	c. Editer un nouveau level
+		- Nombre d'ennemies
+		- Degat des projectiles ennemies
+		- Vitesse des ennemies
+		- Drop rate
+		- Choix de bonus
+		- Modif des obstacles
+		- Modif de l'arriere plan
+		- Vitesse des obstacles
+		- Degat des obstacles
+		- Degat des projectiles de vaisseaux
+		- Modif des vaisseaux
+		- Nombre de vies
+		
+
+2.Ajouter ou pas les parties des level editors dans le leadeboard ? NOP
+	
