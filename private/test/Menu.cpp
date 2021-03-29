@@ -12,6 +12,7 @@ Menu::Menu(): QMainWindow(){
     this->setWindowTitle(QApplication::translate("L-Type", "L-Type", nullptr));
     this->resize(800, 600);
     this->setStyleSheet(QStringLiteral("background-color:grey;"));
+
 }
 
 void Menu::start_session(){
@@ -22,11 +23,11 @@ void Menu::start_session(){
 
 void Menu::home(){	
     this->setStyleSheet(QStringLiteral("background-color:black;"));
-    QWidget *centralwidget = new QWidget(this);
+    QWidget *centralWidget = new QWidget(this);
 
 
     //layout box
-    QWidget *verticalLayoutWidget = new QWidget(centralwidget);
+    QWidget *verticalLayoutWidget = new QWidget(centralWidget);
     verticalLayoutWidget->setGeometry(QRect(50, 110, 700, 450));
     //layout button
     QHBoxLayout *button_v_layout = new QHBoxLayout(verticalLayoutWidget);
@@ -60,16 +61,18 @@ void Menu::home(){
     connect(home_button[2], &QPushButton::clicked, this,  &Menu::close);
 
 
-    //title section
-    QLabel *title_label = new QLabel(centralwidget);
-    title_label->setGeometry(QRect(110, 50, 579, 78));
-    //title_label->setFrameShape(QFrame::WinPanel);
-    title_label->setAlignment(Qt::AlignCenter);
-    QPixmap pix_home_title("images/home_title");
+    /****** DESIGN SECTION ****************************/
+    QLabel *title_label = new QLabel(centralWidget);
+    title_label->setGeometry(QRect(110, 50, 600, 150));
+    QPixmap pix_home_title("images/titles/home");
     title_label->setPixmap( pix_home_title);
+    title_label->setAlignment(Qt::AlignCenter);
+    pix_home_title = pix_home_title.scaled(title_label->size(),Qt::KeepAspectRatio);
+
+    /*********END DESIGN SECTION*****************************************/
 
         //exageration
-    /*QLabel *lbl = new QLabel(centralwidget);
+    /*QLabel *lbl = new QLabel(centralWidget);
     QMovie *mv = new QMovie("images/stars_rain.gif");
     lbl->setGeometry(QRect(70, 0, 1000, 1000));
     mv->start();
@@ -77,7 +80,7 @@ void Menu::home(){
     lbl->setMovie(mv);*/
 
 
-    this->setCentralWidget(centralwidget);
+    this->setCentralWidget(centralWidget);
 
 }
 
@@ -98,29 +101,23 @@ void Menu::check_data(bool sign_in){
 }
 
 void Menu::connexion(bool sign_in){
-    this->setStyleSheet(QStringLiteral("background-color:grey;"));
-    QWidget *centralwidget = new QWidget(this);
+    QWidget *centralWidget = new QWidget(this);
 
-    pseudo_line = new QLineEdit(centralwidget);
+    pseudo_line = new QLineEdit(centralWidget);
     pseudo_line->setGeometry(QRect(230, 270, 400, 45));
     pseudo_line->setMaxLength(15);
 
-    pswd_line = new QLineEdit(centralwidget);
+    pswd_line = new QLineEdit(centralWidget);
     pswd_line->setGeometry(QRect(230, 370, 400, 45));
     pswd_line->setMaxLength(15);
 
-    QLabel *title_label = new QLabel(QString::fromStdString("CONNEXION"), centralwidget);
-    title_label->setGeometry(QRect(70, 47, 691, 81));
-    title_label->setFrameShape(QFrame::WinPanel);
-    title_label->setAlignment(Qt::AlignCenter);
-
-    QLabel *pseudo_label = new QLabel(QString::fromStdString("USERNAME : "),centralwidget);
+    QLabel *pseudo_label = new QLabel(QString::fromStdString("USERNAME : "),centralWidget);
     pseudo_label->setGeometry(QRect(140, 270, 91, 45));
 
-    QLabel *pswd_label = new QLabel(QString::fromStdString("PASSWORD : "),centralwidget);
+    QLabel *pswd_label = new QLabel(QString::fromStdString("PASSWORD : "),centralWidget);
     pswd_label->setGeometry(QRect(130, 370, 101, 45));
 
-    QWidget *horizontalLayoutWidget = new QWidget(centralwidget);
+    QWidget *horizontalLayoutWidget = new QWidget(centralWidget);
     horizontalLayoutWidget->setGeometry(QRect(110, 470, 641, 80));
     QHBoxLayout *horizontalLayout =  new QHBoxLayout(horizontalLayoutWidget);
     horizontalLayout->setSpacing(50);
@@ -129,14 +126,31 @@ void Menu::connexion(bool sign_in){
     QPushButton *ok_button =  new QPushButton(QString::fromStdString("Ok"),horizontalLayoutWidget);
     ok_button->setMinimumSize(QSize(25, 50));
     horizontalLayout->addWidget(ok_button);
-    if(sign_in)
+
+    /****** DESIGN SECTION ****************************/
+    QLabel *title_label = new QLabel(centralWidget);
+    title_label->setGeometry(QRect(110, 50, 600, 150));
+    QPixmap pix_home_title = QPixmap();
+    title_label->setAlignment(Qt::AlignCenter);
+    
+    if(sign_in){
+        this->setStyleSheet(QStringLiteral("background-color:rgb(183, 110, 34);"));
+        pix_home_title.load("images/titles/signIn");
+        title_label->setPixmap( pix_home_title);
+        pix_home_title = pix_home_title.scaled(title_label->size(),Qt::KeepAspectRatio);
         connect(ok_button, &QPushButton::clicked, this,  [this]() {
             check_data(true);});
-    else
+
+    }
+    else{
+        this->setStyleSheet(QStringLiteral("background-color:rgb(19, 43, 15);"));
+        pix_home_title.load("images/titles/signUp");
+        title_label->setPixmap( pix_home_title);
+        pix_home_title = pix_home_title.scaled(title_label->size(),Qt::KeepAspectRatio);
         connect(ok_button, &QPushButton::clicked, this, [this]() {
             check_data(false);});
-    
-
+    }
+    /*************************************************/
     QPushButton *cancel_button = new QPushButton(QString::fromStdString("Cancel"),horizontalLayoutWidget);
     cancel_button->setMinimumSize(QSize(25, 50));
     connect(cancel_button, &QPushButton::clicked, this, [this](){
@@ -144,23 +158,16 @@ void Menu::connexion(bool sign_in){
     });
     horizontalLayout->addWidget(cancel_button);
 
-    this->setCentralWidget(centralwidget);
+    this->setCentralWidget(centralWidget);
     //this->update();
     this->show();
 
 }
 void Menu::main_m(){
-    this->setStyleSheet(QStringLiteral("background-color:grey;"));
-    QWidget *centralwidget = new QWidget(this);
+    QWidget *centralWidget = new QWidget(this);
 
-    QLabel *label = new QLabel(QString::fromStdString("MAIN MENU"),centralwidget);
-    label->setGeometry(QRect(100, 30, 591, 61));
-    label->setFrameShape(QFrame::WinPanel);
-    label->setTextFormat(Qt::RichText);
-    label->setAlignment(Qt::AlignCenter);
-
-    QWidget *verticalLayoutWidget  = new QWidget(centralwidget);
-    verticalLayoutWidget->setGeometry(QRect(80, 160, 651, 351));
+    QWidget *verticalLayoutWidget  = new QWidget(centralWidget);
+    verticalLayoutWidget->setGeometry(QRect(80, 210, 651, 351));
 
     QVBoxLayout *verticalLayout  = new QVBoxLayout(verticalLayoutWidget);
     verticalLayout->setContentsMargins(100, 0, 100, 0);
@@ -171,7 +178,6 @@ void Menu::main_m(){
        main_button[i]->setMinimumSize(QSize(25, 50));
        verticalLayout->addWidget(main_button[i]);
     }
-    this->setCentralWidget(centralwidget);
     QPushButton *new_game = (main_button[0]);
     QPushButton *friends = (main_button[1]);
     QPushButton *leaderboard = (main_button[2]);
@@ -184,26 +190,28 @@ void Menu::main_m(){
     connect(profile, &QPushButton::clicked, this, &Menu::print_profile);
     connect(log_out, &QPushButton::clicked, this,&Menu::home);
     connect(new_game, &QPushButton::clicked, this,&Menu::lobby);
+
+    /****** DESIGN SECTION ****************************/
+    this->setStyleSheet("background-color:rgb(123, 22, 22);");
+    QLabel *title_label = new QLabel(centralWidget);
+    title_label->setGeometry(QRect(110, 30, 600, 150));
+    QPixmap pix_home_title("images/titles/mainMenu");
+    title_label->setPixmap( pix_home_title);
+    title_label->setAlignment(Qt::AlignCenter);
+    pix_home_title = pix_home_title.scaled(title_label->size(),Qt::KeepAspectRatio);
+    /*********END DESIGN SECTION*****************************************/
+    this->setCentralWidget(centralWidget);
+    this->show();
 }
 
 void Menu::print_profile(){
-    this->setStyleSheet(QStringLiteral("background-color:grey;"));
     Profile profile; char buffer[Constante::CHAR_SIZE];
     _client.get_profile(buffer);
     profile_from_str(buffer, &profile);
     std::string pseudo = profile.pseudo, score =  std::to_string(profile.score);
-    
-    QWidget *centralwidget = new QWidget(this);
-    QLabel *title = new QLabel(QString::fromStdString(PROFILE),centralwidget);
-    title->setGeometry(QRect(40, 20, 721, 61));
-    QFont font;
-    font.setPointSize(24);
-    title->setFont(font);
-    title->setFrameShape(QFrame::WinPanel);
-    title->setTextFormat(Qt::RichText);
-    title->setAlignment(Qt::AlignCenter);
 
-    QWidget *gridLayoutWidget = new QWidget(centralwidget);
+    QWidget *centralWidget = new QWidget(this);
+    QWidget *gridLayoutWidget = new QWidget(centralWidget);
     gridLayoutWidget->setGeometry(QRect(40, 110, 731, 431));
     QGridLayout *gridLayout = new QGridLayout(gridLayoutWidget);
     gridLayout->setContentsMargins(0, 0, 0, 0);
@@ -241,28 +249,29 @@ void Menu::print_profile(){
     label_3->setFont(font3);
     gridLayout->addWidget(label_3, 2, 0, 1, 1);
 
-    this->setCentralWidget(centralwidget);
+    /****** DESIGN SECTION ****************************/
+    this->setStyleSheet("background-color:rgb(62, 153, 150);");
+    /*QLabel *title_label = new QLabel(centralWidget);
+    title_label->setGeometry(QRect(110, 30, 600, 150));
+    QPixmap pix_home_title("images/titles/profile");
+    title_label->setPixmap( pix_home_title);
+    title_label->setAlignment(Qt::AlignCenter);
+    pix_home_title = pix_home_title.scaled(title_label->size(),Qt::KeepAspectRatio);*/
+    /*********END DESIGN SECTION*****************************************/
+
+    this->setCentralWidget(centralWidget);
     //this->update();
     this->show();
 }
 void Menu::print_leaderboard(){
-    this->setStyleSheet(QStringLiteral("background-color:grey;"));
     std::vector<Profile> profile_list;
     char buffer[Constante::CHAR_SIZE];
     _client.checkLeaderboard(buffer);
     profile_list_from_str(buffer, &profile_list);
 
-    QWidget *centralwidget = new QWidget(this);
-    QLabel *title = new QLabel(QString::fromStdString(LEADERBOARD),centralwidget);
-    title->setGeometry(QRect(40, 20, 721, 61));
-    QFont font;
-    font.setPointSize(24);
-    title->setFont(font);
-    title->setFrameShape(QFrame::WinPanel);
-    title->setTextFormat(Qt::RichText);
-    title->setAlignment(Qt::AlignCenter);
+    QWidget *centralWidget = new QWidget(this);
 
-    QWidget * verticalLayoutWidget = new QWidget(centralwidget);
+    QWidget * verticalLayoutWidget = new QWidget(centralWidget);
     verticalLayoutWidget->setObjectName(QString::fromUtf8("verticalLayoutWidget"));
     verticalLayoutWidget->setGeometry(QRect(80, 110, 620, 500));
     QVBoxLayout* verticalLayout = new QVBoxLayout(verticalLayoutWidget);
@@ -307,13 +316,24 @@ void Menu::print_leaderboard(){
         sprintf(buff, "%d", score);
         tableWidget->setItem(i, 1, new QTableWidgetItem(buff));
     }
-    this->setCentralWidget(centralwidget);
+
+    /****** DESIGN SECTION ****************************/
+    this->setStyleSheet("background-color:rgb(148, 62, 8);");
+    QLabel *title_label = new QLabel(centralWidget);
+    title_label->setGeometry(QRect(110, 30, 600, 150));
+    QPixmap pix_home_title("images/titles/leaderboard");
+    title_label->setPixmap( pix_home_title);
+    title_label->setAlignment(Qt::AlignCenter);
+    pix_home_title = pix_home_title.scaled(title_label->size(),Qt::KeepAspectRatio);
+    /*********END DESIGN SECTION*****************************************/
+
+
+    this->setCentralWidget(centralWidget);
     //this->update();
     this->show();
 }
 
 void Menu::print_friends(){
-    this->setStyleSheet(QStringLiteral("background-color:grey;"));
 	char buffer[Constante::CHAR_SIZE];
 	std::vector<Profile> friendlist;
 	_client.getFriendList(buffer);
@@ -324,9 +344,9 @@ void Menu::print_friends(){
 	_client.getFriendRequest(buffer2);
 	profile_list_from_str(buffer2, &requestlist);
 
-    QWidget *centralwidget = new QWidget(this);
-    QWidget *gridLayoutWidget = new QWidget(centralwidget);
-    gridLayoutWidget->setGeometry(QRect(60, 10, 661, 581));
+    QWidget *centralWidget = new QWidget(this);
+    QWidget *gridLayoutWidget = new QWidget(centralWidget);
+    gridLayoutWidget->setGeometry(QRect(60, 100, 600, 350));
     QGridLayout *gridLayout = new QGridLayout(gridLayoutWidget);
     gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
     gridLayout->setContentsMargins(0, 0, 0, 0);
@@ -414,7 +434,18 @@ void Menu::print_friends(){
     listWidget->setFont(font);
     connect(listWidget,&QAbstractItemView::doubleClicked,this,&Menu::request_list);
 
-    this->setCentralWidget(centralwidget);
+    /****** DESIGN SECTION ****************************/
+    this->setStyleSheet("background-color:rgb(8, 82, 40);");
+    QLabel *title_label = new QLabel(centralWidget);
+    title_label->setGeometry(QRect(110, 30, 600, 150));
+    QPixmap pix_home_title("images/titles/friends");
+    title_label->setPixmap( pix_home_title);
+    title_label->setAlignment(Qt::AlignCenter);
+    pix_home_title = pix_home_title.scaled(title_label->size(),Qt::KeepAspectRatio);
+    /*********END DESIGN SECTION*****************************************/
+
+
+    this->setCentralWidget(centralWidget);
     this->show();
 }
 
@@ -593,14 +624,14 @@ void Menu::verif_friend(QDialog* dialog, bool adding){
 }
 void Menu::lobby(){
     this->setStyleSheet(QStringLiteral("background-color:grey;"));
-    QWidget *centralwidget =  new QWidget(this);
+    QWidget *centralWidget =  new QWidget(this);
 
-    QLabel *title_label = new QLabel(QString::fromStdString(LOBBY_TITLE),centralwidget);
+    QLabel *title_label = new QLabel(QString::fromStdString(LOBBY_TITLE),centralWidget);
     title_label->setGeometry(QRect(90, 20, 611, 61));
     title_label->setFrameShape(QFrame::WinPanel);
     title_label->setAlignment(Qt::AlignCenter);
 
-    QWidget *gridLayoutWidget = new QWidget(centralwidget);
+    QWidget *gridLayoutWidget = new QWidget(centralWidget);
     gridLayoutWidget->setGeometry(QRect(20, 120, 771, 311));
     QGridLayout *gridLayout = new QGridLayout(gridLayoutWidget);
     gridLayout->setContentsMargins(0, 0, 0, 0);
@@ -635,7 +666,7 @@ void Menu::lobby(){
     difficulty_box->addItem(QString::fromStdString("Normal"));
     difficulty_box->addItem(QString::fromStdString("Hard"));
 
-    QWidget *horizontalLayoutWidget = new QWidget(centralwidget);
+    QWidget *horizontalLayoutWidget = new QWidget(centralWidget);
     horizontalLayoutWidget->setGeometry(QRect(60, 450, 681, 80));
     QHBoxLayout *horizontalLayout  = new QHBoxLayout(horizontalLayoutWidget);
     horizontalLayout->setContentsMargins(3, 0, 3, 0);
@@ -684,7 +715,7 @@ void Menu::lobby(){
     });
 
     
-    this->setCentralWidget(centralwidget);
+    this->setCentralWidget(centralWidget);
     this->show();
 
 }

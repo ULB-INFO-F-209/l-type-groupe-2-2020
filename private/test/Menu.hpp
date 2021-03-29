@@ -73,6 +73,8 @@ class Menu : public QMainWindow{
 	QLineEdit *pswd_line;
 	QLabel *error;
 
+	//WINDOW OBJECTS
+
 public:
 	Menu();
 	virtual ~Menu(){}

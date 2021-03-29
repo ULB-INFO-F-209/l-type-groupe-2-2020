@@ -30,9 +30,9 @@ namespace Screen{
 	const std::string Y_FRIENDS_SAYING2 = " unless you created them yourself !";
 	const std::string LOBBY_SAYING = "Winning is not everything, it's the only thing.";
 	const std::string LOBBY_SAYING2 = "So keep playing !";
-	const std::string SIGN_IN_SAYING = "Staying home saves lives.";
+	const std::string SIGN_IN_SAYING = "Oh no ! Not you again !";
 	const std::string SIGN_IN_SAYING2 = "Playing this game will save yours.";
-	const std::string SIGN_UP_SAYING = "Welcome into your nightmare! Hope you will love it ! XOXO";
+	const std::string SIGN_UP_SAYING = "Welcome to the dark side. Surprised we lied about the cookies";
 	const std::string ADD_SAYING = "Making new friends shouldn't mean losing old ones.";
 	const std::string ADD_SAYING2 = "But you can only have 100 friends here !";
 	const std::string DEL_SAYING = "Fortunately, it's not as easy to unfriend";
