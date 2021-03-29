@@ -26,6 +26,15 @@ class DisplayGame
 	sf::Texture heart;
 	sf::Texture asteroid;
 	sf::Texture ship1;
+	sf::Texture ship2;
+	sf::Texture laser;
+	sf::Texture laser1;
+	sf::Texture laser2;
+	sf::Texture tripleshotTex;
+	sf::Texture damageupTex;
+	sf::Texture lifestealTex;
+	sf::Texture minigunTex;
+
 	sf::Font font;
 	sf::Text guiText;
 	sf::Sprite heartSprite;
@@ -33,6 +42,15 @@ class DisplayGame
 	sf::Sprite health_bar2;
 	sf::Sprite asteroidSprite;
 	sf::Sprite ship1Sprite;
+	sf::Sprite ship2Sprite;
+	sf::Sprite laserSprite;
+	sf::Sprite laser1Sprite;
+	sf::Sprite laser2Sprite;
+	sf::Sprite tripleshotSprite;
+	sf::Sprite damageupSprite;
+	sf::Sprite lifestealSprite;
+	sf::Sprite minigunSprite;
+
 	
 
 public:

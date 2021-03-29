@@ -1,7 +1,6 @@
 //TODO:
-// Stars ?
 // ajouter un tour de boucle pour l'affichage
-
+// messages pour les projectiles differentes
 
 #include "DisplayGame.hpp"
 
@@ -282,6 +281,35 @@ void DisplayGame::initGraphics(){
 	{
 		// erreur...
 	}
+	if (!ship2.loadFromFile("player2.png"))
+	{
+		// erreur...
+	}
+	if (!laser.loadFromFile("laser.png"))
+	{
+		// erreur...
+	}
+	if (!laser1.loadFromFile("laser1.png"))
+	{
+		// erreur...
+	}
+	if (!laser2.loadFromFile("laser2.png"))
+	{
+		// erreur...
+	}
+	if (!tripleshotTex.loadFromFile("tripleshot.png"))
+	{
+		// erreur...
+	}if (!damageupTex.loadFromFile("damageup.png"))
+	{
+		// erreur...
+	}if (!lifestealTex.loadFromFile("lifesteal.png"))
+	{
+		// erreur...
+	}if (!minigunTex.loadFromFile("minigun.png"))
+	{
+		// erreur...
+	}
 
 	heartSprite.setScale(sf::Vector2f(0.03,0.03));
 	heartSprite.setTexture(heart);
@@ -297,6 +325,34 @@ void DisplayGame::initGraphics(){
 
 	ship1Sprite.setScale(sf::Vector2f(0.19,0.19));
 	ship1Sprite.setTexture(ship1);
+
+	ship2Sprite.setScale(sf::Vector2f(0.19,0.19));
+	ship2Sprite.setTexture(ship2);
+
+	laserSprite.setScale(sf::Vector2f(0.06,0.04));
+	laserSprite.setRotation(1.5);
+	laserSprite.setTexture(laser);
+
+	laser1Sprite.setScale(sf::Vector2f(0.06,0.04));
+	laser1Sprite.setRotation(1.5);
+	laser1Sprite.setTexture(laser1);
+
+	laser2Sprite.setScale(sf::Vector2f(0.06,0.04));
+	laser2Sprite.setRotation(1.5);
+	laser2Sprite.setTexture(laser2);
+
+	tripleshotSprite.setScale(sf::Vector2f(0.12,0.12));
+	tripleshotSprite.setTexture(tripleshotTex);
+
+	damageupSprite.setScale(sf::Vector2f(0.12,0.12));
+	damageupSprite.setTexture(damageupTex);
+
+	lifestealSprite.setScale(sf::Vector2f(0.12,0.12));
+	lifestealSprite.setTexture(lifestealTex);
+
+	minigunSprite.setScale(sf::Vector2f(0.12,0.12));
+	minigunSprite.setTexture(minigunTex);
+
 	guiText.setFont(font);
 
 }
@@ -431,20 +487,30 @@ void DisplayGame::drawProjectile(int x, int y, bool enemy, bool player1){
 		wattron(game_wnd, COLOR_PAIR(4));
         mvwaddch(game_wnd, y, x, '*');
         wattroff(game_wnd, COLOR_PAIR(4));
+		laserSprite.setPosition(sf::Vector2f((x+1)*12.5+2,y*20+5));
+		window->draw(laserSprite);
+		
 	}
 	else if (player1) {
 		projectileShape.setFillColor(sf::Color::Blue);
 		wattron(game_wnd, COLOR_PAIR(5));
 		mvwaddch(game_wnd, y, x, '*');
 		wattroff(game_wnd, COLOR_PAIR(5));
+		laser1Sprite.setPosition(sf::Vector2f((x+1)*12.5+2,y*20+5));
+		window->draw(laser1Sprite);
+
 	}
 	else{
 		projectileShape.setFillColor(sf::Color::Green);
 		wattron(game_wnd, COLOR_PAIR(2));
 		mvwaddch(game_wnd, y, x, '*');
 		wattroff(game_wnd, COLOR_PAIR(2));
+		laser2Sprite.setPosition(sf::Vector2f((x+1)*12.5+2,y*20+5));
+		window->draw(laser2Sprite);
+		
 	}
-	window->draw(projectileShape);
+	//window->draw(projectileShape);
+	
 }
 void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinking){
 
@@ -496,39 +562,52 @@ void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinkin
 
 		sf::RectangleShape playerShipShape(sf::Vector2f(12.5*3,20*2));
 		playerShipShape.setPosition(sf::Vector2f(x*12.5,5 + y*20));
+		
 		if (player==1){
             playerShipShape.setFillColor(sf::Color::Blue);
+			ship1Sprite.setPosition(sf::Vector2f(x*12.5-30,5 + y*20-25));
+			window->draw(ship1Sprite);
         }
         else{
 			playerShipShape.setFillColor(sf::Color::Green);
+			ship2Sprite.setPosition(sf::Vector2f(x*12.5-30,5 + y*20-25));
+			window->draw(ship2Sprite);
 		}
-		ship1Sprite.setPosition(sf::Vector2f(x*12.5-30,5 + y*20-25));
+		
 		//window->draw(playerShipShape);
-		window->draw(ship1Sprite);
+		
 
 
 }
 void DisplayGame::drawBonus(int type, int x, int y){
-
-	wattron(game_wnd, A_BOLD);
-	if(type==lifeSteal){
-		mvwaddch(game_wnd, y, x, 'L');
-	}
-	else if(type==minigun){
-		mvwaddch(game_wnd, y, x, 'M');
-	}
-	else if(type==damageUp){
-		mvwaddch(game_wnd, y, x, 'D');
-	}
-	else if(type==tripleShot){
-		mvwaddch(game_wnd, y, x, 'T');
-	}
-	wattroff(game_wnd, A_BOLD);
 	sf::RectangleShape bonusShape(sf::Vector2f(12.5,20));
 	bonusShape.setFillColor(sf::Color::Yellow);
 	bonusShape.setPosition(sf::Vector2f((x+1)*12.5,5 + y*20));
-	
-	window->draw(bonusShape);
+	if(y*20 < 350){
+		//window->draw(bonusShape);
+		wattron(game_wnd, A_BOLD);
+		if(type==lifeSteal){
+			mvwaddch(game_wnd, y, x, 'L');
+			lifestealSprite.setPosition(sf::Vector2f((x+1)*12.5-11,y*20-15));
+			window->draw(lifestealSprite);
+		}
+		else if(type==minigun){
+			mvwaddch(game_wnd, y, x, 'M');
+			minigunSprite.setPosition(sf::Vector2f((x+1)*12.5-11,y*20-15));
+			window->draw(minigunSprite);
+		}
+		else if(type==damageUp){
+			mvwaddch(game_wnd, y, x, 'D');
+			damageupSprite.setPosition(sf::Vector2f((x+1)*12.5-11,y*20-15));
+			window->draw(damageupSprite);
+		}
+		else if(type==tripleShot){
+			mvwaddch(game_wnd, y, x, 'T');
+			tripleshotSprite.setPosition(sf::Vector2f((x+1)*12.5-11,y*20-15));
+			window->draw(tripleshotSprite);
+		}
+		wattroff(game_wnd, A_BOLD);
+	}
 }
 
 void DisplayGame::drawBoss(int x, int y){
