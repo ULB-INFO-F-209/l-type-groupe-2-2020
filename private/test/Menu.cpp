@@ -320,7 +320,7 @@ void Menu::print_leaderboard(){
     /****** DESIGN SECTION ****************************/
     this->setStyleSheet("background-color:rgb(148, 62, 8);");
     QLabel *title_label = new QLabel(centralWidget);
-    title_label->setGeometry(QRect(110, 30, 600, 150));
+    title_label->setGeometry(QRect(0, 30, 800, 150));
     QPixmap pix_home_title("images/titles/leaderboard");
     title_label->setPixmap( pix_home_title);
     title_label->setAlignment(Qt::AlignCenter);
@@ -346,9 +346,8 @@ void Menu::print_friends(){
 
     QWidget *centralWidget = new QWidget(this);
     QWidget *gridLayoutWidget = new QWidget(centralWidget);
-    gridLayoutWidget->setGeometry(QRect(60, 100, 600, 350));
+    gridLayoutWidget->setGeometry(QRect(60, 150, 800, 350));
     QGridLayout *gridLayout = new QGridLayout(gridLayoutWidget);
-    gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
     gridLayout->setContentsMargins(0, 0, 0, 0);
     QListWidget *listWidget = new QListWidget(gridLayoutWidget);
 
@@ -623,13 +622,7 @@ void Menu::verif_friend(QDialog* dialog, bool adding){
 
 }
 void Menu::lobby(){
-    this->setStyleSheet(QStringLiteral("background-color:grey;"));
     QWidget *centralWidget =  new QWidget(this);
-
-    QLabel *title_label = new QLabel(QString::fromStdString(LOBBY_TITLE),centralWidget);
-    title_label->setGeometry(QRect(90, 20, 611, 61));
-    title_label->setFrameShape(QFrame::WinPanel);
-    title_label->setAlignment(Qt::AlignCenter);
 
     QWidget *gridLayoutWidget = new QWidget(centralWidget);
     gridLayoutWidget->setGeometry(QRect(20, 120, 771, 311));
@@ -714,6 +707,15 @@ void Menu::lobby(){
        
     });
 
+    /****** DESIGN SECTION ***********************************************/
+    this->setStyleSheet("background-color:black;");
+    QLabel *title_label = new QLabel(centralWidget);
+    title_label->setGeometry(QRect(110, 30, 600, 150));
+    QPixmap pix_home_title("images/titles/lobby");
+    title_label->setPixmap( pix_home_title);
+    title_label->setAlignment(Qt::AlignCenter);
+    pix_home_title = pix_home_title.scaled(title_label->size(),Qt::KeepAspectRatio);
+    /****************END DESIGN SECTION*************************/
     
     this->setCentralWidget(centralWidget);
     this->show();
