@@ -21,7 +21,6 @@
 #include "screen.hpp"
 #include "parsing.hpp"
 
-
 #include <iostream>
 #include <QVariant>
 #include <QAction>
@@ -44,7 +43,8 @@
 #include <QSignalMapper>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QSpinBox>
-//#include <QObject>
+#include <QToolBar>
+#include <QStringListModel>
 
 
 using namespace Screen;
@@ -73,6 +73,12 @@ class Menu : public QMainWindow{
 	QLineEdit *pswd_line;
 	QLabel *error;
 
+    QListView* m_pwPending = nullptr;
+    QListView* m_pwCompleted = nullptr;
+
+    QAction* m_pActAdd = nullptr;
+    QAction* m_pActRemove = nullptr;
+
 	//WINDOW OBJECTS
 
 public:
@@ -83,9 +89,10 @@ public:
 private:
 	//menu
 	void home();
-	void  main_m();
+	void main_m();
 	void print_friends();
 	void lobby();
+	void level();
 
 
 private slots:
@@ -98,6 +105,10 @@ private slots:
 	void request_list(const QModelIndex &index);
 	void accept_friend();
 	void launch_game(int players, int drop_rate, int lives, std::string difficulty, bool ally_shot);
+
+	void createLevel();
+	void onAdd();
+    void onRemove();
 
 };
 

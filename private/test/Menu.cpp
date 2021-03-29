@@ -188,6 +188,7 @@ void Menu::main_m(){
     connect(friends, &QPushButton::clicked, this, &Menu::print_friends);
     connect(leaderboard, &QPushButton::clicked, this,&Menu::print_leaderboard);
     connect(profile, &QPushButton::clicked, this, &Menu::print_profile);
+    connect(level, &QPushButton::clicked, this, &Menu::level);
     connect(log_out, &QPushButton::clicked, this,&Menu::home);
     connect(new_game, &QPushButton::clicked, this,&Menu::lobby);
 
@@ -587,6 +588,7 @@ void Menu::add_del_friend(bool adding){
 
 }
 
+
 void Menu::verif_friend(QDialog* dialog, bool adding){
     //Aissa: all error are already in screen ==> c'est pas écrit pour decorer :-)
     const char* pseudo = (pseudo_line->text()).toUtf8().constData(); 
@@ -621,6 +623,8 @@ void Menu::verif_friend(QDialog* dialog, bool adding){
 
 
 }
+
+
 void Menu::lobby(){
     QWidget *centralWidget =  new QWidget(this);
 
@@ -723,7 +727,6 @@ void Menu::lobby(){
 }
 
 
-
 void Menu::launch_game(int players, int drop_rate, int lives, std::string difficulty, bool ally_shot){
     Game_settings setting;
     strcpy(setting.difficulty_str, difficulty.c_str());
@@ -775,4 +778,146 @@ void Menu::launch_game(int players, int drop_rate, int lives, std::string diffic
         Dialog->show();
 
     }
+}
+
+
+void Menu::level(){
+    QWidget *centralwidget;
+    QWidget *gridLayoutWidget;
+    QGridLayout *gridLayout;
+    QPushButton *back_button;
+    QPushButton *create_level_button;
+    QPushButton *mylevel_button;
+    QPushButton *pushButton_3;
+    QLabel *label;
+
+    centralwidget = new QWidget(this);
+    gridLayoutWidget = new QWidget(centralwidget);
+    gridLayoutWidget->setGeometry(QRect(80, 70, 631, 411));
+    gridLayout = new QGridLayout(gridLayoutWidget);
+    gridLayout->setContentsMargins(0, 0, 0, 0);
+    back_button = new QPushButton("BACK", gridLayoutWidget);
+    back_button->setMinimumSize(QSize(0, 50));
+    connect(back_button, &QPushButton::clicked, this,&Menu::main_m);
+
+    gridLayout->addWidget(back_button, 4, 0, 1, 3);
+
+    create_level_button = new QPushButton("CREATE LEVEL", gridLayoutWidget);
+    create_level_button->setMinimumSize(QSize(0, 50));
+    connect(create_level_button, &QPushButton::clicked, this, &Menu::createLevel);
+
+    gridLayout->addWidget(create_level_button, 2, 0, 1, 1);
+
+    mylevel_button = new QPushButton("MY LEVELS", gridLayoutWidget);
+    mylevel_button->setMinimumSize(QSize(0, 20));
+    mylevel_button->setMaximumSize(QSize(16777215, 100));
+
+    gridLayout->addWidget(mylevel_button, 2, 1, 1, 1);
+
+    pushButton_3 = new QPushButton("OTHER LEVELS", gridLayoutWidget);
+    pushButton_3->setMaximumSize(QSize(16777215, 1000));
+
+    gridLayout->addWidget(pushButton_3, 2, 2, 1, 1);
+
+    label = new QLabel("LEVEL EDITOR", gridLayoutWidget);
+    label->setMinimumSize(QSize(0, 50));
+    label->setMaximumSize(QSize(16777215, 20));
+    label->setAlignment(Qt::AlignCenter);
+
+    QFont font;
+    font.setFamily(QString::fromUtf8("Ubuntu Condensed"));
+    font.setBold(true);
+    font.setWeight(75);
+    label->setFont(font);
+
+    gridLayout->addWidget(label, 1, 1, 1, 1);
+
+    this->setCentralWidget(centralwidget);
+    this->show();
+}
+
+void Menu::createLevel(){
+
+    QWidget* pWidget = new QWidget(this);
+    pWidget->setStyleSheet("background-color: #ECF0F1");
+    setCentralWidget(pWidget);
+
+    QVBoxLayout* pMainLayout = new QVBoxLayout();
+    pWidget->setLayout(pMainLayout);
+
+    QLabel* pwTitle = new QLabel("To Do List", this);
+    pMainLayout->addWidget(pwTitle);
+    pwTitle->setAlignment(Qt::AlignCenter);
+    pwTitle->setStyleSheet("font-size: 30pt; margin: 10%;");
+
+    QHBoxLayout* pHLayoutLabels = new QHBoxLayout();
+    pMainLayout->addLayout(pHLayoutLabels);
+
+    QLabel* plblPending = new QLabel("Pending", this);
+    plblPending->setStyleSheet("font-size: 15pt;");
+    pHLayoutLabels->addWidget(plblPending);
+
+    QLabel* plblCompleted = new QLabel("Completed", this);
+    plblCompleted->setStyleSheet("font-size: 15pt;");
+    pHLayoutLabels->addWidget(plblCompleted);
+
+    QHBoxLayout* pHLayout = new QHBoxLayout();
+    pMainLayout->addLayout(pHLayout);
+
+    m_pwPending = new QListView(this);
+    m_pwPending->setDragEnabled(true);
+    m_pwPending->setAcceptDrops(true);
+    m_pwPending->setDropIndicatorShown(true);
+    m_pwPending->setDefaultDropAction(Qt::MoveAction);
+    pHLayout->addWidget(m_pwPending);
+
+    m_pwCompleted = new QListView(this);
+    m_pwCompleted->setDragEnabled(true);
+    m_pwCompleted->setAcceptDrops(true);
+    m_pwCompleted->setDropIndicatorShown(true);
+    //m_pwCompleted->setDefaultDropAction(Qt::MoveAction);
+    pHLayout->addWidget(m_pwCompleted);
+
+    m_pwPending->setModel(new QStringListModel());
+    m_pwCompleted->setModel(new QStringListModel());
+
+    m_pwPending->setStyleSheet
+    ("QListView { font-size: 20pt; font-weight: bold; }"
+     "QListView::item { background-color: #E74C3C; padding: 10%;"
+     "border: 1px solid #C0392B; }"
+     "QListView::item::hover { background-color: #C0392B }");
+
+    m_pwCompleted->setStyleSheet
+    ("QListView { font-size: 20pt; font-weight: bold; }"
+     "QListView::item { background-color: #2ECC71; padding: 10%;"
+     "border: 1px solid #27AE60; }"
+     "QListView::item::hover { background-color: #27AE60 }");
+
+
+    QToolBar* pToolBar = new QToolBar(this);
+    addToolBar(pToolBar);
+
+    m_pActAdd = new QAction(this);
+    m_pActAdd->setIcon(QIcon(":/resources/add.png"));
+    connect(m_pActAdd, &QAction::triggered, this, &Menu::onAdd);
+
+    m_pActRemove = new QAction(this);
+    m_pActRemove->setIcon(QIcon(":/resources/remove.png"));
+    connect(m_pActRemove, &QAction::triggered, this, &Menu::onRemove);
+
+    pToolBar->addAction(m_pActAdd);
+    pToolBar->addAction(m_pActRemove);
+}
+
+void Menu::onAdd(){
+    m_pwPending->model()->insertRow(m_pwPending->model()->rowCount());
+    QModelIndex oIndex = m_pwPending->model()->index(
+                m_pwPending->model()->rowCount() - 1, 0);
+
+    m_pwPending->edit(oIndex);
+}
+
+void Menu::onRemove(){
+    QModelIndex oIndex = m_pwPending->currentIndex();
+    m_pwPending->model()->removeRow(oIndex.row());
 }
