@@ -59,7 +59,7 @@ class Menu : public QMainWindow{
 	static const size_t SIZE_FRIENDS_MENU = 5; 
 	static const size_t SIZE_MAIN_MENU = 6;				// ajout de LEVEL EDITOR
 	static const size_t SIZE_SETTINGS = 7;
-	static const size_t SIZE_EDITOR_ITEMS = 4;
+	static const size_t SIZE_EDITOR_ITEMS = 8;
 
 	//choices
 	std::string connexion_menu[SIZE_HOME] = {"Sign in", "Sign up", "Quit"};
@@ -69,7 +69,7 @@ class Menu : public QMainWindow{
 								   "Profile", "Level Editor", "Log out"};
 	std::string settings_menu[SIZE_SETTINGS] = {"Players", "Drop rate","Ally shot",\
 									 "Lives", "Difficulty", "Play", "Quit lobby"};	
-	std::string editor_menu[SIZE_EDITOR_ITEMS] = {"Enemy", "Bonus","Player","Obstacle"};
+	std::string editor_menu[SIZE_EDITOR_ITEMS] = {"Enemy", "Player","Obstacle", "Damage Up Bonus", "Triple Shot Bonus", "Life Steal Bonus", "Minigun Bonus", "Drop Rate Bonus"};
 	//Q_OBJECT;
 	QLineEdit *pseudo_line;
 	QLineEdit *pswd_line;
@@ -95,9 +95,9 @@ private:
 	void print_friends();
 	void lobby();
 	void level();
-	void enemy_editor_settings();
+	void enemy_obs_editor_settings(bool);
 	void player_editor_settings();
-	void player_bonus_settings();
+	void drop_rate_settings();
 	void player_obstacle_settings();
 	
 

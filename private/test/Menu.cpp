@@ -869,15 +869,18 @@ void Menu::createLevel(){
 
     QWidget* pWidget = new QWidget(this);
     pWidget->setStyleSheet("background-color: #ECF0F1");
-    setCentralWidget(pWidget);
+    this->setCentralWidget(pWidget);
     //this->resize(1000, 870);
 
-    QGridLayout *gridLayout = new QGridLayout(pWidget);
+    QWidget *gridLayoutWidget = new QWidget(pWidget);
+    gridLayoutWidget->setGeometry(QRect(30, 20, 741, 551));
+
+    QGridLayout *gridLayout = new QGridLayout(gridLayoutWidget);
     gridLayout->setGeometry(QRect(15, 15, 800, 600));
     gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
     gridLayout->setContentsMargins(0, 0, 0, 0);
 
-    QLabel *tilte = new QLabel("Level editor",pWidget);
+    QLabel *tilte = new QLabel("Level editor",gridLayoutWidget);
     tilte->setObjectName(QString::fromUtf8("tilte"));
     QFont font2;
     font2.setPointSize(18);
@@ -885,20 +888,20 @@ void Menu::createLevel(){
     tilte->setAlignment(Qt::AlignCenter);
     gridLayout->addWidget(tilte, 0, 1, 1, 3);
 
-    QLabel *label_liste_1 = new QLabel("Can be modifie",pWidget);
+    QLabel *label_liste_1 = new QLabel("TO EDIT",gridLayoutWidget);
     QFont font;
     font.setPointSize(16);
     label_liste_1->setFont(font);
     label_liste_1->setAlignment(Qt::AlignCenter);
     gridLayout->addWidget(label_liste_1, 1, 1, 1, 1);
 
-    QLabel *label_liste_2 = new QLabel("Modification",pWidget);
+    QLabel *label_liste_2 = new QLabel("EDITED",gridLayoutWidget);
     label_liste_2->setFont(font);
     label_liste_2->setAlignment(Qt::AlignCenter);
     gridLayout->addWidget(label_liste_2, 1, 3, 1, 1);
 
 
-    QPushButton *back_button = new QPushButton("BACK",pWidget);
+    QPushButton *back_button = new QPushButton("BACK",gridLayoutWidget);
     back_button->setMinimumSize(QSize(80, 80));
     back_button->setMaximumSize(QSize(1100, 16777215));
     gridLayout->addWidget(back_button, 3, 1, 1, 3);
@@ -908,40 +911,45 @@ void Menu::createLevel(){
     QFont font1;
     font1.setPointSize(14);
 
-    list_of_all_modif = new QListWidget(pWidget);
+    list_of_all_modif = new QListWidget(gridLayoutWidget);
     list_of_all_modif->setFont(font1);
-    list_of_all_modif->setItemAlignment(Qt::AlignCenter);
-    //list_of_all_modif->setEditTriggers(QAbstractItemView::NoEditTriggers);
     gridLayout->addWidget(list_of_all_modif, 2, 1, 1, 1);
 
-    
-    QListWidgetItem *item = new QListWidgetItem("Enemy") ;    
-    list_of_all_modif->addItem(item);
-    item = new QListWidgetItem("Player Ship") ;    
-    list_of_all_modif->addItem(item);
+    for(auto str: editor_menu){
+        QListWidgetItem *item = new QListWidgetItem(str.c_str()) ;    
+        item->setTextAlignment(Qt::AlignHCenter);
+        list_of_all_modif->addItem(item);
 
+    }
+    
     list_setup_level = new QListWidget(this);
     list_setup_level->setFont(font1);
     list_setup_level->setItemAlignment(Qt::AlignCenter);
     gridLayout->addWidget(list_setup_level, 2, 3, 1, 1);
 
+
+    QSpinBox *level_spin = new QSpinBox(gridLayoutWidget);
+    level_spin->setMinimum(1);
+    level_spin->setMaximum(5);
+    level_spin->setPrefix("Level ");
+    gridLayout->addWidget(level_spin, 1, 2, 1, 1);
     
     QVBoxLayout* verticalLayout = new QVBoxLayout();
     
-    QPushButton * fleche_droit_button = new QPushButton(">>",pWidget);
+    QPushButton * fleche_droit_button = new QPushButton(">>",gridLayoutWidget);
     fleche_droit_button->setMaximumSize(QSize(80, 80));
     connect(fleche_droit_button, &QPushButton::clicked, this,&Menu::onRightArrow);
     verticalLayout->addWidget(fleche_droit_button);
 
-    QPushButton * mod_button = new QPushButton("MODIF",pWidget);
+    QPushButton * mod_button = new QPushButton("MODIF",gridLayoutWidget);
     mod_button->setMaximumSize(QSize(80, 80));
     verticalLayout->addWidget(mod_button);
 
-    QPushButton * delete_button = new QPushButton("DEL",pWidget);
+    QPushButton * delete_button = new QPushButton("DEL",gridLayoutWidget);
     delete_button->setMaximumSize(QSize(80, 80));
     verticalLayout->addWidget(delete_button);
 
-    QPushButton * start_button = new QPushButton("START",pWidget);
+    QPushButton * start_button = new QPushButton("START",gridLayoutWidget);
     start_button->setMaximumSize(QSize(80, 80));
     verticalLayout->addWidget(start_button);
     
@@ -950,15 +958,42 @@ void Menu::createLevel(){
 }
 
 void Menu::onRightArrow(){
-    if (list_of_all_modif->currentItem() != nullptr)
-    {
+    if (list_of_all_modif->currentItem() != nullptr){
+
         auto current_text = list_of_all_modif->currentItem()->text();
-        auto val = current_text.toStdString();
-        if(current_text.toStdString() == editor_menu[0]){
-            std::cout<< " la vie est beau" << std::endl;
-            enemy_editor_settings();
-            list_setup_level->addItem(current_text);
+        if(current_text.toStdString() == editor_menu[0]){ // enemy
+            enemy_obs_editor_settings(true);
         }
+        else if(current_text.toStdString() == editor_menu[1]){ //Player
+        }
+        else if(current_text.toStdString() == editor_menu[2]){ // obstacle
+            enemy_obs_editor_settings(false);
+        }
+        else if(current_text.toStdString() == editor_menu[3]){ //"Damage Up"
+            this->list_setup_level->addItem(current_text);
+            delete this->list_of_all_modif->takeItem(this->list_of_all_modif->row(this->list_of_all_modif->currentItem()));
+
+        }
+        else if(current_text.toStdString() == editor_menu[4]){ // "Triple Shot"
+            this->list_setup_level->addItem(current_text);
+            delete this->list_of_all_modif->takeItem(this->list_of_all_modif->row(this->list_of_all_modif->currentItem()));
+
+        }
+        else if(current_text.toStdString() == editor_menu[5]){ // "Life Steal"
+            this->list_setup_level->addItem(current_text);
+            delete this->list_of_all_modif->takeItem(this->list_of_all_modif->row(this->list_of_all_modif->currentItem()));
+
+        }
+        else if(current_text.toStdString() == editor_menu[6]){ // "Minigun"
+            this->list_setup_level->addItem(current_text);
+            delete this->list_of_all_modif->takeItem(this->list_of_all_modif->row(this->list_of_all_modif->currentItem()));
+        }
+        else if(current_text.toStdString() == editor_menu[7]){ // drop rate
+            drop_rate_settings();
+        }
+
+        
+
     }
 }
 
@@ -977,7 +1012,7 @@ void modif_window(QString& modif_name){
 }
 
 
-void Menu::enemy_editor_settings(){
+void Menu::enemy_obs_editor_settings(bool is_enemy){
     QGridLayout *gridLayout;
     QWidget *gridLayoutWidget;
     QLabel *label_speed;
@@ -1052,7 +1087,7 @@ void Menu::enemy_editor_settings(){
     empty_label->setMaximumSize(QSize(100, 50));
     gridLayout->addWidget(empty_label, 11, 0, 1, 1);
 
-    label_title = new QLabel("Enemy parameters",gridLayoutWidget);
+    label_title = new QLabel(is_enemy ? "Enemy parameters": "Bonus parameters",gridLayoutWidget);
     label_title->setMaximumSize(QSize(1000, 50));
     QFont font1;
     font1.setPointSize(20);
@@ -1067,16 +1102,69 @@ void Menu::enemy_editor_settings(){
     number_spinbox->setMaximum(100);
     gridLayout->addWidget(number_spinbox, 4, 0, 1, 1);
 
-    QObject::connect(buttonBox, SIGNAL(accepted()), Dialog, SLOT(accept()));
+    connect(buttonBox, &QDialogButtonBox::accepted, this,  [this,Dialog] {
+        auto txt = this->list_of_all_modif->currentItem()->text();
+        this->list_setup_level->addItem(txt);
+        delete this->list_of_all_modif->takeItem(this->list_of_all_modif->row(this->list_of_all_modif->currentItem()));
+        Dialog->hide();
+        });
     QObject::connect(buttonBox, SIGNAL(rejected()), Dialog, SLOT(reject()));
 
     Dialog->show();
 }
+
 void Menu::player_editor_settings(){
     return;
 }
-void Menu::player_bonus_settings(){
-    return;
+void Menu::drop_rate_settings(){
+    QDialogButtonBox *buttonBox;
+    QWidget *widget;
+    QGridLayout *gridLayout;
+    QSpinBox *spinBox;
+    QLabel *title;
+
+    QDialog* Dialog = new QDialog();
+    Dialog->resize(400, 300);
+    buttonBox = new QDialogButtonBox(Dialog);
+    buttonBox->setGeometry(QRect(30, 240, 341, 32));
+    buttonBox->setOrientation(Qt::Horizontal);
+    buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
+
+    widget = new QWidget(Dialog);
+    widget->setGeometry(QRect(20, 40, 351, 191));
+
+    gridLayout = new QGridLayout(widget);
+    gridLayout->setContentsMargins(0, 0, 0, 0);
+    spinBox = new QSpinBox(widget);
+
+    QFont font;
+    font.setPointSize(14);
+    spinBox->setFont(font);
+    spinBox->setMinimum(0);
+    spinBox->setMaximum(100);
+
+    gridLayout->addWidget(spinBox, 2, 0, 1, 1);
+
+    title = new QLabel("Bonus drop rate",widget);
+    title->setMaximumSize(QSize(250, 50));
+
+    QFont font1;
+    font1.setPointSize(16);
+    title->setFont(font1);
+    title->setAlignment(Qt::AlignCenter);
+
+    gridLayout->addWidget(title, 1, 0, 1, 1);
+
+    connect(buttonBox, &QDialogButtonBox::accepted, this,  [this,Dialog] {
+        auto txt = this->list_of_all_modif->currentItem()->text();
+        this->list_setup_level->addItem(txt);
+        delete this->list_of_all_modif->takeItem(this->list_of_all_modif->row(this->list_of_all_modif->currentItem()));
+        Dialog->hide();
+        });
+    connect(buttonBox, SIGNAL(rejected()), Dialog, SLOT(reject()));
+
+    Dialog->show();
+
 }
 void Menu::player_obstacle_settings(){
     return;

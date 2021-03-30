@@ -18,11 +18,17 @@
 		PLAYER
 			- Degat des projectiles de vaisseaux
 			- Modif de l'arriere plan
-			- Modif des vaisseaux
+			- Modif des vaisseaux (design)
 		OBSTACLES
+			- Nombre d'obstacles
+			- Nombre de vies
 			- Degat des obstacles
-			- Vitesse des obstacles
-			- Modif des obstacles
+			- Vitesse des ennemis
+				SLUG
+				TURTLE
+				HUMAN
+				HORSE
+				CHEETAH
 		
 
 2.Ajouter ou pas les parties des level editor dans le leadeboard ? NOP
