@@ -34,7 +34,7 @@ void Menu::home(){
     button_v_layout->setContentsMargins(11, 11, 11, 11);
     //home button
     QPushButton *home_button[SIZE_HOME];
-    QPixmap pix_home_button[SIZE_HOME] = {QPixmap("images/sign_in"),QPixmap("images/sign_up"),QPixmap("images/home_quit")};
+    QPixmap pix_home_button[SIZE_HOME] = {QPixmap("images/buttons/signIn"),QPixmap("images/buttons/signUp"),QPixmap("images/buttons/quit")};
     QIcon icon_home[SIZE_HOME];
     for (size_t i = 0; i < SIZE_HOME; ++i)
     {
@@ -106,35 +106,56 @@ void Menu::connexion(bool sign_in){
     pseudo_line = new QLineEdit(centralWidget);
     pseudo_line->setGeometry(QRect(230, 270, 400, 45));
     pseudo_line->setMaxLength(15);
+    /**********/
+    pseudo_line->setStyleSheet(QLatin1String("background-color: rgb(255, 255, 255);\n"
+                                            "font: 75 13pt \"Tlwg Typo\";\n"
+                                            "border-color: rgb(0, 0, 0);\n"
+                                            "gridline-color: rgb(238, 238, 236);"));
+    /*********/
 
     pswd_line = new QLineEdit(centralWidget);
     pswd_line->setGeometry(QRect(230, 370, 400, 45));
     pswd_line->setMaxLength(15);
+    pswd_line->setStyleSheet(QLatin1String("background-color: rgb(255, 255, 255);\n"
+                                            "font: 75 13pt \"Tlwg Typo\";\n"
+                                            "border-color: rgb(0, 0, 0);\n"
+                                            "gridline-color: rgb(238, 238, 236);"));
 
     QLabel *pseudo_label = new QLabel(QString::fromStdString("USERNAME : "),centralWidget);
     pseudo_label->setGeometry(QRect(140, 270, 91, 45));
+    pseudo_label->setStyleSheet("QLabel { background-color : black; color : white; }");
 
     QLabel *pswd_label = new QLabel(QString::fromStdString("PASSWORD : "),centralWidget);
     pswd_label->setGeometry(QRect(130, 370, 101, 45));
+    pswd_label->setStyleSheet("QLabel { background-color : black; color : white; }");
 
     QWidget *horizontalLayoutWidget = new QWidget(centralWidget);
-    horizontalLayoutWidget->setGeometry(QRect(110, 470, 641, 80));
+    horizontalLayoutWidget->setGeometry(QRect(110, 440, 680, 100));
     QHBoxLayout *horizontalLayout =  new QHBoxLayout(horizontalLayoutWidget);
     horizontalLayout->setSpacing(50);
     horizontalLayout->setContentsMargins(11, 11, 11, 11);
 
     QPushButton *ok_button =  new QPushButton(QString::fromStdString("Ok"),horizontalLayoutWidget);
-    ok_button->setMinimumSize(QSize(25, 50));
+    ok_button->setMinimumSize(QSize(150, 150));
     horizontalLayout->addWidget(ok_button);
+    QPixmap pix_ok("images/buttons/ok");
+    QIcon icon_ok(pix_ok);
+    pix_ok = pix_ok.scaled(ok_button->size(),Qt::KeepAspectRatio);
+    ok_button->setIcon(icon_ok);
+    ok_button->setIconSize(QSize(150, 150));
+    ok_button->setFlat(true);
+
 
     /****** DESIGN SECTION ****************************/
     QLabel *title_label = new QLabel(centralWidget);
     title_label->setGeometry(QRect(110, 50, 600, 150));
     QPixmap pix_home_title = QPixmap();
     title_label->setAlignment(Qt::AlignCenter);
+    this->setStyleSheet(QStringLiteral("background-color:black;"));
+
     
     if(sign_in){
-        this->setStyleSheet(QStringLiteral("background-color:rgb(183, 110, 34);"));
+        //this->setStyleSheet(QStringLiteral("background-color:rgb(183, 110, 34);"));
         pix_home_title.load("images/titles/signIn");
         title_label->setPixmap( pix_home_title);
         pix_home_title = pix_home_title.scaled(title_label->size(),Qt::KeepAspectRatio);
@@ -143,7 +164,7 @@ void Menu::connexion(bool sign_in){
 
     }
     else{
-        this->setStyleSheet(QStringLiteral("background-color:rgb(19, 43, 15);"));
+        //this->setStyleSheet(QStringLiteral("background-color:rgb(19, 43, 15);"));
         pix_home_title.load("images/titles/signUp");
         title_label->setPixmap( pix_home_title);
         pix_home_title = pix_home_title.scaled(title_label->size(),Qt::KeepAspectRatio);
@@ -152,7 +173,13 @@ void Menu::connexion(bool sign_in){
     }
     /*************************************************/
     QPushButton *cancel_button = new QPushButton(QString::fromStdString("Cancel"),horizontalLayoutWidget);
-    cancel_button->setMinimumSize(QSize(25, 50));
+    cancel_button->setMinimumSize(QSize(150, 150));
+    QPixmap pix_cancel("images/buttons/back");
+    QIcon icon_cancel(pix_cancel);
+    cancel_button->setIcon(icon_cancel);
+    cancel_button->setIconSize(QSize(150, 1500));
+    pix_cancel = pix_cancel.scaled(cancel_button->size(),Qt::KeepAspectRatio);
+    cancel_button->setFlat(true);
     connect(cancel_button, &QPushButton::clicked, this, [this](){
         home();
     });
@@ -193,7 +220,8 @@ void Menu::main_m(){
     connect(new_game, &QPushButton::clicked, this,&Menu::lobby);
 
     /****** DESIGN SECTION ****************************/
-    this->setStyleSheet("background-color:rgb(123, 22, 22);");
+    //this->setStyleSheet("background-color:rgb(123, 22, 22);");
+    this->setStyleSheet(QStringLiteral("background-color:black;"));
     QLabel *title_label = new QLabel(centralWidget);
     title_label->setGeometry(QRect(110, 30, 600, 150));
     QPixmap pix_home_title("images/titles/mainMenu");
@@ -203,6 +231,7 @@ void Menu::main_m(){
     /*********END DESIGN SECTION*****************************************/
     this->setCentralWidget(centralWidget);
     this->show();
+}
 }
 
 void Menu::print_profile(){
@@ -251,13 +280,13 @@ void Menu::print_profile(){
     gridLayout->addWidget(label_3, 2, 0, 1, 1);
 
     /****** DESIGN SECTION ****************************/
-    this->setStyleSheet("background-color:rgb(62, 153, 150);");
-    /*QLabel *title_label = new QLabel(centralWidget);
+    //this->setStyleSheet("background-color:rgb(62, 153, 150);");
+    QLabel *title_label = new QLabel(centralWidget);
     title_label->setGeometry(QRect(110, 30, 600, 150));
     QPixmap pix_home_title("images/titles/profile");
     title_label->setPixmap( pix_home_title);
     title_label->setAlignment(Qt::AlignCenter);
-    pix_home_title = pix_home_title.scaled(title_label->size(),Qt::KeepAspectRatio);*/
+    pix_home_title = pix_home_title.scaled(title_label->size(),Qt::KeepAspectRatio);
     /*********END DESIGN SECTION*****************************************/
 
     this->setCentralWidget(centralWidget);
