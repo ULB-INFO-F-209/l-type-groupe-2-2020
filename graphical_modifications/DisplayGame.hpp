@@ -34,6 +34,9 @@ class DisplayGame
 	sf::Texture damageupTex;
 	sf::Texture lifestealTex;
 	sf::Texture minigunTex;
+	sf::Texture enemy;
+	sf::Texture boss;
+
 
 	sf::Font font;
 	sf::Text guiText;
@@ -50,8 +53,8 @@ class DisplayGame
 	sf::Sprite damageupSprite;
 	sf::Sprite lifestealSprite;
 	sf::Sprite minigunSprite;
-
-	
+	sf::Sprite enemySprite;
+	sf::Sprite bossSprite;
 
 public:
 	//Constructor

@@ -1,6 +1,10 @@
 //TODO:
 // ajouter un tour de boucle pour l'affichage
 // messages pour les projectiles differentes
+// changement de niveau ui
+// game over ui
+// 2 players input
+
 
 #include "DisplayGame.hpp"
 
@@ -154,6 +158,8 @@ void DisplayGame::parse_affichage(std::string instruction){
 		drawProjectile(x,y,true,false);
 	else if(objet=="PJ")		//projectile joueur
 		drawProjectile(x,y,false,true);
+	else if(objet=="PJ2")		//projectile joueur
+		drawProjectile(x,y,false,false);
 	else if(objet=="E"){			//Vaisseau ennemie
 		int explo,tick;
 		idx = instruction.find(delimiteur_parametre);
@@ -310,6 +316,14 @@ void DisplayGame::initGraphics(){
 	{
 		// erreur...
 	}
+	if (!enemy.loadFromFile("enemy.png"))
+	{
+		// erreur...
+	}
+	if (!boss.loadFromFile("boss.png"))
+	{
+		// erreur...
+	}
 
 	heartSprite.setScale(sf::Vector2f(0.03,0.03));
 	heartSprite.setTexture(heart);
@@ -352,6 +366,14 @@ void DisplayGame::initGraphics(){
 
 	minigunSprite.setScale(sf::Vector2f(0.12,0.12));
 	minigunSprite.setTexture(minigunTex);
+
+	enemySprite.setScale(sf::Vector2f(0.16,0.22));
+	enemySprite.setRotation(180);
+	enemySprite.setTexture(enemy);
+
+	bossSprite.setScale(sf::Vector2f(0.8,0.8));
+	bossSprite.setRotation(180);
+	bossSprite.setTexture(boss);
 
 	guiText.setFont(font);
 
@@ -472,8 +494,11 @@ void DisplayGame::drawEnemy(int x, int y, int tick, bool isBlinking) {
 	sf::RectangleShape enemyShape(sf::Vector2f(12.5*3,20));
 	enemyShape.setFillColor(sf::Color::Red);
 	enemyShape.setPosition(sf::Vector2f(x*12.5,5 + y*20));
-	if(y*20 < 350)
-		window->draw(enemyShape);
+	enemySprite.setPosition(sf::Vector2f(x*12.5+ 60 ,5 + y*20 + 60));
+	if(y*20 < 350){
+		//window->draw(enemyShape);
+		window->draw(enemySprite);
+	}
 
 }
 void DisplayGame::drawProjectile(int x, int y, bool enemy, bool player1){
@@ -487,7 +512,7 @@ void DisplayGame::drawProjectile(int x, int y, bool enemy, bool player1){
 		wattron(game_wnd, COLOR_PAIR(4));
         mvwaddch(game_wnd, y, x, '*');
         wattroff(game_wnd, COLOR_PAIR(4));
-		laserSprite.setPosition(sf::Vector2f((x+1)*12.5+2,y*20+5));
+		laserSprite.setPosition(sf::Vector2f((x+1)*12.5+1,y*20+5));
 		window->draw(laserSprite);
 		
 	}
@@ -496,7 +521,7 @@ void DisplayGame::drawProjectile(int x, int y, bool enemy, bool player1){
 		wattron(game_wnd, COLOR_PAIR(5));
 		mvwaddch(game_wnd, y, x, '*');
 		wattroff(game_wnd, COLOR_PAIR(5));
-		laser1Sprite.setPosition(sf::Vector2f((x+1)*12.5+2,y*20+5));
+		laser1Sprite.setPosition(sf::Vector2f((x+1)*12.5+1,y*20+5));
 		window->draw(laser1Sprite);
 
 	}
@@ -505,7 +530,7 @@ void DisplayGame::drawProjectile(int x, int y, bool enemy, bool player1){
 		wattron(game_wnd, COLOR_PAIR(2));
 		mvwaddch(game_wnd, y, x, '*');
 		wattroff(game_wnd, COLOR_PAIR(2));
-		laser2Sprite.setPosition(sf::Vector2f((x+1)*12.5+2,y*20+5));
+		laser2Sprite.setPosition(sf::Vector2f((x+1)*12.5+1,y*20+5));
 		window->draw(laser2Sprite);
 		
 	}
@@ -619,6 +644,12 @@ void DisplayGame::drawBoss(int x, int y){
         mvwprintw(game_wnd, y+4, x, "\\_|____ ___ ___|_/");
         mvwprintw(game_wnd, y+5, x, "      |_| |_|     ");
         wattroff(main_wnd, COLOR_PAIR(4));
+		sf::RectangleShape bossShape(sf::Vector2f(12.5*18,20*6));
+		bossShape.setFillColor(sf::Color::Red);
+		bossShape.setPosition(sf::Vector2f(x*12.5+7,5 + y*20));
+		bossSprite.setPosition(sf::Vector2f(x*12.5+7 +315,5 + y*20 + 260));
+		//window->draw(bossShape);
+		window->draw(bossSprite);
 }
 void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType, int level, int tick){
 		sf::RectangleShape cadre(sf::Vector2f(990, 470));

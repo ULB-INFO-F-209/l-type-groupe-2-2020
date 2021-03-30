@@ -309,7 +309,7 @@ void MapHandler::add_object_server(MapObject::type typ,int t){
               changingLevel = true;
           }
     }
-    else if (typ==MapObject::boss && (currentLevel==3) && !bossSpawned){
+    else if (typ==MapObject::boss && (currentLevel==1) && !bossSpawned){
         boss_set.push_back(new Boss(0,0,{{0, 0},{18,6}},'&',1000,t + 100, enemyStartProjectileDamage));
         bossSpawned=true;
     }
@@ -596,7 +596,11 @@ std::string MapHandler::getState(int nlives_j1,int nlives_j2,int tick){
         pos = proj->getPos();
         x = std::to_string(pos.x);
         y = std::to_string(pos.y);
-        state.append("A_PJ_");
+        if(proj->getPlayer() == 1){
+            state.append("A_PJ_");
+        }else{
+            state.append("A_PJ2_");
+        }
         state.append(x);
         state.append("_");
         state.append(y);
