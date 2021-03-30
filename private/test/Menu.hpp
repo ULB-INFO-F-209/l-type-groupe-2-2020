@@ -73,8 +73,8 @@ class Menu : public QMainWindow{
 	QLineEdit *pswd_line;
 	QLabel *error;
 
-    QListView* m_pwPending = nullptr;
-    QListView* m_pwCompleted = nullptr;
+    QListWidget* list_of_all_modif = nullptr;
+    QListWidget* list_setup_level = nullptr;
 
     QAction* m_pActAdd = nullptr;
     QAction* m_pActRemove = nullptr;
@@ -107,8 +107,10 @@ private slots:
 	void launch_game(int players, int drop_rate, int lives, std::string difficulty, bool ally_shot);
 
 	void createLevel();
-	void onAdd();
+	void onRightArrow();
     void onRemove();
+	void clicked_item(const QModelIndex&);
+	void modif_window(QString& modif_name);
 
 };
 

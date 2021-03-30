@@ -435,13 +435,13 @@ void Menu::print_friends(){
     connect(listWidget,&QAbstractItemView::doubleClicked,this,&Menu::request_list);
 
     /****** DESIGN SECTION ****************************/
-    this->setStyleSheet("background-color:rgb(8, 82, 40);");
+    /*this->setStyleSheet("background-color:rgb(8, 82, 40);");
     QLabel *title_label = new QLabel(centralWidget);
     title_label->setGeometry(QRect(110, 30, 600, 150));
     QPixmap pix_home_title("images/titles/friends");
     title_label->setPixmap( pix_home_title);
     title_label->setAlignment(Qt::AlignCenter);
-    pix_home_title = pix_home_title.scaled(title_label->size(),Qt::KeepAspectRatio);
+    pix_home_title = pix_home_title.scaled(title_label->size(),Qt::KeepAspectRatio);*/
     /*********END DESIGN SECTION*****************************************/
 
 
@@ -841,83 +841,103 @@ void Menu::createLevel(){
     QWidget* pWidget = new QWidget(this);
     pWidget->setStyleSheet("background-color: #ECF0F1");
     setCentralWidget(pWidget);
+    //this->resize(1000, 870);
 
-    QVBoxLayout* pMainLayout = new QVBoxLayout();
-    pWidget->setLayout(pMainLayout);
+    QGridLayout *gridLayout = new QGridLayout(pWidget);
+    gridLayout->setGeometry(QRect(15, 15, 800, 600));
+    gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
+    gridLayout->setContentsMargins(0, 0, 0, 0);
 
-    QLabel* pwTitle = new QLabel("To Do List", this);
-    pMainLayout->addWidget(pwTitle);
-    pwTitle->setAlignment(Qt::AlignCenter);
-    pwTitle->setStyleSheet("font-size: 30pt; margin: 10%;");
+    QLabel *tilte = new QLabel("Level editor",pWidget);
+    tilte->setObjectName(QString::fromUtf8("tilte"));
+    QFont font2;
+    font2.setPointSize(18);
+    tilte->setFont(font2);
+    tilte->setAlignment(Qt::AlignCenter);
+    gridLayout->addWidget(tilte, 0, 1, 1, 3);
 
-    QHBoxLayout* pHLayoutLabels = new QHBoxLayout();
-    pMainLayout->addLayout(pHLayoutLabels);
+    QLabel *label_liste_1 = new QLabel("Can be modifie",pWidget);
+    QFont font;
+    font.setPointSize(16);
+    label_liste_1->setFont(font);
+    label_liste_1->setAlignment(Qt::AlignCenter);
+    gridLayout->addWidget(label_liste_1, 1, 1, 1, 1);
 
-    QLabel* plblPending = new QLabel("Pending", this);
-    plblPending->setStyleSheet("font-size: 15pt;");
-    pHLayoutLabels->addWidget(plblPending);
-
-    QLabel* plblCompleted = new QLabel("Completed", this);
-    plblCompleted->setStyleSheet("font-size: 15pt;");
-    pHLayoutLabels->addWidget(plblCompleted);
-
-    QHBoxLayout* pHLayout = new QHBoxLayout();
-    pMainLayout->addLayout(pHLayout);
-
-    m_pwPending = new QListView(this);
-    m_pwPending->setDragEnabled(true);
-    m_pwPending->setAcceptDrops(true);
-    m_pwPending->setDropIndicatorShown(true);
-    m_pwPending->setDefaultDropAction(Qt::MoveAction);
-    pHLayout->addWidget(m_pwPending);
-
-    m_pwCompleted = new QListView(this);
-    m_pwCompleted->setDragEnabled(true);
-    m_pwCompleted->setAcceptDrops(true);
-    m_pwCompleted->setDropIndicatorShown(true);
-    //m_pwCompleted->setDefaultDropAction(Qt::MoveAction);
-    pHLayout->addWidget(m_pwCompleted);
-
-    m_pwPending->setModel(new QStringListModel());
-    m_pwCompleted->setModel(new QStringListModel());
-
-    m_pwPending->setStyleSheet
-    ("QListView { font-size: 20pt; font-weight: bold; }"
-     "QListView::item { background-color: #E74C3C; padding: 10%;"
-     "border: 1px solid #C0392B; }"
-     "QListView::item::hover { background-color: #C0392B }");
-
-    m_pwCompleted->setStyleSheet
-    ("QListView { font-size: 20pt; font-weight: bold; }"
-     "QListView::item { background-color: #2ECC71; padding: 10%;"
-     "border: 1px solid #27AE60; }"
-     "QListView::item::hover { background-color: #27AE60 }");
+    QLabel *label_liste_2 = new QLabel("Modification",pWidget);
+    label_liste_2->setFont(font);
+    label_liste_2->setAlignment(Qt::AlignCenter);
+    gridLayout->addWidget(label_liste_2, 1, 3, 1, 1);
 
 
-    QToolBar* pToolBar = new QToolBar(this);
-    addToolBar(pToolBar);
+    QPushButton *back_button = new QPushButton("BACK",pWidget);
+    back_button->setMinimumSize(QSize(80, 80));
+    back_button->setMaximumSize(QSize(1100, 16777215));
+    gridLayout->addWidget(back_button, 3, 1, 1, 3);
+    connect(back_button, &QPushButton::clicked, this,&Menu::main_m);
 
-    m_pActAdd = new QAction(this);
-    m_pActAdd->setIcon(QIcon(":/resources/add.png"));
-    connect(m_pActAdd, &QAction::triggered, this, &Menu::onAdd);
 
-    m_pActRemove = new QAction(this);
-    m_pActRemove->setIcon(QIcon(":/resources/remove.png"));
-    connect(m_pActRemove, &QAction::triggered, this, &Menu::onRemove);
+    QFont font1;
+    font1.setPointSize(14);
 
-    pToolBar->addAction(m_pActAdd);
-    pToolBar->addAction(m_pActRemove);
+    list_of_all_modif = new QListWidget(pWidget);
+    list_of_all_modif->setFont(font1);
+    list_of_all_modif->setItemAlignment(Qt::AlignCenter);
+    //list_of_all_modif->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    gridLayout->addWidget(list_of_all_modif, 2, 1, 1, 1);
+
+    QListWidgetItem *item = new QListWidgetItem("Enemy Ship") ;    
+    list_of_all_modif->addItem(item);
+    item = new QListWidgetItem("Player Ship") ;    
+    list_of_all_modif->addItem(item);
+
+    list_setup_level = new QListWidget(this);
+    list_setup_level->setFont(font1);
+    list_setup_level->setItemAlignment(Qt::AlignCenter);
+    gridLayout->addWidget(list_setup_level, 2, 3, 1, 1);
+
+    
+    QVBoxLayout* verticalLayout = new QVBoxLayout();
+    
+    QPushButton * fleche_droit_button = new QPushButton(">>",pWidget);
+    fleche_droit_button->setMaximumSize(QSize(80, 80));
+    connect(fleche_droit_button, &QPushButton::clicked, this,&Menu::onRightArrow);
+    verticalLayout->addWidget(fleche_droit_button);
+
+    QPushButton * mod_button = new QPushButton("MODIF",pWidget);
+    mod_button->setMaximumSize(QSize(80, 80));
+    verticalLayout->addWidget(mod_button);
+
+    QPushButton * delete_button = new QPushButton("DEL",pWidget);
+    delete_button->setMaximumSize(QSize(80, 80));
+    verticalLayout->addWidget(delete_button);
+
+    QPushButton * start_button = new QPushButton("START",pWidget);
+    start_button->setMaximumSize(QSize(80, 80));
+    verticalLayout->addWidget(start_button);
+    
+    gridLayout->addLayout(verticalLayout, 2, 2, 1, 1);
+
 }
 
-void Menu::onAdd(){
-    m_pwPending->model()->insertRow(m_pwPending->model()->rowCount());
-    QModelIndex oIndex = m_pwPending->model()->index(
-                m_pwPending->model()->rowCount() - 1, 0);
+void Menu::onRightArrow(){
+    auto item = list_of_all_modif->currentItem()->text();
+    list_setup_level->addItem(item);
 
-    m_pwPending->edit(oIndex);
 }
 
 void Menu::onRemove(){
-    QModelIndex oIndex = m_pwPending->currentIndex();
-    m_pwPending->model()->removeRow(oIndex.row());
+
+    delete list_setup_level->takeItem(list_setup_level->row(list_setup_level->currentItem()));
+    
 }
+
+void Menu::clicked_item(const QModelIndex& action_item){
+    std::cout << list_of_all_modif->currentIndex().operator==(action_item) << std::endl;
+}
+
+void modif_window(QString& modif_name){
+    
+}
+
+
+
