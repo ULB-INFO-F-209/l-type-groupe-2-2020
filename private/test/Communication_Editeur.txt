@@ -13,8 +13,9 @@
 				HORSE
 				CHEETAH
 		BONUS
-			- Drop rate
-			- Choix de bonus
+
+		Drop rate
+
 		PLAYER
 			- Degat des projectiles de vaisseaux
 			- Modif de l'arriere plan

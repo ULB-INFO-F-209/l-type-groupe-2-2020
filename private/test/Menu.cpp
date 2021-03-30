@@ -1003,9 +1003,6 @@ void Menu::onRemove(){
     
 }
 
-void Menu::clicked_item(const QModelIndex& action_item){
-    std::cout << list_of_all_modif->currentIndex().operator==(action_item) << std::endl;
-}
 
 void modif_window(QString& modif_name){
     
@@ -1113,9 +1110,10 @@ void Menu::enemy_obs_editor_settings(bool is_enemy){
     Dialog->show();
 }
 
-void Menu::player_editor_settings(){
-    return;
+void Menu::player_settings(){
+    
 }
+
 void Menu::drop_rate_settings(){
     QDialogButtonBox *buttonBox;
     QWidget *widget;

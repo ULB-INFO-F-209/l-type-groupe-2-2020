@@ -9,9 +9,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "account.hpp"
+#include "accountandvectors.hpp"
 
-struct Profile
-{
+struct Profile{
 	char pseudo[20];
 	int score;
 	Profile()=default;
@@ -21,17 +21,22 @@ struct Profile
 
 class Database{
     const std::string _path = "accounts.bin";
-    std::vector<Account> _data{};
+    const std::string _path_frnd = "friends.bin";
+    const std::string _path_req = "requests.bin";
+
+    std::vector<AccountAndVectors> _data{};
 	std::vector<Profile> _profiles{};
 
-    void add(Account* account);
+    void add(Account account);
+	void add(Friend frnd);
+	void add(Request request);
 
 public:
 	// Constructor
 	Database() = default;
 
 	// Getters
-	std::ptrdiff_t find(char* pseudo);
+	std::ptrdiff_t find(const char* pseudo);
 	bool verifyLogin(char* pseudo, char* pswd);
 	Profile getProfile(char* pseudo);
     std::vector<Profile> getFriendRequest(char* pseudo);

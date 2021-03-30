@@ -19,19 +19,28 @@ int main()
 
     std::cout << "db.verifyLogin(\"aissa\", \"blabla\") : " << db.verifyLogin("aissa", "blabla") << std::endl;
     std::cout << "db.verifyLogin(\"aissa\", \"aaa\") : " << db.verifyLogin("aissa", "aaa") << std::endl;
-
+*/
 
     std::cout << "db.friendRequest(\"Vin\", \"poubelle\") : " << db.friendRequest("Vin", "poubelle") << std::endl;
+    std::cout << "db.friendRequest(\"Vin\", \"poubelle\") : " << db.friendRequest("Vin", "poubelle") << std::endl;
+    db.display();
+    std::cout << "db.addFriend(\"poubelle\", \"Vin\") : " << db.addFriend("poubelle", "Vin") << std::endl;
+
+
+/*
     std::cout << "db.friendRequest(\"Vin\", \"helin\") : " << db.friendRequest("Vin", "helin") << std::endl;
-    std::cout << "db.friendRequest(\"Vin\", \"poubelle\") : " << db.friendRequest("Vin", "poubelle") << std::endl;
     std::cout << "db.friendRequest(\"aissa\", \"helin\") : " << db.friendRequest("aissa", "helin") << std::endl;
 
     std::cout << "db.addFriend(\"helin\", \"aissa\") : " << db.addFriend("helin", "aissa") << std::endl;
     std::cout << "db.addFriend(\"helin\", \"Vin\") : " << db.addFriend("helin", "Vin") << std::endl;
+       
+
     std::cout << "db.addFriend(\"helin\", \"poubelle\") : " << db.addFriend("helin", "poubelle") << std::endl;
 
-    std::cout << "db.removeFriend(\"Vin\", \"helin\") : " << db.removeFriend("Vin", "helin") << std::endl;
-	*/
+    db.removeFriend("Vin", "helin");
+    //std::cout << "db.removeFriend(\"Vin\", \"helin\") : " << std::endl;
+*/
+
 	db.updateScore(666, "helin");
 	db.updateScore(45, "aissa");
 	db.updateScore(3, "Vin");

@@ -10,8 +10,8 @@ flag = -std=c++17 -masm=intel -lncurses -fconcepts -pthread \
 		 -Wnoexcept -Wctor-dtor-privacy -Woverloaded-virtual -Wsign-promo -Wzero-as-null-pointer-constant\
 		 -Wsuggest-final-types -Wsuggest-final-methods  -Wsuggest-override -lquadmath
 
-server: main_server.cpp server.o database.o account.o parsing.o
-	g++  main_server.cpp server.o database.o account.o parsing.o  $(flag) -o process_server
+server: main_server.cpp server.o database.o account.o parsing.o  accountandvectors.o
+	g++  main_server.cpp server.o database.o account.o parsing.o  accountandvectors.o $(flag) -o process_server
 
 client: main_client.cpp client.o parsing.o  menu.o 
 	g++  main_client.cpp  client.o parsing.o  menu.o $(qt_flag) $(flag) -Wl,-O1 -o process_client  $(qt_exec_flag)
@@ -30,6 +30,9 @@ database.o: database/database.hpp database/database.cpp
 
 account.o: database/account.hpp database/account.cpp
 	g++  -c database/account.cpp $(flag) -o account.o
+
+accountandvectors.o:  database/accountandvectors.hpp  database/accountandvectors.cpp
+	g++  -c  database/accountandvectors.cpp $(flag) -o accountandvectors.o
 
 parsing.o: parsing.hpp parsing.cpp
 	g++  -c parsing.cpp $(flag) -o parsing.o

@@ -98,7 +98,7 @@ private:
 	void enemy_obs_editor_settings(bool);
 	void player_editor_settings();
 	void drop_rate_settings();
-	void player_obstacle_settings();
+	void player_settings();
 	
 
 
@@ -116,7 +116,6 @@ private slots:
 	void createLevel();
 	void onRightArrow();
     void onRemove();
-	void clicked_item(const QModelIndex&);
 	void modif_window(QString& modif_name);
 
 };
