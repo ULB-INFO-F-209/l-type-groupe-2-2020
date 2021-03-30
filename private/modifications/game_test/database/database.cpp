@@ -138,7 +138,16 @@ int Database::friendRequest(char* pseudoSrc, char* pseudoDest){
     std::ptrdiff_t idxSrc = find(pseudoSrc);
     std::ptrdiff_t idxDest = find(pseudoDest);
     if (idxSrc != -1 && idxDest != -1 && idxSrc != idxDest){
-        res = _data[idxDest].addRequest(pseudoSrc);     // res=0 if request is sent, res=1 if already requested
+        int already_req = _data[idxSrc].findRequest(pseudoDest);
+        if (already_req == -1){
+            res = _data[idxDest].addRequest(pseudoSrc);     // res=0 if request is sent, res=1 if already requested
+        }
+        else{
+            _data[idxSrc].addFriend(pseudoDest);
+            _data[idxDest].addFriend(pseudoSrc);
+            _data[idxSrc]._requests_vector.erase(_data[idxSrc]._requests_vector.begin()+already_req);
+            res = 0;
+        }
     }                                                   // res=2 if already friends
     if (idxSrc == -1){std::cout << pseudoSrc << " does not exist" << std::endl; res = 3;}  // res=3 if pseudo doesn't exist
     if (idxDest == -1){std::cout << pseudoDest << " does not exist" << std::endl; res = 3;}

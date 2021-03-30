@@ -28,7 +28,6 @@ int AccountAndVectors::addRequest(char pseudo[20]){
 	// ajout de la requete si pseudo n'est pas deja ami ou n'a pas deja envoyé une demande d'amis
     int res = 3;
     int idxFriend = findFriend(pseudo);
-    std::cout << "findFriend=" << idxFriend << std::endl;
     if (idxFriend == -1){
         int idxRequest = findRequest(pseudo);
         if (idxRequest == -1) {
@@ -51,7 +50,6 @@ void AccountAndVectors::removeRequest(char pseudo[20]){
 
 // ajout de pseudo dans la liste d'amis s'il n'y est pas deja
 void AccountAndVectors::addFriend(char pseudo[20]){
-    std::cout << this->acc._pseudo << " ajoute " << pseudo << std::endl;
     _friends_vector.push_back(pseudo);
 }
 
