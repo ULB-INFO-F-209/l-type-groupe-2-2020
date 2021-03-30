@@ -2,23 +2,27 @@
 	a. Voir tt les level edités par les autres joueurs
 	b. Voir ses propres level
 	c. Editer un nouveau level
-		- Drop rate
-		- Nombre d'ennemis
-		- Nombre de vies
-		- Degat des projectiles ennemis
-		- Degat des obstacles
-		- Degat des projectiles de vaisseaux
-		- Vitesse des ennemis
-			SLUG
-			TURTLE
-			HUMAN
-			HORSE
-			CHEETAH
-		- Vitesse des obstacles
-		- Choix de bonus
-		- Modif des obstacles
-		- Modif de l'arriere plan
-		- Modif des vaisseaux
+		ENNEMIS
+			- Nombre d'ennemis
+			- Nombre de vies
+			- Degat des projectiles ennemis
+			- Vitesse des ennemis
+				SLUG
+				TURTLE
+				HUMAN
+				HORSE
+				CHEETAH
+		BONUS
+			- Drop rate
+			- Choix de bonus
+		PLAYER
+			- Degat des projectiles de vaisseaux
+			- Modif de l'arriere plan
+			- Modif des vaisseaux
+		OBSTACLES
+			- Degat des obstacles
+			- Vitesse des obstacles
+			- Modif des obstacles
 		
 
 2.Ajouter ou pas les parties des level editor dans le leadeboard ? NOP

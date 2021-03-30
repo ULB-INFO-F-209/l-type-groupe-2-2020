@@ -950,16 +950,16 @@ void Menu::createLevel(){
 }
 
 void Menu::onRightArrow(){
-    auto current_text = list_of_all_modif->currentItem()->text();
-    
-    auto val = current_text.toStdString();
-    std::cout<< "val : " << val << std::endl;
-    if(current_text.toStdString() == editor_menu[0]){
-        std::cout<< " la vie est beau" << std::endl;
-        enemy_editor_settings();
-        list_setup_level->addItem(current_text);
+    if (list_of_all_modif->currentItem() != nullptr)
+    {
+        auto current_text = list_of_all_modif->currentItem()->text();
+        auto val = current_text.toStdString();
+        if(current_text.toStdString() == editor_menu[0]){
+            std::cout<< " la vie est beau" << std::endl;
+            enemy_editor_settings();
+            list_setup_level->addItem(current_text);
+        }
     }
-    else std::cout << "je suis ici bg "<< std::endl;
 }
 
 void Menu::onRemove(){
