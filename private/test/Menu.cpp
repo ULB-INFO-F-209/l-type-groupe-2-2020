@@ -221,7 +221,7 @@ void Menu::main_m(){
 
     /****** DESIGN SECTION ****************************/
     //this->setStyleSheet("background-color:rgb(123, 22, 22);");
-    this->setStyleSheet(QStringLiteral("background-color:black;"));
+    this->setStyleSheet(QStringLiteral("background-color:blue;"));
     QLabel *title_label = new QLabel(centralWidget);
     title_label->setGeometry(QRect(110, 30, 600, 150));
     QPixmap pix_home_title("images/titles/mainMenu");
@@ -232,7 +232,7 @@ void Menu::main_m(){
     this->setCentralWidget(centralWidget);
     this->show();
 }
-}
+
 
 void Menu::print_profile(){
     Profile profile; char buffer[Constante::CHAR_SIZE];
@@ -914,7 +914,8 @@ void Menu::createLevel(){
     //list_of_all_modif->setEditTriggers(QAbstractItemView::NoEditTriggers);
     gridLayout->addWidget(list_of_all_modif, 2, 1, 1, 1);
 
-    QListWidgetItem *item = new QListWidgetItem("Enemy Ship") ;    
+    
+    QListWidgetItem *item = new QListWidgetItem("Enemy") ;    
     list_of_all_modif->addItem(item);
     item = new QListWidgetItem("Player Ship") ;    
     list_of_all_modif->addItem(item);
@@ -949,9 +950,16 @@ void Menu::createLevel(){
 }
 
 void Menu::onRightArrow(){
-    auto item = list_of_all_modif->currentItem()->text();
-    list_setup_level->addItem(item);
-
+    auto current_text = list_of_all_modif->currentItem()->text();
+    
+    auto val = current_text.toStdString();
+    std::cout<< "val : " << val << std::endl;
+    if(current_text.toStdString() == editor_menu[0]){
+        std::cout<< " la vie est beau" << std::endl;
+        enemy_editor_settings();
+        list_setup_level->addItem(current_text);
+    }
+    else std::cout << "je suis ici bg "<< std::endl;
 }
 
 void Menu::onRemove(){
@@ -969,4 +977,108 @@ void modif_window(QString& modif_name){
 }
 
 
+void Menu::enemy_editor_settings(){
+    QGridLayout *gridLayout;
+    QWidget *gridLayoutWidget;
+    QLabel *label_speed;
+    QSpinBox *hp_spinbox;
+    QLabel *label_damage;
+    QSpinBox *damage_spinbox;
+    QLabel *label_hp;
+    QDialogButtonBox *buttonBox;
+    QComboBox *speed_combo;
+    QLabel *label_number;
+    QLabel *empty_label;
+    QLabel *label_title;
+    QSpinBox *number_spinbox;
+    QDialog *Dialog = new QDialog(this);
+
+    Dialog->resize(611, 539);
+    Dialog->setModal(true);
+    QFont font;
+    font.setPointSize(15);
+    Dialog->setFont(font);
+    gridLayoutWidget = new QWidget(Dialog);
+    gridLayoutWidget->setGeometry(QRect(30, 10, 521, 522));
+
+    gridLayout = new QGridLayout(gridLayoutWidget);
+    gridLayout->setContentsMargins(0, 0, 0, 0);
+
+    label_speed = new QLabel("SPEED",gridLayoutWidget);
+    label_speed->setMaximumSize(QSize(1000, 30));
+    label_speed->setAlignment(Qt::AlignCenter);
+
+    gridLayout->addWidget(label_speed, 9, 0, 1, 1);
+
+    hp_spinbox = new QSpinBox(gridLayoutWidget);
+    hp_spinbox->setMinimum(1);
+    hp_spinbox->setMaximum(100);
+    gridLayout->addWidget(hp_spinbox, 6, 0, 1, 1);
+
+    label_damage = new QLabel("DAMAGE",gridLayoutWidget);
+    label_damage->setMaximumSize(QSize(1000, 30));
+    label_damage->setAlignment(Qt::AlignCenter);
+    gridLayout->addWidget(label_damage, 7, 0, 1, 1);
+
+    damage_spinbox = new QSpinBox(gridLayoutWidget);
+    damage_spinbox->setMinimum(1);
+    damage_spinbox->setMaximum(100);
+    gridLayout->addWidget(damage_spinbox, 8, 0, 1, 1);
+
+    label_hp = new QLabel("HP",gridLayoutWidget);
+    label_hp->setMaximumSize(QSize(1000, 30));
+    label_hp->setAlignment(Qt::AlignCenter);
+    gridLayout->addWidget(label_hp, 5, 0, 1, 1);
+
+    buttonBox = new QDialogButtonBox(gridLayoutWidget);
+    buttonBox->setOrientation(Qt::Horizontal);
+    buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
+    gridLayout->addWidget(buttonBox, 12, 0, 1, 1);
+
+    speed_combo = new QComboBox(gridLayoutWidget);
+    speed_combo->addItem("SLUG");
+    speed_combo->addItem("TURTLE");
+    speed_combo->addItem("HUMAN");
+    speed_combo->addItem("HORSE");
+    speed_combo->addItem("CHEETAH");
+    gridLayout->addWidget(speed_combo, 10, 0, 1, 1);
+
+    label_number = new QLabel(gridLayoutWidget);
+    label_number->setMaximumSize(QSize(1000, 30));
+    label_number->setAlignment(Qt::AlignCenter);
+    gridLayout->addWidget(label_number, 1, 0, 1, 1);
+
+    empty_label = new QLabel(gridLayoutWidget);
+    empty_label->setMaximumSize(QSize(100, 50));
+    gridLayout->addWidget(empty_label, 11, 0, 1, 1);
+
+    label_title = new QLabel("Enemy parameters",gridLayoutWidget);
+    label_title->setMaximumSize(QSize(1000, 50));
+    QFont font1;
+    font1.setPointSize(20);
+    font1.setBold(true);
+    font1.setWeight(75);
+    label_title->setFont(font1);
+    label_title->setAlignment(Qt::AlignCenter);
+    gridLayout->addWidget(label_title, 0, 0, 1, 1);
+
+    number_spinbox = new QSpinBox(gridLayoutWidget);
+    number_spinbox->setMinimum(1);
+    number_spinbox->setMaximum(100);
+    gridLayout->addWidget(number_spinbox, 4, 0, 1, 1);
+
+    QObject::connect(buttonBox, SIGNAL(accepted()), Dialog, SLOT(accept()));
+    QObject::connect(buttonBox, SIGNAL(rejected()), Dialog, SLOT(reject()));
+
+    Dialog->show();
+}
+void Menu::player_editor_settings(){
+    return;
+}
+void Menu::player_bonus_settings(){
+    return;
+}
+void Menu::player_obstacle_settings(){
+    return;
+}
 

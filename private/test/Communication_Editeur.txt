@@ -9,6 +9,11 @@
 		- Degat des obstacles
 		- Degat des projectiles de vaisseaux
 		- Vitesse des ennemis
+			SLUG
+			TURTLE
+			HUMAN
+			HORSE
+			CHEETAH
 		- Vitesse des obstacles
 		- Choix de bonus
 		- Modif des obstacles
