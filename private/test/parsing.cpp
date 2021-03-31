@@ -34,7 +34,7 @@ void Parsing::create_game_to_str(char *buffer, Game_settings * settings){
 	//buffer -> "nb_player&pseudo_hote&other_pseudo&drop_rate&ally_shot&nb_lives"
 }
 
-void Parsing::level_editor_to_str(char * buffer, editor_settings* level_editor){
+void Parsing::level_editor_to_str(char * buffer, Level* level_editor){
 	/*
 	L_pseudo_levelName_enemyNumber_enemyHp_enemyDamage_enemySpeed_damageUp_tripleShot_lifeSteal
 	_minigun_dropRate_obstacleNumber_obstacleHp_obstacleDamage_obstacleSpeed
@@ -181,7 +181,7 @@ void Parsing::parsing(char* str, char* token1, char* token2) {
 }
 
 
-editor_settings Parsing::level_editor_from_str(char* buffer){
+Level Parsing::level_editor_from_str(char* buffer){
 
 	/*
 	L_enemyNumber_enemyHp_enemyDamage_enemySpeed_damageUp_tripleShot_lifeSteal
@@ -189,7 +189,7 @@ editor_settings Parsing::level_editor_from_str(char* buffer){
 	_p1Damage_p1Lives_p1ShipDesign_p2Damage_p2Lives_p2ShipDesign&
 	*/
 
-	editor_settings settings_editor{};
+	Level settings_editor{};
 	std::string delimiteur = "_";
 	std::string editor_str(buffer);
 	std::size_t indx = editor_str.find(delimiteur);
@@ -202,7 +202,7 @@ editor_settings Parsing::level_editor_from_str(char* buffer){
 
 
 	indx = editor_str.find(delimiteur);
-	std::string tmp = editor_str.substr(0,indx);
+	tmp = editor_str.substr(0,indx);
 	strcpy(settings_editor._level_name,tmp.c_str());
 	editor_str = editor_str.substr(indx+1,editor_str.size());
 

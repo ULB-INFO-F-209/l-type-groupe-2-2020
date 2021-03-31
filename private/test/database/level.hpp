@@ -1,8 +1,11 @@
-#ifndef EDITOR_SETTINGS
-#define EDITOR_SETTINGS
+#ifndef LEVEL
+#define LEVEL
 
-struct editor_settings{
+struct Level{
+    char _pseudo[20];
+    char _level_name[20];
     int level;
+    int vote;
 
     //enemy
     int enemy_number;

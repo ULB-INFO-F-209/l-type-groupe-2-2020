@@ -18,6 +18,12 @@ void Database::add(Request request){
         _data[idx]._requests_vector.push_back(request._request);
 }
 
+void Database::add(Level level){
+    std::ptrdiff_t idx = find(level._pseudo);
+    if (idx != -1)
+        _data[idx]._levels_vector.push_back(level);
+}
+
 //getters
 
 // retourne -1 si pseudo n'existe pas, l'indice dans _data sinon
@@ -105,6 +111,16 @@ std::vector<Profile> Database::checkLeaderboard(){
         std::cout << x.pseudo << " -> " << x.score << std::endl;
     std::cout << "-----------------" << std::endl;
     return _profiles;
+}
+
+// retourne les levels de tout les accounts
+std::vector<Level> Database::checkLevels(){
+	// on parcourt la base de données et on ajoute level
+    _levels.clear();
+    for (AccountAndVectors &acc_vect : _data){
+        _profiles.push_back(Profile{acc_vect.acc});
+    }
+    return _levels;
 }
 
 //setter
@@ -210,9 +226,11 @@ void Database::dbLoad(){
     FILE* accounts;
     FILE* friends;
     FILE* requests;
+    FILE* levels;
     const char* c_path = _path.c_str();
     const char* c_path_frnd = _path_frnd.c_str();
     const char* c_path_req = _path_req.c_str();
+    const char* c_path_level = _path_level.c_str();
 
     // verif existence du fichier
     struct stat buffer;
@@ -236,6 +254,13 @@ void Database::dbLoad(){
             throw "Could not create requests file!";
         }
         fclose(requests);
+    }    
+    if (!(stat (c_path_level, &buffer) == 0)){
+    	requests = fopen(c_path_level, "wb");
+    	if (levels == nullptr){
+            throw "Could not create levels file!";
+        }
+        fclose(requests);
     } 
 
     accounts = fopen(c_path, "rb");
@@ -251,6 +276,11 @@ void Database::dbLoad(){
     requests = fopen(c_path_req, "rb");
     if (requests == nullptr){
         throw "Could not open requests file!";
+    }
+
+    levels = fopen(c_path_level, "rb");
+    if (levels == nullptr){
+        throw "Could not open levels file!";
     }
 
     std::cout << "------------Load------------\n\n";
@@ -269,11 +299,17 @@ void Database::dbLoad(){
     while(fread(&req,sizeof(Request),1,requests)){
         add(req);
     }
+    // chargement levels
+    Level lev;
+    while(fread(&lev,sizeof(Level),1,levels)){
+        add(lev);
+    }
 
     display(); 
     fclose(accounts);
     fclose(friends);
     fclose(requests);
+    fclose(levels);
 }
 
 // ecriture des accounts dans le fichier _path
@@ -282,6 +318,7 @@ void Database::dbSave(){
     FILE* out = fopen(_path.c_str(),"wb");
     FILE* out_frnd = fopen(_path_frnd.c_str(),"wb");
     FILE* out_req = fopen(_path_req.c_str(),"wb");
+    FILE* out_level = fopen(_path_level.c_str(),"wb");
 
     for (auto account : _data){
         char* pseudo = account.acc._pseudo;
@@ -291,15 +328,18 @@ void Database::dbSave(){
             Friend frnd(pseudo, friend_in_vect.c_str());
             fwrite(&frnd,sizeof(Friend),1,out_frnd);
         }
-
         for (auto req_in_vect : account._requests_vector){
             Request req(pseudo, req_in_vect.c_str());
             fwrite(&req,sizeof(Request),1,out_req);
+        }
+        for (auto level_in_vect : account._levels_vector){
+            fwrite(&level_in_vect,sizeof(Request),1,out_req);
         }
     }
     fclose(out);
     fclose(out_frnd);
     fclose(out_req);
+    fclose(out_level);
     display();
     std::cout << "\nSAVE FINNISH\n";
 }
@@ -321,6 +361,12 @@ void Database::display(){
         std::cout << "requests : [";
         for (auto req: _data[i]._requests_vector){
             std::cout << (req) << ", ";
+        }
+        std::cout << "]" << std::endl << std::endl;
+        
+        std::cout << "levels : [";
+        for (auto level: _data[i]._levels_vector){
+            std::cout << level._level_name << ", ";
         }
         std::cout << "]" << std::endl << std::endl;
     }

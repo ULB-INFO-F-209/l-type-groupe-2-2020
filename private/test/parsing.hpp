@@ -11,7 +11,7 @@
 #include <string>
 #include <unistd.h>
 #include "database/database.hpp"
-#include "database/editor_settings.hpp"
+#include "database/level.hpp"
 
 enum difficulty{easy, medium, hard};
 
@@ -24,14 +24,14 @@ namespace Parsing{
 	void profile_to_str(char *buffer, Profile prof);
 	void create_game_to_str(char *buffer, Game_settings * settings);
 	void profile_list_to_str(char* buffer, std::vector<std::string> *list);
-	void level_editor_to_str(char * buffer, editor_settings* level_editor);
+	void level_editor_to_str(char * buffer, Level* level_editor);
 
 	//decodage
 	void profile_list_from_str(char *buffer,std::vector<Profile> *prof);
 	void profile_from_str(char *buffer, Profile *prof);
 	void create_game_from_str(char *buffer, Game_settings * settings);
 	void parsing(char* str, char* token1, char* token2 = nullptr);
-	editor_settings level_editor_from_str(char* buffer);
+	Level level_editor_from_str(char* buffer);
 
 
 }
