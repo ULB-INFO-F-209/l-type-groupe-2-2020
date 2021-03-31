@@ -319,6 +319,8 @@ void Menu::launch_game(Game_settings* game_option){
     bool gameOn = true;
     int inp = -1;
 	std::string string_game_to_display;
+	std::string string_previous_game_to_display;
+
 	
 
     while(gameOn && window->isOpen()){ //fenetre fermé -> terminal freeze
@@ -339,7 +341,10 @@ void Menu::launch_game(Game_settings* game_option){
         
 		_client.send_game_input(inp);
 		inp = -1;
+		
 		string_game_to_display = _client.read_game_pipe();
+		if (string_game_to_display != Constante::GAME_END)
+			string_previous_game_to_display = string_game_to_display;
 		if (string_game_to_display == Constante::GAME_END)
 			break;
 			//gameOn = false;
@@ -348,10 +353,13 @@ void Menu::launch_game(Game_settings* game_option){
 		window->display();
 
     }
+	display_game.parse_instruction(string_previous_game_to_display);
+	window->display();
 	string_game_to_display = _client.read_game_pipe();
+	//display_game.parse_instruction(string_game_to_display);
 	std::cout << string_game_to_display;
 	display_game.drawEndGame(string_game_to_display);
-
+	window->display();
 	sf::Event event;
 	
 	while(true){

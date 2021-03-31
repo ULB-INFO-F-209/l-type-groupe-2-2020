@@ -1,8 +1,7 @@
 //TODO:
 // ajouter un tour de boucle pour l'affichage
-// messages pour les projectiles differentes
-// changement de niveau ui
-// game over ui
+// print lifebar boss
+
 // 2 players input
 
 
@@ -256,6 +255,12 @@ void DisplayGame::drawStar() {
 
 void DisplayGame::drawNewLevel(int tick,int levelTick,int currentLevel) {
     if(levelTick != 0 && tick <= levelTick + 600 && tick > levelTick+100){
+		guiText.setString("Level " + std::to_string(currentLevel));
+		guiText.setColor(sf::Color::White);
+		guiText.setCharacterSize(22);
+		guiText.setPosition(sf::Vector2f(35*12.5, 8*20));
+		window->draw(guiText);
+
         mvwprintw(game_wnd, 8, 35, "level %i", currentLevel);
     }
 }
@@ -371,7 +376,7 @@ void DisplayGame::initGraphics(){
 	enemySprite.setRotation(180);
 	enemySprite.setTexture(enemy);
 
-	bossSprite.setScale(sf::Vector2f(0.8,0.8));
+	bossSprite.setScale(sf::Vector2f(0.9,0.8));
 	bossSprite.setRotation(180);
 	bossSprite.setTexture(boss);
 
@@ -647,7 +652,7 @@ void DisplayGame::drawBoss(int x, int y){
 		sf::RectangleShape bossShape(sf::Vector2f(12.5*18,20*6));
 		bossShape.setFillColor(sf::Color::Red);
 		bossShape.setPosition(sf::Vector2f(x*12.5+7,5 + y*20));
-		bossSprite.setPosition(sf::Vector2f(x*12.5+7 +315,5 + y*20 + 260));
+		bossSprite.setPosition(sf::Vector2f(x*12.5+7 +340,5 + y*20 + 260));
 		//window->draw(bossShape);
 		window->draw(bossSprite);
 }
@@ -883,9 +888,27 @@ void DisplayGame::drawEnergyBar(int a) {
 }
 
 void DisplayGame::drawEndGame(std::string score){
-	int score1 = std::stoi(score);
+
+	guiText.setString("GAME OVER");
+	guiText.setCharacterSize(20);
+	guiText.setColor(sf::Color::White);
+	guiText.setPosition(sf::Vector2f(35*12.5, 8*20));
+	window->draw(guiText);
+
+
+
+	guiText.setString("SCORE : "+score);
+	guiText.setPosition(sf::Vector2f(35*12.5, 9*20));
+	window->draw(guiText);
+
+
+	guiText.setString("press p to quit");
+	guiText.setColor(sf::Color::White);
+	guiText.setPosition(sf::Vector2f(32*12.5, 12*20));
+	window->draw(guiText);
+
 	mvwprintw(game_wnd,8, 35,"GAME OVER");
-    mvwprintw(game_wnd,9, 35,"SCORE : %i", score1);
+    mvwprintw(game_wnd,9, 35,"SCORE : %i", std::stoi(score));
     mvwprintw(game_wnd,12, 32,"press p to quit");
     refreshWnd();
     

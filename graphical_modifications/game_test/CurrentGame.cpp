@@ -175,7 +175,7 @@ std::string CurrentGame::run_server(char move_to_exec){
     if(tick %50  == 0) {
         map.update_server(MapObject::bonus, tick);
     }
-    if(map.getCurrentLevel()==1 && tick%10==0 && !map.getChangingLevel()){
+    if(map.getCurrentLevel()==3 && tick%10==0 && !map.getChangingLevel()){
         map.update_server(MapObject::boss,tick);
     }
 
