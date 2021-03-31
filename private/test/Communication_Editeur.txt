@@ -34,3 +34,7 @@
 
 2.Ajouter ou pas les parties des level editor dans le leadeboard ? NOP
 	
+3.Avoir differents types d'ennemies/Boss en fonction du niveau. 
+	- Niv 1 ennemis nullos
+	- Niv 2 ennemis plus fort 
+	- etc.
