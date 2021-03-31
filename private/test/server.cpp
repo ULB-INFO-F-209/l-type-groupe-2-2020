@@ -443,7 +443,7 @@ void Server::remove_pipe(std::string the_pipe){
         std::cerr << "[ERROR] suppresion du pipe : " << the_pipe << std::endl;
     }
     else{
-        std::cout << the_pipe << " supprimer avec succes "<<std::endl;
+        std::cout << the_pipe << " supprimé avec succes "<<std::endl;
     }
 }
 
@@ -489,7 +489,7 @@ void Server::launch_game(Parsing::Game_settings* sett_game){
     while(gameOn){
         inp = read_game_input(input_pipe);  
 
-        if(inp == Constante::ERROR_PIPE_GAME || inp == Constante::CLIENT_LEAVE_GAME) return; // Le client est parti ou alors le pipe a été supprimer 
+        if(inp == Constante::ERROR_PIPE_GAME || inp == Constante::CLIENT_LEAVE_GAME) return; // Le client est parti ou alors le pipe a été supprimé 
         resp = game.run_server(inp);                                                        //  le jeu du server
         if(resp == Constante::GAME_END){  // if game over
             gameOn=false;

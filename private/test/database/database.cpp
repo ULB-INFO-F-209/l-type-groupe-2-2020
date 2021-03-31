@@ -113,12 +113,14 @@ std::vector<Profile> Database::checkLeaderboard(){
     return _profiles;
 }
 
-// retourne les levels de tout les accounts
+// retourne les levels de tous les accounts
 std::vector<Level> Database::checkLevels(){
 	// on parcourt la base de données et on ajoute level
     _levels.clear();
     for (AccountAndVectors &acc_vect : _data){
-        _profiles.push_back(Profile{acc_vect.acc});
+        for (auto level: acc_vect._levels_vector){
+            _levels.push_back(level);
+        }
     }
     return _levels;
 }
@@ -362,7 +364,7 @@ void Database::display(){
         for (auto req: _data[i]._requests_vector){
             std::cout << (req) << ", ";
         }
-        std::cout << "]" << std::endl << std::endl;
+        std::cout << "]" << std::endl;
         
         std::cout << "levels : [";
         for (auto level: _data[i]._levels_vector){
