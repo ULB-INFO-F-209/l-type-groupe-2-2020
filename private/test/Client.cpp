@@ -171,6 +171,11 @@ void Client::send_game_input(int inp){
 	close(fd);
 }
 
+void Client::saveLevelEdit(Level* level_edit){
+	char to_send[Constante::CHAR_SIZE];
+	Parsing::level_editor_to_str(to_send,level_edit);
+	communication(to_send);
+}
 
 
 

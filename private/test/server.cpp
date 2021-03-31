@@ -143,7 +143,19 @@ void Server::catchInput(char* input) {
 
         std::thread t5(&Server::launch_game,this,&game_sett); // thread du jeu
         t5.detach();
-
+    }
+    else if(input[0] ==  Constante::LEVEL_EDIT){
+        switch (input[1])
+        {
+        case Constante::SAVE_LEVEL_EDIT:
+            // [TODO] lancer le jeu avec les settings editor
+            std::cout <<"Le level settings : "<<input << std::endl;
+            resClient(&processId,Constante::OK);
+            break;
+        
+        default:
+            break;
+        }
 	} else {
 		std::cerr << "[ERROR IN INPUT 1]" << std::endl;
 		return;

@@ -17,6 +17,8 @@
 #include <thread>
 
 #include "Constante.hpp"
+#include "database/level.hpp"
+#include "parsing.hpp"
 
 class Client{
     //state
@@ -53,6 +55,7 @@ public:
     std::string read_game_pipe();
     void send_game_input(int inp);
     void exit();
+    void saveLevelEdit(Level* level_edit);
     
     //Game
     

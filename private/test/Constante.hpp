@@ -41,6 +41,7 @@ namespace Constante{
     const int CLIENT_END_GAME = -101;
     const int CLIENT_LEAVE_GAME = -1000;
     const std::string GAME_END = "END GAME";
+    const bool OK = true;
 
     // MENU
     constexpr char SIGN_IN = 'a';
@@ -54,6 +55,10 @@ namespace Constante{
     constexpr char VIEW_PROFILE = 'i';
     constexpr char CLIENT_EXIT = 'j';
     constexpr char DEL_FRIEND_REQUEST = 'k';
+
+    // Editor Level
+    constexpr char LEVEL_EDIT = 'L';
+    constexpr char SAVE_LEVEL_EDIT = 'S';
 
     //J1
     constexpr char KEY_J1_LEFT = 'q';

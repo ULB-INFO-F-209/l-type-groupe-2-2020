@@ -41,7 +41,7 @@ void Parsing::level_editor_to_str(char * buffer, Level* level_editor){
 	_p1Damage_p1Lives_p1ShipDesign_p2Damage_p2Lives_p2ShipDesign
 	*/
 	
-	sprintf(buffer, "L_%s_%s_%d_%d_%d_%d_%d_%d_%d_%d_%d_%d_%d_%d_%d_%d_%d_%d_%d_%d_%d&",
+	sprintf(buffer, "LS_%s_%s_%d_%d_%d_%d_%d_%d_%d_%d_%d_%d_%d_%d_%d_%d_%d_%d_%d_%d_%d&",
 		level_editor->_pseudo, level_editor->_level_name,level_editor->enemy_number, level_editor->enemy_hp,
 		level_editor->enemy_damage,level_editor->enemy_speed,level_editor->damage_up,level_editor->triple_shot,
 		level_editor->life_steal,level_editor->minigun,level_editor->drop_rate,level_editor->obstacle_number,
@@ -184,7 +184,7 @@ void Parsing::parsing(char* str, char* token1, char* token2) {
 Level Parsing::level_editor_from_str(char* buffer){
 
 	/*
-	L_enemyNumber_enemyHp_enemyDamage_enemySpeed_damageUp_tripleShot_lifeSteal
+	LS_enemyNumber_enemyHp_enemyDamage_enemySpeed_damageUp_tripleShot_lifeSteal
 	_minigun_dropRate_obstacleNumber_obstacleHp_obstacleDamage_obstacleSpeed
 	_p1Damage_p1Lives_p1ShipDesign_p2Damage_p2Lives_p2ShipDesign&
 	*/
