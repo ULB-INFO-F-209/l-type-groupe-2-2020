@@ -267,17 +267,17 @@ void DisplayGame::drawNewLevel(int tick,int levelTick,int currentLevel) {
 void DisplayGame::initGraphics(){
 	window = new sf::RenderWindow(sf::VideoMode(1000, 480), "L-TYPE");
 	window->setVerticalSyncEnabled(false);
-	
+
 	if (!texture.loadFromFile("healthbar.png"))
 	{
 		// error...
 	}
-	
+
 	if (!heart.loadFromFile("heart.png"))
 	{
 		// error...
 	}
-	
+
 	if (!font.loadFromFile("space_age.ttf"))
 	{
 		// erreur...
@@ -342,10 +342,10 @@ void DisplayGame::initGraphics(){
 	asteroidSprite.setScale(sf::Vector2f(0.14, 0.16));
 	asteroidSprite.setTexture(asteroid);
 
-	ship1Sprite.setScale(sf::Vector2f(0.19,0.19));
+	ship1Sprite.setScale(sf::Vector2f(0.22,0.30));
 	ship1Sprite.setTexture(ship1);
 
-	ship2Sprite.setScale(sf::Vector2f(0.19,0.19));
+	ship2Sprite.setScale(sf::Vector2f(0.22,0.30));
 	ship2Sprite.setTexture(ship2);
 
 	laserSprite.setScale(sf::Vector2f(0.06,0.04));
@@ -463,7 +463,7 @@ void DisplayGame::drawObstacle(int x, int y) {
 	sf::RectangleShape asteroidShape(sf::Vector2f(12.5*1.5,20*1.5));
 	asteroidShape.setFillColor(sf::Color(102,51,0));
 	asteroidShape.setPosition(sf::Vector2f((x+1)*12.5-3,y*20));
-	
+
 	if(y*20 < 350)
 		window->draw(asteroidSprite);
 
@@ -508,10 +508,10 @@ void DisplayGame::drawEnemy(int x, int y, int tick, bool isBlinking) {
 }
 void DisplayGame::drawProjectile(int x, int y, bool enemy, bool player1){
 	sf::RectangleShape projectileShape(sf::Vector2f(12.5,20));
-	
+
 	projectileShape.setPosition(sf::Vector2f((x+1)*12.5,5 + y*20));
-	
-	
+
+
 	if(enemy){
 		projectileShape.setFillColor(sf::Color::Red);
 		wattron(game_wnd, COLOR_PAIR(4));
@@ -519,7 +519,7 @@ void DisplayGame::drawProjectile(int x, int y, bool enemy, bool player1){
         wattroff(game_wnd, COLOR_PAIR(4));
 		laserSprite.setPosition(sf::Vector2f((x+1)*12.5+1,y*20+5));
 		window->draw(laserSprite);
-		
+
 	}
 	else if (player1) {
 		projectileShape.setFillColor(sf::Color::Blue);
@@ -537,10 +537,10 @@ void DisplayGame::drawProjectile(int x, int y, bool enemy, bool player1){
 		wattroff(game_wnd, COLOR_PAIR(2));
 		laser2Sprite.setPosition(sf::Vector2f((x+1)*12.5+1,y*20+5));
 		window->draw(laser2Sprite);
-		
+
 	}
 	//window->draw(projectileShape);
-	
+
 }
 void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinking){
 
@@ -592,20 +592,19 @@ void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinkin
 
 		sf::RectangleShape playerShipShape(sf::Vector2f(12.5*3,20*2));
 		playerShipShape.setPosition(sf::Vector2f(x*12.5,5 + y*20));
-		
+        //window->draw(playerShipShape);
 		if (player==1){
             playerShipShape.setFillColor(sf::Color::Blue);
-			ship1Sprite.setPosition(sf::Vector2f(x*12.5-30,5 + y*20-25));
+			ship1Sprite.setPosition(sf::Vector2f(x*12.5-36.5,5 + y*20-55));
 			window->draw(ship1Sprite);
         }
         else{
 			playerShipShape.setFillColor(sf::Color::Green);
-			ship2Sprite.setPosition(sf::Vector2f(x*12.5-30,5 + y*20-25));
+			ship2Sprite.setPosition(sf::Vector2f(x*12.5-36.5,5 + y*20-55));
 			window->draw(ship2Sprite);
 		}
-		
-		//window->draw(playerShipShape);
-		
+
+
 
 
 }
@@ -714,7 +713,7 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 		health_bar.setTextureRect(rect);
 		//score
 		guiText.setString("Score: "+std::to_string(score));
-		guiText.setCharacterSize(20); 
+		guiText.setCharacterSize(20);
 		guiText.setColor(sf::Color::White);
 		guiText.setPosition(sf::Vector2f(13,440));
 		window->draw(guiText);
@@ -761,8 +760,8 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 				}
 			}
 		}
-		
-		
+
+
 
 
 	}
@@ -888,7 +887,6 @@ void DisplayGame::drawEnergyBar(int a) {
 }
 
 void DisplayGame::drawEndGame(std::string score){
-
 	guiText.setString("GAME OVER");
 	guiText.setCharacterSize(20);
 	guiText.setColor(sf::Color::White);
@@ -911,5 +909,5 @@ void DisplayGame::drawEndGame(std::string score){
     mvwprintw(game_wnd,9, 35,"SCORE : %i", std::stoi(score));
     mvwprintw(game_wnd,12, 32,"press p to quit");
     refreshWnd();
-    
+
 }
