@@ -221,7 +221,7 @@ void Menu::main_m(){
 
     /****** DESIGN SECTION ****************************/
     //this->setStyleSheet("background-color:rgb(123, 22, 22);");
-    this->setStyleSheet(QStringLiteral("background-color:blue;"));
+    this->setStyleSheet(QStringLiteral("background-color:white;"));
     QLabel *title_label = new QLabel(centralWidget);
     title_label->setGeometry(QRect(110, 30, 600, 150));
     QPixmap pix_home_title("images/titles/mainMenu");
@@ -940,19 +940,15 @@ void Menu::createLevel(){
     connect(fleche_droit_button, &QPushButton::clicked, this,&Menu::onRightArrow);
     verticalLayout->addWidget(fleche_droit_button);
 
-    QPushButton * mod_button = new QPushButton("MODIF",gridLayoutWidget);
-    mod_button->setMaximumSize(QSize(80, 80));
-    verticalLayout->addWidget(mod_button);
-
     QPushButton * delete_button = new QPushButton("DEL",gridLayoutWidget);
     delete_button->setMaximumSize(QSize(80, 80));
     verticalLayout->addWidget(delete_button);
     connect(delete_button, &QPushButton::clicked, this,&Menu::onRemove);
 
-
-    QPushButton * start_button = new QPushButton("START",gridLayoutWidget);
-    start_button->setMaximumSize(QSize(80, 80));
-    verticalLayout->addWidget(start_button);
+    QPushButton * save_button = new QPushButton("SAVE",gridLayoutWidget);
+    save_button->setMaximumSize(QSize(80, 80));
+    verticalLayout->addWidget(save_button);
+    connect(save_button, &QPushButton::clicked, this, &Menu::save_level);
     
     gridLayout->addLayout(verticalLayout, 2, 2, 1, 1);
 
@@ -969,28 +965,31 @@ void Menu::onRightArrow(){
             player_settings();
         }
         else if(current_text.toStdString() == editor_menu[2]){ // obstacle
+            player_settings();
+        }
+        else if(current_text.toStdString() == editor_menu[3]){ // obstacle
             enemy_obs_editor_settings(false);
         }
-        else if(current_text.toStdString() == editor_menu[3]){ //"Damage Up"
+        else if(current_text.toStdString() == editor_menu[4]){ //"Damage Up"
             this->list_setup_level->addItem(current_text);
             delete this->list_of_all_modif->takeItem(this->list_of_all_modif->row(this->list_of_all_modif->currentItem()));
 
         }
-        else if(current_text.toStdString() == editor_menu[4]){ // "Triple Shot"
+        else if(current_text.toStdString() == editor_menu[5]){ // "Triple Shot"
             this->list_setup_level->addItem(current_text);
             delete this->list_of_all_modif->takeItem(this->list_of_all_modif->row(this->list_of_all_modif->currentItem()));
 
         }
-        else if(current_text.toStdString() == editor_menu[5]){ // "Life Steal"
+        else if(current_text.toStdString() == editor_menu[6]){ // "Life Steal"
             this->list_setup_level->addItem(current_text);
             delete this->list_of_all_modif->takeItem(this->list_of_all_modif->row(this->list_of_all_modif->currentItem()));
 
         }
-        else if(current_text.toStdString() == editor_menu[6]){ // "Minigun"
+        else if(current_text.toStdString() == editor_menu[7]){ // "Minigun"
             this->list_setup_level->addItem(current_text);
             delete this->list_of_all_modif->takeItem(this->list_of_all_modif->row(this->list_of_all_modif->currentItem()));
         }
-        else if(current_text.toStdString() == editor_menu[7]){ // drop rate
+        else if(current_text.toStdString() == editor_menu[8]){ // drop rate
             drop_rate_settings();
         }
 
@@ -1214,7 +1213,7 @@ void Menu::player_settings(){
     damage_spin->setMaximum(100);
     gridLayout->addWidget(damage_spin, 2, 1, 1, 1, Qt::AlignHCenter);
 
-    tilte_label = new QLabel("Players",widget);
+    tilte_label = new QLabel(list_of_all_modif->currentItem()->text(), widget);
     tilte_label->setMinimumSize(QSize(120, 50));
     tilte_label->setMaximumSize(QSize(150, 50));
     QFont font1;
@@ -1294,3 +1293,55 @@ void Menu::drop_rate_settings(){
 
 }
 
+void Menu::save_level(){
+    QDialog* Dialog;
+    QWidget *gridLayoutWidget;
+    QGridLayout *gridLayout;
+    QLabel *label_description;
+    QLineEdit *lineEdit;
+    QLabel *label_title;
+    QDialogButtonBox *buttonBox;
+    QLabel *label_3;
+
+    Dialog = new QDialog(this);
+    Dialog->resize(400, 300);
+    Dialog->setModal(true);
+
+    gridLayoutWidget = new QWidget(Dialog);
+    gridLayoutWidget->setGeometry(QRect(30, 30, 341, 241));
+    gridLayout = new QGridLayout(gridLayoutWidget);
+    gridLayout->setContentsMargins(0, 0, 0, 0);
+    label_description = new QLabel("Pick a name for your level :", gridLayoutWidget);
+
+    gridLayout->addWidget(label_description, 1, 0, 1, 1);
+
+    lineEdit = new QLineEdit(gridLayoutWidget);
+
+    gridLayout->addWidget(lineEdit, 3, 0, 1, 1);
+
+    label_title = new QLabel("SAVE YOUR CUSTOM LEVEL", gridLayoutWidget);
+    label_title->setMinimumSize(QSize(0, 2));
+    QFont font;
+    font.setPointSize(14);
+    font.setBold(true);
+    font.setWeight(75);
+    label_title->setFont(font);
+    label_title->setAlignment(Qt::AlignCenter);
+
+    gridLayout->addWidget(label_title, 0, 0, 1, 1);
+
+    buttonBox = new QDialogButtonBox(gridLayoutWidget);
+    buttonBox->setOrientation(Qt::Horizontal);
+    buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
+
+    gridLayout->addWidget(buttonBox, 5, 0, 1, 1);
+
+    label_3 = new QLabel(gridLayoutWidget);
+
+    gridLayout->addWidget(label_3, 4, 0, 1, 1);
+
+    QObject::connect(buttonBox, SIGNAL(accepted()), Dialog, SLOT(accept()));
+    QObject::connect(buttonBox, SIGNAL(rejected()), Dialog, SLOT(reject()));
+
+    Dialog->show();
+}
