@@ -741,9 +741,9 @@ void Menu::lobby(){
     });
 
     /****** DESIGN SECTION ***********************************************/
-    this->setStyleSheet("background-color:black;");
+    this->setStyleSheet("background-color:grey;");
     QLabel *title_label = new QLabel(centralWidget);
-    title_label->setGeometry(QRect(110, 30, 600, 150));
+    title_label->setGeometry(QRect(110, 10, 600, 140));
     QPixmap pix_home_title("images/titles/lobby");
     title_label->setPixmap( pix_home_title);
     title_label->setAlignment(Qt::AlignCenter);
