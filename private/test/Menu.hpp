@@ -45,6 +45,7 @@
 #include <QtWidgets/QSpinBox>
 #include <QToolBar>
 #include <QStringListModel>
+#include <QCheckBox>
 
 
 using namespace Screen;
@@ -96,7 +97,6 @@ private:
 	void lobby();
 	void level();
 	void enemy_obs_editor_settings(bool);
-	void player_editor_settings();
 	void drop_rate_settings();
 	void player_settings();
 	

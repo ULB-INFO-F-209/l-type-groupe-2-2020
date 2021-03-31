@@ -18,6 +18,7 @@
 
 		PLAYER
 			- Degat des projectiles de vaisseaux
+			- Nombre de vies
 			- Modif de l'arriere plan
 			- Modif des vaisseaux (design)
 		OBSTACLES

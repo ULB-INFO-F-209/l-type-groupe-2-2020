@@ -4,7 +4,7 @@
         *  23/03 : Reunir sign in, sign up using lambda function
         *  23/03 : Maybe mettre tous les widget important en attribut?
         *  26/03 : Design fade like r-type or fun like neon?   
-        *
+        *  31/03 : Faire des/une strutures pour recup les setts
  ***********************************************************************/
 
 
@@ -924,7 +924,6 @@ void Menu::createLevel(){
     
     list_setup_level = new QListWidget(this);
     list_setup_level->setFont(font1);
-    list_setup_level->setItemAlignment(Qt::AlignCenter);
     gridLayout->addWidget(list_setup_level, 2, 3, 1, 1);
 
 
@@ -948,6 +947,8 @@ void Menu::createLevel(){
     QPushButton * delete_button = new QPushButton("DEL",gridLayoutWidget);
     delete_button->setMaximumSize(QSize(80, 80));
     verticalLayout->addWidget(delete_button);
+    connect(delete_button, &QPushButton::clicked, this,&Menu::onRemove);
+
 
     QPushButton * start_button = new QPushButton("START",gridLayoutWidget);
     start_button->setMaximumSize(QSize(80, 80));
@@ -965,6 +966,7 @@ void Menu::onRightArrow(){
             enemy_obs_editor_settings(true);
         }
         else if(current_text.toStdString() == editor_menu[1]){ //Player
+            player_settings();
         }
         else if(current_text.toStdString() == editor_menu[2]){ // obstacle
             enemy_obs_editor_settings(false);
@@ -992,14 +994,18 @@ void Menu::onRightArrow(){
             drop_rate_settings();
         }
 
-        
-
     }
 }
 
 void Menu::onRemove(){
+    if (list_setup_level->currentItem() != nullptr){
+        auto current_text = list_setup_level->currentItem()->text();
+        QListWidgetItem *tmp = new QListWidgetItem(current_text);
+        tmp->setTextAlignment(Qt::AlignHCenter);
+        list_of_all_modif->addItem(tmp);
+        delete list_setup_level->takeItem(list_setup_level->row(list_setup_level->currentItem()));
 
-    delete list_setup_level->takeItem(list_setup_level->row(list_setup_level->currentItem()));
+    }
     
 }
 
@@ -1111,7 +1117,128 @@ void Menu::enemy_obs_editor_settings(bool is_enemy){
 }
 
 void Menu::player_settings(){
-    
+    QDialogButtonBox *buttonBox;
+    QWidget *widget;
+    QGridLayout *gridLayout;
+    QSpinBox *life_spin;
+    QCheckBox *checkBox_3;
+    QSpinBox *damage_spin;
+    QCheckBox *checkBox_1;
+    QCheckBox *checkBox_2;
+    QLabel *ship1_picture;
+    QLabel *ship2_picture;
+    QLabel *ship3_picture;
+    QLabel *label_life;
+    QLabel *label_damage;
+    QLabel *tilte_label;
+    QButtonGroup *checkbutton_group;
+    QDialog *Dialog = new QDialog();
+    Dialog->setModal(true);
+
+        
+    Dialog->resize(950, 596);
+    buttonBox = new QDialogButtonBox(Dialog);
+    buttonBox->setGeometry(QRect(540, 550, 341, 32));
+    buttonBox->setOrientation(Qt::Horizontal);
+    buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
+
+    widget = new QWidget(Dialog);
+    widget->setGeometry(QRect(30, 10, 881, 541));
+
+    gridLayout = new QGridLayout(widget);
+    gridLayout->setContentsMargins(0, 0, 0, 0);
+
+
+    label_life = new QLabel("Life",widget);
+    label_life->setMinimumSize(QSize(200, 20));
+    label_life->setMaximumSize(QSize(150, 30));
+    QFont font;
+    font.setPointSize(13);
+    label_life->setFont(font);
+    gridLayout->addWidget(label_life, 3, 0, 1, 1, Qt::AlignRight);
+
+    life_spin = new QSpinBox(widget);
+    life_spin->setMinimumSize(QSize(0, 20));
+    life_spin->setMaximumSize(QSize(16777215, 30));
+    life_spin->setMinimum(1);
+    life_spin->setMaximum(100);
+    gridLayout->addWidget(life_spin, 3, 1, 1, 1, Qt::AlignHCenter);
+
+    label_damage = new QLabel("Damage",widget);
+    label_damage->setMinimumSize(QSize(200, 20));
+    label_damage->setMaximumSize(QSize(150, 30));
+    label_damage->setFont(font);
+    gridLayout->addWidget(label_damage, 2, 0, 1, 1, Qt::AlignRight);
+
+    ship1_picture = new QLabel(widget);
+    ship1_picture->setMaximumSize(QSize(200, 100));
+    ship1_picture->setPixmap(QPixmap(QString::fromUtf8("images/enemy")));
+    ship1_picture->setScaledContents(true);
+    ship1_picture->setAlignment(Qt::AlignCenter);
+    gridLayout->addWidget(ship1_picture, 5, 0, 1, 1);
+
+    ship2_picture = new QLabel(widget);
+    ship2_picture->setMaximumSize(QSize(200, 100));
+    ship2_picture->setPixmap(QPixmap(QString::fromUtf8("images/player1")));
+    ship2_picture->setScaledContents(true);
+    ship2_picture->setAlignment(Qt::AlignCenter);
+    gridLayout->addWidget(ship2_picture, 5, 1, 1, 1);
+
+    ship3_picture = new QLabel(widget);
+    ship3_picture->setMaximumSize(QSize(200, 100));
+    ship3_picture->setPixmap(QPixmap(QString::fromUtf8("images/player2")));
+    ship3_picture->setScaledContents(true);
+    ship3_picture->setAlignment(Qt::AlignCenter);
+    gridLayout->addWidget(ship3_picture, 5, 2, 1, 1);
+
+    checkBox_1 = new QCheckBox(widget);
+    checkBox_1->setLayoutDirection(Qt::LeftToRight);
+    checkBox_1->setStyleSheet(QString::fromUtf8("font: 15pt \"Ubuntu\";"));
+    checkBox_1->setChecked(true);
+    gridLayout->addWidget(checkBox_1, 6, 0, 1, 1, Qt::AlignHCenter);
+
+    checkBox_2 = new QCheckBox(widget);
+    checkBox_2->setLayoutDirection(Qt::LeftToRight);
+    checkBox_2->setStyleSheet(QString::fromUtf8("font: 15pt \"Ubuntu\";"));
+    gridLayout->addWidget(checkBox_2, 6, 1, 1, 1, Qt::AlignHCenter);
+
+    checkBox_3 = new QCheckBox(widget);
+    checkBox_3->setLayoutDirection(Qt::LeftToRight);
+    checkBox_3->setStyleSheet(QString::fromUtf8("font: 15pt \"Ubuntu\";"));
+    gridLayout->addWidget(checkBox_3, 6, 2, 1, 1, Qt::AlignHCenter);
+
+    damage_spin = new QSpinBox(widget);
+    damage_spin->setMinimumSize(QSize(0, 20));
+    damage_spin->setMaximumSize(QSize(16777215, 30));
+    damage_spin->setMinimum(1);
+    damage_spin->setMaximum(100);
+    gridLayout->addWidget(damage_spin, 2, 1, 1, 1, Qt::AlignHCenter);
+
+    tilte_label = new QLabel("Players",widget);
+    tilte_label->setMinimumSize(QSize(120, 50));
+    tilte_label->setMaximumSize(QSize(150, 50));
+    QFont font1;
+    font1.setPointSize(21);
+    font1.setBold(true);
+    font1.setUnderline(false);
+    font1.setWeight(75);
+    tilte_label->setFont(font1);
+    gridLayout->addWidget(tilte_label, 0, 1, 1, 1, Qt::AlignHCenter);
+
+    checkbutton_group = new QButtonGroup(Dialog);
+    checkbutton_group->addButton(checkBox_1);
+    checkbutton_group->addButton(checkBox_2);
+    checkbutton_group->addButton(checkBox_3);
+
+    connect(buttonBox, &QDialogButtonBox::accepted, this,  [this,Dialog] {
+        auto txt = this->list_of_all_modif->currentItem()->text();
+        this->list_setup_level->addItem(txt);
+        delete this->list_of_all_modif->takeItem(this->list_of_all_modif->row(this->list_of_all_modif->currentItem()));
+        Dialog->hide();
+        });
+    connect(buttonBox, SIGNAL(rejected()), Dialog, SLOT(reject()));
+
+    Dialog->show();
 }
 
 void Menu::drop_rate_settings(){
@@ -1122,6 +1249,8 @@ void Menu::drop_rate_settings(){
     QLabel *title;
 
     QDialog* Dialog = new QDialog();
+    Dialog->setModal(true);
+
     Dialog->resize(400, 300);
     buttonBox = new QDialogButtonBox(Dialog);
     buttonBox->setGeometry(QRect(30, 240, 341, 32));
@@ -1163,8 +1292,5 @@ void Menu::drop_rate_settings(){
 
     Dialog->show();
 
-}
-void Menu::player_obstacle_settings(){
-    return;
 }
 
