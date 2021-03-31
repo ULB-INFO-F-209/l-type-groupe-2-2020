@@ -566,7 +566,7 @@ void Menu::add_del_friend(bool adding){
     Dialog->resize(400, 300);
     Dialog->setModal(true);
     verticalLayoutWidget = new QWidget(Dialog);
-    verticalLayoutWidget->setGeometry(QRect(20, 20, 361, 261));
+    verticalLayoutWidget->setGeometry(QRect(20, 40, 351, 191));
     verticalLayout = new QVBoxLayout(verticalLayoutWidget);
     verticalLayout->setContentsMargins(0, 0, 0, 0);
     if(adding)
@@ -1132,7 +1132,7 @@ void Menu::player_settings(){
     QLabel *label_damage;
     QLabel *tilte_label;
     QButtonGroup *checkbutton_group;
-    QDialog *Dialog = new QDialog();
+    QDialog *Dialog = new QDialog(this);
     Dialog->setModal(true);
 
         
@@ -1248,7 +1248,7 @@ void Menu::drop_rate_settings(){
     QSpinBox *spinBox;
     QLabel *title;
 
-    QDialog* Dialog = new QDialog();
+    QDialog *Dialog = new QDialog(this);
     Dialog->setModal(true);
 
     Dialog->resize(400, 300);
