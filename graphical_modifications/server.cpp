@@ -476,8 +476,8 @@ void Server::launch_game(Parsing::Game_settings* sett_game){
     std::string resp;
     while(gameOn){
         inp = read_game_input(input_pipe);  
-
         if(inp == Constante::ERROR_PIPE_GAME || inp == Constante::CLIENT_LEAVE_GAME) return; // Le client est parti ou alors le pipe a été supprimer 
+        
         resp = game.run_server(inp);                                                        //  le jeu du server
         if(resp == Constante::GAME_END){  // if game over
             gameOn=false;
@@ -490,6 +490,8 @@ void Server::launch_game(Parsing::Game_settings* sett_game){
             refresh();
         #endif
     }
+    
+
     std::string the_score = std::to_string(game.getScore());
     resClient(send_response_pipe,&the_score);
     #ifdef TEST_GAME

@@ -309,8 +309,8 @@ void MapHandler::add_object_server(MapObject::type typ,int t){
               changingLevel = true;
           }
     }
-    else if (typ==MapObject::boss && (currentLevel==3) && !bossSpawned){
-        boss_set.push_back(new Boss(0,0,{{0, 0},{18,6}},'&',10000,t + 100, enemyStartProjectileDamage));
+    else if (typ==MapObject::boss && (currentLevel==1) && !bossSpawned){
+        boss_set.push_back(new Boss(0,0,{{0, 0},{18,6}},'&',1000,t + 100, enemyStartProjectileDamage));
         bossSpawned=true;
     }
 

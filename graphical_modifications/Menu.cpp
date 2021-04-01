@@ -346,6 +346,7 @@ void Menu::launch_game(Game_settings* game_option){
 		if (string_game_to_display != Constante::GAME_END)
 			string_previous_game_to_display = string_game_to_display;
 		if (string_game_to_display == Constante::GAME_END)
+
 			break;
 			//gameOn = false;
 		display_game.parse_instruction(string_game_to_display);
@@ -353,11 +354,13 @@ void Menu::launch_game(Game_settings* game_option){
 		window->display();
 
     }
+	
+	//Last background
 	display_game.parse_instruction(string_previous_game_to_display);
 	window->display();
+
+	//Final Score
 	string_game_to_display = _client.read_game_pipe();
-	//display_game.parse_instruction(string_game_to_display);
-	std::cout << string_game_to_display;
 	display_game.drawEndGame(string_game_to_display);
 	window->display();
 	sf::Event event;

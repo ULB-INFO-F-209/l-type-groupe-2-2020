@@ -1,7 +1,6 @@
 //TODO:
 // ajouter un tour de boucle pour l'affichage
 // print lifebar boss
-
 // 2 players input
 
 

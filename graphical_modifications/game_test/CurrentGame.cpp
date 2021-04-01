@@ -175,7 +175,7 @@ std::string CurrentGame::run_server(char move_to_exec){
     if(tick %50  == 0) {
         map.update_server(MapObject::bonus, tick);
     }
-    if(map.getCurrentLevel()==3 && tick%10==0 && !map.getChangingLevel()){
+    if(map.getCurrentLevel()==1 && tick%10==0 && !map.getChangingLevel()){
         map.update_server(MapObject::boss,tick);
     }
 
@@ -186,8 +186,6 @@ std::string CurrentGame::run_server(char move_to_exec){
     map.enemyShoot_server(tick);
     map.bossShoot_server(tick);
     map.updateBounds();
-    map.checkCollision_server(tick, friendlyFire);
-
 
     if(map.getBoss().empty() && map.getBossSpawned())
         game_over = true;
@@ -211,11 +209,15 @@ std::string CurrentGame::run_server(char move_to_exec){
         }
 
 
-    saveScore();// sauvegarde le score
     destroyPlayership();
+    map.checkCollision_server(tick, friendlyFire);
+    saveScore();// sauvegarde le score
+
     tick++;
     std::string to_ret = getPlayerState(map.getState(player1->getnLives(), player2 == nullptr?0:player2->getnLives(),tick));
-    if(game_over || exit_requested) return "END GAME";
+    if(game_over || exit_requested){
+         return "END GAME";
+    }
 
     return to_ret;
 };
