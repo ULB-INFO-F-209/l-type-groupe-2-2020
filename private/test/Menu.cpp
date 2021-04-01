@@ -1080,7 +1080,7 @@ void Menu::enemy_obs_editor_settings(bool is_enemy){
     speed_combo->addItem("CHEETAH");
     gridLayout->addWidget(speed_combo, 10, 0, 1, 1);
 
-    label_number = new QLabel(gridLayoutWidget);
+    label_number = new QLabel("NUMBER",gridLayoutWidget);
     label_number->setMaximumSize(QSize(1000, 30));
     label_number->setAlignment(Qt::AlignCenter);
     gridLayout->addWidget(label_number, 1, 0, 1, 1);
@@ -1104,10 +1104,14 @@ void Menu::enemy_obs_editor_settings(bool is_enemy){
     number_spinbox->setMaximum(100);
     gridLayout->addWidget(number_spinbox, 4, 0, 1, 1);
 
-    connect(buttonBox, &QDialogButtonBox::accepted, this,  [this,Dialog] {
+    connect(buttonBox, &QDialogButtonBox::accepted, this,  [this,Dialog,hp_spinbox,damage_spinbox,number_spinbox,speed_combo] {
         auto txt = this->list_of_all_modif->currentItem()->text();
         this->list_setup_level->addItem(txt);
         delete this->list_of_all_modif->takeItem(this->list_of_all_modif->row(this->list_of_all_modif->currentItem()));
+        //hp_spinbox->value()
+        //damage_spinbox->value()
+        //number_spinbox->value()
+        //speed_combo->currentText().toStdString()
         Dialog->hide();
         });
     QObject::connect(buttonBox, SIGNAL(rejected()), Dialog, SLOT(reject()));
@@ -1229,7 +1233,7 @@ void Menu::player_settings(){
     checkbutton_group->addButton(checkBox_2);
     checkbutton_group->addButton(checkBox_3);
 
-    connect(buttonBox, &QDialogButtonBox::accepted, this,  [this,Dialog] {
+    connect(buttonBox, &QDialogButtonBox::accepted, this,  [this,Dialog,life_spin,damage_spin] {
         auto txt = this->list_of_all_modif->currentItem()->text();
         this->list_setup_level->addItem(txt);
         delete this->list_of_all_modif->takeItem(this->list_of_all_modif->row(this->list_of_all_modif->currentItem()));
@@ -1281,10 +1285,11 @@ void Menu::drop_rate_settings(){
 
     gridLayout->addWidget(title, 1, 0, 1, 1);
 
-    connect(buttonBox, &QDialogButtonBox::accepted, this,  [this,Dialog] {
+    connect(buttonBox, &QDialogButtonBox::accepted, this,  [this,Dialog,spinBox] {
         auto txt = this->list_of_all_modif->currentItem()->text();
         this->list_setup_level->addItem(txt);
         delete this->list_of_all_modif->takeItem(this->list_of_all_modif->row(this->list_of_all_modif->currentItem()));
+        spinBox->value();
         Dialog->hide();
         });
     connect(buttonBox, SIGNAL(rejected()), Dialog, SLOT(reject()));
