@@ -812,6 +812,7 @@ void Menu::launch_game(int players, int drop_rate, int lives, std::string diffic
 
 void Menu::level(){
     //faire des boucle pour les rept de code
+
     QWidget *centralwidget = new QWidget(this);
     QFrame *game_zone = new QFrame(centralwidget);
     game_zone->setGeometry(QRect(20, 130, 551, 371));
@@ -829,7 +830,7 @@ void Menu::level(){
     verticalLayoutWidget->setGeometry(QRect(580, 130, 170, 361));
     QVBoxLayout *verticalLayout = new QVBoxLayout(verticalLayoutWidget);
     verticalLayout->setContentsMargins(10, 0, 10, 0);
-    QPushButton *ennemy_button = new QPushButton("Ennemy", verticalLayoutWidget);
+    QPushButton *ennemy_button = new QPushButton("Enemy", verticalLayoutWidget);
     ennemy_button->setMinimumSize(QSize(150, 45));
     ennemy_button->setMaximumSize(QSize(150, 45));
     QPushButton *obstacle_button = new QPushButton("Obstacle",verticalLayoutWidget);
@@ -925,139 +926,197 @@ void Menu::custom_ennemy(){
     QDialog * Dialog = new QDialog();
     Dialog->resize(800, 600);
 
-    QWidget *gridLayoutWidget = new QWidget(Dialog);
-    gridLayoutWidget->setGeometry(QRect(20, 100, 761, 331));
+    QLabel *title_label;
+    QWidget *formLayoutWidget;
+    QFormLayout *formLayout;
+    QLabel *damage_label;
+    QLabel *vitesse_label;
+    QLabel *position_label;
+    QLabel *hp_label;
+    QLabel *tick_label;
+    QSpinBox *vitesse_spin;
+    QSpinBox *position_spin;
+    QSpinBox *hp_spin;
+    QSpinBox *tick_spin;
+    QSpinBox *damage_spin;
+    QWidget *horizontalLayoutWidget;
+    QHBoxLayout *horizontalLayout;
+    QPushButton *ok;
+    QPushButton *delete_button;
+    QPushButton *cancel;
+    QWidget *widget;
+    QVBoxLayout *verticalLayout;
+    QLabel *skin_label;
+    QRadioButton *skin1;
+    QRadioButton *skin3;
+    QRadioButton *skin2;
+    QWidget *widget1;
+    QVBoxLayout *verticalLayout_2;
+    QLabel *Bonus_label;
+    QRadioButton *bonus1;
+    QRadioButton *bonus2;
+    QRadioButton *bonus3;
+    QRadioButton *bonus4;
 
-    QGridLayout *gridLayout = new QGridLayout(gridLayoutWidget);
-    gridLayout->setContentsMargins(0, 0, 0, 0);
+    Dialog->resize(859, 665);
+    title_label = new QLabel("CUSTOM ENEMY", Dialog);
+    title_label->setGeometry(QRect(70, 20, 701, 71));
+    title_label->setFrameShape(QFrame::WinPanel);
+    title_label->setAlignment(Qt::AlignCenter);
+    formLayoutWidget = new QWidget(Dialog);
+    formLayoutWidget->setGeometry(QRect(590, 160, 258, 275));
+    formLayout = new QFormLayout(formLayoutWidget);
+    formLayout->setContentsMargins(0, 0, 0, 0);
+    damage_label = new QLabel("DAMAGE :", formLayoutWidget);
+    damage_label->setMinimumSize(QSize(100, 45));
+    damage_label->setFrameShape(QFrame::WinPanel);
+    damage_label->setAlignment(Qt::AlignCenter);
 
-    QLabel *position_label = new QLabel("Position : ",gridLayoutWidget);
+    formLayout->setWidget(4, QFormLayout::LabelRole, damage_label);
+
+    vitesse_label = new QLabel("VITESSE :", formLayoutWidget);
+    vitesse_label->setMinimumSize(QSize(100, 45));
+    vitesse_label->setMaximumSize(QSize(100, 45));
+    vitesse_label->setFrameShape(QFrame::WinPanel);
+    vitesse_label->setAlignment(Qt::AlignCenter);
+
+    formLayout->setWidget(0, QFormLayout::LabelRole, vitesse_label);
+
+    position_label = new QLabel("POSITION :", formLayoutWidget);
     position_label->setMinimumSize(QSize(100, 45));
     position_label->setMaximumSize(QSize(100, 45));
     position_label->setFrameShape(QFrame::WinPanel);
     position_label->setAlignment(Qt::AlignCenter);
 
-    //separator
-    QLabel *invisible = new QLabel(gridLayoutWidget);
-    QLabel *invisible2 = new QLabel(gridLayoutWidget);
+    formLayout->setWidget(1, QFormLayout::LabelRole, position_label);
 
-    //bonus
-    QRadioButton *bonus1 = new QRadioButton("Bonus1",gridLayoutWidget);
-    QRadioButton *bonus2 = new QRadioButton("Bonus2",gridLayoutWidget);
-    QRadioButton *bonus3 = new QRadioButton("Bonus3",gridLayoutWidget);
-    QRadioButton *bonus4 = new QRadioButton("Bonus4",gridLayoutWidget);
+    hp_label = new QLabel("HP :", formLayoutWidget);
+    hp_label->setMinimumSize(QSize(100, 45));
+    hp_label->setFrameShape(QFrame::WinPanel);
+    hp_label->setMidLineWidth(3);
+    hp_label->setAlignment(Qt::AlignCenter);
 
-    //skin
-    QRadioButton *skin1 = new QRadioButton("skin1",gridLayoutWidget);
+    formLayout->setWidget(2, QFormLayout::LabelRole, hp_label);
+
+    tick_label = new QLabel("TICK :", formLayoutWidget);
+    tick_label->setMinimumSize(QSize(100, 45));
+    tick_label->setFrameShape(QFrame::WinPanel);
+    tick_label->setAlignment(Qt::AlignCenter);
+
+    formLayout->setWidget(3, QFormLayout::LabelRole, tick_label);
+
+    vitesse_spin = new QSpinBox(formLayoutWidget);
+    vitesse_spin->setMinimumSize(QSize(100, 45));
+    vitesse_spin->setMaximumSize(QSize(100, 45));
+
+    formLayout->setWidget(0, QFormLayout::FieldRole, vitesse_spin);
+
+    position_spin = new QSpinBox(formLayoutWidget);
+    position_spin->setMinimumSize(QSize(100, 45));
+    position_spin->setMaximumSize(QSize(100, 45));
+    position_spin->setMaximum(100);
+
+    formLayout->setWidget(1, QFormLayout::FieldRole, position_spin);
+
+    hp_spin = new QSpinBox(formLayoutWidget);
+    hp_spin->setMinimumSize(QSize(100, 45));
+    hp_spin->setMaximumSize(QSize(100, 45));
+    hp_spin->setMaximum(100);
+
+    formLayout->setWidget(2, QFormLayout::FieldRole, hp_spin);
+
+    tick_spin = new QSpinBox(formLayoutWidget);
+    tick_spin->setMinimumSize(QSize(100, 45));
+    tick_spin->setMaximumSize(QSize(100, 45));
+    tick_spin->setMaximum(20);
+
+    formLayout->setWidget(3, QFormLayout::FieldRole, tick_spin);
+
+    damage_spin = new QSpinBox(formLayoutWidget);
+    damage_spin->setMinimumSize(QSize(100, 45));
+    damage_spin->setMaximumSize(QSize(100, 45));
+    damage_spin->setMaximum(50);
+
+    formLayout->setWidget(4, QFormLayout::FieldRole, damage_spin);
+
+    horizontalLayoutWidget = new QWidget(Dialog);
+    horizontalLayoutWidget->setGeometry(QRect(40, 540, 771, 80));
+    horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
+    horizontalLayout->setContentsMargins(0, 0, 0, 0);
+    ok = new QPushButton("OK", horizontalLayoutWidget);
+    ok->setMinimumSize(QSize(100, 45));
+    ok->setMaximumSize(QSize(100, 45));
+
+    horizontalLayout->addWidget(ok);
+
+    delete_button = new QPushButton("DELETE", horizontalLayoutWidget);
+    delete_button->setMinimumSize(QSize(100, 45));
+    delete_button->setMaximumSize(QSize(100, 45));
+
+    horizontalLayout->addWidget(delete_button);
+
+    cancel = new QPushButton("CANCEL", horizontalLayoutWidget);
+    cancel->setMinimumSize(QSize(100, 45));
+    cancel->setMaximumSize(QSize(100, 45));
+
+    horizontalLayout->addWidget(cancel);
+
+    widget = new QWidget(Dialog);
+    widget->setGeometry(QRect(60, 150, 181, 281));
+    verticalLayout = new QVBoxLayout(widget);
+    verticalLayout->setContentsMargins(0, 0, 0, 0);
+    skin_label = new QLabel("SKIN", widget);
+    skin_label->setMinimumSize(QSize(100, 45));
+    skin_label->setMaximumSize(QSize(100, 45));
+    skin_label->setFrameShape(QFrame::WinPanel);
+    skin_label->setLineWidth(3);
+    skin_label->setAlignment(Qt::AlignCenter);
+
+    verticalLayout->addWidget(skin_label);
+
+    skin1 = new QRadioButton("Skin 1", widget);
     skin1->setMinimumSize(QSize(100, 45));
     skin1->setMaximumSize(QSize(100, 45));
-    QRadioButton *skin2 = new QRadioButton("skin2",gridLayoutWidget);
+    skin1->setChecked(true);
+
+    verticalLayout->addWidget(skin1);
+
+    skin2 = new QRadioButton("Skin 2",widget);
     skin2->setMinimumSize(QSize(100, 45));
     skin2->setMaximumSize(QSize(100, 45));
-    QRadioButton *skin3 = new QRadioButton("skin3",gridLayoutWidget);
+
+    verticalLayout->addWidget(skin2);
+    
+    skin3 = new QRadioButton("Skin 3",widget);
     skin3->setMinimumSize(QSize(100, 45));
     skin3->setMaximumSize(QSize(100, 45));
 
-    QLabel *skin_label = new QLabel("SKIN",gridLayoutWidget);
-    skin_label->setFrameShape(QFrame::WinPanel);
-    skin_label->setAlignment(Qt::AlignCenter);
+    verticalLayout->addWidget(skin3);
 
-    QLabel *Bonus_label = new QLabel("Bonus",gridLayoutWidget);
+
+    widget1 = new QWidget(Dialog);
+    widget1->setGeometry(QRect(330, 140, 191, 291));
+    verticalLayout_2 = new QVBoxLayout(widget1);
+    verticalLayout_2->setContentsMargins(0, 0, 0, 0);
+    Bonus_label = new QLabel("BONUS", widget1);
     Bonus_label->setMinimumSize(QSize(100, 45));
     Bonus_label->setMaximumSize(QSize(100, 45));
     Bonus_label->setFrameShape(QFrame::WinPanel);
     Bonus_label->setAlignment(Qt::AlignCenter);
 
-    QLabel *tick_label = new QLabel("Tick :",gridLayoutWidget);
-    tick_label->setFrameShape(QFrame::WinPanel);
-    tick_label->setAlignment(Qt::AlignCenter);
+    verticalLayout_2->addWidget(Bonus_label);
 
-    QSpinBox *tick_spin = new QSpinBox(gridLayoutWidget);
-    tick_spin->setMinimumSize(QSize(100, 45));
-    tick_spin->setMaximumSize(QSize(100, 45));
-    tick_spin->setMaximum(20);
+    bonus1 = new QRadioButton("Damage Up", widget1);
+    verticalLayout_2->addWidget(bonus1);
 
-    QSpinBox *position_spin = new QSpinBox(gridLayoutWidget);
-    position_spin->setMinimumSize(QSize(100, 45));
-    position_spin->setMaximumSize(QSize(100, 45));
-    position_spin->setMaximum(100);
+    bonus2 = new QRadioButton("Triple Shot", widget1);
+    verticalLayout_2->addWidget(bonus2);
 
-    QLabel *hp_label = new QLabel("HP : ",gridLayoutWidget);
-    hp_label->setFrameShape(QFrame::WinPanel);
-    hp_label->setMidLineWidth(3);
-    hp_label->setAlignment(Qt::AlignCenter);
+    bonus3 = new QRadioButton("Life Steal", widget1);
+    verticalLayout_2->addWidget(bonus3);
 
-    QLabel *damage_label  = new QLabel("Damage : ",gridLayoutWidget);
-    damage_label->setFrameShape(QFrame::WinPanel);
-    damage_label->setAlignment(Qt::AlignCenter);
-
-    QSpinBox *hp_spin = new QSpinBox(gridLayoutWidget);
-    hp_spin->setMinimumSize(QSize(100, 45));
-    hp_spin->setMaximumSize(QSize(100, 45));
-    hp_spin->setMaximum(100);
-
-    QSpinBox *damage_spin = new QSpinBox(gridLayoutWidget);
-    damage_spin->setMinimumSize(QSize(100, 45));
-    damage_spin->setMaximumSize(QSize(100, 45));
-    damage_spin->setMaximum(50);
-
-    QLabel *vitesse_label = new QLabel("Speed",gridLayoutWidget);
-    vitesse_label->setMinimumSize(QSize(100, 45));
-    vitesse_label->setMaximumSize(QSize(100, 45));
-    vitesse_label->setFrameShape(QFrame::WinPanel);
-    vitesse_label->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
-
-    QSpinBox *vitesse_spin  = new QSpinBox(gridLayoutWidget);
-    vitesse_spin->setMinimumSize(QSize(100, 45));
-    vitesse_spin->setMaximumSize(QSize(100, 45));
-
-    QLabel *title_label = new QLabel("CUSTOM ENNEMY",Dialog);
-    title_label->setGeometry(QRect(60, 9, 701, 71));
-    title_label->setFrameShape(QFrame::WinPanel);
-    title_label->setAlignment(Qt::AlignCenter);
-
-    QWidget *horizontalLayoutWidget = new QWidget(Dialog);
-    horizontalLayoutWidget->setGeometry(QRect(20, 460, 771, 80));
-    QHBoxLayout *horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
-    horizontalLayout->setContentsMargins(0, 0, 0, 0);
-
-    QPushButton *ok = new QPushButton("OK",horizontalLayoutWidget);
-    ok->setMinimumSize(QSize(100, 45));
-    ok->setMaximumSize(QSize(100, 45));
-    QPushButton *delete_button = new QPushButton("Delete",horizontalLayoutWidget);
-    delete_button->setMinimumSize(QSize(100, 45));
-    delete_button->setMaximumSize(QSize(100, 45));
-    QPushButton *cancel = new QPushButton("Cancel",horizontalLayoutWidget);
-    cancel->setMinimumSize(QSize(100, 45));
-    cancel->setMaximumSize(QSize(100, 45));
-
-    horizontalLayout->addWidget(ok);
-    horizontalLayout->addWidget(delete_button);
-    horizontalLayout->addWidget(cancel);
-
-    //grid
-    gridLayout->addWidget(skin2, 5, 0, 1, 1);
-    gridLayout->addWidget(skin_label, 0, 0, 1, 1);
-    gridLayout->addWidget(invisible2, 4, 3, 1, 1);
-    gridLayout->addWidget(Bonus_label, 0, 2, 1, 1);
-    gridLayout->addWidget(skin3, 7, 0, 1, 1);
-    gridLayout->addWidget(skin1, 2, 0, 1, 1);
-    gridLayout->addWidget(invisible, 4, 1, 1, 1);
-    gridLayout->addWidget(damage_label, 7, 4, 1, 1);
-    gridLayout->addWidget(damage_spin, 7, 5, 1, 1);
-    gridLayout->addWidget(tick_label, 6, 4, 1, 1);
-    gridLayout->addWidget(tick_spin, 6, 5, 1, 1);
-    gridLayout->addWidget(hp_label, 5, 4, 1, 1);
-    gridLayout->addWidget(hp_spin, 5, 5, 1, 1);
-    gridLayout->addWidget(position_label, 4, 4, 1, 1);
-    gridLayout->addWidget(position_spin, 4, 5, 1, 1);
-    gridLayout->addWidget(vitesse_spin, 2, 5, 1, 1);
-    gridLayout->addWidget(vitesse_label, 2, 4, 1, 1);
-    gridLayout->addWidget(bonus1, 2, 2, 1, 1);
-    gridLayout->addWidget(bonus2, 4, 2, 1, 1);
-    gridLayout->addWidget(bonus3, 5, 2, 1, 1);
-    gridLayout->addWidget(bonus4, 6, 2, 1, 1);
-
+    bonus4 = new QRadioButton("Minigun", widget1);
+    verticalLayout_2->addWidget(bonus4);
 
     Dialog->show();
 

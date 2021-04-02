@@ -41,14 +41,15 @@
 #include <QDialog>
 #include <QDialogButtonBox>
 #include <QSignalMapper>
-#include <QtWidgets/QComboBox>
-#include <QtWidgets/QSpinBox>
+#include <QComboBox>
+#include <QSpinBox>
 #include <QToolBar>
 #include <QStringListModel>
-#include <QtWidgets/QFrame>
-#include <QtWidgets/QLCDNumber>
-#include <QtWidgets/QSlider>
-#include <QtWidgets/QRadioButton>
+#include <QFrame>
+#include <QLCDNumber>
+#include <QSlider>
+#include <QRadioButton>
+#include <QFormLayout>
 
 
 
@@ -83,6 +84,9 @@ class Menu : public QMainWindow{
 
     QAction* m_pActAdd = nullptr;
     QAction* m_pActRemove = nullptr;
+
+	int X_MIN = 20;
+	int X_MAX = X_MIN+551;
 
 	//WINDOW OBJECTS
 
