@@ -44,3 +44,96 @@
 	- Niv 1 ennemis nullos
 	- Niv 2 ennemis plus fort 
 	- etc.
+
+4. Idee de base D'Aissa !
+
+5. Charger une image pour le vaisseau !
+
+6. Avoir plusieurs types d'ennemis
+
+7. Different types d'obstacles/projectiles !
+
+8. Modification des valeurs des degats d'obstacles.
+
+9. Choisir un theme pour le jeu ! Yessir
+
+10. ok
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
