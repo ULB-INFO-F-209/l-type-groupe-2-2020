@@ -228,7 +228,6 @@ void DisplayGame::parse_etat(std::string instruction){
 	instruction = instruction.substr(idx+1,instruction.size());
 	idx = instruction.find(delimiteur_parametre);
 	tick = std::stoi(instruction.substr(0,idx));
-
 	drawUi(player,hp, score, life,bonustype,level,tick);
 }
 void DisplayGame::starHandler(){
@@ -378,6 +377,9 @@ void DisplayGame::initGraphics(){
 	bossSprite.setScale(sf::Vector2f(0.9,0.8));
 	bossSprite.setRotation(180);
 	bossSprite.setTexture(boss);
+	
+	line.setFillColor(sf::Color::Magenta);
+	line.setPosition(sf::Vector2f(5, 370));
 
 	guiText.setFont(font);
 
@@ -454,14 +456,14 @@ int DisplayGame::init() {
 
 }
 void DisplayGame::drawObstacle(int x, int y) {
-
+	
 	wattron(game_wnd, COLOR_PAIR(1));
 	mvwaddch(game_wnd, y, x, '#');
 	wattroff(game_wnd, COLOR_PAIR(1));
 	asteroidSprite.setPosition(sf::Vector2f((x+1)*12.5-4.5,y*20));
-	sf::RectangleShape asteroidShape(sf::Vector2f(12.5*1.5,20*1.5));
-	asteroidShape.setFillColor(sf::Color(102,51,0));
-	asteroidShape.setPosition(sf::Vector2f((x+1)*12.5-3,y*20));
+	//sf::RectangleShape asteroidShape(sf::Vector2f(12.5*1.5,20*1.5));
+	//asteroidShape.setFillColor(sf::Color(102,51,0));
+	//asteroidShape.setPosition(sf::Vector2f((x+1)*12.5-3,y*20));
 
 	if(y*20 < 350)
 		window->draw(asteroidSprite);
@@ -495,9 +497,10 @@ void DisplayGame::drawEnemy(int x, int y, int tick, bool isBlinking) {
 
 
 	}
-	sf::RectangleShape enemyShape(sf::Vector2f(12.5*3,20));
-	enemyShape.setFillColor(sf::Color::Red);
-	enemyShape.setPosition(sf::Vector2f(x*12.5,5 + y*20));
+	
+	//sf::RectangleShape enemyShape(sf::Vector2f(12.5*3,20));
+	//enemyShape.setFillColor(sf::Color::Red);
+	//enemyShape.setPosition(sf::Vector2f(x*12.5,5 + y*20));
 	enemySprite.setPosition(sf::Vector2f(x*12.5+ 60 ,5 + y*20 + 60));
 	if(y*20 < 350){
 		//window->draw(enemyShape);
@@ -506,13 +509,13 @@ void DisplayGame::drawEnemy(int x, int y, int tick, bool isBlinking) {
 
 }
 void DisplayGame::drawProjectile(int x, int y, bool enemy, bool player1){
-	sf::RectangleShape projectileShape(sf::Vector2f(12.5,20));
+	//sf::RectangleShape projectileShape(sf::Vector2f(12.5,20));
 
-	projectileShape.setPosition(sf::Vector2f((x+1)*12.5,5 + y*20));
+	//projectileShape.setPosition(sf::Vector2f((x+1)*12.5,5 + y*20));
 
 
 	if(enemy){
-		projectileShape.setFillColor(sf::Color::Red);
+		//projectileShape.setFillColor(sf::Color::Red);
 		wattron(game_wnd, COLOR_PAIR(4));
         mvwaddch(game_wnd, y, x, '*');
         wattroff(game_wnd, COLOR_PAIR(4));
@@ -521,7 +524,7 @@ void DisplayGame::drawProjectile(int x, int y, bool enemy, bool player1){
 
 	}
 	else if (player1) {
-		projectileShape.setFillColor(sf::Color::Blue);
+		//projectileShape.setFillColor(sf::Color::Blue);
 		wattron(game_wnd, COLOR_PAIR(5));
 		mvwaddch(game_wnd, y, x, '*');
 		wattroff(game_wnd, COLOR_PAIR(5));
@@ -530,7 +533,7 @@ void DisplayGame::drawProjectile(int x, int y, bool enemy, bool player1){
 
 	}
 	else{
-		projectileShape.setFillColor(sf::Color::Green);
+		//projectileShape.setFillColor(sf::Color::Green);
 		wattron(game_wnd, COLOR_PAIR(2));
 		mvwaddch(game_wnd, y, x, '*');
 		wattroff(game_wnd, COLOR_PAIR(2));
@@ -589,16 +592,16 @@ void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinkin
 
         wattroff(game_wnd, A_ALTCHARSET);
 
-		sf::RectangleShape playerShipShape(sf::Vector2f(12.5*3,20*2));
-		playerShipShape.setPosition(sf::Vector2f(x*12.5,5 + y*20));
+		//sf::RectangleShape playerShipShape(sf::Vector2f(12.5*3,20*2));
+		//playerShipShape.setPosition(sf::Vector2f(x*12.5,5 + y*20));
         //window->draw(playerShipShape);
 		if (player==1){
-            playerShipShape.setFillColor(sf::Color::Blue);
+            //playerShipShape.setFillColor(sf::Color::Blue);
 			ship1Sprite.setPosition(sf::Vector2f(x*12.5-36.5,5 + y*20-55));
 			window->draw(ship1Sprite);
         }
         else{
-			playerShipShape.setFillColor(sf::Color::Green);
+			//playerShipShape.setFillColor(sf::Color::Green);
 			ship2Sprite.setPosition(sf::Vector2f(x*12.5-36.5,5 + y*20-55));
 			window->draw(ship2Sprite);
 		}
@@ -608,9 +611,9 @@ void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinkin
 
 }
 void DisplayGame::drawBonus(int type, int x, int y){
-	sf::RectangleShape bonusShape(sf::Vector2f(12.5,20));
-	bonusShape.setFillColor(sf::Color::Yellow);
-	bonusShape.setPosition(sf::Vector2f((x+1)*12.5,5 + y*20));
+	//sf::RectangleShape bonusShape(sf::Vector2f(12.5,20));
+	//bonusShape.setFillColor(sf::Color::Yellow);
+	//bonusShape.setPosition(sf::Vector2f((x+1)*12.5,5 + y*20));
 	if(y*20 < 350){
 		//window->draw(bonusShape);
 		wattron(game_wnd, A_BOLD);
@@ -647,27 +650,25 @@ void DisplayGame::drawBoss(int x, int y){
         mvwprintw(game_wnd, y+4, x, "\\_|____ ___ ___|_/");
         mvwprintw(game_wnd, y+5, x, "      |_| |_|     ");
         wattroff(main_wnd, COLOR_PAIR(4));
-		sf::RectangleShape bossShape(sf::Vector2f(12.5*18,20*6));
-		bossShape.setFillColor(sf::Color::Red);
-		bossShape.setPosition(sf::Vector2f(x*12.5+7,5 + y*20));
+		//sf::RectangleShape bossShape(sf::Vector2f(12.5*18,20*6));
+		//bossShape.setFillColor(sf::Color::Red);
+		//bossShape.setPosition(sf::Vector2f(x*12.5+7,5 + y*20));
 		bossSprite.setPosition(sf::Vector2f(x*12.5+7 +340,5 + y*20 + 260));
 		//window->draw(bossShape);
 		window->draw(bossSprite);
 }
 void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType, int level, int tick){
+		
+		/*
 		sf::RectangleShape cadre(sf::Vector2f(990, 470));
 		cadre.setFillColor(sf::Color::Transparent);
 		cadre.setOutlineThickness(2);
 		cadre.setOutlineColor(sf::Color::Magenta);
 		cadre.setPosition(sf::Vector2f(5, 5));
 		window->draw(cadre);
-
-		sf::RectangleShape line(sf::Vector2f(990, 2));
-		line.setFillColor(sf::Color::Magenta);
-		//cadre.setOutlineColor(sf::Color::Cyan);
-		line.setPosition(sf::Vector2f(5, 370));
+		*/
 		window->draw(line);
-
+		
 
 	if(player == 0){
 
@@ -704,7 +705,7 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 			mvwprintw(main_wnd, 22, 16, "  B%d:  ",player + 1);
 
 
-
+		
 		//healthbar
 		health_bar.setPosition(sf::Vector2f(3,380));
 		window->draw(health_bar);
@@ -762,7 +763,7 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 
 
 
-
+	
 	}
     if(player == 1){
 
@@ -796,7 +797,7 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
             mvwprintw(main_wnd, 22, 69, "  B%d: L", player + 1);
         else if (bonusType == noBonus)
             mvwprintw(main_wnd, 22, 69, "  B%d:  ", player + 1);
-
+		
 		health_bar2.setPosition(sf::Vector2f(460,380));
 		window->draw(health_bar2);
 		sf::IntRect rect (0,0,200+((texture.getSize().x-200)/100)*hp,texture.getSize().y); //200=0
@@ -851,11 +852,12 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 				}
 			}
 		}
-
+		
     }
 
     //level
     mvwprintw(main_wnd,20,33," LEVEL : %i", level);
+
 	guiText.setString("Level "+std::to_string(level));
 	guiText.setCharacterSize(20);
 	guiText.setColor(sf::Color::White);

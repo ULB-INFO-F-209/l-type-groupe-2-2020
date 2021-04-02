@@ -55,6 +55,7 @@ class DisplayGame
 	sf::Sprite minigunSprite;
 	sf::Sprite enemySprite;
 	sf::Sprite bossSprite;
+	sf::RectangleShape line{sf::Vector2f(990, 2)};
 
 public:
 	//Constructor
