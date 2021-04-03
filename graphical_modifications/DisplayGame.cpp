@@ -327,6 +327,10 @@ void DisplayGame::initGraphics(){
 	{
 		// erreur...
 	}
+	if (!explosionTex.loadFromFile("explosion_effect.png"))
+	{
+		// erreur...
+	}
 
 	heartSprite.setScale(sf::Vector2f(0.03,0.03));
 	heartSprite.setTexture(heart);
@@ -380,6 +384,10 @@ void DisplayGame::initGraphics(){
 	
 	line.setFillColor(sf::Color::Magenta);
 	line.setPosition(sf::Vector2f(5, 370));
+
+	explosionSprite.setTexture(explosionTex);
+	explosionSprite.setTextureRect(rectSourceSprite);
+	
 
 	guiText.setFont(font);
 
@@ -572,7 +580,7 @@ void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinkin
                 mvwaddch(game_wnd, y + 1, x, ACS_UARROW);
                 wattroff(game_wnd, COLOR_PAIR(tick % 2 ? 3 : 4));
             }
-
+		
         if(isBlinking){
             // show player looses a life
             if(tick % 100 < 50) {
@@ -584,12 +592,33 @@ void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinkin
                 mvwaddch(game_wnd, y, x - 1, ' ');
                 mvwaddch(game_wnd, y, x + 1, ' ');
                 wattroff(game_wnd, A_ALTCHARSET);
-            }
-
-
-
+			}
+			std::cout<<rectSourceSprite.top<<" "<<rectSourceSprite.left<<std::endl;
+			std::ofstream t;
+			
+			if(clock.getElapsedTime().asSeconds() > 0.025f && !exploded){
+				if (rectSourceSprite.left==1280){
+					rectSourceSprite.left=0;
+					rectSourceSprite.top+=256;
+				}
+				else
+					rectSourceSprite.left +=256;
+				
+				explosionSprite.setTextureRect(rectSourceSprite);
+				clock.restart();
+			}
+			/*
+			t.open("output.txt");
+			t<<rectSourceSprite.top<<" "<<rectSourceSprite.left<<std::endl;
+			t.close();
+			*/
+			if (!exploded)
+				window->draw(explosionSprite);
         }
-
+		else{
+			rectSourceSprite.top=0;
+			rectSourceSprite.left=0;
+		}		
         wattroff(game_wnd, A_ALTCHARSET);
 
 		//sf::RectangleShape playerShipShape(sf::Vector2f(12.5*3,20*2));

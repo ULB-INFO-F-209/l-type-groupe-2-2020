@@ -7,6 +7,8 @@
 #include "game_test/MapHandler.hpp"
 #include <unistd.h>
 #include <SFML/Graphics.hpp>
+#include <fstream>
+#include <iostream>
 
 
 class DisplayGame
@@ -36,7 +38,11 @@ class DisplayGame
 	sf::Texture minigunTex;
 	sf::Texture enemy;
 	sf::Texture boss;
-
+	sf::IntRect rectSourceSprite{0,0,256,256};
+	sf::Sprite explosionSprite;
+	sf::Clock clock;
+	sf::Texture	explosionTex;
+	bool exploded=false;
 
 	sf::Font font;
 	sf::Text guiText;

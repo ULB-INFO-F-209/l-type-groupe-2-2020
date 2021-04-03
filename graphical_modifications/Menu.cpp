@@ -323,8 +323,8 @@ void Menu::launch_game(Game_settings* game_option){
 
 	
 
-    while(gameOn && window->isOpen()){ //fenetre fermé -> terminal freeze
 
+    while(gameOn && window->isOpen()){ //fenetre fermé -> terminal freeze
 
 		sf::Event event;
         while (window->pollEvent(event))
@@ -336,9 +336,9 @@ void Menu::launch_game(Game_settings* game_option){
 				
 
         }
+		
       
 		window->clear();
-        
 		_client.send_game_input(inp);
 		inp = -1;
 		
