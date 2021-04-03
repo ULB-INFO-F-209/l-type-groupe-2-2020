@@ -127,14 +127,17 @@ struct Ennemy{
 	int x = 0;
 	int tick = 0;
 	int skin = 0; // skin 1, skin2, skin3
-	int xp = 70;
+	int hp = 70;
 	int damage=30;
 	int bonus = 0;
 	int speed = 0; // Turtle, horse, Guépard
 
-	int* get_values(){
-		int val[] = {speed, x, xp, tick,damage};
-		return val;
+	void get_values(int *res){
+		res[0] = speed; 
+		res[1] = x;
+		res[2] = hp;
+		res[3] = tick;
+		res[4] = damage;
 	}
 };
 
@@ -147,10 +150,11 @@ struct Obstacle{
 
 struct Level{
 	//ennemy session
-	std::vector<Ennemy> ennemy_list;
+	std::vector<Ennemy> ennemy_list{};
 
 	//obstacle session
-	std::vector<Obstacle> obs_list;
+	std::vector<Obstacle> obs_list{};
+
 };
 
 #endif //MENU_HPP
