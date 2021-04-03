@@ -637,7 +637,7 @@ std::string MapHandler::getState(int nlives_j1,int nlives_j2,int tick){
         if(lives[player->getPlayerNb()] > 0){
             // show player looses a life
 
-            if(tick % 100 < 50 && player->getHp()<=0 && tick < player->getKillTime()+300){
+            if(player->getHp()<=0 && tick < player->getKillTime()+300){
                 state.append(std::to_string(true));
             }
             else state.append(std::to_string(false));
