@@ -16,7 +16,8 @@ Menu::Menu(): QMainWindow(){
 }
 
 void Menu::start_session(){
-	home();
+    Level my_level;
+	level_editor(my_level);
 	this->show();
 }
 
@@ -215,9 +216,12 @@ void Menu::main_m(){
     connect(friends, &QPushButton::clicked, this, &Menu::print_friends);
     connect(leaderboard, &QPushButton::clicked, this,&Menu::print_leaderboard);
     connect(profile, &QPushButton::clicked, this, &Menu::print_profile);
-    connect(level, &QPushButton::clicked, this, &Menu::level);
     connect(log_out, &QPushButton::clicked, this,&Menu::home);
     connect(new_game, &QPushButton::clicked, this,&Menu::lobby);
+    connect(level, &QPushButton::clicked, this, [this](){
+        Level my_level;
+        level_editor(my_level);
+    });
 
     /****** DESIGN SECTION ****************************/
     //this->setStyleSheet("background-color:rgb(123, 22, 22);");
@@ -810,8 +814,10 @@ void Menu::launch_game(int players, int drop_rate, int lives, std::string diffic
 }
 
 
-void Menu::level(){
+void Menu::level_editor(Level my_level){
     //faire des boucle pour les rept de code
+    std::cout <<" NB ENNEMY : " << my_level.ennemy_list.size()<<std::endl;
+    std::cout <<" NB Obstacle : " << my_level.obs_list.size()<<std::endl;
 
     QWidget *centralwidget = new QWidget(this);
     QFrame *game_zone = new QFrame(centralwidget);
@@ -873,18 +879,30 @@ void Menu::level(){
     horizontalLayout->addWidget(tick_slider);
     horizontalLayout->addWidget(tick_lcd);
 
+    //placer sur la frame:
+    QPushButton *pic_ennemy[my_level.ennemy_list.size()];
+    for(int i = 0; i < my_level.ennemy_list.size(); i++){
+        pic_ennemy[i] = new QPushButton("ennemy" , game_zone);
+        pic_ennemy[i]->setGeometry(QRect(X_MIN + my_level.ennemy_list[i].x , 132, 100, 45));
+        if(my_level.ennemy_list[i].tick != 0)
+            pic_ennemy[i]->hide();
+        connect(pic_ennemy[i], &QPushButton::clicked, this,[this, my_level,i](){
+            custom_ennemy(my_level, i);});
+    }
+
     //connect section
     connect(cancel, &QPushButton::clicked, this,&Menu::main_m);
     connect(save, &QPushButton::clicked, this,&Menu::save_level);
-    connect(ennemy_button, &QPushButton::clicked, this,&Menu::custom_ennemy);
+    connect(ennemy_button, &QPushButton::clicked, this,[this, my_level](){
+            Ennemy newE; Level level_copy = my_level; //probleme de constance
+            level_copy.ennemy_list.push_back(newE);
+            custom_ennemy(level_copy, level_copy.ennemy_list.size()-1);
+        });
     connect(obstacle_button, &QPushButton::clicked, this,&Menu::custom_obstacle);
     connect(tick_slider, SIGNAL(valueChanged(int)),tick_lcd, SLOT(display(int)));
 
     this->setCentralWidget(centralwidget);
     this->show();
-
-
-
 }
 
 void Menu::save_level(){
@@ -922,9 +940,125 @@ void Menu::save_level(){
 
 
 }
-void Menu::custom_ennemy(){
+void Menu::custom_ennemy(Level my_level, int idx){
     QDialog * Dialog = new QDialog();
-    Dialog->resize(800, 600);
+    Dialog->resize(859, 665);
+
+    QLabel * title_label = new QLabel("CUSTOM ENEMY", Dialog);
+    title_label->setGeometry(QRect(70, 20, 701, 71));
+    title_label->setFrameShape(QFrame::WinPanel);
+    title_label->setAlignment(Qt::AlignCenter);
+
+    /*************SPIN AND THEIR LEGENDE ZONE********************/
+    QWidget *formLayoutWidget = new QWidget(Dialog);
+    formLayoutWidget->setGeometry(QRect(590, 160, 258, 275));
+     QFormLayout *formLayout = new QFormLayout(formLayoutWidget);
+        //int speed = 0, position = 1, hp=2, tick=3, damage=4; 
+    std::string legende[] = {"VITESSE :", "POSITION :","HP :","TICK :","DAMAGE :"};
+    QLabel *label[5];
+    int *spin_value= my_level.ennemy_list[idx].get_values();
+    QSpinBox * spin_box[5];
+    for (int i = 0; i < 5; ++i)
+    {
+        //legende
+        label[i] = new QLabel(legende[i].c_str(), formLayoutWidget);
+        formLayout->setWidget(i, QFormLayout::LabelRole, label[i] );
+        label[i]->setMinimumSize(QSize(100, 45));
+        label[i]->setMaximumSize(QSize(100, 45));
+        label[i]->setAlignment(Qt::AlignCenter);
+
+        //value
+        spin_box[i] = new QSpinBox(formLayoutWidget);
+        spin_box[i]->setMinimumSize(QSize(100, 45));
+        spin_box[i]->setMaximumSize(QSize(100, 45));
+        spin_box[i]->setValue(spin_value[i]);
+        formLayout->setWidget(i, QFormLayout::FieldRole, spin_box[i]);
+    }
+
+    /*************BUTTON_ZONE********************/
+    QWidget *horizontalLayoutWidget = new QWidget(Dialog);
+    QHBoxLayout * horizontalLayoutWidget->setGeometry(QRect(40, 540, 771, 80));
+    QHBoxLayout* horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
+    horizontalLayout->setContentsMargins(0, 0, 0, 0);
+
+    int ok = 0, del=1;
+    std::string button_name[] = {"OK","DELETE"};
+    QPushButton * button[2];
+    for (int i = 0; i < 2; ++i){
+        button[i] = new QPushButton(button_name[i].c_str(), horizontalLayoutWidget);
+        button[i]->setMinimumSize(QSize(100, 45));
+        button[i]->setMaximumSize(QSize(100, 45));
+        horizontalLayout->addWidget( button[i]);
+    }
+
+
+    /*************SKIN_ZONE********************/
+    QWidget * widget = new QWidget(Dialog);
+    widget->setGeometry(QRect(60, 150, 181, 281));
+    QVBoxLayout *verticalLayout = new QVBoxLayout(widget);
+    verticalLayout->setContentsMargins(0, 0, 0, 0);
+
+    QLabel * skin_label = new QLabel("SKIN", widget);
+    verticalLayout->addWidget(skin_label);
+
+    std::string skin_name[] = {"skin1","skin2", "skin3"};
+    QRadioButton * skin[3];
+
+    for (int i = 0; i < 3; ++i){
+        skin[i] = new QRadioButton(skin_name[i].c_str(), widget);
+        skin[i]->setMinimumSize(QSize(100, 45));
+        skin[i]->setMaximumSize(QSize(100, 45));
+        if(i == my_level.ennemy_list[idx].skin)
+             skin[i]->setChecked(true);
+        verticalLayout->addWidget(skin[i]);
+    }
+
+
+    /*************BONUS_ZONE********************/
+    QWidget *widget1 = new QWidget(Dialog);
+    widget1->setGeometry(QRect(330, 140, 191, 291));
+    QVBoxLayout *verticalLayout_2 = new QVBoxLayout(widget1);
+    verticalLayout_2->setContentsMargins(0, 0, 0, 0);
+
+    QLabel *Bonus_label = new QLabel("BONUS", widget1);
+    verticalLayout_2->addWidget(Bonus_label);
+
+    std::string bonus_name[] = {"Damage","Triple Shot", "Life Steal", "Minigun"}
+    QRadioButton * bonus[4];
+
+    for (int i = 0; i < 4; ++i){
+        bonus[i] = new QRadioButton(bonus_name[i], widget1);
+        if(i == my_level.ennemy_list[idx].bonus)
+             bonus[i]->setChecked(true);
+        verticalLayout_2->addWidget(bonus[i]);
+    }
+
+
+    /*************SAME SIZE LABEL********************/
+    QLabel * label[] ={skin_label,Bonus_label};
+    for(auto lbl : label){
+        lbl->setMinimumSize(QSize(100, 45));
+        lbl->setMaximumSize(QSize(100, 45));
+        lbl->setAlignment(Qt::AlignCenter);
+        lbl->setFrameShape(QFrame::WinPanel);
+        lbl->setLineWidth(3);
+    }
+
+    /***************CONNECTION********************/
+    connect(button[ok], &QPushButton::clicked, this, [this, my_level](){
+        level_editor(my_level);
+    });
+    connect(button[del], &QPushButton::clicked, this, [this, my_level,idx](){
+        my_level.erase(idx);
+        level_editor(my_level);
+    });
+
+    Dialog->show();
+}
+
+void Menu::custom_obstacle(){
+    QDialog * Dialog = new QDialog();
+    
 
     QLabel *title_label;
     QWidget *formLayoutWidget;
@@ -959,7 +1093,7 @@ void Menu::custom_ennemy(){
     QRadioButton *bonus4;
 
     Dialog->resize(859, 665);
-    title_label = new QLabel("CUSTOM ENEMY", Dialog);
+    title_label = new QLabel("CUSTOM OBSTACLE", Dialog);
     title_label->setGeometry(QRect(70, 20, 701, 71));
     title_label->setFrameShape(QFrame::WinPanel);
     title_label->setAlignment(Qt::AlignCenter);
@@ -990,13 +1124,6 @@ void Menu::custom_ennemy(){
 
     formLayout->setWidget(1, QFormLayout::LabelRole, position_label);
 
-    hp_label = new QLabel("HP :", formLayoutWidget);
-    hp_label->setMinimumSize(QSize(100, 45));
-    hp_label->setFrameShape(QFrame::WinPanel);
-    hp_label->setMidLineWidth(3);
-    hp_label->setAlignment(Qt::AlignCenter);
-
-    formLayout->setWidget(2, QFormLayout::LabelRole, hp_label);
 
     tick_label = new QLabel("TICK :", formLayoutWidget);
     tick_label->setMinimumSize(QSize(100, 45));
@@ -1017,13 +1144,6 @@ void Menu::custom_ennemy(){
     position_spin->setMaximum(100);
 
     formLayout->setWidget(1, QFormLayout::FieldRole, position_spin);
-
-    hp_spin = new QSpinBox(formLayoutWidget);
-    hp_spin->setMinimumSize(QSize(100, 45));
-    hp_spin->setMaximumSize(QSize(100, 45));
-    hp_spin->setMaximum(100);
-
-    formLayout->setWidget(2, QFormLayout::FieldRole, hp_spin);
 
     tick_spin = new QSpinBox(formLayoutWidget);
     tick_spin->setMinimumSize(QSize(100, 45));
@@ -1093,161 +1213,9 @@ void Menu::custom_ennemy(){
 
     verticalLayout->addWidget(skin3);
 
-
-    widget1 = new QWidget(Dialog);
-    widget1->setGeometry(QRect(330, 140, 191, 291));
-    verticalLayout_2 = new QVBoxLayout(widget1);
-    verticalLayout_2->setContentsMargins(0, 0, 0, 0);
-    Bonus_label = new QLabel("BONUS", widget1);
-    Bonus_label->setMinimumSize(QSize(100, 45));
-    Bonus_label->setMaximumSize(QSize(100, 45));
-    Bonus_label->setFrameShape(QFrame::WinPanel);
-    Bonus_label->setAlignment(Qt::AlignCenter);
-
-    verticalLayout_2->addWidget(Bonus_label);
-
-    bonus1 = new QRadioButton("Damage Up", widget1);
-    verticalLayout_2->addWidget(bonus1);
-
-    bonus2 = new QRadioButton("Triple Shot", widget1);
-    verticalLayout_2->addWidget(bonus2);
-
-    bonus3 = new QRadioButton("Life Steal", widget1);
-    verticalLayout_2->addWidget(bonus3);
-
-    bonus4 = new QRadioButton("Minigun", widget1);
-    verticalLayout_2->addWidget(bonus4);
-
     Dialog->show();
 
-}
-void Menu::custom_obstacle(){
-        QDialog * Dialog = new QDialog();
-    Dialog->resize(800, 600);
 
-    QWidget *gridLayoutWidget = new QWidget(Dialog);
-    gridLayoutWidget->setGeometry(QRect(20, 100, 761, 331));
-
-    QGridLayout *gridLayout = new QGridLayout(gridLayoutWidget);
-    gridLayout->setContentsMargins(0, 0, 0, 0);
-
-    QLabel *position_label = new QLabel("Position : ",gridLayoutWidget);
-    position_label->setMinimumSize(QSize(100, 45));
-    position_label->setMaximumSize(QSize(100, 45));
-    position_label->setFrameShape(QFrame::WinPanel);
-    position_label->setAlignment(Qt::AlignCenter);
-
-    //separator
-    QLabel *invisible = new QLabel(gridLayoutWidget);
-    QLabel *invisible2 = new QLabel(gridLayoutWidget);
-
-    //bonus
-    QRadioButton *bonus1 = new QRadioButton("Bonus1",gridLayoutWidget);
-    QRadioButton *bonus2 = new QRadioButton("Bonus2",gridLayoutWidget);
-    QRadioButton *bonus3 = new QRadioButton("Bonus3",gridLayoutWidget);
-    QRadioButton *bonus4 = new QRadioButton("Bonus4",gridLayoutWidget);
-
-    //skin
-    QRadioButton *skin1 = new QRadioButton("skin1",gridLayoutWidget);
-    skin1->setMinimumSize(QSize(100, 45));
-    skin1->setMaximumSize(QSize(100, 45));
-    QRadioButton *skin2 = new QRadioButton("skin2",gridLayoutWidget);
-    skin2->setMinimumSize(QSize(100, 45));
-    skin2->setMaximumSize(QSize(100, 45));
-    QRadioButton *skin3 = new QRadioButton("skin3",gridLayoutWidget);
-    skin3->setMinimumSize(QSize(100, 45));
-    skin3->setMaximumSize(QSize(100, 45));
-
-    QLabel *skin_label = new QLabel("SKIN",gridLayoutWidget);
-    skin_label->setFrameShape(QFrame::WinPanel);
-    skin_label->setAlignment(Qt::AlignCenter);
-
-    QLabel *Bonus_label = new QLabel("Bonus",gridLayoutWidget);
-    Bonus_label->setMinimumSize(QSize(100, 45));
-    Bonus_label->setMaximumSize(QSize(100, 45));
-    Bonus_label->setFrameShape(QFrame::WinPanel);
-    Bonus_label->setAlignment(Qt::AlignCenter);
-
-    QLabel *tick_label = new QLabel("Tick :",gridLayoutWidget);
-    tick_label->setFrameShape(QFrame::WinPanel);
-    tick_label->setAlignment(Qt::AlignCenter);
-
-    QSpinBox *tick_spin = new QSpinBox(gridLayoutWidget);
-    tick_spin->setMinimumSize(QSize(100, 45));
-    tick_spin->setMaximumSize(QSize(100, 45));
-    tick_spin->setMaximum(20);
-
-    QSpinBox *position_spin = new QSpinBox(gridLayoutWidget);
-    position_spin->setMinimumSize(QSize(100, 45));
-    position_spin->setMaximumSize(QSize(100, 45));
-    position_spin->setMaximum(100);
-
-    QLabel *damage_label  = new QLabel("Damage : ",gridLayoutWidget);
-    damage_label->setFrameShape(QFrame::WinPanel);
-    damage_label->setAlignment(Qt::AlignCenter);
-
-    QSpinBox *damage_spin = new QSpinBox(gridLayoutWidget);
-    damage_spin->setMinimumSize(QSize(100, 45));
-    damage_spin->setMaximumSize(QSize(100, 45));
-    damage_spin->setMaximum(50);
-
-    QLabel *vitesse_label = new QLabel("Speed",gridLayoutWidget);
-    vitesse_label->setMinimumSize(QSize(100, 45));
-    vitesse_label->setMaximumSize(QSize(100, 45));
-    vitesse_label->setFrameShape(QFrame::WinPanel);
-    vitesse_label->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
-
-    QSpinBox *vitesse_spin  = new QSpinBox(gridLayoutWidget);
-    vitesse_spin->setMinimumSize(QSize(100, 45));
-    vitesse_spin->setMaximumSize(QSize(100, 45));
-
-    QLabel *title_label = new QLabel("CUSTOM ENNEMY",Dialog);
-    title_label->setGeometry(QRect(60, 9, 701, 71));
-    title_label->setFrameShape(QFrame::WinPanel);
-    title_label->setAlignment(Qt::AlignCenter);
-
-    QWidget *horizontalLayoutWidget = new QWidget(Dialog);
-    horizontalLayoutWidget->setGeometry(QRect(20, 460, 771, 80));
-    QHBoxLayout *horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
-    horizontalLayout->setContentsMargins(0, 0, 0, 0);
-
-    QPushButton *ok = new QPushButton("OK",horizontalLayoutWidget);
-    ok->setMinimumSize(QSize(100, 45));
-    ok->setMaximumSize(QSize(100, 45));
-    QPushButton *delete_button = new QPushButton("Delete",horizontalLayoutWidget);
-    delete_button->setMinimumSize(QSize(100, 45));
-    delete_button->setMaximumSize(QSize(100, 45));
-    QPushButton *cancel = new QPushButton("Cancel",horizontalLayoutWidget);
-    cancel->setMinimumSize(QSize(100, 45));
-    cancel->setMaximumSize(QSize(100, 45));
-
-    horizontalLayout->addWidget(ok);
-    horizontalLayout->addWidget(delete_button);
-    horizontalLayout->addWidget(cancel);
-
-    //grid
-    gridLayout->addWidget(skin2, 5, 0, 1, 1);
-    gridLayout->addWidget(skin_label, 0, 0, 1, 1);
-    gridLayout->addWidget(invisible2, 4, 3, 1, 1);
-    gridLayout->addWidget(Bonus_label, 0, 2, 1, 1);
-    gridLayout->addWidget(skin3, 7, 0, 1, 1);
-    gridLayout->addWidget(skin1, 2, 0, 1, 1);
-    gridLayout->addWidget(invisible, 4, 1, 1, 1);
-    gridLayout->addWidget(damage_label,  6, 4, 1, 1);
-    gridLayout->addWidget(damage_spin, 6, 5, 1, 1);
-    gridLayout->addWidget(tick_label, 5, 4, 1, 1);
-    gridLayout->addWidget(tick_spin, 5, 5, 1, 1);
-    gridLayout->addWidget(position_label, 4, 4, 1, 1);
-    gridLayout->addWidget(position_spin, 4, 5, 1, 1);
-    gridLayout->addWidget(vitesse_spin, 2, 5, 1, 1);
-    gridLayout->addWidget(vitesse_label, 2, 4, 1, 1);
-    gridLayout->addWidget(bonus1, 2, 2, 1, 1);
-    gridLayout->addWidget(bonus2, 4, 2, 1, 1);
-    gridLayout->addWidget(bonus3, 5, 2, 1, 1);
-    gridLayout->addWidget(bonus4, 6, 2, 1, 1);
-
-
-    Dialog->show();
 }
 
 

@@ -53,8 +53,13 @@
 
 
 
+
 using namespace Screen;
 using namespace Parsing;
+
+struct Ennemy;
+struct Obstacle;
+struct Level;
 
 class Menu : public QMainWindow{
 
@@ -88,7 +93,6 @@ class Menu : public QMainWindow{
 	int X_MIN = 20;
 	int X_MAX = X_MIN+551;
 
-	//WINDOW OBJECTS
 
 public:
 	Menu();
@@ -101,7 +105,7 @@ private:
 	void main_m();
 	void print_friends();
 	void lobby();
-	void level();
+	void level_editor( Level my_level);
 
 
 private slots:
@@ -115,36 +119,38 @@ private slots:
 	void accept_friend();
 	void launch_game(int players, int drop_rate, int lives, std::string difficulty, bool ally_shot);
 	void save_level();
-	void custom_ennemy();
+	void custom_ennemy(Level my_level, int idx);
 	void custom_obstacle();
 };
 
 struct Ennemy{
 	int x = 0;
 	int tick = 0;
-	std::string armure = "red";
+	int skin = 0; // skin 1, skin2, skin3
 	int xp = 70;
 	int damage=30;
-	std::string bonus="minigun";
+	int bonus = 0;
+	int speed = 0; // Turtle, horse, Guépard
+
+	int* get_values(){
+		int val[] = {speed, x, xp, tick,damage};
+		return val;
+	}
 };
 
 struct Obstacle{
 	int x = 0; 
 	int tick = 0;
-	std::string type = "astéroides"; //planete, soleil, lune, etoiles
+	int skin = 0; //planete, soleil, lune, etoiles
 	int damage=30;
 };
 
 struct Level{
 	//ennemy session
-	int nb_ennemy = 0;
 	std::vector<Ennemy> ennemy_list;
 
 	//obstacle session
-	int nb_obs = 0;
 	std::vector<Obstacle> obs_list;
-	//theme session
-	std::string font_color = "black";
 };
 
 #endif //MENU_HPP
