@@ -38,11 +38,15 @@ class DisplayGame
 	sf::Texture minigunTex;
 	sf::Texture enemy;
 	sf::Texture boss;
-	sf::IntRect rectSourceSprite{0,0,256,256};
-	sf::Sprite explosionSprite;
-	sf::Clock clock;
+	sf::IntRect rectSourceSprite1{0,0,256,256};
+	sf::Sprite explosionSprite1;
+	sf::Clock clock1;
 	sf::Texture	explosionTex;
-	bool exploded=false;
+	sf::IntRect rectSourceSprite2{0,0,256,256};
+	sf::Sprite explosionSprite2;
+	sf::Clock clock2;
+	bool exploded1=false;
+	bool exploded2=false;
 
 	sf::Font font;
 	sf::Text guiText;

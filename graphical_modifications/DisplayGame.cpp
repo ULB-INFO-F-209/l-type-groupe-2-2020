@@ -385,8 +385,11 @@ void DisplayGame::initGraphics(){
 	line.setFillColor(sf::Color::Magenta);
 	line.setPosition(sf::Vector2f(5, 370));
 
-	explosionSprite.setTexture(explosionTex);
-	explosionSprite.setTextureRect(rectSourceSprite);
+	explosionSprite1.setTexture(explosionTex);
+	explosionSprite1.setTextureRect(rectSourceSprite1);
+
+	explosionSprite2.setTexture(explosionTex);
+	explosionSprite2.setTextureRect(rectSourceSprite2);
 	
 
 	guiText.setFont(font);
@@ -593,31 +596,61 @@ void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinkin
                 mvwaddch(game_wnd, y, x + 1, ' ');
                 wattroff(game_wnd, A_ALTCHARSET);
 			}
-			std::cout<<rectSourceSprite.top<<" "<<rectSourceSprite.left<<std::endl;
-			std::ofstream t;
 			
-			if(clock.getElapsedTime().asSeconds() > 0.025f && !exploded){
-				if (rectSourceSprite.left==1280){
-					rectSourceSprite.left=0;
-					rectSourceSprite.top+=256;
-				}
-				else
-					rectSourceSprite.left +=256;
+			if(player==1){
 				
-				explosionSprite.setTextureRect(rectSourceSprite);
-				clock.restart();
+				if(clock1.getElapsedTime().asSeconds() > 0.025f && !exploded1){
+					if(rectSourceSprite1.left==1792 && rectSourceSprite1.top==1280){
+						rectSourceSprite1.left=0;
+						rectSourceSprite1.top=0;
+						exploded1=true;
+
+					}
+					if (rectSourceSprite1.left==1792){
+						rectSourceSprite1.left=0;
+						rectSourceSprite1.top+=256;
+					}
+					else
+						rectSourceSprite1.left +=256;
+					
+					explosionSprite1.setTextureRect(rectSourceSprite1);
+					clock1.restart();
+				}
+				if(!exploded1){
+					explosionSprite1.setPosition(sf::Vector2f(x*12.5-125,5 + y*20-110));
+					window->draw(explosionSprite1);
+				}
+					
 			}
-			/*
-			t.open("output.txt");
-			t<<rectSourceSprite.top<<" "<<rectSourceSprite.left<<std::endl;
-			t.close();
-			*/
-			if (!exploded)
-				window->draw(explosionSprite);
+			else{
+				if(clock2.getElapsedTime().asSeconds() > 0.025f && !exploded2){
+					if(rectSourceSprite2.left==1792 && rectSourceSprite2.top==1280){
+						rectSourceSprite2.left=0;
+						rectSourceSprite2.top=0;
+						exploded2=true;
+
+					}
+					if (rectSourceSprite2.left==1792){
+						rectSourceSprite2.left=0;
+						rectSourceSprite2.top+=256;
+					}
+					else
+						rectSourceSprite2.left +=256;
+					
+					explosionSprite2.setTextureRect(rectSourceSprite2);
+					clock2.restart();
+				}
+				if(!exploded2){
+					explosionSprite2.setPosition(sf::Vector2f(x*12.5-125,5 + y*20-110));
+					window->draw(explosionSprite2);
+					}
+			}
+
         }
 		else{
-			rectSourceSprite.top=0;
-			rectSourceSprite.left=0;
+			if(player==1 && exploded1) exploded1=false;
+			if(player==2 && exploded2) exploded2=false;
+
 		}		
         wattroff(game_wnd, A_ALTCHARSET);
 
