@@ -883,17 +883,28 @@ void Menu::level_editor(Level my_level){
     std::vector<QPushButton *> pic_ennemy;
     for(int i = 0; i < my_level.ennemy_list.size(); i++){
         pic_ennemy.push_back(new QPushButton("enemy" , game_zone));
-        pic_ennemy[pic_ennemy.size()-1]->setGeometry(QRect(X_MIN + my_level.ennemy_list[i].x , 132, 100, 45));
+        pic_ennemy[pic_ennemy.size()-1]->setGeometry(QRect(X_MIN + my_level.ennemy_list[i].x , 10, button_size, button_size));
         if(my_level.ennemy_list[i].tick != tick_lcd->intValue())
             pic_ennemy[pic_ennemy.size()-1]->hide();
         connect(pic_ennemy[pic_ennemy.size()-1], &QPushButton::clicked, this,[this, my_level,i](){
             custom_ennemy(my_level, i);});
     }
-    std::cout << " object = "<<pic_ennemy.size()<<std::endl;
+
+    std::vector<QPushButton *> pic_obstacle;
+    for(int i = 0; i < my_level.obs_list.size(); i++){
+        pic_obstacle.push_back(new QPushButton("obstacle" , game_zone));
+        pic_obstacle[pic_obstacle.size()-1]->setGeometry(QRect(X_MIN + my_level.obs_list[i].x , 10, button_size, button_size));
+        if(my_level.obs_list[i].tick != tick_lcd->intValue())
+            pic_obstacle[pic_obstacle.size()-1]->hide();
+        connect(pic_obstacle[pic_obstacle.size()-1], &QPushButton::clicked, this,[this, my_level,i](){
+            custom_obstacle(my_level, i);});
+    }
 
     //connect section
     connect(cancel, &QPushButton::clicked, this,&Menu::main_m);
-    connect(save, &QPushButton::clicked, this,&Menu::save_level);
+    connect(save, &QPushButton::clicked, this,[this, my_level](){
+            save_level(my_level);
+        });
     connect(ennemy_button, &QPushButton::clicked, this,[this, my_level](){
             Ennemy newE{}; Level level_copy = my_level; //probleme de constance
             level_copy.ennemy_list.push_back(newE);
@@ -903,18 +914,25 @@ void Menu::level_editor(Level my_level){
     connect(obstacle_button, &QPushButton::clicked, this,[this, my_level](){
             Obstacle newO{}; Level level_copy = my_level; //probleme de constance
             level_copy.obs_list.push_back(newO);
-            custom_ennemy(level_copy, level_copy.obs_list.size()-1);
+            custom_obstacle(level_copy, level_copy.obs_list.size()-1);
         });
     connect(tick_slider, SIGNAL(valueChanged(int)),tick_lcd, SLOT(display(int)));
-    connect(tick_slider, &QSlider::valueChanged,this, [this,tick_lcd, my_level, pic_ennemy](){
+    connect(tick_slider, &QSlider::valueChanged,this, [this,tick_lcd, my_level, pic_ennemy, pic_obstacle](){
         //SLOT(display(int))
         for(int i = 0; i < my_level.ennemy_list.size(); i++){
-            std::cout << " object = "<<pic_ennemy.size()<<std::endl;
             if(my_level.ennemy_list[i].tick != tick_lcd->intValue()){
                pic_ennemy[i]->hide();
             }
             else{
                 pic_ennemy[i]->show();
+            }
+        }
+        for(int i = 0; i < my_level.obs_list.size(); i++){
+            if(my_level.obs_list[i].tick != tick_lcd->intValue()){
+                pic_obstacle[i]->hide();
+            }
+            else{
+                pic_obstacle[i]->show();
             }
         }
        
@@ -924,9 +942,10 @@ void Menu::level_editor(Level my_level){
     this->show();
 }
 
-void Menu::save_level(){
+void Menu::save_level(Level my_level){
     QDialog * Dialog = new QDialog(this);
     Dialog->resize(452, 345);
+    Dialog->setModal(true);
 
     QLabel *title_label = new QLabel("SAVE YOUR LEVEL",Dialog);
     title_label->setGeometry(QRect(50, 10, 350, 71));
@@ -955,6 +974,16 @@ void Menu::save_level(){
 
     horizontalLayout->addWidget(ok);
     horizontalLayout->addWidget(cancel);
+
+    connect(ok, &QPushButton::clicked, this, [this, Dialog, my_level, name_edit](){
+        std::string level_name = (name_edit->text()).toUtf8().constData();
+        std::string string_level = parse_editor(my_level, level_name);
+        _client.createLevel(string_level.c_str());
+    });
+    connect(cancel, &QPushButton::clicked, this, [this, Dialog](){
+        Dialog->hide();
+    });
+
     Dialog->show();
 
 
@@ -977,9 +1006,8 @@ void Menu::custom_ennemy(Level my_level, int idx){
     std::string legende[] = {"POSITION :","HP :","TICK :","DAMAGE :"};
     QLabel *label[4];
     int spin_value[4]; my_level.ennemy_list[idx].get_values(spin_value);
-    QSpinBox * spin_box[5];
-    for (int i = 0; i < 4; ++i)
-    {
+    QSpinBox * spin_box[4];
+    for (int i = 0; i < 4; ++i){
         //legende
         label[i] = new QLabel(legende[i].c_str(), formLayoutWidget);
         formLayout->setWidget(i, QFormLayout::LabelRole, label[i] );
@@ -995,8 +1023,12 @@ void Menu::custom_ennemy(Level my_level, int idx){
         formLayout->setWidget(i, QFormLayout::FieldRole, spin_box[i]);
     }
     std::string box_value[] = {"SLUG", "TURTLE", "HUMAN", "HORSE", "CHEETAH"};
+    spin_box[position]->setMaximum(X_MAX);
+    spin_box[position]->setValue(spin_value[position]);
     spin_box[tick]->setMaximum(3000);
     spin_box[tick]->setSingleStep(150);
+    spin_box[tick]->setValue(spin_value[tick]);
+    spin_box[tick]->findChild<QLineEdit*>()->setReadOnly(true);
     QComboBox *speed_box = new QComboBox(formLayoutWidget);
     speed_box->setMinimumSize(QSize(100, 45));
     speed_box->setMaximumSize(QSize(100, 45));
@@ -1011,7 +1043,6 @@ void Menu::custom_ennemy(Level my_level, int idx){
         speed_box->addItem(QString::fromStdString(val));
     }
     speed_box->setCurrentIndex(my_level.ennemy_list[idx].speed);
-    //speed_box->setValue(spin_value[i]);
 
     /*************BUTTON_ZONE********************/
     QWidget *horizontalLayoutWidget = new QWidget(Dialog);
@@ -1084,7 +1115,7 @@ void Menu::custom_ennemy(Level my_level, int idx){
     /***************CONNECTION********************/
     connect(button[ok], &QPushButton::clicked, this, [this, my_level,Dialog, spin_box, idx, bonus, skin,speed_box](){
         Level copy_level = my_level;
-        copy_level.ennemy_list[idx].speed = speed_box->currentIndex
+        copy_level.ennemy_list[idx].speed = speed_box->currentIndex();
         copy_level.ennemy_list[idx].x = spin_box[0]->value();
         copy_level.ennemy_list[idx].hp = spin_box[1]->value();
         copy_level.ennemy_list[idx].tick = spin_box[2]->value();
@@ -1117,7 +1148,7 @@ void Menu::custom_obstacle(Level my_level, int idx){
     Dialog->resize(859, 665);
     Dialog->setModal(true);
 
-    QLabel * title_label = new QLabel("CUSTOM ENEMY", Dialog);
+    QLabel * title_label = new QLabel("CUSTOM OBSTACLE", Dialog);
     title_label->setGeometry(QRect(70, 20, 701, 71));
     title_label->setFrameShape(QFrame::WinPanel);
     title_label->setAlignment(Qt::AlignCenter);
@@ -1126,13 +1157,12 @@ void Menu::custom_obstacle(Level my_level, int idx){
     QWidget *formLayoutWidget = new QWidget(Dialog);
     formLayoutWidget->setGeometry(QRect(590, 160, 258, 275));
      QFormLayout *formLayout = new QFormLayout(formLayoutWidget);
-    int position = 0, tick=1, damage=2; 
-    std::string legende[] = {"POSITION :","TICK :","DAMAGE :"};
-    QLabel *label[3];
-    int spin_value[3]; my_level.obs_list[idx].get_values(spin_value);
-    QSpinBox * spin_box[5];
-    for (int i = 0; i < 3; ++i)
-    {
+    int position = 0, hp=1, tick=2, damage=3; 
+    std::string legende[] = {"POSITION :","HP :","TICK :","DAMAGE :"};
+    QLabel *label[4];
+    int spin_value[4]; my_level.obs_list[idx].get_values(spin_value);
+    QSpinBox * spin_box[4];
+    for (int i = 0; i < 4; ++i){
         //legende
         label[i] = new QLabel(legende[i].c_str(), formLayoutWidget);
         formLayout->setWidget(i, QFormLayout::LabelRole, label[i] );
@@ -1148,8 +1178,12 @@ void Menu::custom_obstacle(Level my_level, int idx){
         formLayout->setWidget(i, QFormLayout::FieldRole, spin_box[i]);
     }
     std::string box_value[] = {"SLUG", "TURTLE", "HUMAN", "HORSE", "CHEETAH"};
+    spin_box[position]->setMaximum(X_MAX);
+    spin_box[position]->setValue(spin_value[position]);
     spin_box[tick]->setMaximum(3000);
     spin_box[tick]->setSingleStep(150);
+    spin_box[tick]->setValue(spin_value[tick]);
+    spin_box[tick]->findChild<QLineEdit*>()->setReadOnly(true);
     QComboBox *speed_box = new QComboBox(formLayoutWidget);
     speed_box->setMinimumSize(QSize(100, 45));
     speed_box->setMaximumSize(QSize(100, 45));
@@ -1189,14 +1223,10 @@ void Menu::custom_obstacle(Level my_level, int idx){
 
     QLabel * skin_label = new QLabel("SKIN", widget);
     verticalLayout->addWidget(skin_label);
-    skin_label->setMinimumSize(QSize(100, 45));
-    skin_label->setMaximumSize(QSize(100, 45));
-    skin_label->setAlignment(Qt::AlignCenter);
-    skin_label->setFrameShape(QFrame::WinPanel);
-    skin_label->setLineWidth(3);
 
     std::string skin_name[] = {"skin1","skin2", "skin3"};
     QRadioButton * skin[3];
+
     for (int i = 0; i < 3; ++i){
         skin[i] = new QRadioButton(skin_name[i].c_str(), widget);
         skin[i]->setMinimumSize(QSize(100, 45));
@@ -1206,12 +1236,17 @@ void Menu::custom_obstacle(Level my_level, int idx){
         verticalLayout->addWidget(skin[i]);
     }
 
-
+    /*************SKIN LABEL********************/
+    skin_label->setMinimumSize(QSize(100, 45));
+    skin_label->setMaximumSize(QSize(100, 45));
+    skin_label->setAlignment(Qt::AlignCenter);
+    skin_label->setFrameShape(QFrame::WinPanel);
+    skin_label->setLineWidth(3);
 
     /***************CONNECTION********************/
-    connect(button[ok], &QPushButton::clicked, this, [this, my_level,Dialog, spin_box, idx, bonus, skin,speed_box](){
+    connect(button[ok], &QPushButton::clicked, this, [this, my_level,Dialog, spin_box, idx,skin,speed_box](){
         Level copy_level = my_level;
-        copy_level.obs_list[idx].speed = speed_box->currentIndex
+        copy_level.obs_list[idx].speed = speed_box->currentIndex();
         copy_level.obs_list[idx].x = spin_box[0]->value();
         copy_level.obs_list[idx].hp = spin_box[1]->value();
         copy_level.obs_list[idx].tick = spin_box[2]->value();
@@ -1228,13 +1263,11 @@ void Menu::custom_obstacle(Level my_level, int idx){
     connect(button[del], &QPushButton::clicked, this, [this, my_level,idx, Dialog](){
         Dialog->hide();
         Level copy_level = my_level;
-        copy_level.ennemy_list.erase(copy_level.obs_list.begin()+idx);
+        copy_level.obs_list.erase(copy_level.obs_list.begin()+idx);
         level_editor(copy_level);
     });
 
     Dialog->show();
-
-
 }
 
 

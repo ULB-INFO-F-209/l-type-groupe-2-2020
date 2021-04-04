@@ -90,9 +90,10 @@ class Menu : public QMainWindow{
     QAction* m_pActAdd = nullptr;
     QAction* m_pActRemove = nullptr;
 
-	int X_MIN = 20;
-	int X_MAX = X_MIN+551;
+	int X_MIN = 0;
+	int X_MAX = 551;
 
+	int button_size = 60;
 
 public:
 	Menu();
@@ -118,7 +119,7 @@ private slots:
 	void request_list(const QModelIndex &index);
 	void accept_friend();
 	void launch_game(int players, int drop_rate, int lives, std::string difficulty, bool ally_shot);
-	void save_level();
+	void save_level(Level my_level);
 	void custom_ennemy(Level my_level, int idx);
 	void custom_obstacle(Level my_level, int idx);
 };
@@ -144,14 +145,16 @@ struct Obstacle{
 	int x = 0; 
 	int tick = 0;
 	int skin = 0; //planete, soleil, lune, etoiles
+	int hp = 70;
 	int damage=30;
 	int speed = 2; //SLUG, TURTLE, HUMAN, HORSE,CHEETAH
 	
 
 	void get_values(int *res){
 		res[0] = x;
-		res[1] = tick;
-		res[2] = damage;
+		res[1] = hp;
+		res[2] = tick;
+		res[3] = damage;
 	}
 };
 
