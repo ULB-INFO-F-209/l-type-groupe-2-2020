@@ -2,42 +2,48 @@
 #define DATABASE_HPP
 
 #include <iostream>
+#include <fstream>
 #include <ostream>
 #include <vector>
 #include <algorithm>
 #include <sys/stat.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string>
 #include "account.hpp"
+#include "accountandvectors.hpp"
+#include "structures.hpp"
 
-struct Profile
-{
-	char pseudo[20];
-	int score;
-	Profile()=default;
-	Profile(const char *p, int s){sprintf(pseudo,"%s", p); score=s;}
-	Profile(Account acc){acc.getPseudo(pseudo); score = acc.getScore();}
-};
+
 
 class Database{
     const std::string _path = "accounts.bin";
-    std::vector<Account> _data{};
-	std::vector<Profile> _profiles{};
+    const std::string _path_frnd = "friends.bin";
+    const std::string _path_req = "requests.bin";
+    const std::string _path_level = "levels.txt";
 
-    void add(Account* account);
+    std::vector<AccountAndVectors> _data{};
+	std::vector<Profile> _profiles{};
+	std::vector<std::string> _levels{};
+
+    void add(Account account);
+	void add(Friend frnd);
+	void add(Request request);
+	void add(std::string pseudo, std::string level);
 
 public:
 	// Constructor
 	Database() = default;
 
 	// Getters
-	std::ptrdiff_t find(char* pseudo);
+	std::ptrdiff_t find(const char* pseudo);
 	bool verifyLogin(char* pseudo, char* pswd);
 	Profile getProfile(char* pseudo);
     std::vector<Profile> getFriendRequest(char* pseudo);
 	bool delFriendRequest(char *pseudo1, char *pseudo2);
     std::vector<Profile> getFriendList(char* pseudo);
 	std::vector<Profile> checkLeaderboard();
+	std::vector<std::string> checkLevels();
 
 	// Utilities
 	bool createAccount(char* pseudo, char* pswd);
