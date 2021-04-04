@@ -57,10 +57,6 @@
 using namespace Screen;
 using namespace Parsing;
 
-struct Ennemy;
-struct Obstacle;
-struct Level;
-
 class Menu : public QMainWindow{
 
 	Client _client{};
@@ -122,48 +118,7 @@ private slots:
 	void save_level(Level my_level);
 	void custom_ennemy(Level my_level, int idx);
 	void custom_obstacle(Level my_level, int idx);
-};
-
-struct Ennemy{
-	int x = 0;
-	int tick = 0;
-	int skin = 0; // skin 1, skin2, skin3
-	int hp = 70;
-	int damage=30;
-	int bonus = 0;
-	int speed = 2; //SLUG, TURTLE, HUMAN, HORSE,CHEETAH
-
-	void get_values(int *res){
-		res[0] = x;
-		res[1] = hp;
-		res[2] = tick;
-		res[3] = damage;
-	}
-};
-
-struct Obstacle{
-	int x = 0; 
-	int tick = 0;
-	int skin = 0; //planete, soleil, lune, etoiles
-	int hp = 70;
-	int damage=30;
-	int speed = 2; //SLUG, TURTLE, HUMAN, HORSE,CHEETAH
-	
-
-	void get_values(int *res){
-		res[0] = x;
-		res[1] = hp;
-		res[2] = tick;
-		res[3] = damage;
-	}
-};
-
-struct Level{
-	//ennemy session
-	std::vector<Ennemy> ennemy_list{};
-
-	//obstacle session
-	std::vector<Obstacle> obs_list{};
+	void custom_player(Level my_level);
 
 };
 

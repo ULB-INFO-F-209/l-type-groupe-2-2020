@@ -34,6 +34,8 @@ void Parsing::create_game_to_str(char *buffer, Game_settings * settings){
 	//buffer -> "nb_player&pseudo_hote&other_pseudo&drop_rate&ally_shot&nb_lives"
 }
 
+//std::string Parsing::level_to_str(Level *my_level){}
+
 //decodage
 void Parsing::profile_list_from_str(char *buffer,std::vector<Profile> *prof){
 	std::string cpp_str_buffer(buffer);
@@ -147,6 +149,8 @@ void Parsing::create_game_from_str(char *buffer, Game_settings * settings){
 
 
 }
+
+//Level Parsing::level_from_str(std::string){}
 
 ///parsing to withdraw the user's info
 void Parsing::parsing(char* str, char* token1, char* token2) {
