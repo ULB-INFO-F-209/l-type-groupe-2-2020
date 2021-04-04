@@ -900,7 +900,11 @@ void Menu::level_editor(Level my_level){
             custom_ennemy(level_copy, level_copy.ennemy_list.size()-1);
         });
     //std::cout << "adresse avant = "<<pic_ennemy<<std::endl;
-    connect(obstacle_button, &QPushButton::clicked, this,&Menu::custom_obstacle);
+    connect(obstacle_button, &QPushButton::clicked, this,[this, my_level](){
+            Obstacle newO{}; Level level_copy = my_level; //probleme de constance
+            level_copy.obs_list.push_back(newO);
+            custom_ennemy(level_copy, level_copy.obs_list.size()-1);
+        });
     connect(tick_slider, SIGNAL(valueChanged(int)),tick_lcd, SLOT(display(int)));
     connect(tick_slider, &QSlider::valueChanged,this, [this,tick_lcd, my_level, pic_ennemy](){
         //SLOT(display(int))
@@ -1078,8 +1082,9 @@ void Menu::custom_ennemy(Level my_level, int idx){
     }
 
     /***************CONNECTION********************/
-    connect(button[ok], &QPushButton::clicked, this, [this, my_level,Dialog, spin_box, idx, bonus, skin](){
+    connect(button[ok], &QPushButton::clicked, this, [this, my_level,Dialog, spin_box, idx, bonus, skin,speed_box](){
         Level copy_level = my_level;
+        copy_level.ennemy_list[idx].speed = speed_box->currentIndex
         copy_level.ennemy_list[idx].x = spin_box[0]->value();
         copy_level.ennemy_list[idx].hp = spin_box[1]->value();
         copy_level.ennemy_list[idx].tick = spin_box[2]->value();
@@ -1107,162 +1112,125 @@ void Menu::custom_ennemy(Level my_level, int idx){
     Dialog->show();
 }
 
-void Menu::custom_obstacle(){
-    QDialog * Dialog = new QDialog();
-    
-
-    QLabel *title_label;
-    QWidget *formLayoutWidget;
-    QFormLayout *formLayout;
-    QLabel *damage_label;
-    QLabel *vitesse_label;
-    QLabel *position_label;
-    QLabel *hp_label;
-    QLabel *tick_label;
-    QSpinBox *vitesse_spin;
-    QSpinBox *position_spin;
-    QSpinBox *hp_spin;
-    QSpinBox *tick_spin;
-    QSpinBox *damage_spin;
-    QWidget *horizontalLayoutWidget;
-    QHBoxLayout *horizontalLayout;
-    QPushButton *ok;
-    QPushButton *delete_button;
-    QPushButton *cancel;
-    QWidget *widget;
-    QVBoxLayout *verticalLayout;
-    QLabel *skin_label;
-    QRadioButton *skin1;
-    QRadioButton *skin3;
-    QRadioButton *skin2;
-    QWidget *widget1;
-    QVBoxLayout *verticalLayout_2;
-    QLabel *Bonus_label;
-    QRadioButton *bonus1;
-    QRadioButton *bonus2;
-    QRadioButton *bonus3;
-    QRadioButton *bonus4;
-
+void Menu::custom_obstacle(Level my_level, int idx){
+    QDialog * Dialog = new QDialog(this);
     Dialog->resize(859, 665);
-    title_label = new QLabel("CUSTOM OBSTACLE", Dialog);
+    Dialog->setModal(true);
+
+    QLabel * title_label = new QLabel("CUSTOM ENEMY", Dialog);
     title_label->setGeometry(QRect(70, 20, 701, 71));
     title_label->setFrameShape(QFrame::WinPanel);
     title_label->setAlignment(Qt::AlignCenter);
-    formLayoutWidget = new QWidget(Dialog);
+
+    /*************SPIN AND THEIR LEGENDE ZONE********************/
+    QWidget *formLayoutWidget = new QWidget(Dialog);
     formLayoutWidget->setGeometry(QRect(590, 160, 258, 275));
-    formLayout = new QFormLayout(formLayoutWidget);
-    formLayout->setContentsMargins(0, 0, 0, 0);
-    damage_label = new QLabel("DAMAGE :", formLayoutWidget);
-    damage_label->setMinimumSize(QSize(100, 45));
-    damage_label->setFrameShape(QFrame::WinPanel);
-    damage_label->setAlignment(Qt::AlignCenter);
+     QFormLayout *formLayout = new QFormLayout(formLayoutWidget);
+    int position = 0, tick=1, damage=2; 
+    std::string legende[] = {"POSITION :","TICK :","DAMAGE :"};
+    QLabel *label[3];
+    int spin_value[3]; my_level.obs_list[idx].get_values(spin_value);
+    QSpinBox * spin_box[5];
+    for (int i = 0; i < 3; ++i)
+    {
+        //legende
+        label[i] = new QLabel(legende[i].c_str(), formLayoutWidget);
+        formLayout->setWidget(i, QFormLayout::LabelRole, label[i] );
+        label[i]->setMinimumSize(QSize(100, 45));
+        label[i]->setMaximumSize(QSize(100, 45));
+        label[i]->setAlignment(Qt::AlignCenter);
 
-    formLayout->setWidget(4, QFormLayout::LabelRole, damage_label);
+        //value
+        spin_box[i] = new QSpinBox(formLayoutWidget);
+        spin_box[i]->setMinimumSize(QSize(100, 45));
+        spin_box[i]->setMaximumSize(QSize(100, 45));
+        spin_box[i]->setValue(spin_value[i]);
+        formLayout->setWidget(i, QFormLayout::FieldRole, spin_box[i]);
+    }
+    std::string box_value[] = {"SLUG", "TURTLE", "HUMAN", "HORSE", "CHEETAH"};
+    spin_box[tick]->setMaximum(3000);
+    spin_box[tick]->setSingleStep(150);
+    QComboBox *speed_box = new QComboBox(formLayoutWidget);
+    speed_box->setMinimumSize(QSize(100, 45));
+    speed_box->setMaximumSize(QSize(100, 45));
+    formLayout->setWidget(4, QFormLayout::FieldRole, speed_box);
+    speed_box->clear();
+    QLabel *speed_label = new QLabel("SPEED :");
+    formLayout->setWidget(4, QFormLayout::LabelRole, speed_label );
+    speed_label->setMinimumSize(QSize(100, 45));
+    speed_label->setMaximumSize(QSize(100, 45));
+    speed_label->setAlignment(Qt::AlignCenter);
+    for(auto val :box_value){
+        speed_box->addItem(QString::fromStdString(val));
+    }
+    speed_box->setCurrentIndex(my_level.obs_list[idx].speed);
 
-    vitesse_label = new QLabel("VITESSE :", formLayoutWidget);
-    vitesse_label->setMinimumSize(QSize(100, 45));
-    vitesse_label->setMaximumSize(QSize(100, 45));
-    vitesse_label->setFrameShape(QFrame::WinPanel);
-    vitesse_label->setAlignment(Qt::AlignCenter);
-
-    formLayout->setWidget(0, QFormLayout::LabelRole, vitesse_label);
-
-    position_label = new QLabel("POSITION :", formLayoutWidget);
-    position_label->setMinimumSize(QSize(100, 45));
-    position_label->setMaximumSize(QSize(100, 45));
-    position_label->setFrameShape(QFrame::WinPanel);
-    position_label->setAlignment(Qt::AlignCenter);
-
-    formLayout->setWidget(1, QFormLayout::LabelRole, position_label);
-
-
-    tick_label = new QLabel("TICK :", formLayoutWidget);
-    tick_label->setMinimumSize(QSize(100, 45));
-    tick_label->setFrameShape(QFrame::WinPanel);
-    tick_label->setAlignment(Qt::AlignCenter);
-
-    formLayout->setWidget(3, QFormLayout::LabelRole, tick_label);
-
-    vitesse_spin = new QSpinBox(formLayoutWidget);
-    vitesse_spin->setMinimumSize(QSize(100, 45));
-    vitesse_spin->setMaximumSize(QSize(100, 45));
-
-    formLayout->setWidget(0, QFormLayout::FieldRole, vitesse_spin);
-
-    position_spin = new QSpinBox(formLayoutWidget);
-    position_spin->setMinimumSize(QSize(100, 45));
-    position_spin->setMaximumSize(QSize(100, 45));
-    position_spin->setMaximum(100);
-
-    formLayout->setWidget(1, QFormLayout::FieldRole, position_spin);
-
-    tick_spin = new QSpinBox(formLayoutWidget);
-    tick_spin->setMinimumSize(QSize(100, 45));
-    tick_spin->setMaximumSize(QSize(100, 45));
-    tick_spin->setMaximum(20);
-
-    formLayout->setWidget(3, QFormLayout::FieldRole, tick_spin);
-
-    damage_spin = new QSpinBox(formLayoutWidget);
-    damage_spin->setMinimumSize(QSize(100, 45));
-    damage_spin->setMaximumSize(QSize(100, 45));
-    damage_spin->setMaximum(50);
-
-    formLayout->setWidget(4, QFormLayout::FieldRole, damage_spin);
-
-    horizontalLayoutWidget = new QWidget(Dialog);
+    /*************BUTTON_ZONE********************/
+    QWidget *horizontalLayoutWidget = new QWidget(Dialog);
     horizontalLayoutWidget->setGeometry(QRect(40, 540, 771, 80));
-    horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
+    QHBoxLayout* horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
     horizontalLayout->setContentsMargins(0, 0, 0, 0);
-    ok = new QPushButton("OK", horizontalLayoutWidget);
-    ok->setMinimumSize(QSize(100, 45));
-    ok->setMaximumSize(QSize(100, 45));
 
-    horizontalLayout->addWidget(ok);
+    int ok = 0, del=1;
+    std::string button_name[] = {"OK","DELETE"};
+    QPushButton * button[2];
+    for (int i = 0; i < 2; ++i){
+        button[i] = new QPushButton(button_name[i].c_str(), horizontalLayoutWidget);
+        button[i]->setMinimumSize(QSize(100, 45));
+        button[i]->setMaximumSize(QSize(100, 45));
+        horizontalLayout->addWidget( button[i]);
+    }
 
-    delete_button = new QPushButton("DELETE", horizontalLayoutWidget);
-    delete_button->setMinimumSize(QSize(100, 45));
-    delete_button->setMaximumSize(QSize(100, 45));
-
-    horizontalLayout->addWidget(delete_button);
-
-    cancel = new QPushButton("CANCEL", horizontalLayoutWidget);
-    cancel->setMinimumSize(QSize(100, 45));
-    cancel->setMaximumSize(QSize(100, 45));
-
-    horizontalLayout->addWidget(cancel);
-
-    widget = new QWidget(Dialog);
+    /*************SKIN_ZONE********************/
+    QWidget * widget = new QWidget(Dialog);
     widget->setGeometry(QRect(60, 150, 181, 281));
-    verticalLayout = new QVBoxLayout(widget);
+    QVBoxLayout *verticalLayout = new QVBoxLayout(widget);
     verticalLayout->setContentsMargins(0, 0, 0, 0);
-    skin_label = new QLabel("SKIN", widget);
+
+    QLabel * skin_label = new QLabel("SKIN", widget);
+    verticalLayout->addWidget(skin_label);
     skin_label->setMinimumSize(QSize(100, 45));
     skin_label->setMaximumSize(QSize(100, 45));
+    skin_label->setAlignment(Qt::AlignCenter);
     skin_label->setFrameShape(QFrame::WinPanel);
     skin_label->setLineWidth(3);
-    skin_label->setAlignment(Qt::AlignCenter);
 
-    verticalLayout->addWidget(skin_label);
+    std::string skin_name[] = {"skin1","skin2", "skin3"};
+    QRadioButton * skin[3];
+    for (int i = 0; i < 3; ++i){
+        skin[i] = new QRadioButton(skin_name[i].c_str(), widget);
+        skin[i]->setMinimumSize(QSize(100, 45));
+        skin[i]->setMaximumSize(QSize(100, 45));
+        if(i == my_level.obs_list[idx].skin)
+             skin[i]->setChecked(true);
+        verticalLayout->addWidget(skin[i]);
+    }
 
-    skin1 = new QRadioButton("Skin 1", widget);
-    skin1->setMinimumSize(QSize(100, 45));
-    skin1->setMaximumSize(QSize(100, 45));
-    skin1->setChecked(true);
 
-    verticalLayout->addWidget(skin1);
 
-    skin2 = new QRadioButton("Skin 2",widget);
-    skin2->setMinimumSize(QSize(100, 45));
-    skin2->setMaximumSize(QSize(100, 45));
+    /***************CONNECTION********************/
+    connect(button[ok], &QPushButton::clicked, this, [this, my_level,Dialog, spin_box, idx, bonus, skin,speed_box](){
+        Level copy_level = my_level;
+        copy_level.obs_list[idx].speed = speed_box->currentIndex
+        copy_level.obs_list[idx].x = spin_box[0]->value();
+        copy_level.obs_list[idx].hp = spin_box[1]->value();
+        copy_level.obs_list[idx].tick = spin_box[2]->value();
+        copy_level.obs_list[idx].damage = spin_box[3]->value();
 
-    verticalLayout->addWidget(skin2);
-    
-    skin3 = new QRadioButton("Skin 3",widget);
-    skin3->setMinimumSize(QSize(100, 45));
-    skin3->setMaximumSize(QSize(100, 45));
+        for (int i = 0; i < 3; ++i){
+            if(skin[i]->isChecked())
+                copy_level.obs_list[idx].skin = i;
+        }
 
-    verticalLayout->addWidget(skin3);
+        Dialog->hide();
+        level_editor(copy_level);
+    });
+    connect(button[del], &QPushButton::clicked, this, [this, my_level,idx, Dialog](){
+        Dialog->hide();
+        Level copy_level = my_level;
+        copy_level.ennemy_list.erase(copy_level.obs_list.begin()+idx);
+        level_editor(copy_level);
+    });
 
     Dialog->show();
 

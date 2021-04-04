@@ -120,7 +120,7 @@ private slots:
 	void launch_game(int players, int drop_rate, int lives, std::string difficulty, bool ally_shot);
 	void save_level();
 	void custom_ennemy(Level my_level, int idx);
-	void custom_obstacle();
+	void custom_obstacle(Level my_level, int idx);
 };
 
 struct Ennemy{
@@ -145,6 +145,14 @@ struct Obstacle{
 	int tick = 0;
 	int skin = 0; //planete, soleil, lune, etoiles
 	int damage=30;
+	int speed = 2; //SLUG, TURTLE, HUMAN, HORSE,CHEETAH
+	
+
+	void get_values(int *res){
+		res[0] = x;
+		res[1] = tick;
+		res[2] = damage;
+	}
 };
 
 struct Level{
