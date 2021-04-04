@@ -34,7 +34,9 @@ void Parsing::create_game_to_str(char *buffer, Game_settings * settings){
 	//buffer -> "nb_player&pseudo_hote&other_pseudo&drop_rate&ally_shot&nb_lives"
 }
 
-//std::string Parsing::level_to_str(Level *my_level){}
+std::string Parsing::level_to_str(Level *my_level){
+	
+}
 
 //decodage
 void Parsing::profile_list_from_str(char *buffer,std::vector<Profile> *prof){
