@@ -34,8 +34,29 @@ void Parsing::create_game_to_str(char *buffer, Game_settings * settings){
 	//buffer -> "nb_player&pseudo_hote&other_pseudo&drop_rate&ally_shot&nb_lives"
 }
 
-std::string Parsing::level_to_str(Level *my_level){
-	
+std::string Parsing::level_to_str(Level *my_level, const std::string name){
+	std::string buffer = "L_" + std::string(name) + "_";
+
+	//player info
+	Player p = (my_level->player);
+	buffer += std::to_string(p.skin) +"_" + std::to_string(p.skin2) + "_" + std::to_string(p.hp) + "_" + std::to_string(p.damage) + "_" + std::to_string(p.speed);
+
+	//enemy
+	buffer += "|";
+	for(auto e : my_level->ennemy_list){
+		buffer += std::to_string(e.x) + "_" + std::to_string(e.tick) + "_" + std::to_string(e.skin) + "_" ;
+		buffer += std::to_string(e.hp) + "_" + std::to_string(e.damage) + "_" + std::to_string(e.bonus) + "_" + std::to_string(e.speed);
+		buffer += "&";
+	}
+	buffer += "|";
+	for(auto o : my_level->obs_list){
+		buffer += std::to_string(o.x) + "_" + std::to_string(o.tick) + "_" + std::to_string(o.skin) + "_" ;
+		buffer += std::to_string(o.hp) + "_" + std::to_string(o.damage) + "_" + std::to_string(o.speed);
+		buffer += "&";
+	}
+	std::cout << "level   = " << buffer<<std::endl;
+	return buffer;
+
 }
 
 //decodage
