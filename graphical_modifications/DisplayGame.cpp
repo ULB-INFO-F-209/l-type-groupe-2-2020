@@ -1,5 +1,6 @@
 //TODO:
 // ajouter un tour de boucle pour l'affichage
+// exlosion finale (2P)
 // print lifebar boss
 // 2 players input
 
@@ -16,7 +17,6 @@ void DisplayGame::parse_instruction(std::string chaine_instruction){  // A_B_typ
 		idx = instruction.find(delimiteur_parametre); 				//on va voir le premier param de l instruction
 		std::string type_instruction = instruction.substr(0,idx); 		//on recupère le premier param de l instruction
 		instruction = instruction.substr(idx+1,instruction.size()); //on met à jour l'instruction
-
 		if (type_instruction == "A") 		//Affichage (utiliser des thread?)
 			parse_affichage(instruction);
 		else if (type_instruction == "E")	//Etat
@@ -492,8 +492,6 @@ void DisplayGame::drawEnemy(int x, int y, int tick, bool isBlinking) {
 	mvwaddch(game_wnd, y, x + 1, ACS_RARROW);
 	wattroff(game_wnd, A_ALTCHARSET);
 
-
-    //ajouter isBlinking chez le server
 	if(isBlinking){
 
 
@@ -506,7 +504,12 @@ void DisplayGame::drawEnemy(int x, int y, int tick, bool isBlinking) {
 		mvwaddch(game_wnd, y, x + 1, ' ');
 		wattroff(game_wnd, A_ALTCHARSET);
 
+		enemySprite.setColor(sf::Color::Red);
 
+
+	}
+	else{
+		enemySprite.setColor(sf::Color::White); //default color
 	}
 	
 	//sf::RectangleShape enemyShape(sf::Vector2f(12.5*3,20));
@@ -575,7 +578,6 @@ void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinkin
         wattron(game_wnd, A_ALTCHARSET);
         mvwaddch(game_wnd, y, x - 1, ACS_LARROW);
         mvwaddch(game_wnd, y, x + 1, ACS_RARROW);
-		//ajouter isBlinking chez le serveur
 		// draw engines flames
 		if((tick % 10) / 3 && !isBlinking) {
                 wattron(game_wnd, COLOR_PAIR(tick % 2 ? 3 : 4));
@@ -617,9 +619,12 @@ void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinkin
 					clock1.restart();
 				}
 				if(!exploded1){
-					explosionSprite1.setPosition(sf::Vector2f(x*12.5-125,5 + y*20-110));
+					if (!explo1PosSaved)
+						explosionSprite1.setPosition(sf::Vector2f(x*12.5-125,5 + y*20-110));
+						explo1PosSaved=true;
 					window->draw(explosionSprite1);
 				}
+				
 					
 			}
 			else{
@@ -641,15 +646,24 @@ void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinkin
 					clock2.restart();
 				}
 				if(!exploded2){
-					explosionSprite2.setPosition(sf::Vector2f(x*12.5-125,5 + y*20-110));
+					if (!explo2PosSaved)
+						explosionSprite2.setPosition(sf::Vector2f(x*12.5-125,5 + y*20-110));
+						explo2PosSaved=true;					
 					window->draw(explosionSprite2);
 					}
 			}
 
         }
 		else{
-			if(player==1 && exploded1) exploded1=false;
-			if(player==2 && exploded2) exploded2=false;
+			if(player==1 && exploded1){
+				exploded1=false;
+				explo1PosSaved=false;
+			} 
+			if(player==2 && exploded2){
+				exploded2=false;
+				explo2PosSaved=false;
+
+			} 
 
 		}		
         wattroff(game_wnd, A_ALTCHARSET);
@@ -657,13 +671,22 @@ void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinkin
 		//sf::RectangleShape playerShipShape(sf::Vector2f(12.5*3,20*2));
 		//playerShipShape.setPosition(sf::Vector2f(x*12.5,5 + y*20));
         //window->draw(playerShipShape);
-		if (player==1){
+		if (player==1 && !isBlinking){
             //playerShipShape.setFillColor(sf::Color::Blue);
 			ship1Sprite.setPosition(sf::Vector2f(x*12.5-36.5,5 + y*20-55));
 			window->draw(ship1Sprite);
         }
-        else{
+		else if (player==1 && isBlinking && tick % 80 < 40 && exploded1){
+			ship1Sprite.setPosition(sf::Vector2f(x*12.5-36.5,5 + y*20-55));
+			window->draw(ship1Sprite);
+		}
+
+        else if (player==2 && !isBlinking){
 			//playerShipShape.setFillColor(sf::Color::Green);
+			ship2Sprite.setPosition(sf::Vector2f(x*12.5-36.5,5 + y*20-55));
+			window->draw(ship2Sprite);
+		}
+		else if (player==2 && isBlinking && tick % 80 < 40 && exploded2){
 			ship2Sprite.setPosition(sf::Vector2f(x*12.5-36.5,5 + y*20-55));
 			window->draw(ship2Sprite);
 		}

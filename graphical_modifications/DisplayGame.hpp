@@ -47,6 +47,8 @@ class DisplayGame
 	sf::Clock clock2;
 	bool exploded1=false;
 	bool exploded2=false;
+	bool explo2PosSaved=false;
+	bool explo1PosSaved=false;
 
 	sf::Font font;
 	sf::Text guiText;

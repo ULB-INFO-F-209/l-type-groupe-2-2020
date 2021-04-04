@@ -324,7 +324,7 @@ void Menu::launch_game(Game_settings* game_option){
 	
 
 
-    while(gameOn && window->isOpen()){ //fenetre fermé -> terminal freeze
+    while(gameOn && window->isOpen()){ 
 
 		sf::Event event;
         while (window->pollEvent(event))
@@ -332,12 +332,9 @@ void Menu::launch_game(Game_settings* game_option){
             if (event.type == sf::Event::Closed)
                 window->close();
 			if (event.type == sf::Event::KeyPressed)
-				inp = display_game.getInputWindow();
-				
-
+				inp = display_game.getInputWindow();		
         }
-		
-      
+
 		window->clear();
 		_client.send_game_input(inp);
 		inp = -1;
@@ -346,7 +343,7 @@ void Menu::launch_game(Game_settings* game_option){
 		if (string_game_to_display != Constante::GAME_END)
 			string_previous_game_to_display = string_game_to_display;
 		if (string_game_to_display == Constante::GAME_END)
-
+		
 			break;
 			//gameOn = false;
 		display_game.parse_instruction(string_game_to_display);
