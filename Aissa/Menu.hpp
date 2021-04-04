@@ -130,14 +130,13 @@ struct Ennemy{
 	int hp = 70;
 	int damage=30;
 	int bonus = 0;
-	int speed = 0; // Turtle, horse, Guépard
+	int speed = 2; //SLUG, TURTLE, HUMAN, HORSE,CHEETAH
 
 	void get_values(int *res){
-		res[0] = speed; 
-		res[1] = x;
-		res[2] = hp;
-		res[3] = tick;
-		res[4] = damage;
+		res[0] = x;
+		res[1] = hp;
+		res[2] = tick;
+		res[3] = damage;
 	}
 };
 
