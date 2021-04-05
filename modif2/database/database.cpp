@@ -18,8 +18,8 @@ void Database::add(Request request){
         _data[idx]._requests_vector.push_back(request._request);
 }
 
-void Database::add(Level level){
-    std::ptrdiff_t idx = find(level._pseudo);
+void Database::add(std::string pseudo, std::string level){
+    std::ptrdiff_t idx = find(pseudo.c_str());
     if (idx != -1)
         _data[idx]._levels_vector.push_back(level);
 }
@@ -114,7 +114,7 @@ std::vector<Profile> Database::checkLeaderboard(){
 }
 
 // retourne les levels de tous les accounts
-std::vector<Level> Database::checkLevels(){
+std::vector<std::string> Database::checkLevels(){
 	// on parcourt la base de données et on ajoute level
     _levels.clear();
     for (AccountAndVectors &acc_vect : _data){
@@ -122,6 +122,10 @@ std::vector<Level> Database::checkLevels(){
             _levels.push_back(level);
         }
     }
+    // affichage
+    for (auto x : _levels)
+        std::cout << x << std::endl;
+    std::cout << "-----------------" << std::endl;
     return _levels;
 }
 
@@ -228,11 +232,11 @@ void Database::dbLoad(){
     FILE* accounts;
     FILE* friends;
     FILE* requests;
-    FILE* levels;
+
     const char* c_path = _path.c_str();
     const char* c_path_frnd = _path_frnd.c_str();
     const char* c_path_req = _path_req.c_str();
-    const char* c_path_level = _path_level.c_str();
+
 
     // verif existence du fichier
     struct stat buffer;
@@ -256,13 +260,6 @@ void Database::dbLoad(){
             throw "Could not create requests file!";
         }
         fclose(requests);
-    }    
-    if (!(stat (c_path_level, &buffer) == 0)){
-    	requests = fopen(c_path_level, "wb");
-    	if (levels == nullptr){
-            throw "Could not create levels file!";
-        }
-        fclose(requests);
     } 
 
     accounts = fopen(c_path, "rb");
@@ -278,11 +275,6 @@ void Database::dbLoad(){
     requests = fopen(c_path_req, "rb");
     if (requests == nullptr){
         throw "Could not open requests file!";
-    }
-
-    levels = fopen(c_path_level, "rb");
-    if (levels == nullptr){
-        throw "Could not open levels file!";
     }
 
     std::cout << "------------Load------------\n\n";
@@ -302,16 +294,28 @@ void Database::dbLoad(){
         add(req);
     }
     // chargement levels
-    Level lev;
-    while(fread(&lev,sizeof(Level),1,levels)){
-        add(lev);
+    std::fstream levels;
+    levels.open(_path_level, std::ios::app);
+    if(!levels){
+       std::cout<<"Error in creating file!!!";
+       throw ;
+    }
+    else{
+        std::string name;
+        while (std::getline(levels, name)){
+            std::string str;
+            std::getline(levels, str);
+            std::cout << name << "\n";
+            std::cout << str << "\n";
+            add(name, str);
+        }
     }
 
     display(); 
     fclose(accounts);
     fclose(friends);
     fclose(requests);
-    fclose(levels);
+    levels.close();
 }
 
 // ecriture des accounts dans le fichier _path
@@ -320,7 +324,8 @@ void Database::dbSave(){
     FILE* out = fopen(_path.c_str(),"wb");
     FILE* out_frnd = fopen(_path_frnd.c_str(),"wb");
     FILE* out_req = fopen(_path_req.c_str(),"wb");
-    FILE* out_level = fopen(_path_level.c_str(),"wb");
+    std::fstream levels;
+    levels.open(_path_level, std::ios::out);
 
     for (auto account : _data){
         char* pseudo = account.acc._pseudo;
@@ -334,14 +339,19 @@ void Database::dbSave(){
             Request req(pseudo, req_in_vect.c_str());
             fwrite(&req,sizeof(Request),1,out_req);
         }
-        for (auto level_in_vect : account._levels_vector){
-            fwrite(&level_in_vect,sizeof(Request),1,out_req);
-        }
+        
+        for (auto lev : account._levels_vector)
+            if (levels.is_open()){
+                std::string pseud(pseudo);
+                levels << pseudo << std::endl;
+                levels << lev << std::endl;
+                std::cout << "pseudo : " << pseudo << " level : " << lev << std::endl;
+            }
     }
     fclose(out);
     fclose(out_frnd);
     fclose(out_req);
-    fclose(out_level);
+    levels.close();
     display();
     std::cout << "\nSAVE FINNISH\n";
 }
@@ -368,7 +378,7 @@ void Database::display(){
         
         std::cout << "levels : [";
         for (auto level: _data[i]._levels_vector){
-            std::cout << level._level_name << ", ";
+            std::cout << level << ", ";
         }
         std::cout << "]" << std::endl << std::endl;
     }

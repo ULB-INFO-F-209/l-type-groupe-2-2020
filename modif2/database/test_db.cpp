@@ -48,6 +48,7 @@ int main()
 	std::vector<Profile> leaderboard = db.checkLeaderboard();
     db.updateScore(47, "poubelle");
     leaderboard = db.checkLeaderboard();
+    std::vector<std::string> levels = db.checkLevels();
 
 /*
     std::vector<char*> amis = db.getFriendList("helin");

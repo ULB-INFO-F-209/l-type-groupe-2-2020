@@ -118,6 +118,8 @@ private slots:
 	void save_level(Level my_level);
 	void custom_ennemy(Level my_level, int idx);
 	void custom_obstacle(Level my_level, int idx);
+	void custom_player(Level my_level);
+
 };
 
 #endif //MENU_HPP

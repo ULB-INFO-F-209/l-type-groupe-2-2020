@@ -2,12 +2,14 @@
 #define DATABASE_HPP
 
 #include <iostream>
+#include <fstream>
 #include <ostream>
 #include <vector>
 #include <algorithm>
 #include <sys/stat.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string>
 #include "account.hpp"
 #include "accountandvectors.hpp"
 #include "structures.hpp"
@@ -18,16 +20,16 @@ class Database{
     const std::string _path = "accounts.bin";
     const std::string _path_frnd = "friends.bin";
     const std::string _path_req = "requests.bin";
-    const std::string _path_level = "levels.bin";
+    const std::string _path_level = "levels.txt";
 
     std::vector<AccountAndVectors> _data{};
 	std::vector<Profile> _profiles{};
-	std::vector<Level> _levels{};
+	std::vector<std::string> _levels{};
 
     void add(Account account);
 	void add(Friend frnd);
 	void add(Request request);
-	void add(Level level);
+	void add(std::string pseudo, std::string level);
 
 public:
 	// Constructor
@@ -41,7 +43,7 @@ public:
 	bool delFriendRequest(char *pseudo1, char *pseudo2);
     std::vector<Profile> getFriendList(char* pseudo);
 	std::vector<Profile> checkLeaderboard();
-	std::vector<Level> checkLevels();
+	std::vector<std::string> checkLevels();
 
 	// Utilities
 	bool createAccount(char* pseudo, char* pswd);
