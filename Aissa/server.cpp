@@ -87,45 +87,45 @@ void Server::catchInput(char* input) {
 
 	if (input[0] == Constante::ACTION_MENU_PRINCIPAL) {
 		switch(input[1]) {
-			case Constante::SIGN_IN:
-				resClient(&processId, signIn(input));    //Ma_pseudo_mdp
-				break;					//a chaque connexion le server associe un pid a un pseudo
-			case Constante::SIGN_UP:
-				resClient(&processId, signUp(input));    //Mb_pseudo_mdp
-				break;
-			case Constante::ADD_FRIEND:
-				resClient(&processId, addFriend(input)); //Mc_PseudoMe_PseudoF
-				break;
-			case Constante::DEL_FRIEND:
-				resClient(&processId,delFriend(input)); //Md_Pseudo
-				break;
-			case Constante::SEND_FRIEND_REQUEST:
-                resClient(&processId,sendFriendRequest(input)); //Me&source&destination&pid
-				//resClient(processId, ret) avec ret le retour de checkleaderboard
-				break;
-			case Constante::GET_FRIEND_REQUEST:
-                getFriendRequest(input);
-                resClient(&processId,input); //Mf&pseudo&pid ==> get friend request
-				break;
-			case Constante::GET_FRIEND_LIST:
-                friendList(input); // input change il contient mtn le res de friendList
-                resClient(&processId,input);
-				//res = getFriendRequest(input); //Mg_Pseudo
-				break;
-			case Constante::LEARDERBOARD:
-                checkleaderboard(input); //Mh_ checkLeaderboard
-                resClient(&processId,input);
-				break;
-			case Constante::VIEW_PROFILE:
-				viewProfile(input); //Mi&pseudo  // input change il contient mtn le res de viewProfile
-                resClient(&processId,input); 
-				break;
-            case Constante::DEL_FRIEND_REQUEST:
-                resClient(&processId,delFriendRequest(input));
-                break;
-            case Constante::CLIENT_EXIT:
-                client_exit(&processId);
-                break;
+        case Constante::SIGN_IN:
+            resClient(&processId, signIn(input));    //Ma_pseudo_mdp
+            break;					//a chaque connexion le server associe un pid a un pseudo
+        case Constante::SIGN_UP:
+            resClient(&processId, signUp(input));    //Mb_pseudo_mdp
+            break;
+        case Constante::ADD_FRIEND:
+            resClient(&processId, addFriend(input)); //Mc_PseudoMe_PseudoF
+            break;
+        case Constante::DEL_FRIEND:
+            resClient(&processId,delFriend(input)); //Md_Pseudo
+            break;
+        case Constante::SEND_FRIEND_REQUEST:
+            resClient(&processId,sendFriendRequest(input)); //Me&source&destination&pid
+            //resClient(processId, ret) avec ret le retour de checkleaderboard
+            break;
+        case Constante::GET_FRIEND_REQUEST:
+            getFriendRequest(input);
+            resClient(&processId,input); //Mf&pseudo&pid ==> get friend request
+            break;
+        case Constante::GET_FRIEND_LIST:
+            friendList(input); // input change il contient mtn le res de friendList
+            resClient(&processId,input);
+            //res = getFriendRequest(input); //Mg_Pseudo
+            break;
+        case Constante::LEARDERBOARD:
+            checkleaderboard(input); //Mh_ checkLeaderboard
+            resClient(&processId,input);
+            break;
+        case Constante::VIEW_PROFILE:
+            viewProfile(input); //Mi&pseudo  // input change il contient mtn le res de viewProfile
+            resClient(&processId,input); 
+            break;
+        case Constante::DEL_FRIEND_REQUEST:
+            resClient(&processId,delFriendRequest(input));
+            break;
+        case Constante::CLIENT_EXIT:
+            client_exit(&processId);
+            break;
 		}		
 	} 
     else if (input[0] == Constante::GAME_SETTINGS){
@@ -145,17 +145,19 @@ void Server::catchInput(char* input) {
         t5.detach();
     } 
     else if (input[0] == Constante::LEVEL){
-        switch (input[1])
-        {
-        case Constante::SAVE_LEVEL:
-            _db.addLevel();
+        switch(input[1]){
+        case Constante::SAVE_LEVEL:{
+            std::string level_input(input);
+            std::cout << level_input.rfind(Constante::DELIMITEUR) <<std::endl;
+            std::cout << level_input[level_input.rfind(Constante::DELIMITEUR)] << std::endl;
+            std::cout << level_input.substr(level_input.rfind("|")+1,level_input.rfind(Constante::DELIMITEUR)) <<std::endl;
+            _db.add(level_input,level_input.substr(level_input.rfind("|")+1,level_input.rfind(Constante::DELIMITEUR)));
             resClient(&processId,Constante::ALL_GOOD);
             break;
+        }
 
         case Constante::LOAD_LEVEL:
 
-            break;
-        default:
             break;
         }
     }
@@ -362,7 +364,6 @@ void Server::resClient(std::string* processId, int res) {
 
     char pipe_name[Constante::CHAR_SIZE];
     sprintf(pipe_name,"%s%s%s", Constante::PIPE_PATH, Constante::BASE_PIPE_FILE,(*processId).c_str());
-
     std::cout << "resultat requete : " << message <<" sur le pipe "<<pipe_name << std::endl; 
 
 	fd = open(pipe_name,O_WRONLY);

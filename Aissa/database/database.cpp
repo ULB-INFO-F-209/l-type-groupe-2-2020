@@ -18,10 +18,12 @@ void Database::add(Request request){
         _data[idx]._requests_vector.push_back(request._request);
 }
 
-void Database::add(std::string pseudo, std::string level){
+void Database::add( std::string level,std::string pseudo){
     std::ptrdiff_t idx = find(pseudo.c_str());
     if (idx != -1)
         _data[idx]._levels_vector.push_back(level);
+    else
+        std::cout << "[ERROR DATABASE] PSEUDO NOT FIND : "<< pseudo <<std::endl;
 }
 
 //getters

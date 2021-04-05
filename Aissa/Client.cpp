@@ -163,7 +163,7 @@ std::string Client::read_game_pipe(){
 
 void Client::createLevel(const char * level_info){
 	char buffer[Constante::CHAR_SIZE];
-	sprintf(buffer, "%s", level_info);
+	sprintf(buffer, "%s&%d", level_info,_pid);
 	communication(buffer);
 
 }

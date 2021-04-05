@@ -29,7 +29,6 @@ class Database{
     void add(Account account);
 	void add(Friend frnd);
 	void add(Request request);
-	void add(std::string pseudo, std::string level);
 
 public:
 	// Constructor
@@ -46,6 +45,7 @@ public:
 	std::vector<std::string> checkLevels();
 
 	// Utilities
+	void add(std::string pseudo, std::string level);
 	bool createAccount(char* pseudo, char* pswd);
 	bool updateScore(int score, char* pseudo);
 	int friendRequest(char* pseudoSrc, char* pseudoDest);

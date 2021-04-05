@@ -988,6 +988,11 @@ void Menu::save_level(Level my_level){
         std::string level_name = (name_edit->text()).toUtf8().constData();
         Level copy_level = my_level;
         std::string string_level = level_to_str(&copy_level, level_name);
+        Level test = level_from_str(string_level);
+        char pseudo[Constante::SIZE_PSEUDO];
+        _client.get_pseudo(pseudo);
+        string_level += "|";
+        string_level += pseudo;
         _client.createLevel(string_level.c_str());
         Dialog->hide();
     });
@@ -999,6 +1004,7 @@ void Menu::save_level(Level my_level){
 
 
 }
+
 void Menu::custom_ennemy(Level my_level, int idx){
     QDialog * Dialog = new QDialog(this);
     Dialog->resize(859, 665);
