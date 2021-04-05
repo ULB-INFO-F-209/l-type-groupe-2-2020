@@ -463,7 +463,7 @@ void Server::get_game_settings(char* input, Parsing::Game_settings* game_sett){
 void Server::launch_game(Parsing::Game_settings* sett_game){
 
     char input_pipe[Constante::CHAR_SIZE],send_response_pipe[Constante::CHAR_SIZE];
-    bool gameOn=true;int inp;
+    bool gameOn=true;int inp[11];
 
     sprintf(input_pipe,"%s%s%s",Constante::PIPE_PATH,Constante::BASE_INPUT_PIPE,sett_game->pid);
     sprintf(send_response_pipe,"%s%s%s",Constante::PIPE_PATH,Constante::BASE_GAME_PIPE,sett_game->pid);
@@ -475,9 +475,8 @@ void Server::launch_game(Parsing::Game_settings* sett_game){
     #endif
     std::string resp;
     while(gameOn){
-        inp = read_game_input(input_pipe);  
-        if(inp == Constante::ERROR_PIPE_GAME || inp == Constante::CLIENT_LEAVE_GAME) return; // Le client est parti ou alors le pipe a été supprimer 
-        
+        read_game_input(input_pipe, inp);  
+        //if(inp == Constante::ERROR_PIPE_GAME || inp == Constante::CLIENT_LEAVE_GAME) return; // Le client est parti ou alors le pipe a été supprimer 
         resp = game.run_server(inp);                                                        //  le jeu du server
         if(resp == Constante::GAME_END){  // if game over
             gameOn=false;
@@ -538,24 +537,27 @@ void Server::resClient(char* pipe, std::string* res){
  * @param pipe : le pipe à lire 
  * @return int : le char pressé par le clients, -1 si rien n'est pressé
  */
-int Server::read_game_input(char * pipe){
-    int message;
+int* Server::read_game_input(char * pipe, int *inp){
+    int message[11];
     
     int fd =open(pipe, O_RDONLY);
     if (fd != -1){
-        int val = read(fd,&message,sizeof(int)); 
+        int val = read(fd,&message,sizeof(int)*11); 
         if (val == -1)std::cerr << "[ERROR] CAN'T READ IN INPUT 2 PIPE " <<std::endl;
         
     }
     else{
         std::cerr << "[ERROR PIPE INPUT 2 ]" <<std::endl;
         close(fd);
-        return Constante::ERROR_PIPE_GAME;
+        //return Constante::ERROR_PIPE_GAME;
     };
     close(fd);
     #ifdef DEBUG_GAME
-        std::cout << "FROM CLIENT : "<<message<< std::endl;
+        for(int i = 0; i <11; i++)
+            std::cout << "FROM CLIENT : "<<message[i]<< std::endl;
     #endif
+    for(int i = 0; i <11; i++)
+        inp[i] = message[i];
     return message;
 
 }

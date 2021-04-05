@@ -317,11 +317,9 @@ void Menu::launch_game(Game_settings* game_option){
 	sf::RenderWindow* window = display_game.getWindow();
 
     bool gameOn = true;
-    int inp = -1;
+    std::vector<int> inp;
 	std::string string_game_to_display;
 	std::string string_previous_game_to_display;
-
-	
 
 
     while(gameOn && window->isOpen()){ 
@@ -332,13 +330,14 @@ void Menu::launch_game(Game_settings* game_option){
             if (event.type == sf::Event::Closed)
                 window->close();
 			if (event.type == sf::Event::KeyPressed)
-				inp = display_game.getInputWindow();		
+				display_game.getInputWindow(&inp);
         }
-
+	
 		window->clear();
 		_client.send_game_input(inp);
-		inp = -1;
-		
+		inp.clear();
+
+		inp.push_back(-1);
 		string_game_to_display = _client.read_game_pipe();
 		if (string_game_to_display != Constante::GAME_END)
 			string_previous_game_to_display = string_game_to_display;
@@ -367,7 +366,7 @@ void Menu::launch_game(Game_settings* game_option){
 		while (window->pollEvent(event))
         {
 			if (event.type == sf::Event::KeyPressed)
-				in_char = display_game.getInputWindow();
+				in_char = display_game.getInputWindow(&inp);
         }
         if(in_char == 'p')break;
     }

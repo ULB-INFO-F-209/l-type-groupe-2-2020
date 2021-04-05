@@ -68,7 +68,7 @@ private:
     //inputs
     void handleIncommingMessages();
     void catchInput(char *); 
-    int read_game_input(char * pipe);
+    int* read_game_input(char * pipe, int *inp);
 
     //queries
     bool signIn(char* );

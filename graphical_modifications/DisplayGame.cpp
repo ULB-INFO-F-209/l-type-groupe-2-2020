@@ -49,94 +49,84 @@ void DisplayGame::close(){
     delwin(game_wnd);
     endwin();
 }
-int DisplayGame::getInputWindow(){
+int DisplayGame::getInputWindow(std::vector<int> *inp){
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
 	{
-		return 'q';
+		inp->push_back('q');
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
 	{
-		return 'z';
+		inp->push_back('z');
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
-		return 's';
+		inp->push_back('s');
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
-		return 'd';
+		inp->push_back('d');
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
 	{
-		return 'e';
+		inp->push_back('e');
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
-		return 'a';
+		inp->push_back('a');
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
-		return 'w';
+		inp->push_back('w');
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::C))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::C))
 	{
-		return 'c';
+		inp->push_back('c');
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
 	{
-		return 'q';
+		inp->push_back('f');
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::T))
 	{
-		return 'z';
+		inp->push_back('t');
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::G))
 	{
-		return 'f';
+		inp->push_back('g');
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::T))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::H))
 	{
-		return 't';
+		inp->push_back('h');
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::G))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
 	{
-		return 'g';
+		inp->push_back('r');
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::H))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Y))
 	{
-		return 'h';
+		inp->push_back('y');
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::N))
 	{
-		return 'r';
+		inp->push_back('n');
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Y))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::V))
 	{
-		return 'y';
+		inp->push_back('v');
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::N))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
 	{
-		return 'n';
+		inp->push_back('m');
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::V))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
-		return 'v';
+		inp->push_back(' ');
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::P))
 	{
-		return 'm';
+		inp->push_back('p');
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-	{
-		return ' ';
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::P))
-	{
-		return 'p';
-	}
-	else{
-		return -1;
-	}
+	
 }
 void DisplayGame::parse_affichage(std::string instruction){
 	std::string objet; size_t idx ;

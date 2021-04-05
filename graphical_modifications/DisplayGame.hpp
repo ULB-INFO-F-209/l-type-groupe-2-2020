@@ -88,7 +88,7 @@ public:
 	void drawEndGame(std::string score);
 	void drawNewLevel(int tick,int levelTick,int currentLevel);
 	//...
-	int getInputWindow();
+	int getInputWindow(std::vector<int>* inp);
 	int inline getInput(){return wgetch(main_wnd);}
     
 	//Destructor
