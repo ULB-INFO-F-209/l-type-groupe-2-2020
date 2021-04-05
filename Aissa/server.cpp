@@ -127,7 +127,8 @@ void Server::catchInput(char* input) {
                 client_exit(&processId);
                 break;
 		}		
-	} else if (input[0] == Constante::GAME_SETTINGS){
+	} 
+    else if (input[0] == Constante::GAME_SETTINGS){
         Parsing::Game_settings game_sett;
         get_game_settings(input,&game_sett); 
         resClient(&processId,Constante::GAME_CAN_BE_LAUNCH);
@@ -140,11 +141,25 @@ void Server::catchInput(char* input) {
             }
         }
         mtx_game.unlock(); 
-
         std::thread t5(&Server::launch_game,this,&game_sett); // thread du jeu
         t5.detach();
+    } 
+    else if (input[0] == Constante::LEVEL){
+        switch (input[1])
+        {
+        case Constante::SAVE_LEVEL:
+            _db.addLevel();
+            resClient(&processId,Constante::ALL_GOOD);
+            break;
 
-	} else {
+        case Constante::LOAD_LEVEL:
+
+            break;
+        default:
+            break;
+        }
+    }
+    else {
 		std::cerr << "[ERROR IN INPUT 1]" << std::endl;
 		return;
 	}

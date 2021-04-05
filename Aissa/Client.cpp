@@ -62,7 +62,6 @@ bool Client::signUp(const char *pseudo, const char *pswd){
 	return success; 
 }
 
-
 bool Client::addFriend(char *p_friend){ //no need to check 
 	char buffer[Constante::CHAR_SIZE];
 	sprintf(buffer, "Mc&%s&%s&%d", _pseudo, p_friend,_pid);
@@ -133,8 +132,6 @@ void Client::exit(){
 	
 }
 
-
-
 int  Client::createGame(char *game_info){
 	char buffer[Constante::CHAR_SIZE];
 	sprintf(buffer, "P&%s&%d", game_info,_pid);
@@ -163,6 +160,14 @@ std::string Client::read_game_pipe(){
 	
 	return std::string(buffer);
 }
+
+void Client::createLevel(const char * level_info){
+	char buffer[Constante::CHAR_SIZE];
+	sprintf(buffer, "%s", level_info);
+	communication(buffer);
+
+}
+ 
 
 void Client::send_game_input(int inp){
 

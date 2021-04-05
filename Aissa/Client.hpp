@@ -57,6 +57,7 @@ public:
     //Game
     
     int createGame(char * game_info);
+    void createLevel(const char * level_info);
     
     //state
     inline bool is_playing(){return _inGame;}

@@ -26,6 +26,9 @@ namespace Constante{
     //gestion des messages
     constexpr char ACTION_MENU_PRINCIPAL = 'M';
     constexpr char GAME_SETTINGS = 'P';
+    constexpr char LEVEL = 'L';
+    constexpr char SAVE_LEVEL = 'S';
+    constexpr char LOAD_LEVEL = 'L';
     constexpr char REPONSE_AMI = 'R';
     const char NO_PARTENER[] = {"Null"};
     constexpr char DELIMITEUR = '&';
@@ -40,6 +43,7 @@ namespace Constante{
     const int ERROR_PIPE_GAME = -100;
     const int CLIENT_END_GAME = -101;
     const int CLIENT_LEAVE_GAME = -1000;
+    const int ALL_GOOD = 100;
     const std::string GAME_END = "END GAME";
 
     // MENU

@@ -295,9 +295,10 @@ void Database::dbLoad(){
     }
     // chargement levels
     std::fstream levels;
-    levels.open(_path_level, std::ios::in);
+    levels.open(_path_level, std::ios::app);
     if(!levels){
-       std::cout<<"Error in creating file!!!";
+    std::cout << "salut bg"<<std::endl;
+       std::cout<<"Error in creating file!!!"<<std::endl;
        throw ;
     }
     else{

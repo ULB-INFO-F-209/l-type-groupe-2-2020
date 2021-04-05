@@ -988,7 +988,8 @@ void Menu::save_level(Level my_level){
         std::string level_name = (name_edit->text()).toUtf8().constData();
         Level copy_level = my_level;
         std::string string_level = level_to_str(&copy_level, level_name);
-        //_client.createLevel(string_level.c_str;
+        _client.createLevel(string_level.c_str());
+        Dialog->hide();
     });
     connect(cancel, &QPushButton::clicked, this, [this, Dialog](){
         Dialog->hide();

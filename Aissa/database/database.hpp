@@ -58,7 +58,7 @@ public:
 	void display();
 
 	// Extern
-	friend inline std::ostream& operator<< (std::ostream&, const Database&);
+	friend  std::ostream& operator<< (std::ostream&, const Database&);
 
 	// Destructor
 	~Database();

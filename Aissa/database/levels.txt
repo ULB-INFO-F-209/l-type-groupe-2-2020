@@ -1,2 +1,0 @@
-helin
-L_name_skin_hp_damage_speed|skin_hp_damage_speed|x_tick_skin_hp_damage_bonus_speed&x1_tick1_skin1_hp1_bonus1_speed1&......|x_tick_skin_hp_damage_speed&x1_tick1_skin1_hp1
