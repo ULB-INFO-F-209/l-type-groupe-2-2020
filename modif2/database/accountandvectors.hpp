@@ -3,13 +3,12 @@
 #include <cstring>
 #include <vector>
 #include "account.hpp"
-#include "level.hpp"
 
 class AccountAndVectors{
     Account acc;
     std::vector<std::string> _friends_vector{};
     std::vector<std::string> _requests_vector{};
-    std::vector<Level> _levels_vector{};
+    std::vector<std::string> _levels_vector{};
     friend class Database;
 
 public:

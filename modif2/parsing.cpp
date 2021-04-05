@@ -34,7 +34,30 @@ void Parsing::create_game_to_str(char *buffer, Game_settings * settings){
 	//buffer -> "nb_player&pseudo_hote&other_pseudo&drop_rate&ally_shot&nb_lives"
 }
 
-//std::string Parsing::level_to_str(Level *my_level){}
+std::string Parsing::level_to_str(Level *my_level, const std::string name){
+	std::string buffer = std::string("L_") + "S_" + std::string(name) + "_";
+
+	//player info
+	Player p = (my_level->player);
+	buffer += std::to_string(p.skin) +"_" + std::to_string(p.skin2) + "_" + std::to_string(p.hp) + "_" + std::to_string(p.damage) + "_" + std::to_string(p.speed);
+
+	//enemy
+	buffer += "|";
+	for(auto e : my_level->ennemy_list){
+		buffer += std::to_string(e.x) + "_" + std::to_string(e.tick) + "_" + std::to_string(e.skin) + "_" ;
+		buffer += std::to_string(e.hp) + "_" + std::to_string(e.damage) + "_" + std::to_string(e.bonus) + "_" + std::to_string(e.speed);
+		buffer += "&";
+	}
+	buffer += "|";
+	for(auto o : my_level->obs_list){
+		buffer += std::to_string(o.x) + "_" + std::to_string(o.tick) + "_" + std::to_string(o.skin) + "_" ;
+		buffer += std::to_string(o.hp) + "_" + std::to_string(o.damage) + "_" + std::to_string(o.speed);
+		buffer += "&";
+	}
+	std::cout << "level   = " << buffer<<std::endl;
+	return buffer;
+
+}
 
 //decodage
 void Parsing::profile_list_from_str(char *buffer,std::vector<Profile> *prof){
@@ -150,7 +173,135 @@ void Parsing::create_game_from_str(char *buffer, Game_settings * settings){
 
 }
 
-//Level Parsing::level_from_str(std::string){}
+Parsing::Level Parsing::level_from_str(std::string buffer){
+	Level my_level; 
+	constexpr char delim_obj = '&';
+	constexpr char delim_zone = '|';
+	constexpr char delim_attr= '_';
+
+	//player zone
+	std::size_t idx = buffer.find(delim_zone);
+	std::string player_zone = buffer.substr(0,idx);
+	buffer = buffer.substr(idx+1, buffer.size());
+	std::cout << " Player = "<< player_zone;
+
+	idx = player_zone.find(delim_attr);
+	std::string lettre = player_zone.substr(0,idx); //skin
+	player_zone = player_zone.substr(idx+1, player_zone.size());
+
+	idx = player_zone.find(delim_attr);
+	std::string lettre2 = player_zone.substr(0,idx); //skin
+	player_zone = player_zone.substr(idx+1, player_zone.size());
+
+	idx = player_zone.find(delim_attr);
+	std::string name = player_zone.substr(0,idx); //skin
+	player_zone = player_zone.substr(idx+1, player_zone.size());
+
+	idx = player_zone.find(delim_attr);
+	my_level.player.skin = std::stoi(player_zone.substr(0,idx)); //skin
+	player_zone = player_zone.substr(idx+1, player_zone.size());
+
+	idx = player_zone.find(delim_attr);
+	my_level.player.skin2 = std::stoi(player_zone.substr(0,idx)); //skin2
+	player_zone = player_zone.substr(idx+1, player_zone.size());
+
+	idx = player_zone.find(delim_attr);
+	my_level.player.hp = std::stoi(player_zone.substr(0,idx)); //hp
+	player_zone = player_zone.substr(idx+1, buffer.size());
+
+	idx = player_zone.find(delim_attr);
+	my_level.player.damage = std::stoi(player_zone.substr(0,idx)); //damage
+	player_zone = player_zone.substr(idx+1, player_zone.size());
+
+	idx = player_zone.find(delim_attr);
+	my_level.player.speed = std::stoi(player_zone.substr(0,idx)); //speed
+	player_zone = player_zone.substr(idx+1, player_zone.size());
+
+	//ennemy zone
+	idx = buffer.find(delim_zone);
+	std::string enemy_zone = buffer.substr(0,idx);
+	buffer = buffer.substr(idx+1, buffer.size());
+	std::cout << " enemy  = "<< enemy_zone;
+
+	while(enemy_zone.size() > 1){
+		Enemy e;
+
+		idx = enemy_zone.find(delim_obj);
+		std::string object = enemy_zone.substr(0,idx);
+		enemy_zone = enemy_zone.substr(idx+1, enemy_zone.size());
+		
+
+		idx = object.find(delim_attr);
+		e.x = std::stoi(object.substr(0,idx)); //skin2
+		object = object.substr(idx+1, object.size());
+
+		idx = object.find(delim_attr);
+		e.tick = std::stoi(object.substr(0,idx)); //skin2
+		object = object.substr(idx+1, object.size());
+
+		idx = object.find(delim_attr);
+		e.skin = std::stoi(object.substr(0,idx)); //skin
+		object = object.substr(idx+1, object.size());
+
+
+		idx = object.find(delim_attr);
+		e.hp = std::stoi(object.substr(0,idx)); //hp
+		object = object.substr(idx+1, buffer.size());
+
+		idx = object.find(delim_attr);
+		e.damage = std::stoi(object.substr(0,idx)); //damage
+		object = object.substr(idx+1, object.size());
+
+		idx = object.find(delim_attr);
+		e.speed = std::stoi(object.substr(0,idx)); //speed
+		object = object.substr(idx+1, object.size());
+
+		my_level.ennemy_list.push_back(e);
+	}
+
+	//obstacle Zone
+	idx = buffer.find(delim_zone);
+	std::string obs_zone = buffer.substr(0,idx);
+	buffer = buffer.substr(idx+1, buffer.size());
+	std::cout << " obstacle = "<< obs_zone;
+
+	while(obs_zone.size() > 1){
+		Obstacle e;
+
+		idx = obs_zone.find(delim_obj);
+		std::string object = obs_zone.substr(0,idx);
+		obs_zone = obs_zone.substr(idx+1, obs_zone.size());
+
+		idx = object.find(delim_attr);
+		e.x = std::stoi(object.substr(0,idx)); //skin2
+		object = object.substr(idx+1, object.size());
+
+		idx = object.find(delim_attr);
+		e.tick = std::stoi(object.substr(0,idx)); //skin2
+		object = object.substr(idx+1, object.size());
+
+		idx = object.find(delim_attr);
+		e.skin = std::stoi(object.substr(0,idx)); //skin
+		object = object.substr(idx+1, object.size());
+
+
+		idx = object.find(delim_attr);
+		e.hp = std::stoi(object.substr(0,idx)); //hp
+		object = object.substr(idx+1, buffer.size());
+
+		idx = object.find(delim_attr);
+		e.damage = std::stoi(object.substr(0,idx)); //damage
+		object = object.substr(idx+1, object.size());
+
+		idx = object.find(delim_attr);
+		e.speed = std::stoi(object.substr(0,idx)); //speed
+		object = object.substr(idx+1, object.size());
+
+		my_level.obs_list.push_back(e);
+	}
+
+	return my_level;
+}
 
 ///parsing to withdraw the user's info
 void Parsing::parsing(char* str, char* token1, char* token2) {
