@@ -86,10 +86,11 @@ class Menu : public QMainWindow{
     QAction* m_pActAdd = nullptr;
     QAction* m_pActRemove = nullptr;
 
-	int X_MIN = 0;
-	int X_MAX = 551;
-
 	int button_size = 60;
+
+	int X_MIN = 0;
+	int X_MAX = 551-button_size;
+
 
 public:
 	Menu();

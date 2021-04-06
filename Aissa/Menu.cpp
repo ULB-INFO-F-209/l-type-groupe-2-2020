@@ -915,7 +915,6 @@ void Menu::level_editor(Level my_level){
             level_copy.ennemy_list.push_back(newE);
             custom_ennemy(level_copy, level_copy.ennemy_list.size()-1);
         });
-    //std::cout << "adresse avant = "<<pic_ennemy<<std::endl;
     connect(obstacle_button, &QPushButton::clicked, this,[this, my_level](){
             Obstacle newO{}; Level level_copy = my_level; //probleme de constance
             level_copy.obs_list.push_back(newO);

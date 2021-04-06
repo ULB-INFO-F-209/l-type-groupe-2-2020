@@ -18,12 +18,13 @@ void Database::add(Request request){
         _data[idx]._requests_vector.push_back(request._request);
 }
 
-void Database::add( std::string level,std::string pseudo){
+void Database::add(std::string pseudo, std::string level){
     std::ptrdiff_t idx = find(pseudo.c_str());
+    
     if (idx != -1)
         _data[idx]._levels_vector.push_back(level);
     else
-        std::cout << "[ERROR DATABASE] PSEUDO NOT FIND : "<< pseudo <<std::endl;
+        std::cout << "[ERROR DATABASE] PSEUDO NOT FOUND : "<< pseudo <<std::endl;
 }
 
 //getters
@@ -295,24 +296,31 @@ void Database::dbLoad(){
     while(fread(&req,sizeof(Request),1,requests)){
         add(req);
     }
+
     // chargement levels
-    std::fstream levels;
-    levels.open(_path_level, std::ios::app);
+    std::ifstream levels;
+    levels.open(_path_level, std::ios::in | std::ios::binary);
     if(!levels){
-    std::cout << "salut bg"<<std::endl;
-       std::cout<<"Error in creating file!!!"<<std::endl;
-       throw ;
+        std::cout << "Levels empty"<<std::endl;
     }
     else{
-        std::string name;
-        while (std::getline(levels, name)){
-            std::string str;
-            std::getline(levels, str);
-            std::cout << name << "\n";
-            std::cout << str << "\n";
-            add(name, str);
+        size_t size1, size2;
+        char read_char_size1, read_char_size2;
+        while (levels.read(&read_char_size1, sizeof(size1))){        
+            std::string read_string1, read_string2;
+            size1 = read_char_size1;
+            read_string1.resize(size1);
+            levels.read(&read_string1[0], size1);
+
+            levels.read(&read_char_size2, sizeof(size2));
+            size2 = read_char_size2;
+            read_string2.resize(size2);
+            levels.read(&read_string2[0], size2);
+
+            add(read_string1, read_string2);
         }
     }
+    
 
     display(); 
     fclose(accounts);
@@ -327,8 +335,9 @@ void Database::dbSave(){
     FILE* out = fopen(_path.c_str(),"wb");
     FILE* out_frnd = fopen(_path_frnd.c_str(),"wb");
     FILE* out_req = fopen(_path_req.c_str(),"wb");
+    FILE* out_lev = fopen(_path_level.c_str(),"wb");
     std::fstream levels;
-    levels.open(_path_level, std::ios::out);
+    levels.open(_path_level, std::ios::out | std::ios::binary);
 
     for (auto account : _data){
         char* pseudo = account.acc._pseudo;
@@ -342,18 +351,26 @@ void Database::dbSave(){
             Request req(pseudo, req_in_vect.c_str());
             fwrite(&req,sizeof(Request),1,out_req);
         }
-        
+
         for (auto lev : account._levels_vector)
             if (levels.is_open()){
-                std::string pseud(pseudo);
-                levels << pseudo << std::endl;
-                levels << lev << std::endl;
-                std::cout << "pseudo : " << pseudo << " level : " << lev << std::endl;
-            }
+            std::string str(pseudo);
+            size_t size=str.size();
+            char char_size = char(size);
+            levels.write(&char_size,sizeof(size));
+            levels.write(&str[0],size);
+
+            size_t size2=lev.size();
+            char char_size2 = char(size2);
+            levels.write(&char_size2,sizeof(size2));
+            levels.write(&lev[0],size2);
+
+        }
     }
     fclose(out);
     fclose(out_frnd);
     fclose(out_req);
+    fclose(out_lev);
     levels.close();
     display();
     std::cout << "\nSAVE FINNISH\n";

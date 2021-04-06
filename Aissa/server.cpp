@@ -148,10 +148,9 @@ void Server::catchInput(char* input) {
         switch(input[1]){
         case Constante::SAVE_LEVEL:{
             std::string level_input(input);
-            std::cout << level_input.rfind(Constante::DELIMITEUR) <<std::endl;
-            std::cout << level_input[level_input.rfind(Constante::DELIMITEUR)] << std::endl;
-            std::cout << level_input.substr(level_input.rfind("|")+1,level_input.rfind(Constante::DELIMITEUR)) <<std::endl;
-            _db.add(level_input,level_input.substr(level_input.rfind("|")+1,level_input.rfind(Constante::DELIMITEUR)));
+            std::string pseudo = level_input.substr(level_input.rfind("|")+1,level_input.rfind(Constante::DELIMITEUR));
+            pseudo = pseudo.substr(0, pseudo.find(Constante::DELIMITEUR));
+            _db.add(pseudo, level_input);
             resClient(&processId,Constante::ALL_GOOD);
             break;
         }

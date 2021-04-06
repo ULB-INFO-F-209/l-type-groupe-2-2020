@@ -20,7 +20,7 @@ class Database{
     const std::string _path = "accounts.bin";
     const std::string _path_frnd = "friends.bin";
     const std::string _path_req = "requests.bin";
-    const std::string _path_level = "levels.txt";
+    const std::string _path_level = "levels.bin";
 
     std::vector<AccountAndVectors> _data{};
 	std::vector<Profile> _profiles{};

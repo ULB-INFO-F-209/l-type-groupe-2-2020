@@ -183,7 +183,7 @@ Parsing::Level Parsing::level_from_str(std::string buffer){
 	std::size_t idx = buffer.find(delim_zone);
 	std::string player_zone = buffer.substr(0,idx);
 	buffer = buffer.substr(idx+1, buffer.size());
-	std::cout << " Player = "<< player_zone<<std::endl;
+	std::cout << "Player = "<< player_zone<<std::endl;
 
 	idx = player_zone.find(delim_attr);
 	std::string lettre = player_zone.substr(0,idx); //skin
@@ -217,7 +217,7 @@ Parsing::Level Parsing::level_from_str(std::string buffer){
 	idx = buffer.find(delim_zone);
 	std::string enemy_zone = buffer.substr(0,idx);
 	buffer = buffer.substr(idx+1, buffer.size());
-	std::cout << " enemy  = "<< enemy_zone<<std::endl;
+	std::cout << "enemy  = "<< enemy_zone<<std::endl;
 
 	while(enemy_zone.size() > 1){
 		Enemy e;
@@ -226,7 +226,6 @@ Parsing::Level Parsing::level_from_str(std::string buffer){
 		std::string object = enemy_zone.substr(0,idx);
 		enemy_zone = enemy_zone.substr(idx+1, enemy_zone.size());
 		
-
 		idx = object.find(delim_attr);
 		e.x = std::stoi(object.substr(0,idx)); // x pos
 		object = object.substr(idx+1, object.size());
