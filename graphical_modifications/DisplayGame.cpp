@@ -1,8 +1,8 @@
 //TODO:
-// ajouter un tour de boucle pour l'affichage
+// press p to exit
 // exlosion finale (2P)
 // print lifebar boss
-// 2 players input
+
 
 
 #include "DisplayGame.hpp"
@@ -142,13 +142,13 @@ void DisplayGame::parse_affichage(std::string instruction){
 	instruction = instruction.substr(idx+1,instruction.size());
 
 	//dans l'ordre de reccurence (pour eviter trop de comparaison)
-	if(objet=="PE") 			//projectile ennemie
+	if(objet=="PE") 			//projectile ennemi
 		drawProjectile(x,y,true,false);
 	else if(objet=="PJ")		//projectile joueur
 		drawProjectile(x,y,false,true);
 	else if(objet=="PJ2")		//projectile joueur
 		drawProjectile(x,y,false,false);
-	else if(objet=="E"){			//Vaisseau ennemie
+	else if(objet=="E"){			//Vaisseau ennemi
 		int explo,tick;
 		idx = instruction.find(delimiteur_parametre);
 		explo = std::stoi(instruction.substr(0,idx));
@@ -170,8 +170,8 @@ void DisplayGame::parse_affichage(std::string instruction){
 		tick = std::stoi(instruction.substr(idx+1,instruction.length()));
 		drawPlayer(2,x,y,tick,explo);
 	}
-	else if(objet=="O")			//obstacle
-		drawObstacle(x,y);
+	//else if(objet=="O")			//obstacle
+		//drawObstacle(x,y);
 	else if(objet=="EB") 		//Boss
 		drawBoss(x,y);
 	else if(objet=="B"){		//Bonus
@@ -218,7 +218,7 @@ void DisplayGame::parse_etat(std::string instruction){
 	instruction = instruction.substr(idx+1,instruction.size());
 	idx = instruction.find(delimiteur_parametre);
 	tick = std::stoi(instruction.substr(0,idx));
-	drawUi(player,hp, score, life,bonustype,level,tick);
+	//drawUi(player,hp, score, life,bonustype,level,tick);
 }
 void DisplayGame::starHandler(){
 
@@ -254,8 +254,15 @@ void DisplayGame::drawNewLevel(int tick,int levelTick,int currentLevel) {
 }
 void DisplayGame::initGraphics(){
 	window = new sf::RenderWindow(sf::VideoMode(1000, 480), "L-TYPE");
-	window->setVerticalSyncEnabled(false);
+/*
+	sf::Vector2f viewCenter(500, 240);
+	sf::Vector2f viewHalfSize(1000, 480);
+	sf::View mainView(viewCenter, viewHalfSize);
+	window->setView(mainView);
+	
+*/
 
+	window->setVerticalSyncEnabled(false);
 	if (!texture.loadFromFile("healthbar.png"))
 	{
 		// error...
