@@ -138,6 +138,11 @@ int MapHandler::spawnBonuses(int x, int y) {
     return rand_spawn_bonus;
 }
 
+int MapHandler::spawnBonuses(int x, int y, bonusType bonus) {
+    bonuses_set.push_back(new Bonus(x, y, bonus ));
+    return bonus;
+}
+
 void MapHandler::changeLevel() {
 
     if(currentLevel==2){
@@ -295,8 +300,7 @@ void MapHandler::update_server(MapObject::type typ,int t){
 }
 
 void MapHandler::add_object_server(MapObject::type typ,int t){
-        // spawn a new object
-
+    // spawn a new object
     if(typ == MapObject::star )
         stars_set.push_back(new Star(rand() % field_bounds.width(), 0));
     else if(typ == MapObject::obstacle && t % 200 == 0 && !changingLevel && !bossSpawned){
@@ -313,7 +317,28 @@ void MapHandler::add_object_server(MapObject::type typ,int t){
           }
     }
     else if (typ==MapObject::boss && (currentLevel==3) && !bossSpawned){
-        boss_set.push_back(new Boss(0,0,{{0, 0},{18,6}},'&',1000,t + 100, enemyStartProjectileDamage));
+        boss_set.push_back(new Boss(0,0,{{0, 0},{18,6}},'&',bossStartHp,t + 100, enemyStartProjectileDamage));
+        bossSpawned=true;
+    }
+
+}
+void MapHandler::add_object_server(MapObject::type typ,int t,int x){
+    // spawn a new object
+    if(typ == MapObject::star )
+        stars_set.push_back(new Star(rand() % field_bounds.width(), 0));
+    else if(typ == MapObject::obstacle && t % 200 == 0 && !changingLevel && !bossSpawned){
+        obstacles_set.push_back(new Obstacle(x, 0, obstacleStartDamage,obstacleStartHp));
+    }
+    else if (typ == MapObject::enemyship && t%300==0 && !changingLevel&&!bossSpawned) {
+        int enemy_tick = t + rand() % 100;
+        enemy_ships_set.push_back(new EnemyShip(x, 0, {{10 - 1, 5},{3,2}}, '%', enemyStartHp,enemy_tick, enemyStartProjectileDamage));
+        enemyCount++;
+          if(enemyCount >= enemyLimit){
+              changingLevel = true;
+          }
+    }
+    else if (typ==MapObject::boss && (currentLevel==3) && !bossSpawned){
+        boss_set.push_back(new Boss(0,0,{{0, 0},{18,6}},'&',bossStartHp,t + 100, enemyStartProjectileDamage));
         bossSpawned=true;
     }
 
@@ -501,7 +526,7 @@ void MapHandler::checkCollision_server(int t, bool friendlyFire) {
             if (rand()%100<=probaBonus){
                 int posx = enemy_ships_set.at(e)->getPos().x;
                 int posy = enemy_ships_set.at(e)->getPos().y;
-                int rand_spawn_bonus = spawnBonuses(posx, posy);
+                spawnBonuses(posx, posy);
             }
             enemy_ships_set.erase(enemy_ships_set.begin() + e);
             if(enemyCount == enemyLimit && changingLevel && enemy_ships_set.empty()){

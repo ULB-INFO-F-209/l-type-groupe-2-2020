@@ -1,6 +1,5 @@
 /**
  * TODO:
- *  thread pour jouer en même temps (Aïssa)
  *  enlever static_cast !!
  */
 #include "CurrentGame.hpp"

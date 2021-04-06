@@ -1,8 +1,6 @@
 //TODO:
-// press p to exit
 // exlosion finale (2P)
 // print lifebar boss
-
 
 
 #include "DisplayGame.hpp"
@@ -125,6 +123,7 @@ int DisplayGame::getInputWindow(std::vector<int> *inp){
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::P))
 	{
 		inp->push_back('p');
+		return('p');
 	}
 	
 }
@@ -218,7 +217,7 @@ void DisplayGame::parse_etat(std::string instruction){
 	instruction = instruction.substr(idx+1,instruction.size());
 	idx = instruction.find(delimiteur_parametre);
 	tick = std::stoi(instruction.substr(0,idx));
-	//drawUi(player,hp, score, life,bonustype,level,tick);
+	drawUi(player,hp, score, life,bonustype,level,tick);
 }
 void DisplayGame::starHandler(){
 
@@ -359,16 +358,16 @@ void DisplayGame::initGraphics(){
 	laser2Sprite.setRotation(1.5);
 	laser2Sprite.setTexture(laser2);
 
-	tripleshotSprite.setScale(sf::Vector2f(0.12,0.12));
+	tripleshotSprite.setScale(sf::Vector2f(0.07,0.07));
 	tripleshotSprite.setTexture(tripleshotTex);
 
-	damageupSprite.setScale(sf::Vector2f(0.12,0.12));
+	damageupSprite.setScale(sf::Vector2f(0.07,0.07));
 	damageupSprite.setTexture(damageupTex);
 
 	lifestealSprite.setScale(sf::Vector2f(0.12,0.12));
 	lifestealSprite.setTexture(lifestealTex);
 
-	minigunSprite.setScale(sf::Vector2f(0.12,0.12));
+	minigunSprite.setScale(sf::Vector2f(0.07,0.07));
 	minigunSprite.setTexture(minigunTex);
 
 	enemySprite.setScale(sf::Vector2f(0.16,0.22));
@@ -693,11 +692,11 @@ void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinkin
 
 }
 void DisplayGame::drawBonus(int type, int x, int y){
-	//sf::RectangleShape bonusShape(sf::Vector2f(12.5,20));
-	//bonusShape.setFillColor(sf::Color::Yellow);
-	//bonusShape.setPosition(sf::Vector2f((x+1)*12.5,5 + y*20));
+	sf::RectangleShape bonusShape(sf::Vector2f(12.5,20));
+	bonusShape.setFillColor(sf::Color::Yellow);
+	bonusShape.setPosition(sf::Vector2f((x+1)*12.5,5 + y*20));
 	if(y*20 < 350){
-		//window->draw(bonusShape);
+		window->draw(bonusShape);
 		wattron(game_wnd, A_BOLD);
 		if(type==lifeSteal){
 			mvwaddch(game_wnd, y, x, 'L');
@@ -706,17 +705,17 @@ void DisplayGame::drawBonus(int type, int x, int y){
 		}
 		else if(type==minigun){
 			mvwaddch(game_wnd, y, x, 'M');
-			minigunSprite.setPosition(sf::Vector2f((x+1)*12.5-11,y*20-15));
+			minigunSprite.setPosition(sf::Vector2f((x+1)*12.5-12,y*20-15));
 			window->draw(minigunSprite);
 		}
 		else if(type==damageUp){
 			mvwaddch(game_wnd, y, x, 'D');
-			damageupSprite.setPosition(sf::Vector2f((x+1)*12.5-11,y*20-15));
+			damageupSprite.setPosition(sf::Vector2f((x+1)*12.5-12,y*20-15));
 			window->draw(damageupSprite);
 		}
 		else if(type==tripleShot){
 			mvwaddch(game_wnd, y, x, 'T');
-			tripleshotSprite.setPosition(sf::Vector2f((x+1)*12.5-11,y*20-15));
+			tripleshotSprite.setPosition(sf::Vector2f((x+1)*12.5-12,y*20-15));
 			window->draw(tripleshotSprite);
 		}
 		wattroff(game_wnd, A_BOLD);
@@ -880,7 +879,7 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
         else if (bonusType == noBonus)
             mvwprintw(main_wnd, 22, 69, "  B%d:  ", player + 1);
 		
-		health_bar2.setPosition(sf::Vector2f(460,380));
+		health_bar2.setPosition(sf::Vector2f(460+325,380));
 		window->draw(health_bar2);
 		sf::IntRect rect (0,0,200+((texture.getSize().x-200)/100)*hp,texture.getSize().y); //200=0
 		health_bar2.setTextureRect(rect);
@@ -889,19 +888,19 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 		guiText.setString("Score: "+std::to_string(score));
 		guiText.setCharacterSize(20); // exprimée en pixels, pas en points !
 		guiText.setColor(sf::Color::White);
-		guiText.setPosition(sf::Vector2f(470,440));
+		guiText.setPosition(sf::Vector2f(470+325,440));
 		window->draw(guiText);
 		//life
 		guiText.setString(std::to_string(hp)+"%");
 		guiText.setCharacterSize(18); // exprimée en pixels, pas en points !
 		guiText.setColor(sf::Color::White);
-		guiText.setPosition(sf::Vector2f(546,386));
+		guiText.setPosition(sf::Vector2f(546+325,386));
 		window->draw(guiText);
 		//n lives
 		guiText.setString("P2");
 		guiText.setCharacterSize(18); // exprimée en pixels, pas en points !
 		guiText.setColor(sf::Color::White);
-		guiText.setPosition(sf::Vector2f(468,387));
+		guiText.setPosition(sf::Vector2f(468+325,387));
 		window->draw(guiText);
 		//Bonus
 		if (bonusType == minigun)
@@ -916,20 +915,20 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 			guiText.setString("  B"+std::to_string(player+1)+": ");
 		guiText.setCharacterSize(20); // exprimée en pixels, pas en points !
 		guiText.setColor(sf::Color::White);
-		guiText.setPosition(sf::Vector2f(557,418));
+		guiText.setPosition(sf::Vector2f(557+325,418));
 		window->draw(guiText);
 		// hearts
 		if (lives>=1)
 		{
-			heartSprite.setPosition(sf::Vector2f(472,420));
+			heartSprite.setPosition(sf::Vector2f(472+325,420));
 			window->draw(heartSprite);
 			if(lives>=2)
 			{
-				heartSprite.setPosition(sf::Vector2f(502,420));
+				heartSprite.setPosition(sf::Vector2f(502+325,420));
 				window->draw(heartSprite);
 				if(lives==3)
 				{
-					heartSprite.setPosition(sf::Vector2f(532,420));
+					heartSprite.setPosition(sf::Vector2f(532+325,420));
 					window->draw(heartSprite);
 				}
 			}
@@ -943,7 +942,7 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 	guiText.setString("Level "+std::to_string(level));
 	guiText.setCharacterSize(20);
 	guiText.setColor(sf::Color::White);
-	guiText.setPosition(sf::Vector2f(275,380));
+	guiText.setPosition(sf::Vector2f(450,380));
 	window->draw(guiText);
 
 
