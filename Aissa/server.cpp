@@ -150,7 +150,26 @@ void Server::catchInput(char* input) {
             std::string level_input(input);
             std::string pseudo = level_input.substr(level_input.rfind("|")+1,level_input.rfind(Constante::DELIMITEUR));
             pseudo = pseudo.substr(0, pseudo.find(Constante::DELIMITEUR));
-            _db.add(pseudo, level_input);
+
+            //level name
+            std::size_t idx = level_input.find('|');
+            std::string player_zone = level_input.substr(0,idx);
+
+            idx = player_zone.find("_");
+            std::string lettre = player_zone.substr(0,idx);
+            player_zone = player_zone.substr(idx+1, player_zone.size());
+
+            idx = player_zone.find("_");
+            std::string name_level = player_zone.substr(0,idx);
+
+            // delete name & pid at the end
+            idx = level_input.rfind("|");
+            level_input = level_input.substr(0, idx);
+
+            std::cout << "name level = " << name_level << std::endl;
+            std::cout << "level = " << level_input << std::endl;
+
+            _db.add(pseudo, level_input, name_level, 0);
             resClient(&processId,Constante::ALL_GOOD);
             break;
         }

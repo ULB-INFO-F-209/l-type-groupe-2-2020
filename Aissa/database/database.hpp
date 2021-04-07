@@ -24,7 +24,7 @@ class Database{
 
     std::vector<AccountAndVectors> _data{};
 	std::vector<Profile> _profiles{};
-	std::vector<std::string> _levels{};
+	std::vector<DatabaseLevel> _levels{};
 
     void add(Account account);
 	void add(Friend frnd);
@@ -42,15 +42,16 @@ public:
 	bool delFriendRequest(char *pseudo1, char *pseudo2);
     std::vector<Profile> getFriendList(char* pseudo);
 	std::vector<Profile> checkLeaderboard();
-	std::vector<std::string> checkLevels();
+	std::vector<DatabaseLevel> checkLevels();
 
 	// Utilities
-	void add(std::string pseudo, std::string level);
 	bool createAccount(char* pseudo, char* pswd);
 	bool updateScore(int score, char* pseudo);
 	int friendRequest(char* pseudoSrc, char* pseudoDest);
 	bool addFriend(char *pseudo1, char *pseudo2);
     int removeFriend(char *pseudo1, char *pseudo2);
+	void add(std::string pseudo, std::string level, std::string nameLevel, int vote);
+	void incrementVote(std::string pseudo, std::string level);
 
     // File management
     void dbLoad();
