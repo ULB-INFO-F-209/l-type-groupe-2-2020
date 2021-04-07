@@ -42,7 +42,7 @@ void Client::communication(char *buffer){
 }
 
 //Communication
-bool Client::signIn(char *pseudo, char *pswd, bool true_connexion){
+bool Client::signIn(const char *pseudo, const char *pswd, bool true_connexion){
 	char buffer[Constante::CHAR_SIZE];
 	sprintf(buffer, "Ma&%s&%s&%d", pseudo, pswd, _pid);
 	communication(buffer);
@@ -52,7 +52,7 @@ bool Client::signIn(char *pseudo, char *pswd, bool true_connexion){
 	return success; 
 }
 
-bool Client::signUp(char *pseudo, char *pswd){
+bool Client::signUp(const char *pseudo, const char *pswd){
 	char buffer[Constante::CHAR_SIZE];
 	sprintf(buffer, "Mb&%s&%s&%d", pseudo, pswd, _pid);
 	communication(buffer);
@@ -61,7 +61,6 @@ bool Client::signUp(char *pseudo, char *pswd){
 	
 	return success; 
 }
-
 
 bool Client::addFriend(char *p_friend){ //no need to check 
 	char buffer[Constante::CHAR_SIZE];
@@ -133,8 +132,6 @@ void Client::exit(){
 	
 }
 
-
-
 int  Client::createGame(char *game_info){
 	char buffer[Constante::CHAR_SIZE];
 	sprintf(buffer, "P&%s&%d", game_info,_pid);
@@ -177,6 +174,12 @@ void Client::send_game_input(std::vector<int> inp){
 	close(fd);
 }
 
+void Client::createLevel(const char * level_info){
+	char buffer[Constante::CHAR_SIZE];
+	sprintf(buffer, "%s&%d", level_info,_pid);
+	communication(buffer);
+
+}
 
 
 

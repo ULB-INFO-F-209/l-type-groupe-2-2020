@@ -16,11 +16,20 @@ qt_exec_flag = -lQt5Widgets -lQt5Gui -lQt5Core -lGL -lpthread
 server: main_server.cpp server.o database.o account.o parsing.o CurrentGame.o MapHandler.o displaygame.o accountandvectors.o
 	g++  main_server.cpp CurrentGame.o server.o database.o account.o parsing.o MapHandler.o displaygame.o accountandvectors.o $(flag) $(sfml_flag) -o process_server
 
-client_terminal: main_client_terminal.cpp client.o parsing.o interface.o screen.o MenuTerminal.o CurrentGame.o MapHandler.o displaygame.o
-	g++  main_client_terminal.cpp  client.o parsing.o interface.o screen.o MenuTerminal.o CurrentGame.o MapHandler.o displaygame.o $(flag) $(sfml_flag) -o process_client_terminal
+client_terminal: main_client_terminal.cpp client.o parsing.o interface.o screen.o menuterminal.o CurrentGame.o MapHandler.o displaygame.o
+	g++  main_client_terminal.cpp  client.o parsing.o interface.o screen.o menuterminal.o CurrentGame.o MapHandler.o displaygame.o $(flag) $(sfml_flag) -o process_client_terminal
+	
+client_gui: main_client_gui.cpp client.o parsing.o  menugui.o 
+	g++  main_client_gui.cpp  client.o parsing.o  menugui.o $(qt_flag) $(flag) -Wl,-O1 -o process_client_gui  $(qt_exec_flag)
 	
 interface.o: Interface.cpp Interface.hpp screen.hpp
 	g++  -c Interface.cpp $(flag) $(sfml_flag) -o interface.o
+
+menugui.o: MenuGui.hpp MenuGui.cpp
+	g++ -c MenuGui.cpp $(qt_flag) -o menugui.o
+
+menuterminal.o: MenuTerminal.hpp MenuTerminal.cpp
+	g++  -c MenuTerminal.cpp $(flag) $(sfml_flag) -o menuterminal.o
 
 screen.o:screen.hpp screen.cpp
 	g++  -c screen.cpp $(flag) -o screen.o
@@ -28,8 +37,6 @@ screen.o:screen.hpp screen.cpp
 displaygame.o: DisplayGame.cpp DisplayGame.hpp
 	g++  -c DisplayGame.cpp $(flag) $(sfml_flag) -o displaygame.o
 
-MenuTerminal.o: MenuTerminal.hpp MenuTerminal.cpp
-	g++  -c MenuTerminal.cpp $(flag) $(sfml_flag) -o MenuTerminal.o
 
 client.o: Client.hpp Client.cpp Constante.hpp
 	g++  -c Client.cpp $(flag) -o client.o 
@@ -71,7 +78,10 @@ run_server:
 	make server && ./process_server
 
 run_client_terminal:
-	make client && ./process_client_terminal
+	make client_terminal && ./process_client_terminal
+
+run_client_gui:
+	make client_gui && ./process_client_gui
 
 clean:
 	rm *.o
