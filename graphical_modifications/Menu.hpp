@@ -24,6 +24,7 @@
 #include "Interface.hpp"
 #include "game_test/parsing.hpp"
 #include "DisplayGame.hpp"
+#include "SFML/Graphics.hpp"
 
 using namespace Parsing; //utilities
 using namespace Screen;

@@ -51,48 +51,51 @@ void MapObject::touched(int dam) {
 
 
 void MapHandler::spawnProjectile(int x, int y, int damage, bool type, int hp, int player){
-    if(player!=0) {
-        if (player_ships_set.size() == 2) {
-            if (player_ships_set.at(player - 1)->getCurrentBonus() == tripleShot) {
-                projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
-                projectiles_set.push_back(new Projectile(x - 1, y - 1, damage, type, hp, player));
-                projectiles_set.push_back(new Projectile(x + 1, y - 1, damage, type, hp, player));
+    if (y-1 >= 0) {
+        if(player!=0) {
+            if (player_ships_set.size() == 2) {
+                if (player_ships_set.at(player - 1)->getCurrentBonus() == tripleShot) {
+                    projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
+                    projectiles_set.push_back(new Projectile(x - 1, y - 1, damage, type, hp, player));
+                    projectiles_set.push_back(new Projectile(x + 1, y - 1, damage, type, hp, player));
 
-            } else if (player_ships_set.at(player - 1)->getCurrentBonus() == lifeSteal) {
-                projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
+                } else if (player_ships_set.at(player - 1)->getCurrentBonus() == lifeSteal) {
+                    projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
+                }
+                else if (player_ships_set.at(player - 1)->getCurrentBonus() == minigun) {
+                    projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
+                }
+                else if (player_ships_set.at(player - 1)->getCurrentBonus() == noBonus) {
+                    projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
+                }
+                else if (player_ships_set.at(player - 1)->getCurrentBonus() == damageUp) {
+                    projectiles_set.push_back(
+                            new Projectile(x, y - 1, player_ships_set.at(player - 1)->getShootDamage()+40, type, hp, player));
+                }
             }
-            else if (player_ships_set.at(player - 1)->getCurrentBonus() == minigun) {
-                projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
-            }
-            else if (player_ships_set.at(player - 1)->getCurrentBonus() == noBonus) {
-                projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
-            }
-            else if (player_ships_set.at(player - 1)->getCurrentBonus() == damageUp) {
-                projectiles_set.push_back(
-                        new Projectile(x, y - 1, player_ships_set.at(player - 1)->getShootDamage()+40, type, hp, player));
+            else {
+                if (player_ships_set.at(0)->getCurrentBonus() == tripleShot) {
+                    projectiles_set.push_back(new Projectile(x - 1, y - 1, damage, type, hp, player));
+                    projectiles_set.push_back(new Projectile(x + 1, y - 1, damage, type, hp, player));
+                    projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
+                } else if (player_ships_set.at(0)->getCurrentBonus() == lifeSteal) {
+                    projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp , player));
+                } else if (player_ships_set.at(0)->getCurrentBonus() == minigun) {
+                    projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
+                } else if (player_ships_set.at(0)->getCurrentBonus() == noBonus) {
+                    projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
+                }
+                else if (player_ships_set.at(0)->getCurrentBonus() == damageUp) {
+                    if (player_ships_set.at(0)->getShootDamage() != 20)
+                        player_ships_set.at(0)->setShootDamage(20);
+                    projectiles_set.push_back(
+                            new Projectile(x, y - 1, player_ships_set.at(0)->getShootDamage(), type, hp, player));
+                }
             }
         }
-        else {
-            if (player_ships_set.at(0)->getCurrentBonus() == tripleShot) {
-                projectiles_set.push_back(new Projectile(x - 1, y - 1, damage, type, hp, player));
-                projectiles_set.push_back(new Projectile(x + 1, y - 1, damage, type, hp, player));
-                projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
-            } else if (player_ships_set.at(0)->getCurrentBonus() == lifeSteal) {
-                projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp , player));
-            } else if (player_ships_set.at(0)->getCurrentBonus() == minigun) {
-                projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
-            } else if (player_ships_set.at(0)->getCurrentBonus() == noBonus) {
-                projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
-            }
-            else if (player_ships_set.at(0)->getCurrentBonus() == damageUp) {
-                if (player_ships_set.at(0)->getShootDamage() != 20)
-                    player_ships_set.at(0)->setShootDamage(20);
-                projectiles_set.push_back(
-                        new Projectile(x, y - 1, player_ships_set.at(0)->getShootDamage(), type, hp, player));
-            }
-        }
-    }
-    else projectilesEnemy_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
+        else projectilesEnemy_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
+    }    
+
 }
 
 
@@ -133,6 +136,11 @@ int MapHandler::spawnBonuses(int x, int y) {
     auto bonusT = bonusType(rand_spawn_bonus);
     bonuses_set.push_back(new Bonus(x, y, bonusT ));
     return rand_spawn_bonus;
+}
+
+int MapHandler::spawnBonuses(int x, int y, bonusType bonus) {
+    bonuses_set.push_back(new Bonus(x, y, bonus ));
+    return bonus;
 }
 
 void MapHandler::changeLevel() {
@@ -292,8 +300,7 @@ void MapHandler::update_server(MapObject::type typ,int t){
 }
 
 void MapHandler::add_object_server(MapObject::type typ,int t){
-        // spawn a new object
-
+    // spawn a new object
     if(typ == MapObject::star )
         stars_set.push_back(new Star(rand() % field_bounds.width(), 0));
     else if(typ == MapObject::obstacle && t % 200 == 0 && !changingLevel && !bossSpawned){
@@ -310,7 +317,28 @@ void MapHandler::add_object_server(MapObject::type typ,int t){
           }
     }
     else if (typ==MapObject::boss && (currentLevel==3) && !bossSpawned){
-        boss_set.push_back(new Boss(0,0,{{0, 0},{18,6}},'&',1000,t + 100, enemyStartProjectileDamage));
+        boss_set.push_back(new Boss(0,0,{{0, 0},{18,6}},'&',bossStartHp,t + 100, enemyStartProjectileDamage));
+        bossSpawned=true;
+    }
+
+}
+void MapHandler::add_object_server(MapObject::type typ,int t,int x){
+    // spawn a new object
+    if(typ == MapObject::star )
+        stars_set.push_back(new Star(rand() % field_bounds.width(), 0));
+    else if(typ == MapObject::obstacle && t % 200 == 0 && !changingLevel && !bossSpawned){
+        obstacles_set.push_back(new Obstacle(x, 0, obstacleStartDamage,obstacleStartHp));
+    }
+    else if (typ == MapObject::enemyship && t%300==0 && !changingLevel&&!bossSpawned) {
+        int enemy_tick = t + rand() % 100;
+        enemy_ships_set.push_back(new EnemyShip(x, 0, {{10 - 1, 5},{3,2}}, '%', enemyStartHp,enemy_tick, enemyStartProjectileDamage));
+        enemyCount++;
+          if(enemyCount >= enemyLimit){
+              changingLevel = true;
+          }
+    }
+    else if (typ==MapObject::boss && (currentLevel==3) && !bossSpawned){
+        boss_set.push_back(new Boss(0,0,{{0, 0},{18,6}},'&',bossStartHp,t + 100, enemyStartProjectileDamage));
         bossSpawned=true;
     }
 
@@ -498,7 +526,7 @@ void MapHandler::checkCollision_server(int t, bool friendlyFire) {
             if (rand()%100<=probaBonus){
                 int posx = enemy_ships_set.at(e)->getPos().x;
                 int posy = enemy_ships_set.at(e)->getPos().y;
-                int rand_spawn_bonus = spawnBonuses(posx, posy);
+                spawnBonuses(posx, posy);
             }
             enemy_ships_set.erase(enemy_ships_set.begin() + e);
             if(enemyCount == enemyLimit && changingLevel && enemy_ships_set.empty()){
@@ -596,7 +624,11 @@ std::string MapHandler::getState(int nlives_j1,int nlives_j2,int tick){
         pos = proj->getPos();
         x = std::to_string(pos.x);
         y = std::to_string(pos.y);
-        state.append("A_PJ_");
+        if(proj->getPlayer() == 1){
+            state.append("A_PJ_");
+        }else{
+            state.append("A_PJ2_");
+        }
         state.append(x);
         state.append("_");
         state.append(y);
@@ -637,7 +669,7 @@ std::string MapHandler::getState(int nlives_j1,int nlives_j2,int tick){
         if(lives[player->getPlayerNb()] > 0){
             // show player looses a life
 
-            if(tick % 100 < 50 && player->getHp()<=0 && tick < player->getKillTime()+300){
+            if(player->getHp()<=0 && tick < player->getKillTime()+300){
                 state.append(std::to_string(true));
             }
             else state.append(std::to_string(false));

@@ -165,13 +165,14 @@ class MapHandler final{
     int currentLevel = 1;
     int levelTick = 0; // sauvegarde du moment où on change de niveau
     bool changingLevel = false;
-    bool bossSpawned=false;
+    bool bossSpawned = false;
     int enemyCount = 0;
-    int enemyLimit=5; //nombre d'ennemis max par niveau
+    int enemyLimit = 5; //nombre d'ennemis max par niveau
     int enemyStartHp = 30;
     int enemyStartProjectileDamage = 10;
     int obstacleStartHp = 10;
     int obstacleStartDamage = 10;
+    int bossStartHp = 1000;
     difficulty dif;
     // Vecteur d'objets de la map
     std::vector<Boss*> boss_set;
@@ -210,12 +211,14 @@ public:
     void bossShoot(int tick);
     void explosion(); // lorsque Playership meurt, tous les ennemyShips perdent des HP
     int spawnBonuses(int x, int y);
+    int spawnBonuses(int x, int y, bonusType bonus);
     void changeLevel(); // changement des paramètres en fonction du niveau
     void update_server(MapObject::type typ,int i);
     void bossShoot_server(int tick);
     void enemyShoot_server(int tick); // tire automatique des ennemis
     void checkCollision_server(int t, bool friendlyFire);
     void add_object_server(MapObject::type type,int i);
+    void add_object_server(MapObject::type typ,int t,int x);
     void spawnObstacle(int posx);
     void spawnEnemy(int posx,int tick);
     void spawnBoss(int tick);

@@ -1,5 +1,34 @@
 #include "Menu.hpp"
 
+void drawGrid(sf::RenderWindow& win, int rows, int cols){
+    // initialize values
+    int numLines = rows+cols-2;
+    sf::VertexArray grid(sf::Lines, 2*(numLines));
+    win.setView(win.getDefaultView());
+    auto size = win.getView().getSize();
+    float rowH = 370/rows;
+    float colW = size.x/cols;
+    // row separators
+    for(int i=0; i < rows-1; i++){
+        int r = i+1;
+        float rowY = rowH*r;
+        grid[i*2].position = {0, 5 + rowY};
+        grid[i*2+1].position = {size.x, 5 +rowY};
+    }
+    // column separators
+    for(int i=rows-1; i < numLines; i++){
+        int c = i-rows+2;
+        float colX = colW*c;
+        grid[i*2].position = {colX, 0};
+        grid[i*2+1].position = {colX, size.y};
+    }
+    // draw it
+    win.draw(grid);
+}
+
+
+
+
 Interface Menu::window = Interface();
 
 void Menu::start_session(){
@@ -283,41 +312,67 @@ void Menu::get_players(Game_settings*set){
 
 void Menu::launch_game(Game_settings* game_option){
 	DisplayGame display_game;
-	sf::RenderWindow window(sf::VideoMode(1600, 1000), "SFML works!");
 	display_game.init(); 
 	display_game.initGraphics();
-    bool gameOn = true;
-    int inp = -1;
-	std::string string_game_to_display;
-	
-	sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+	sf::RenderWindow* window = display_game.getWindow();
 
-    while(gameOn && window.isOpen()){ //fenetre fermé -> terminal freeze
+    bool gameOn = true;
+    std::vector<int> inp;
+	std::string string_game_to_display;
+	std::string string_previous_game_to_display;
+
+
+    while(gameOn && window->isOpen()){ 
+
 		sf::Event event;
-        while (window.pollEvent(event))
+        while (window->pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
-                window.close();
+                window->close();
+			if (event.type == sf::Event::KeyPressed)
+				display_game.getInputWindow(&inp);
         }
-
-        // window.clear();
-        // window.draw(shape);
-        // window.display();
-
-        inp = display_game.getInput();
-		
+	
+		window->clear();
 		_client.send_game_input(inp);
+		inp.clear();
+
+		inp.push_back(-1);
 		string_game_to_display = _client.read_game_pipe();
-		if (string_game_to_display == Constante::GAME_END) break;
-		display_game.parse_instruction(string_game_to_display);
+		if (string_game_to_display != Constante::GAME_END)
+			string_previous_game_to_display = string_game_to_display;
+		if (string_game_to_display == Constante::GAME_END)
 		
+			break;
+			//gameOn = false;
+		display_game.parse_instruction(string_game_to_display);
+		//drawGrid(*window,18,80);
+		window->display();
 
     }
+	
+	//Last background
+	display_game.parse_instruction(string_previous_game_to_display);
+	window->display();
+
+	//Final Score
 	string_game_to_display = _client.read_game_pipe();
-	std::cout << string_game_to_display;
 	display_game.drawEndGame(string_game_to_display);
+	window->display();
+	sf::Event event;
+	
+	while(true){
+		char in_char = -1;
+		while (window->pollEvent(event))
+        {
+			if (event.type == sf::Event::KeyPressed)
+				in_char = display_game.getInputWindow(&inp);
+        }
+        if(in_char == 'p')break;
+    }
+
     display_game.close();
+	window->close();
 }
 
 

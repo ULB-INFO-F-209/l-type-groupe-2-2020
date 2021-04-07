@@ -1,10 +1,10 @@
 all : run_server run_client compile
 
-flag = -std=c++17 -masm=intel -lncurses -fconcepts -pthread \
+flag = -std=c++17 -lncurses -fconcepts -pthread \
 		-fopenacc -fopenmp -ggdb3 -Wpedantic -Wall -Wextra -Wconversion \
 		-Winline -Wsign-conversion -Weffc++ -Wstrict-null-sentinel -Wold-style-cast\
 		 -Wnoexcept -Wctor-dtor-privacy -Woverloaded-virtual -Wsign-promo -Wzero-as-null-pointer-constant\
-		 -Wsuggest-final-types -Wsuggest-final-methods  -Wsuggest-override -lquadmath -lsfml-graphics -lsfml-window -lsfml-system
+		 -Wsuggest-final-types -Wsuggest-final-methods  -Wsuggest-override -lsfml-graphics -lsfml-window -lsfml-system
 
 
 server: main_server.cpp server.o database.o account.o parsing.o CurrentGame.o MapHandler.o displaygame.o

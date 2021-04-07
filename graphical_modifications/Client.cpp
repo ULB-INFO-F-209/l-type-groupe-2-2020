@@ -164,10 +164,16 @@ std::string Client::read_game_pipe(){
 	return std::string(buffer);
 }
 
-void Client::send_game_input(int inp){
-
+void Client::send_game_input(std::vector<int> inp){
+	int res[11];
+	for(int i = 0; i <11; i++){
+		if(i >= inp.size())
+			res[i] = -2;
+		else
+			res[i] = inp.at(i);
+	}
 	int fd =  open(_pipe_input_game, O_WRONLY); 
-	write(fd, &inp, sizeof(int)); //sending query
+	write(fd, res, sizeof(int)*11); //sending query
 	close(fd);
 }
 

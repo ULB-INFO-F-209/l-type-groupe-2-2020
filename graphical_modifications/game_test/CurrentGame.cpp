@@ -1,6 +1,5 @@
 /**
  * TODO:
- *  thread pour jouer en même temps (Aïssa)
  *  enlever static_cast !!
  */
 #include "CurrentGame.hpp"
@@ -22,96 +21,99 @@ CurrentGame::CurrentGame(Parsing::Game_settings game_sett):twoPlayers(game_sett.
     }
 
 
-void CurrentGame::execInput(int inChar, uint_fast16_t x1, uint_fast16_t y1, bool firstPlayer){
-    if(firstPlayer){
-        switch(inChar) {
-            case 'q':
-                if(x1 > game_area.left() + 1)
-                    playership1->setPos(x1 - 1, y1);
-                break;
-            case 'p':
-                exit_requested = true;
-                break;
-            case 'z':
-                if(y1 > game_area.top())
-                    playership1->setPos(x1, y1 - 1);
-                break;
-            case 's':
-                if(y1 < game_area.bot())
-                    playership1->setPos(x1, y1 + 1);
-                break;
-            case 'd':
-                if(x1 < game_area.right() - 2)
-                    playership1->setPos(x1 + 1, y1);
-                break;
-            case 'a':
-                if((x1 > game_area.left() + 1) && (y1 > game_area.top())){
-                    playership1->setPos(x1 - 1, y1 - 1);}
-                break;
-            case 'e':
-                if((x1 < game_area.right() - 2) && (y1 > game_area.top())){
-                    playership1->setPos(x1 + 1, y1 - 1);}
-                break;
-            case 'c':
-                if((x1 < game_area.right() - 2) && (y1 < game_area.bot())){
-                    playership1->setPos(x1 + 1, y1 + 1);}
-                break;
-            case 'w':
-                if((x1 > game_area.left() + 1) && (y1 < game_area.bot())){
-                    playership1->setPos(x1 - 1, y1 + 1);}
-                break;
-            case ' ':
-                if(playership1->getHp()>0 && playership1->getCurrentBonus()!=minigun)
-                    map.spawnProjectile(playership1->getPos().x, playership1->getPos().y, playership1->getShootDamage(), true, 10, 1);
-                break;
-            default:
-            break;
-            }
+void CurrentGame::execInput(int* inChar, uint_fast16_t x1, uint_fast16_t y1, bool firstPlayer){
+    for(int i = 0; i <11; i++){
         
-    }
-    else{
-        switch(inChar) {
-            
-            case 'f':
-                if(x1 > game_area.left() + 1)
-                    playership2->setPos(x1 - 1 , y1);
-                break;
-            case 't':
-                if(y1 > game_area.top())
-                    playership2->setPos(x1, y1 - 1);;
-                break;
-            case 'g':
-                if(y1 < game_area.bot())
-                    playership2->setPos(x1 , y1 + 1);
-                break;
-            case 'h':
-                if(x1< game_area.right() - 2)
-                    playership2->setPos(x1 + 1 , y1);
-                break;
-            case 'r':
-                if((x1 > game_area.left() + 1) && (y1 > game_area.top())){
-                    playership2->setPos(x1 - 1 , y1 - 1);}
-                break;
-            case 'y':
-                if((x1 < game_area.right() - 2) && (y1 > game_area.top())){
-                    playership2->setPos(x1 + 1 , y1 - 1);}
-                break;
-            case 'n':
-                if((x1 < game_area.right() - 2) && (y1 < game_area.bot())){
-                    playership2->setPos(x1 + 1 , y1 + 1);}
-                break;
-            case 'v':
-                if((x1 > game_area.left() + 1) && (y1 < game_area.bot())){
-                    playership2->setPos(x1 - 1 , y1 + 1);}
-                break;
-            case 'm':
-                if(playership2->getHp()>0 && playership2->getCurrentBonus()!=minigun)
-                    map.spawnProjectile(playership2->getPos().x, playership2->getPos().y, playership1->getShootDamage(), true, 10, 2);
-                break;
-            default:
+        if(firstPlayer){
+            switch(inChar[i]) {
+                case 'q':
+                    if(x1 > game_area.left() + 1)
+                        playership1->setPos(x1 - 1, y1);
+                    break;
+                case 'p':
+                    exit_requested = true;
+                    break;
+                case 'z':
+                    if(y1 > game_area.top())
+                        playership1->setPos(x1, y1 - 1);
+                    break;
+                case 's':
+                    if(y1 < game_area.bot())
+                        playership1->setPos(x1, y1 + 1);
+                    break;
+                case 'd':
+                    if(x1 < game_area.right() - 2)
+                        playership1->setPos(x1 + 1, y1);
+                    break;
+                case 'a':
+                    if((x1 > game_area.left() + 1) && (y1 > game_area.top())){
+                        playership1->setPos(x1 - 1, y1 - 1);}
+                    break;
+                case 'e':
+                    if((x1 < game_area.right() - 2) && (y1 > game_area.top())){
+                        playership1->setPos(x1 + 1, y1 - 1);}
+                    break;
+                case 'c':
+                    if((x1 < game_area.right() - 2) && (y1 < game_area.bot())){
+                        playership1->setPos(x1 + 1, y1 + 1);}
+                    break;
+                case 'w':
+                    if((x1 > game_area.left() + 1) && (y1 < game_area.bot())){
+                        playership1->setPos(x1 - 1, y1 + 1);}
+                    break;
+                case ' ':
+                    if(playership1->getHp()>0 && playership1->getCurrentBonus()!=minigun)
+                        map.spawnProjectile(playership1->getPos().x, playership1->getPos().y, playership1->getShootDamage(), true, 10, 1);
+                    break;
+                default:
                 break;
                 }
+            
         }
+        else{
+            switch(inChar[i]) {
+                
+                case 'f':
+                    if(x1 > game_area.left() + 1)
+                        playership2->setPos(x1 - 1 , y1);
+                    break;
+                case 't':
+                    if(y1 > game_area.top())
+                        playership2->setPos(x1, y1 - 1);;
+                    break;
+                case 'g':
+                    if(y1 < game_area.bot())
+                        playership2->setPos(x1 , y1 + 1);
+                    break;
+                case 'h':
+                    if(x1< game_area.right() - 2)
+                        playership2->setPos(x1 + 1 , y1);
+                    break;
+                case 'r':
+                    if((x1 > game_area.left() + 1) && (y1 > game_area.top())){
+                        playership2->setPos(x1 - 1 , y1 - 1);}
+                    break;
+                case 'y':
+                    if((x1 < game_area.right() - 2) && (y1 > game_area.top())){
+                        playership2->setPos(x1 + 1 , y1 - 1);}
+                    break;
+                case 'n':
+                    if((x1 < game_area.right() - 2) && (y1 < game_area.bot())){
+                        playership2->setPos(x1 + 1 , y1 + 1);}
+                    break;
+                case 'v':
+                    if((x1 > game_area.left() + 1) && (y1 < game_area.bot())){
+                        playership2->setPos(x1 - 1 , y1 + 1);}
+                    break;
+                case 'm':
+                    if(playership2->getHp()>0 && playership2->getCurrentBonus()!=minigun)
+                        map.spawnProjectile(playership2->getPos().x, playership2->getPos().y, playership1->getShootDamage(), true, 10, 2);
+                    break;
+                default:
+                    break;
+                    }
+            }
+    }
 }
 
 
@@ -158,7 +160,7 @@ void CurrentGame::destroyPlayership(){
 }
 
 
-std::string CurrentGame::run_server(char move_to_exec){
+std::string CurrentGame::run_server(int *move_to_exec){
     // TODO: renommer move_to_exec (ambigu)
     execInput(move_to_exec, playership1->getPos().x, playership1->getPos().y, true);
     if(twoPlayers){
@@ -186,8 +188,6 @@ std::string CurrentGame::run_server(char move_to_exec){
     map.enemyShoot_server(tick);
     map.bossShoot_server(tick);
     map.updateBounds();
-    map.checkCollision_server(tick, friendlyFire);
-
 
     if(map.getBoss().empty() && map.getBossSpawned())
         game_over = true;
@@ -211,11 +211,15 @@ std::string CurrentGame::run_server(char move_to_exec){
         }
 
 
-    saveScore();// sauvegarde le score
     destroyPlayership();
+    map.checkCollision_server(tick, friendlyFire);
+    saveScore();// sauvegarde le score
+
     tick++;
     std::string to_ret = getPlayerState(map.getState(player1->getnLives(), player2 == nullptr?0:player2->getnLives(),tick));
-    if(game_over || exit_requested) return "END GAME";
+    if(game_over || exit_requested){
+         return "END GAME";
+    }
 
     return to_ret;
 };
@@ -250,7 +254,7 @@ std::string CurrentGame::getPlayerState(std::string state){
         state.append("_");
         state.append(std::to_string(playership2->getScore()));
         state.append("_");
-        state.append(std::to_string(playership1->getCurrentBonus()));
+        state.append(std::to_string(playership2->getCurrentBonus()));
         state.append("_");
         state.append(std::to_string(map.getCurrentLevel()));
         state.append("_");
