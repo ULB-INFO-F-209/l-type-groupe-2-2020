@@ -16,8 +16,8 @@ qt_exec_flag = -lQt5Widgets -lQt5Gui -lQt5Core -lGL -lpthread
 server: main_server.cpp server.o database.o account.o parsing.o CurrentGame.o MapHandler.o displaygame.o accountandvectors.o
 	g++  main_server.cpp CurrentGame.o server.o database.o account.o parsing.o MapHandler.o displaygame.o accountandvectors.o $(flag) $(sfml_flag) -o process_server
 
-client: main_client.cpp client.o parsing.o interface.o screen.o MenuTerminal.o CurrentGame.o MapHandler.o displaygame.o
-	g++  main_client.cpp  client.o parsing.o interface.o screen.o MenuTerminal.o CurrentGame.o MapHandler.o displaygame.o $(flag) $(sfml_flag) -o process_client_terminal
+client_terminal: main_client_terminal.cpp client.o parsing.o interface.o screen.o MenuTerminal.o CurrentGame.o MapHandler.o displaygame.o
+	g++  main_client_terminal.cpp  client.o parsing.o interface.o screen.o MenuTerminal.o CurrentGame.o MapHandler.o displaygame.o $(flag) $(sfml_flag) -o process_client_terminal
 	
 interface.o: Interface.cpp Interface.hpp screen.hpp
 	g++  -c Interface.cpp $(flag) $(sfml_flag) -o interface.o
@@ -62,7 +62,7 @@ Player.o: game_test/Player.cpp game_test/Player.hpp
 
 compile:
 	make server
-	make client
+	make client_terminal
 
 install:
 	echo "ecrire les commandes pour installer ncursus, sfml et qt5 -_- "
