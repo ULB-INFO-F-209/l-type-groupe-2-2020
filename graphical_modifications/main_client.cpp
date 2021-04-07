@@ -3,7 +3,7 @@
 
 int main(int argc, char const *argv[])
 {
-	Menu client{};
+	MenuTerminal client{};
 	client.start_session();
 	return 0;
 }

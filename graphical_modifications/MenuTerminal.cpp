@@ -29,27 +29,27 @@ void drawGrid(sf::RenderWindow& win, int rows, int cols){
 
 
 
-Interface Menu::window = Interface();
+Interface MenuTerminal::window = Interface();
 
-void Menu::start_session(){
+void MenuTerminal::start_session(){
 	signal(SIGINT,handle_SIGINT);
-	int menu = HOME;
-	while(menu != -1){ //-1 = quiter programme
-		if(menu==HOME)
-			menu = home();
-		else if(menu==MAIN)
-			menu = main_m();
-		else if(menu==FRIENDS)
-			menu = friends();
-		else if(menu==SETTINGS)
-			menu = lobby();
+	int MenuTerminal = HOME;
+	while(MenuTerminal != -1){ //-1 = quiter programme
+		if(MenuTerminal==HOME)
+			MenuTerminal = home();
+		else if(MenuTerminal==MAIN)
+			MenuTerminal = main_m();
+		else if(MenuTerminal==FRIENDS)
+			MenuTerminal = friends();
+		else if(MenuTerminal==SETTINGS)
+			MenuTerminal = lobby();
 	}
 	//_client.exit();
 	std::cout << "EXIT !"<<std::endl;
 }
 
-//MENU
-int Menu::home(){
+//MenuTerminal
+int MenuTerminal::home(){
 	int res=-1; 
 	int choice = window.print_menu(SIZE_HOME, connexion_menu,HOME);
 	switch(choice){
@@ -63,20 +63,20 @@ int Menu::home(){
 			res = -1;
 			break;
 	}
-	return res; //next menu
+	return res; //next MenuTerminal
 }
 
-int  Menu::friends(){ //decouper en fonction
+int  MenuTerminal::friends(){ //decouper en fonction
 	int res;
 	int choice = window.print_menu(SIZE_FRIENDS_MENU, friends_menu, FRIENDS);
 	switch(choice){
 		case 0: //Friend list
 			afficher_friends();
-			res = FRIENDS; //return to friends menu 
+			res = FRIENDS; //return to friends MenuTerminal 
 			break;
 		case 1: //Friend request
 			request_management();
-			res = FRIENDS; //return to friend menu
+			res = FRIENDS; //return to friend MenuTerminal
 			break;
 		case 2: //add friend
 			add_del_friends(true);
@@ -86,7 +86,7 @@ int  Menu::friends(){ //decouper en fonction
 			add_del_friends(false);
 			res = FRIENDS;
 			break;
-		default: //back to main menu (-1)
+		default: //back to main MenuTerminal (-1)
 			res = MAIN;
 			break;
 	}
@@ -94,7 +94,7 @@ int  Menu::friends(){ //decouper en fonction
 
 }
 
-int  Menu::main_m(){
+int  MenuTerminal::main_m(){
 	int res; char buffer[Constante::CHAR_SIZE];
 	std::vector<Profile> profile_list;
 	Profile profile;
@@ -130,7 +130,7 @@ int  Menu::main_m(){
 	return res;
 }
 
-int Menu::lobby(){
+int MenuTerminal::lobby(){
 	int res = SETTINGS; //return to lobby 
 	Game_settings setting{}; int ret; bool stop = false;
 	char buffer[Constante::CHAR_SIZE];
@@ -179,7 +179,7 @@ int Menu::lobby(){
 }
 
 //home utilities
-int Menu::connexion(bool sign_in){
+int MenuTerminal::connexion(bool sign_in){
 	bool success = false, quit=false;
 	char pseudo[20], pswd[20];
 	int res = MAIN, error=NO_ERROR; //connexion successed
@@ -210,7 +210,7 @@ int Menu::connexion(bool sign_in){
 }
 
 //Friends utilities
-void Menu::afficher_friends(){
+void MenuTerminal::afficher_friends(){
 	char buffer[Constante::CHAR_SIZE];
 	std::vector<Profile> vect;
 	_client.getFriendList(buffer);
@@ -219,7 +219,7 @@ void Menu::afficher_friends(){
 	window.print_profile(&vect, Y_FRIENDS);
 }
 
-void Menu::request_management(){
+void MenuTerminal::request_management(){
 	int ret=true; char buffer[Constante::CHAR_SIZE]; 
 	int answer[2] = {0,0};
 	while(ret){
@@ -236,7 +236,7 @@ void Menu::request_management(){
 	}
 }
 
-void Menu::add_del_friends(bool add){
+void MenuTerminal::add_del_friends(bool add){
 	char  buffer[Constante::CHAR_SIZE];
 	int success=1, error = NO_ERROR; 
 	bool quit = false;
@@ -277,7 +277,7 @@ void Menu::add_del_friends(bool add){
 }
 
 //game utilities
-void Menu::get_players(Game_settings*set){
+void MenuTerminal::get_players(Game_settings*set){
 
 	int choice = 1; int error = NO_ERROR;
 	bool quit=false; char pswd[20], pseudo[20];
@@ -310,7 +310,7 @@ void Menu::get_players(Game_settings*set){
 		set->nb_player = 1;
 }
 
-void Menu::launch_game(Game_settings* game_option){
+void MenuTerminal::launch_game(Game_settings* game_option){
 	DisplayGame display_game;
 	display_game.init(); 
 	display_game.initGraphics();
@@ -376,7 +376,7 @@ void Menu::launch_game(Game_settings* game_option){
 }
 
 
-void Menu::handle_SIGINT(int sig){
+void MenuTerminal::handle_SIGINT(int sig){
 	char pipe_to_server[Constante::SIZE_pipe];
 	sprintf(pipe_to_server, "%s%s", Constante::PIPE_PATH, Constante::PIPE_DE_REPONSE); //pipe où écrire
 	char buffer[Constante::CHAR_SIZE];

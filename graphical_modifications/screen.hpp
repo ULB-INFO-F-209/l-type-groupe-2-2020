@@ -4,13 +4,13 @@
 
 namespace Screen{
 
-	//MENU TITLES
+	//MenuTerminal TITLES
 	extern std::string HOME_TITLE;
 	extern std::string MAIN_TITLE;
 	extern std::string FRIENDS_TITLE;
 	extern std::string LOBBY_TITLE;
 
-	//OTHER MENU TITLE
+	//OTHER MenuTerminal TITLE
 	extern std::string SIGN_IN;
 	extern std::string SIGN_UP;
 	extern std::string ADD_FRIEND;
@@ -22,7 +22,7 @@ namespace Screen{
 	extern std::string  CHECK_USER;
 	extern std::string  PROFILE2;
 
-	//SAYING FOR MENU 
+	//SAYING FOR MenuTerminal 
 	extern std::string HOME_SAYING;
 	extern std::string MAIN_SAYING;
 	extern std::string MAIN_SAYING2;

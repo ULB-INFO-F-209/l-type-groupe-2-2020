@@ -1,15 +1,15 @@
 /*
 	Ajouter:
-		titre aux menu
-		option quitter pour venir au précédent menu
-		option log out dans le menu principale
+		titre aux MenuTerminal
+		option quitter pour venir au précédent MenuTerminal
+		option log out dans le MenuTerminal principale
 	Bugs:
 		verifier les entrée (user met une lettre dans int ..faut gérer)
 		LE BOUTONNNNN EXITTT  du programme
 
 	commentaire:
 		_Utiliser les thread evite de faire full stack. Sans thread y'aura trop 
-		d'appelle de menu successive sur le stack, et même de la réentrance de code
+		d'appelle de MenuTerminal successive sur le stack, et même de la réentrance de code
 		_DECOMMENTER POUR UTILISER CLIENT
 
 */
@@ -29,18 +29,18 @@
 using namespace Parsing; //utilities
 using namespace Screen;
 
-class Menu{
+class MenuTerminal{
 
 	//who
 	Client _client{};
 
-	//all menu
+	//all MenuTerminal
 	static const int HOME = 0;
 	static const int MAIN  = 1;
 	static const int FRIENDS = 2; 
 	static const int SETTINGS = 3;
 
-	//size menu
+	//size MenuTerminal
 	static const size_t SIZE_HOME = 3;
 	static const size_t SIZE_FRIENDS_MENU = 5; 
 	static const size_t SIZE_MAIN_MENU = 5;
@@ -58,12 +58,12 @@ class Menu{
 	static Interface window;
 	
 public:
-	Menu()=default;
+	MenuTerminal()=default;
 	void start_session();
-	~Menu()=default;
+	~MenuTerminal()=default;
 
 private:
-	//all menu
+	//all MenuTerminal
 	int home();
 	int  main_m();
 	int friends();

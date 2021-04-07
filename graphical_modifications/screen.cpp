@@ -1,13 +1,13 @@
 #include "screen.hpp"
 namespace Screen{
 
-	//MENU TITLES
+	//MenuTerminal TITLES
 	std::string HOME_TITLE = "H O M E";
 	std::string MAIN_TITLE = "M A I N  M E N U";
 	std::string FRIENDS_TITLE = "F R I E N D S";
 	std::string LOBBY_TITLE = "L O B B Y";
 
-	//OTHER MENU TITLE
+	//OTHER MenuTerminal TITLE
 	std::string  SIGN_IN = "S I G N  I N";
 	std::string  SIGN_UP = "S I G N  U P";
 	std::string  ADD_FRIEND = "A D D  F R I E N D";
@@ -19,7 +19,7 @@ namespace Screen{
 	std::string  LEADERBOARD =" L E A D E R B O A R D";
 	std::string  CHECK_USER = "I D E N T I T Y  V E R I F I C A T I O N ";
 
-	//SAYING FOR MENU 
+	//SAYING FOR MenuTerminal 
 	std::string HOME_SAYING = "May all who enter as guest leaves as regular user !";
 	std::string MAIN_SAYING = "Whoever said money can't buy hapiness";
 	std::string MAIN_SAYING2 = "has clearly already played this game";
@@ -46,7 +46,7 @@ namespace Screen{
 	std::string SIGN_UP_SAYING1 = "Username and password must be at least 7 characters long and maximum 15.";
 	std::string SIGN_UP_SAYING2 = "Only letters, numbers and the underscore characters are allowed.";
 	std::string BACK = "Don't you know how to return? Use the keyleft !";
-	std::string SWITCH = "Use the keyup and keydown to navigate on a menu !";
+	std::string SWITCH = "Use the keyup and keydown to navigate on a MenuTerminal !";
 	std::string RANGE = "Use the keyup and keydown to change value !";
 
 

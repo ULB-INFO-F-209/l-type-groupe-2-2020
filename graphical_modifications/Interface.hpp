@@ -22,7 +22,7 @@ class Interface final{
 	int S_HEIGHT{}, S_WIDTH{}, S_Y{}, S_X{}; 		//saying win
 	int SET_HEIGHT{}, SET_WIDTH{}, SET_Y{}, SET_X1{}, SET_X2{}; //settings of lobby
 	//positions
-	int _menu_x{} , _menu_y{}; 			//where menu begin to be printed
+	int _menu_x{} , _menu_y{}; 			//where MenuTerminal begin to be printed
 	int _saying_x{}, _saying_y{};
 	int _error_x{}, _error_y{};
 	int _prof_x{}, _prof_p_y{}, _prof_s_y{};
