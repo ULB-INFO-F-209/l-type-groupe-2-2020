@@ -12,12 +12,12 @@ Menu::Menu(): QMainWindow(){
     this->setWindowTitle(QApplication::translate("L-Type", "L-Type", nullptr));
     this->resize(800, 600);
     this->setStyleSheet(QStringLiteral("background-color:white;"));
-
 }
 
 void Menu::start_session(){
-    Level my_level;
-	level_editor(my_level);
+    //Level my_level;
+	//level_editor(my_level);
+    home();
 	this->show();
 }
 
@@ -73,12 +73,12 @@ void Menu::home(){
     /*********END DESIGN SECTION*****************************************/
 
         //exageration
-    /*QLabel *lbl = new QLabel(centralWidget);
+    QLabel *lbl = new QLabel(centralWidget);
     QMovie *mv = new QMovie("images/stars_rain.gif");
-    lbl->setGeometry(QRect(70, 0, 1000, 1000));
+    lbl->setGeometry(QRect(20, 0, 500, 50));
     mv->start();
     lbl->setAttribute(Qt::WA_TranslucentBackground);
-    lbl->setMovie(mv);*/
+    lbl->setMovie(mv);
 
 
     this->setCentralWidget(centralWidget);
@@ -218,10 +218,11 @@ void Menu::main_m(){
     connect(profile, &QPushButton::clicked, this, &Menu::print_profile);
     connect(log_out, &QPushButton::clicked, this,&Menu::home);
     connect(new_game, &QPushButton::clicked, this,&Menu::lobby);
-    connect(level, &QPushButton::clicked, this, [this](){
+    connect(level, &QPushButton::clicked, this,&Menu::level_menu);
+    /*connect(level, &QPushButton::clicked, this, [this](){
         Level my_level;
         level_editor(my_level);
-    });
+    });*/
 
     /****** DESIGN SECTION ****************************/
     //this->setStyleSheet("background-color:rgb(123, 22, 22);");
@@ -316,7 +317,7 @@ void Menu::print_leaderboard(){
     horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
     QTableWidget* tableWidget = new QTableWidget(verticalLayoutWidget);
     tableWidget->setColumnCount(2);
-    tableWidget->setMaximumSize(QSize(220, 190));
+    tableWidget->setMaximumSize(QSize(300, 200));
     tableWidget->setRowCount(profile_list.size());
 
     horizontalLayout->addWidget(tableWidget);
@@ -337,7 +338,7 @@ void Menu::print_leaderboard(){
     tableWidget->verticalHeader()->setVisible(false);
     tableWidget->setShowGrid(false);
     //tableWidget->setGeometry(QApplication::desktop()->screenGeometry());
-    tableWidget->setGeometry(QRect(300, 150, 22, 190));
+    tableWidget->setGeometry(QRect(300, 300, 500, 300));
     tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
     tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
     tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -364,6 +365,44 @@ void Menu::print_leaderboard(){
     this->setCentralWidget(centralWidget);
     //this->update();
     this->show();
+}
+void Menu::level_menu(){
+    QWidget *centralwidget = new QWidget(this);
+    QLabel *title_label = new QLabel("LEVEL EDITOR",centralwidget);
+    title_label->setGeometry(QRect(90, 20, 631, 71));
+    title_label->setFrameShape(QFrame::WinPanel);
+    title_label->setLineWidth(2);
+    title_label->setTextFormat(Qt::PlainText);
+    title_label->setAlignment(Qt::AlignCenter);
+    QWidget *verticalLayoutWidget = new QWidget(centralwidget);
+    verticalLayoutWidget->setGeometry(QRect(300, 190, 241, 301));
+    QVBoxLayout *verticalLayout = new QVBoxLayout(verticalLayoutWidget);
+    verticalLayout->setContentsMargins(10, 0, 10, 0);
+
+    QPushButton * button[4]; 
+    int create = 0, ranking=1, my_levels = 2, back=3;
+    std::string name[4] = {"Create level", "Level ranking", "My levels", "Back"};
+    for( int i = 0; i < 4; i++){
+        button[i] = new QPushButton(QString::fromStdString(name[i]),verticalLayoutWidget);
+        button[i]->setMinimumSize(QSize(150, 45));
+        button[i]->setMaximumSize(QSize(200, 45));
+        verticalLayout->addWidget( button[i]);
+        
+    }
+
+    connect(button[create], &QPushButton::clicked, this, [this](){
+        Level my_level;
+        level_editor(my_level);
+    });
+    connect(button[ranking], &QPushButton::clicked, this,&Menu::view_level);
+    connect(button[my_levels], &QPushButton::clicked, this, &Menu::my_level);
+    connect(button[back], &QPushButton::clicked, this, &Menu::main_m);
+
+
+
+    this->setCentralWidget(centralwidget);
+    this->show();
+
 }
 
 void Menu::print_friends(){
@@ -906,7 +945,7 @@ void Menu::level_editor(Level my_level){
     }
 
     //connect section
-    connect(cancel, &QPushButton::clicked, this,&Menu::main_m);
+    connect(cancel, &QPushButton::clicked, this,&Menu::level_menu);
     connect(save, &QPushButton::clicked, this,[this, my_level](){
             save_level(my_level);
         });
@@ -915,6 +954,7 @@ void Menu::level_editor(Level my_level){
             level_copy.ennemy_list.push_back(newE);
             custom_ennemy(level_copy, level_copy.ennemy_list.size()-1);
         });
+    //std::cout << "adresse avant = "<<pic_ennemy<<std::endl;
     connect(obstacle_button, &QPushButton::clicked, this,[this, my_level](){
             Obstacle newO{}; Level level_copy = my_level; //probleme de constance
             level_copy.obs_list.push_back(newO);
@@ -988,22 +1028,17 @@ void Menu::save_level(Level my_level){
         Level copy_level = my_level;
         std::string string_level = level_to_str(&copy_level, level_name);
         Level test = level_from_str(string_level);
-        char pseudo[Constante::SIZE_PSEUDO];
-        _client.get_pseudo(pseudo);
-        string_level += "|";
-        string_level += pseudo;
-        _client.createLevel(string_level.c_str());
-        Dialog->hide();
+        //_client.createLevel(string_level.c_str;
     });
     connect(cancel, &QPushButton::clicked, this, [this, Dialog](){
         Dialog->hide();
+        level_menu();
     });
 
     Dialog->show();
 
 
 }
-
 void Menu::custom_ennemy(Level my_level, int idx){
     QDialog * Dialog = new QDialog(this);
     Dialog->resize(859, 665);
@@ -1433,3 +1468,11 @@ void Menu::custom_player(Level my_level){
     Dialog->show();
 
 }
+
+void Menu::my_level(){
+
+}
+void Menu::view_level(){
+
+}
+

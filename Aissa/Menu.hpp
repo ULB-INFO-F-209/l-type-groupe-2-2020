@@ -86,11 +86,10 @@ class Menu : public QMainWindow{
     QAction* m_pActAdd = nullptr;
     QAction* m_pActRemove = nullptr;
 
-	int button_size = 60;
-
 	int X_MIN = 0;
-	int X_MAX = 551-button_size;
+	int X_MAX = 551;
 
+	int button_size = 60;
 
 public:
 	Menu();
@@ -103,10 +102,10 @@ private:
 	void main_m();
 	void print_friends();
 	void lobby();
-	void level_editor( Level my_level);
 
 
 private slots:
+	void level_menu();
 	void connexion(bool sign_in=true);
 	void check_data(bool sign_in=true);
 	void print_profile();
@@ -116,10 +115,13 @@ private slots:
 	void request_list(const QModelIndex &index);
 	void accept_friend();
 	void launch_game(int players, int drop_rate, int lives, std::string difficulty, bool ally_shot);
+	void level_editor( Level my_level);
 	void save_level(Level my_level);
 	void custom_ennemy(Level my_level, int idx);
 	void custom_obstacle(Level my_level, int idx);
 	void custom_player(Level my_level);
+	void my_level();
+	void view_level();
 
 };
 
