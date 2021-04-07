@@ -1,4 +1,4 @@
-#include "Menu.hpp"
+#include "MenuTerminal.hpp"
 
 void drawGrid(sf::RenderWindow& win, int rows, int cols){
     // initialize values
