@@ -59,6 +59,7 @@ private:
 
     //response
     void resClient(std::string* processId, char* res);
+    void resClient(std::string processId, std::string res);
     void resClient(std::string* processId, int res);
     void resClient(std::string*, bool);
     void resClient(char* pipe, std::string* res);
@@ -79,6 +80,12 @@ private:
     bool delFriendRequest(char*);
     int sendFriendRequest(char* );
     void viewProfile(char* );
+    std::string levelsRanking();
+    std::string clientLevels(char*);
+    std::string oneLevel(char*);
+    void addVote(char *);
+    void addLevel(char *);
+    void runLevel(char*){
 
     //server utils
     static void launch_db_save();

@@ -147,37 +147,34 @@ void Server::catchInput(char* input) {
     else if (input[0] == Constante::LEVEL){
         switch(input[1]){
         case Constante::SAVE_LEVEL:{
-            std::string level_input(input);
-            std::string pseudo = level_input.substr(level_input.rfind("|")+1,level_input.rfind(Constante::DELIMITEUR));
-            pseudo = pseudo.substr(0, pseudo.find(Constante::DELIMITEUR));
-
-            //level name
-            std::size_t idx = level_input.find('|');
-            std::string player_zone = level_input.substr(0,idx);
-
-            idx = player_zone.find("_");
-            std::string lettre = player_zone.substr(0,idx);
-            player_zone = player_zone.substr(idx+1, player_zone.size());
-
-            idx = player_zone.find("_");
-            std::string name_level = player_zone.substr(0,idx);
-
-            // delete name & pid at the end
-            idx = level_input.rfind("|");
-            level_input = level_input.substr(0, idx);
-
-            std::cout << "name level = " << name_level << std::endl;
-            std::cout << "level = " << level_input << std::endl;
-
-            _db.add(pseudo, level_input, name_level, 0);
+            addLevel(input);
             resClient(&processId,Constante::ALL_GOOD);
             break;
         }
 
-        case Constante::LOAD_LEVEL:
+        case Constante::ONE_LEVEL:
+            resClient(processId,oneLevel(input));
+            break;
+        
+        case Constante::MY_LEVEL:{
+            resClient(processId,clientLevels(input));
+            break;
+        }
+        case Constante::LEVEL_RANKING:
+            resClient(processId,levelsRanking());
+            break;
+        
+        case Constante::ADD_VOTE:
+            addVote(input);
+            resClient(&processId,Constante::ALL_GOOD);
+            break;
+        
+        case Constante::RUN_LEVEL:{
 
             break;
         }
+        
+
     }
     else {
 		std::cerr << "[ERROR IN INPUT 1]" << std::endl;
@@ -338,6 +335,83 @@ bool Server::delFriendRequest(char* val){
     mtx.unlock();
     return ret_val;
 }
+
+void Server::addLevel(char * input){
+    std::string level_input(input);
+    std::string pseudo = level_input.substr(level_input.rfind("|")+1,level_input.rfind(Constante::DELIMITEUR));
+    pseudo = pseudo.substr(0, pseudo.find(Constante::DELIMITEUR));
+
+    //level name
+    std::size_t idx = level_input.find('|');
+    std::string player_zone = level_input.substr(0,idx);
+
+    idx = player_zone.find("_");
+    std::string lettre = player_zone.substr(0,idx);
+    player_zone = player_zone.substr(idx+1, player_zone.size());
+
+    idx = player_zone.find("_");
+    std::string name_level = player_zone.substr(0,idx);
+
+    // delete name & pid at the end
+    idx = level_input.rfind("|");
+    level_input = level_input.substr(0, idx);
+
+    std::cout << "name level = " << name_level << std::endl;
+    std::cout << "level = " << level_input << std::endl;
+
+    _db.add(pseudo, level_input, name_level, 0);
+
+}
+
+std::string Server::levelsRanking(){
+    auto level_to_parse = _db.checkLevels();
+    // TODO PARSER CA
+}
+
+std::string Server::clientLevels(char *input){
+    std::string input_str(input);
+    std::string pseudo_str = input_str.substr(input_str.find(Constante::DELIMITEUR)+1, input_str.rfind(Constante::DELIMITEUR));
+    auto level_to_parse = checkMyLevels(pseudo_str);
+    //TODO parser level_to parse
+}
+
+std::string Server::oneLevel(char *input){
+    std::string input_str(input);
+    std::string pseudo_str,level_name_str;
+
+    input_str = input_str.substr(input_str.find(Constante::DELIMITEUR)+1, input_str.length());
+    
+    level_name_str = input_str.substr(0,input_str.find(Constante::DELIMITEUR)); // recup le nom du level
+    input_str = input_str.substr(0, input_str.find(Constante::DELIMITEUR));  // enlever le nom du level
+
+    pseudo_str = input_str.substr(0,input_str.find(Constante::DELIMITEUR));
+
+    auto res_to_parse = _db.checkALevel(pseudo_str,level_name_str);
+}
+
+void Server::addVote(char *input){
+    //LV&name&autor&pid
+
+    std::string input_str(input);
+    std::string pseudo_str,level_name_str;
+
+    input_str = input_str.substr(input_str.find(Constante::DELIMITEUR)+1, input_str.length());
+    
+    level_name_str = input_str.substr(0,input_str.find(Constante::DELIMITEUR)); // recup le nom du level
+    input_str = input_str.substr(0, input_str.find(Constante::DELIMITEUR));  // enlever le nom du level
+
+    pseudo_str = input_str.substr(0,input_str.find(Constante::DELIMITEUR));
+    _db.incrementVote(pseudo_str,level_name_str);
+
+}
+
+void Server::runLevel(char* input){
+    //LR&level&pid
+    std::string input_str(input);
+    std::string level = input_str.substr(input_str.find(Constante::DELIMITEUR)+1, input_str.rfind(Constante::DELIMITEUR));
+    // TODO RUN LEVEL
+}
+
 
 /**
  * Envoie la réponse au bon client
