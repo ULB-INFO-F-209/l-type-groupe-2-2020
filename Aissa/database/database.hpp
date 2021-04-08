@@ -43,13 +43,15 @@ public:
     std::vector<Profile> getFriendList(char* pseudo);
 	std::vector<Profile> checkLeaderboard();
 	std::vector<DatabaseLevel> checkLevels();
+	std::vector<DatabaseLevel> checkMyLevels(std::string pseudo);
+	DatabaseLevel checkALevel(std::string pseudo, std::string levelName);
 
 	// Utilities
 	bool createAccount(char* pseudo, char* pswd);
 	bool updateScore(int score, char* pseudo);
 	int friendRequest(char* pseudoSrc, char* pseudoDest);
-	bool addFriend(char *pseudo1, char *pseudo2);
-    int removeFriend(char *pseudo1, char *pseudo2);
+	bool addFriend(char* pseudo1, char* pseudo2);
+    int removeFriend(char* pseudo1, char* pseudo2);
 	void add(std::string pseudo, std::string level, std::string nameLevel, int vote);
 	void incrementVote(std::string pseudo, std::string level);
 

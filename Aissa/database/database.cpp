@@ -7,9 +7,8 @@ void Database::add(Account account){
 
 void Database::add(Friend frnd){
     std::ptrdiff_t idx = find(frnd._pseudo);
-    if (idx != -1){
+    if (idx != -1)
         _data[idx]._friends_vector.push_back(frnd._friend);
-    }
 }
 
 void Database::add(Request request){
@@ -21,8 +20,7 @@ void Database::add(Request request){
 void Database::add(std::string pseudo, std::string level, std::string nameLevel, int vote){
     std::ptrdiff_t idx = find(pseudo.c_str());
     if (idx != -1)
-        _data[idx]._levels_vector.push_back(DatabaseLevel{level, nameLevel, vote});
-
+        _data[idx]._levels_vector.push_back(DatabaseLevel{pseudo, level, nameLevel, vote});
     else
         std::cout << "[ERROR DATABASE] PSEUDO NOT FOUND : "<< pseudo <<std::endl;
 }
@@ -43,11 +41,10 @@ std::ptrdiff_t Database::find(const char* pseudo){
 bool Database::verifyLogin(char* pseudo, char* pswd){
     std::ptrdiff_t idx = find(pseudo);
     bool res = false;
-    if (idx == -1){
+    if (idx == -1)
         std::cout << pseudo << " does not exist" << std::endl;
-    } else{
+    else
         res = strcmp(pseudo, _data[idx].acc._pseudo) == 0 && strcmp(pswd, _data[idx].acc._pswd) == 0;
-    }
     return res;
 }
 
@@ -55,9 +52,9 @@ bool Database::verifyLogin(char* pseudo, char* pswd){
 Profile Database::getProfile(char* pseudo){
     std::ptrdiff_t idx = find(pseudo);
     Profile res;
-    if (idx == -1){
+    if (idx == -1)
         std::cout << pseudo << " does not exist" << std::endl;
-    } else{
+    else{
         Profile ret_val{_data[idx].acc};
         res = ret_val;
     }
@@ -68,9 +65,9 @@ Profile Database::getProfile(char* pseudo){
 std::vector<Profile> Database::getFriendRequest(char* pseudo){
     std::vector<Profile> requests;
     std::ptrdiff_t idx = find(pseudo);
-    if (idx == -1){
+    if (idx == -1)
         std::cout << pseudo << " does not exist" << std::endl;
-    } else{
+    else{
         for (auto req : _data[idx]._requests_vector){
             idx = find(req.c_str());
             Profile prof{_data[idx].acc};
@@ -84,9 +81,9 @@ std::vector<Profile> Database::getFriendRequest(char* pseudo){
 std::vector<Profile> Database::getFriendList(char* pseudo){
     std::vector<Profile> friends;
     std::ptrdiff_t idx = find(pseudo);
-    if (idx == -1){
+    if (idx == -1)
         std::cout << pseudo << " does not exist" << std::endl;
-    } else{ 
+    else{ 
         for (auto frnd : _data[idx]._friends_vector){
             if (frnd[0] != '\0'){
                 idx = find(frnd.c_str());
@@ -124,13 +121,33 @@ std::vector<DatabaseLevel> Database::checkLevels(){
         for (auto level: acc_vect._levels_vector){
             _levels.push_back(level);
         }
-    }
+    }    
+    // tri du vecteur dans l'ordre decroissant des votes
+    std::sort(_levels.begin(), _levels.end(), [](DatabaseLevel a, DatabaseLevel b) {
+        return a.vote > b.vote;
+    });
     // affichage
     for (auto x : _levels)
-        std::cout << x.level << "-> " << x.vote << ", ";
+        std::cout << x.level << "-> " << x.vote << ", " << std::endl;
 
     std::cout << "-----------------" << std::endl;
     return _levels;
+}
+
+std::vector<DatabaseLevel> Database::checkMyLevels(std::string pseudo){
+    std::vector<DatabaseLevel> myLevels;
+    std::ptrdiff_t idx = find(pseudo.c_str());
+    if (idx == -1)
+        myLevels.assign(_data[idx]._levels_vector.begin(), _data[idx]._levels_vector.end());
+    return myLevels;
+}
+
+DatabaseLevel Database::checkALevel(std::string pseudo, std::string levelName){
+    DatabaseLevel res;
+    std::ptrdiff_t idx = find(pseudo.c_str());
+    if (idx == -1)
+        res = _data[idx].getLevel(levelName);
+    return res;
 }
 
 //setter
@@ -141,18 +158,17 @@ bool Database::createAccount(char* pseudo, char* pswd){
         Account account(pseudo, pswd);
         add(account);
         res = true;
-    } else{
+    } else
         std::cout << "pseudo " << pseudo << " already exists in database" << std::endl;
-    }
     return res;
 }
 
 bool Database::updateScore(int score, char* pseudo){
     std::ptrdiff_t idx = find(pseudo);
     bool res = false;
-    if (idx == -1){
+    if (idx == -1)
         std::cout << pseudo << " does not exist" << std::endl;
-    } else{
+    else{
         _data[idx].acc.setScore(score);
         res = true;
     }
@@ -229,8 +245,10 @@ int Database::removeFriend(char* pseudo1, char* pseudo2){
     return res;
 }
 
-void incrementVote(std::string pseudo, std::string level){
-
+void Database::incrementVote(std::string pseudo, std::string level){
+    std::ptrdiff_t idx = find(pseudo.c_str());
+    if (idx != -1)
+        _data[idx].incVote(pseudo);
 }
 
 // File management
@@ -271,19 +289,16 @@ void Database::dbLoad(){
     } 
 
     accounts = fopen(c_path, "rb");
-    if (accounts == nullptr){
+    if (accounts == nullptr)
         throw "Could not open accounts file!";
-    }
 
     friends = fopen(c_path_frnd, "rb");
-    if (friends == nullptr){
+    if (friends == nullptr)
         throw "Could not open friends file!";
-    }
 
     requests = fopen(c_path_req, "rb");
-    if (requests == nullptr){
+    if (requests == nullptr)
         throw "Could not open requests file!";
-    }
 
     std::cout << "------------Load------------\n\n";
     // chargement accounts
@@ -305,9 +320,8 @@ void Database::dbLoad(){
     // chargement levels
     std::ifstream levels;
     levels.open(_path_level, std::ios::in | std::ios::binary);
-    if(!levels){
+    if(!levels)
         std::cout << "Levels empty"<<std::endl;
-    }
     else{
         size_t size1, size2, size3;
         char read_size1, read_size2, read_size3;
@@ -426,5 +440,7 @@ void Database::display(){
 
 //destructor
 Database::~Database(){
-    _data.clear();
+		_data.clear();
+		_profiles.clear();
+		_levels.clear();
 }
