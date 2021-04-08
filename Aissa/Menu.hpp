@@ -63,14 +63,11 @@ class Menu : public QMainWindow{
 
 	//size menu
 	static const size_t SIZE_HOME = 3;
-	static const size_t SIZE_FRIENDS_MENU = 5; 
 	static const size_t SIZE_MAIN_MENU = 6;				// ajout de LEVEL EDITOR
 	static const size_t SIZE_SETTINGS = 7;
 
 	//choices
 	std::string connexion_menu[SIZE_HOME] = {"Sign in", "Sign up", "Quit"};
-	std::string friends_menu[SIZE_FRIENDS_MENU] = {"Friends list", "Friends requests", "Add friend",
-								   "Remove friend", "Back"};
 	std::string main_menu[SIZE_MAIN_MENU] = {"New game", "Friends", "Leaderboard",
 								   "Profile", "Level Editor", "Log out"};
 	std::string settings_menu[SIZE_SETTINGS] = {"Players", "Drop rate","Ally shot",\
