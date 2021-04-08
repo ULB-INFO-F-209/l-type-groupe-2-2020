@@ -18,11 +18,11 @@ void Database::add(Request request){
         _data[idx]._requests_vector.push_back(request._request);
 }
 
-void Database::add(std::string pseudo, std::string level){
+void Database::add(std::string pseudo, std::string level, std::string name_level, int vote){
     std::ptrdiff_t idx = find(pseudo.c_str());
     
     if (idx != -1)
-        _data[idx]._levels_vector.push_back(level);
+        _data[idx]._levels_vector.push_back(DatabaseLevel{level,name_level,vote});
     else
         std::cout << "[ERROR DATABASE] PSEUDO NOT FOUND : "<< pseudo <<std::endl;
 }
@@ -117,7 +117,7 @@ std::vector<Profile> Database::checkLeaderboard(){
 }
 
 // retourne les levels de tous les accounts
-std::vector<std::string> Database::checkLevels(){
+std::vector<DatabaseLevel> Database::checkLevels(){
 	// on parcourt la base de données et on ajoute level
     _levels.clear();
     for (AccountAndVectors &acc_vect : _data){
@@ -127,7 +127,7 @@ std::vector<std::string> Database::checkLevels(){
     }
     // affichage
     for (auto x : _levels)
-        std::cout << x << std::endl;
+        std::cout << x.level<< " -> "<< x.vote << ", ";
     std::cout << "-----------------" << std::endl;
     return _levels;
 }
@@ -304,20 +304,29 @@ void Database::dbLoad(){
         std::cout << "Levels empty"<<std::endl;
     }
     else{
-        size_t size1, size2;
-        char read_char_size1, read_char_size2;
-        while (levels.read(&read_char_size1, sizeof(size1))){        
-            std::string read_string1, read_string2;
-            size1 = read_char_size1;
-            read_string1.resize(size1);
-            levels.read(&read_string1[0], size1);
+        size_t size1, size2, size3;
+        char read_size1, read_size2, read_size3;
+        while (levels.read(&read_size1, sizeof(size1))){        
+            std::string read_pseudo, read_level, read_name;
 
-            levels.read(&read_char_size2, sizeof(size2));
-            size2 = read_char_size2;
-            read_string2.resize(size2);
-            levels.read(&read_string2[0], size2);
+            size1 = read_size1;
+            read_pseudo.resize(size1);
+            levels.read(&read_pseudo[0], size1);
 
-            add(read_string1, read_string2);
+            levels.read(&read_size2, sizeof(size2));
+            size2 = read_size2;
+            read_level.resize(size2);
+            levels.read(&read_level[0], size2);
+
+            levels.read(&read_size3, sizeof(size3));
+            size3 = read_size3;
+            read_name.resize(size3);
+            levels.read(&read_name[0], size3);
+
+            int vote;
+	        levels.read(reinterpret_cast<char *>(&vote), sizeof(vote));
+
+            add(read_pseudo, read_level, read_name, vote);
         }
     }
     
@@ -354,18 +363,25 @@ void Database::dbSave(){
 
         for (auto lev : account._levels_vector)
             if (levels.is_open()){
-            std::string str(pseudo);
-            size_t size=str.size();
-            char char_size = char(size);
-            levels.write(&char_size,sizeof(size));
-            levels.write(&str[0],size);
+                std::string str(pseudo);
+                size_t size = str.size();
+                char char_size = char(size);
+                levels.write(&char_size,sizeof(size));
+                levels.write(&str[0],size);
 
-            size_t size2=lev.size();
-            char char_size2 = char(size2);
-            levels.write(&char_size2,sizeof(size2));
-            levels.write(&lev[0],size2);
+                size_t size2 = lev.level.size();
+                char char_size2 = char(size2);
+                levels.write(&char_size2,sizeof(size2));
+                levels.write(&lev.level[0],size2);
 
-        }
+                size_t size3=lev.name.size();
+                char char_size3 = char(size3);
+                levels.write(&char_size3,sizeof(size3));
+                levels.write(&lev.name[0],size3);
+
+                int vote = lev.vote;
+                levels.write(reinterpret_cast<const char *>(&vote), sizeof(vote));
+            }
     }
     fclose(out);
     fclose(out_frnd);
@@ -398,7 +414,8 @@ void Database::display(){
         
         std::cout << "levels : [";
         for (auto level: _data[i]._levels_vector){
-            std::cout << level << ", ";
+            std::cout << level.level << "-> " << level.vote << "|" << level.name << ", ";
+        
         }
         std::cout << "]" << std::endl << std::endl;
     }

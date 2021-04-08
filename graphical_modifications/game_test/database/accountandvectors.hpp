@@ -1,14 +1,16 @@
+#ifndef ACC_VEC
+#define ACC_VEC
 #include <iostream>
 #include <ostream>
 #include <cstring>
 #include <vector>
-#include "account.hpp"
+#include "structures.hpp"
 
 class AccountAndVectors{
     Account acc;
     std::vector<std::string> _friends_vector{};
     std::vector<std::string> _requests_vector{};
-    std::vector<std::string> _levels_vector{};
+    std::vector<DatabaseLevel> _levels_vector{};
     friend class Database;
 
 public:
@@ -32,3 +34,4 @@ public:
         _levels_vector.clear();
     };
 };
+#endif

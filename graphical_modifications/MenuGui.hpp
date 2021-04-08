@@ -92,7 +92,7 @@ class MenuGui : public QMainWindow{
 	int button_size = 60;
 
 	int X_MIN = 0;
-	int X_MAX = 551-button_size;
+	int X_MAX = 551-button_size; // ASK PQ ENLEVER CA !!!
 
 
 public:
@@ -102,12 +102,15 @@ public:
 	void start_session();
 private:
 	//MenuGui
+	void level_menu();
 	void home();
 	void main_m();
 	void print_friends();
 	void lobby();
 	void level_editor(Parsing::Level my_level);
 	void launch_game(const Parsing::Game_settings* game_option);
+	void my_level();
+	void view_level();
 
 
 

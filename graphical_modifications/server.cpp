@@ -151,7 +151,26 @@ void Server::catchInput(char* input) {
             std::string level_input(input);
             std::string pseudo = level_input.substr(level_input.rfind("|")+1,level_input.rfind(Constante::DELIMITEUR));
             pseudo = pseudo.substr(0, pseudo.find(Constante::DELIMITEUR));
-            _db.add(pseudo, level_input);
+            
+            //level name
+            std::size_t idx = level_input.find('|');
+            std::string player_zone = level_input.substr(0,idx);
+
+            idx = player_zone.find("_");
+            std::string lettre = player_zone.substr(0,idx);
+            player_zone = player_zone.substr(idx+1, player_zone.size());
+
+            idx = player_zone.find("_");
+            std::string name_level = player_zone.substr(0,idx);
+
+            // delete name & pid at the end
+            idx = level_input.rfind("|");
+            level_input = level_input.substr(0, idx);
+
+            std::cout << "name level = " << name_level << std::endl;
+            std::cout << "level = " << level_input << std::endl;
+
+            _db.add(pseudo, level_input, name_level, 0);
             resClient(&processId,Constante::ALL_GOOD);
             break;
         }
@@ -481,19 +500,27 @@ void Server::launch_game(Parsing::Game_settings* sett_game){
 
     char input_pipe[Constante::CHAR_SIZE],send_response_pipe[Constante::CHAR_SIZE];
     bool gameOn=true;int inp[11];
-
+    
+    // mise en place des pipes
     sprintf(input_pipe,"%s%s%s",Constante::PIPE_PATH,Constante::BASE_INPUT_PIPE,sett_game->pid);
     sprintf(send_response_pipe,"%s%s%s",Constante::PIPE_PATH,Constante::BASE_GAME_PIPE,sett_game->pid);
     
-    CurrentGame game{*sett_game};
+    // test du jeu en terminale ne fonction pas avec la gui
     #ifdef TEST_GAME
         DisplayGame interface_game;
 	    interface_game.init();
     #endif
+
+    CurrentGame game{*sett_game};
     std::string resp;
+
     while(gameOn){
-        read_game_input(input_pipe, inp);  
-        //if(inp == Constante::ERROR_PIPE_GAME || inp == Constante::CLIENT_LEAVE_GAME) return; // Le client est parti ou alors le pipe a été supprimer 
+        int state = read_game_input(input_pipe, inp);  
+        if(state == Constante::ERROR_PIPE_GAME || state == Constante::CLIENT_LEAVE_GAME){
+            // Le client est parti ou alors le pipe a été supprimer 
+            std::cout << sett_game->pid << " A LA PROCHAINE "<<std::endl;
+            return;
+        }
         resp = game.run_server(inp);                                                        //  le jeu du server
         if(resp == Constante::GAME_END){  // if game over
             gameOn=false;
@@ -507,13 +534,14 @@ void Server::launch_game(Parsing::Game_settings* sett_game){
         #endif
     }
     
-
-    std::string the_score = std::to_string(game.getScore());
+    std::string the_score = std::to_string(game.getScore()); // envoie du score au client une dernier fois
     resClient(send_response_pipe,&the_score);
+
     #ifdef TEST_GAME
         interface_game.close();
     #endif
 
+    //sauvegarde du score
    save_score(sett_game->pseudo_hote,game.getScore());
    if (sett_game->nb_player == 2){
        save_score(sett_game->pseudo_other,game.getScore());
@@ -521,10 +549,12 @@ void Server::launch_game(Parsing::Game_settings* sett_game){
 
     std::cout << " score : " << game.getScore() << std::endl;
 
+    // mettre l'etat du jeu pour ce client a false pour qu'il puisse lancer un autre jeu
     mtx_game.lock();
     for(size_t i =0; i < _pipe_running.size(); i++){
         if(strcmp(_pipe_running.at(i)->pid,sett_game->pid)== 0){
-           _pipe_running.at(i)->in_game = false; break; // mettre le jeu a false pour lancer une autre partie
+            // mettre le jeu a false pour lancer une autre partie
+           _pipe_running.at(i)->in_game = false; break; 
         }
     }
     
@@ -552,30 +582,34 @@ void Server::resClient(char* pipe, std::string* res){
  * @brief lis le pipe d'input
  * 
  * @param pipe : le pipe à lire 
- * @return int : le char pressé par le clients, -1 si rien n'est pressé
+ * @return int : l'etat de lecture s'il y a eu une erreur ou pas
  */
-int* Server::read_game_input(char * pipe, int *inp){
+int Server::read_game_input(char * pipe, int *inp){
     int message[11];
     
-    int fd =open(pipe, O_RDONLY);
+    int fd =open(pipe, O_RDONLY); //open pipe
     if (fd != -1){
         int val = read(fd,&message,sizeof(int)*11); 
         if (val == -1)std::cerr << "[ERROR] CAN'T READ IN INPUT 2 PIPE " <<std::endl;
         
     }
-    else{
+    else{ // erreur possible
         std::cerr << "[ERROR PIPE INPUT 2 ]" <<std::endl;
         close(fd);
-        //return Constante::ERROR_PIPE_GAME;
+        return Constante::ERROR_PIPE_GAME;
     };
     close(fd);
     #ifdef DEBUG_GAME
+        std::cout <<"FROM CLIENT : [ ";
         for(int i = 0; i <11; i++)
-            std::cout << "FROM CLIENT : "<<message[i]<< std::endl;
+            std::cout  <<message[i]<< ", ";
+        std::cout << ']' <<std::endl;
     #endif
-    for(int i = 0; i <11; i++)
+
+    for(int i = 0; i <11; i++) // remplir l'arrays avec les inputes
         inp[i] = message[i];
-    return message;
+
+    return Constante::ALL_GOOD;
 
 }
 

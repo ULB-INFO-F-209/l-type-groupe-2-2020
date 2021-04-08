@@ -209,7 +209,7 @@ void MenuGui::main_m(){
     QPushButton *friends = (main_button[1]);
     QPushButton *leaderboard = (main_button[2]);
     QPushButton *profile = (main_button[3]);
-    QPushButton *Level = (main_button[4]);
+    QPushButton *level = (main_button[4]);
     QPushButton *log_out = (main_button[5]);
 
     connect(friends, &QPushButton::clicked, this, &MenuGui::print_friends);
@@ -217,10 +217,7 @@ void MenuGui::main_m(){
     connect(profile, &QPushButton::clicked, this, &MenuGui::print_profile);
     connect(log_out, &QPushButton::clicked, this,&MenuGui::home);
     connect(new_game, &QPushButton::clicked, this,&MenuGui::lobby);
-    connect(Level, &QPushButton::clicked, this, [this](){
-        Parsing::Level my_level;
-        level_editor(my_level);
-    });
+    connect(level, &QPushButton::clicked, this, &MenuGui::level_menu);
 
     /****** DESIGN SECTION ****************************/
     //this->setStyleSheet("background-color:rgb(123, 22, 22);");
@@ -295,6 +292,7 @@ void MenuGui::print_profile(){
     //this->update();
     this->show();
 }
+
 void MenuGui::print_leaderboard(){
     std::vector<Profile> profile_list;
     char buffer[Constante::CHAR_SIZE];
@@ -365,6 +363,45 @@ void MenuGui::print_leaderboard(){
     this->show();
 }
 
+void MenuGui::level_menu(){
+    QWidget *centralwidget = new QWidget(this);
+    QLabel *title_label = new QLabel("LEVEL EDITOR",centralwidget);
+    title_label->setGeometry(QRect(90, 20, 631, 71));
+    title_label->setFrameShape(QFrame::WinPanel);
+    title_label->setLineWidth(2);
+    title_label->setTextFormat(Qt::PlainText);
+    title_label->setAlignment(Qt::AlignCenter);
+    QWidget *verticalLayoutWidget = new QWidget(centralwidget);
+    verticalLayoutWidget->setGeometry(QRect(300, 190, 241, 301));
+    QVBoxLayout *verticalLayout = new QVBoxLayout(verticalLayoutWidget);
+    verticalLayout->setContentsMargins(10, 0, 10, 0);
+
+    QPushButton * button[4]; 
+    int create = 0, ranking=1, my_levels = 2, back=3;
+    std::string name[4] = {"Create level", "Level ranking", "My levels", "Back"};
+    for( int i = 0; i < 4; i++){
+        button[i] = new QPushButton(QString::fromStdString(name[i]),verticalLayoutWidget);
+        button[i]->setMinimumSize(QSize(150, 45));
+        button[i]->setMaximumSize(QSize(200, 45));
+        verticalLayout->addWidget( button[i]);
+
+    }
+
+    connect(button[create], &QPushButton::clicked, this, [this](){
+        Parsing::Level my_level;
+        level_editor(my_level);
+    });
+    connect(button[ranking], &QPushButton::clicked, this,&MenuGui::view_level);
+    connect(button[my_levels], &QPushButton::clicked, this, &MenuGui::my_level);
+    connect(button[back], &QPushButton::clicked, this, &MenuGui::main_m);
+
+
+
+    this->setCentralWidget(centralwidget);
+    this->show();
+
+}
+
 void MenuGui::print_friends(){
 	char buffer[Constante::CHAR_SIZE];
 	std::vector<Profile> friendlist;
@@ -393,7 +430,7 @@ void MenuGui::print_friends(){
 
     QTableWidget* tableWidget = new QTableWidget(gridLayoutWidget);
     tableWidget->setColumnCount(2);
-    tableWidget->setMaximumSize(QSize(220, 190));
+    tableWidget->setMaximumSize(QSize(300, 200));
     tableWidget->setRowCount(friendlist.size());
     tableWidget->setMinimumSize(QSize(0, 500));
 
@@ -436,7 +473,7 @@ void MenuGui::print_friends(){
     tableWidget->verticalHeader()->setVisible(false);
     tableWidget->setShowGrid(false);
     //tableWidget->setGeometry(QApplication::desktop()->screenGeometry());
-    tableWidget->setGeometry(QRect(300, 150, 22, 190));
+    tableWidget->setGeometry(QRect(300, 300, 500, 300));
     tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
     tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
     tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -761,8 +798,10 @@ void MenuGui::lobby(){
 
 
 void MenuGui::launch_game(int players, int drop_rate, int lives, std::string difficulty, bool ally_shot){
-    Parsing::Game_settings setting;
+    Parsing::Game_settings setting; char my_pseudo[Constante::SIZE_PSEUDO];
+    _client.get_pseudo(my_pseudo);
     strcpy(setting.difficulty_str, difficulty.c_str());
+    strcpy(setting.pseudo_hote,my_pseudo);
     setting.diff = !strcmp(setting.difficulty_str,"easy")? easy: !strcmp(setting.difficulty_str,"medium")? medium :hard;
     setting.drop_rate = drop_rate;
     setting.ally_shot = ally_shot;
@@ -798,16 +837,17 @@ void MenuGui::launch_game(int players, int drop_rate, int lives, std::string dif
 
         //connection 
         connect(buttonBox, SIGNAL(rejected()), Dialog, SLOT(reject()));
-        connect(buttonBox, &QDialogButtonBox::accepted,this, [this,buttonBox,pseudoLine,pswdLine,setting](){
+        connect(buttonBox, &QDialogButtonBox::accepted,this, [this,buttonBox,pseudoLine,pswdLine,&setting](){
             std::string pseudo = (pseudoLine->text()).toUtf8().constData();
             std::string pswd = (pswdLine->text()).toUtf8().constData();
-            char y_pseudo[15]; bool success =0;
+            char y_pseudo[Constante::SIZE_PSEUDO]; bool success =0;
             _client.get_pseudo(y_pseudo);
             if(pseudo.compare(std::string(y_pseudo)) != 0)
                 success= _client.signIn(pseudo.c_str(), pswd.c_str(), false);
                 
             if(success){
                 char game_sett_char[Constante::CHAR_SIZE];
+                strcpy(setting.pseudo_hote,y_pseudo);
                 Parsing::create_game_to_str(game_sett_char,&setting);
                 _client.createGame(game_sett_char);
                 launch_game(&setting);
@@ -819,7 +859,7 @@ void MenuGui::launch_game(int players, int drop_rate, int lives, std::string dif
         Dialog->show();
 
     }
-    else{
+    else{ // joueur solo
         char game_sett_char[Constante::CHAR_SIZE];
         Parsing::create_game_to_str(game_sett_char,&setting);
         std::cout << "voila le str = " << game_sett_char<< std::endl;
@@ -925,7 +965,7 @@ void MenuGui::level_editor(Parsing::Level my_level){
     }
 
     //connect section
-    connect(cancel, &QPushButton::clicked, this,&MenuGui::main_m);
+    connect(cancel, &QPushButton::clicked, this,&MenuGui::level_menu);
     connect(save, &QPushButton::clicked, this,[this, my_level](){
             save_level(my_level);
         });
@@ -1007,6 +1047,7 @@ void MenuGui::save_level(Parsing::Level my_level){
         Parsing::Level copy_level = my_level;
         std::string string_level = level_to_str(&copy_level, level_name);
         Parsing::Level test = Parsing::level_from_str(string_level);
+        // ASK PQ ENLEVER TT CE QUI SUIT
         char pseudo[Constante::SIZE_PSEUDO];
         _client.get_pseudo(pseudo);
         string_level += "|";
@@ -1016,6 +1057,7 @@ void MenuGui::save_level(Parsing::Level my_level){
     });
     connect(cancel, &QPushButton::clicked, this, [this, Dialog](){
         Dialog->hide();
+        level_menu();
     });
 
     Dialog->show();
@@ -1467,7 +1509,7 @@ void MenuGui::launch_game(const Parsing::Game_settings* game_option){
 
     while(gameOn && window->isOpen()){ 
 
-		sf::Event event;
+		sf::Event event; // TODO PQ TT CA C'EST PAS DANS GET INPUT WINDOW !!!!!!
         while (window->pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
@@ -1480,16 +1522,13 @@ void MenuGui::launch_game(const Parsing::Game_settings* game_option){
 		_client.send_game_input(inp);
 		inp.clear();
 
-		inp.push_back(-1);
 		string_game_to_display = _client.read_game_pipe();
 		if (string_game_to_display != Constante::GAME_END)
 			string_previous_game_to_display = string_game_to_display;
 		if (string_game_to_display == Constante::GAME_END)
 		
 			break;
-			//gameOn = false;
 		display_game.parse_instruction(string_game_to_display);
-		//drawGrid(*window,18,80);
 		window->display();
 
     }
@@ -1504,7 +1543,7 @@ void MenuGui::launch_game(const Parsing::Game_settings* game_option){
 	window->display();
 	sf::Event event;
 	
-	while(true){
+	while(true){ // CELA N'A RIEN A FAIRE LA TODO
 		char in_char = -1;
 		while (window->pollEvent(event))
         {
@@ -1517,3 +1556,17 @@ void MenuGui::launch_game(const Parsing::Game_settings* game_option){
     display_game.close();
 	window->close();
 }
+
+void MenuGui::my_level(){
+    return;
+}
+
+void MenuGui::view_level(){
+    return;
+}
+
+
+
+
+
+
