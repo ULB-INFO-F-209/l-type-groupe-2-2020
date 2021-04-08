@@ -57,7 +57,12 @@ get_my_level :
 get one level:
 	client : LO&name&author&pid
 	serveur : LS_name_skin1_skin2_hp_damage_speed|x_tick_skin_hp_damage_bonus_speed&x1_tick1_skin1_hp1_bonus1_speed1&......|x_tick_skin_hp_damage_speed&x1_tick1_skin1_hp1
-
+incremente vote: 
+	client : LV&name&author&pid
+	serveur : 0
+run level 
+	client : LR&nlevel&pid
+	serveur : 0
 
 
 résumé en ceci par pure flemme de 

@@ -54,9 +54,24 @@ std::string Parsing::level_to_str(Level *my_level, const std::string name){
 		buffer += std::to_string(o.hp) + "_" + std::to_string(o.damage) + "_" + std::to_string(o.speed);
 		buffer += "&";
 	}
-	std::cout << "level   = " << buffer<<std::endl;
 	return buffer;
 
+}
+std::string Parsing::creator_list_to_str(std::vector<Creator> creator_list){
+	std::string buffer = ""; 
+	for(auto a : creator_list){
+		buffer += creator_to_str(a);
+		buffer += "&";
+	}
+	return buffer;
+}
+
+std::string Parsing::creator_to_str(Creator author){
+	std::string buffer = ""; 
+	buffer += author.name + author.author + std::to_string(author.vote);
+	buffer += "&";
+
+	return buffer;
 }
 
 //decodage
@@ -183,7 +198,6 @@ Parsing::Level Parsing::level_from_str(std::string buffer){
 	std::size_t idx = buffer.find(delim_zone);
 	std::string player_zone = buffer.substr(0,idx);
 	buffer = buffer.substr(idx+1, buffer.size());
-	std::cout << "Player = "<< player_zone<<std::endl;
 
 	idx = player_zone.find(delim_attr);
 	std::string name = player_zone.substr(0,idx); //name
@@ -209,7 +223,6 @@ Parsing::Level Parsing::level_from_str(std::string buffer){
 	idx = buffer.find(delim_zone);
 	std::string enemy_zone = buffer.substr(0,idx);
 	buffer = buffer.substr(idx+1, buffer.size());
-	std::cout << "enemy  = "<< enemy_zone<<std::endl;
 
 	while(enemy_zone.size() > 1){
 		Enemy e;
@@ -254,7 +267,6 @@ Parsing::Level Parsing::level_from_str(std::string buffer){
 	idx = buffer.find(delim_zone);
 	std::string obs_zone = buffer.substr(0,idx);
 	buffer = buffer.substr(idx+1, buffer.size());
-	std::cout << " obstacle = "<< obs_zone<<std::endl;
 
 	while(obs_zone.size() > 1){
 		Obstacle e;
@@ -293,6 +305,39 @@ Parsing::Level Parsing::level_from_str(std::string buffer){
 
 	return my_level;
 }
+
+std::vector<Parsing::Creator> Parsing::creator_list_from_str(std::string buffer){
+	std::vector<Creator> res; std::size_t idx;
+	std::string delim = "&";
+
+	while(buffer.size() > 1){
+		Creator author;
+		std::string to_parse;
+		idx = buffer.find(delim);
+		to_parse = buffer.substr(0,idx);
+		buffer = buffer.substr(idx+1, buffer.size()); 
+		author = creator_from_str(to_parse);
+		res.push_back(author);
+
+	}
+	return res;
+}
+Parsing::Creator Parsing::creator_from_str(std::string buffer){
+	std::string delim = "_";
+	Creator author;
+	std::size_t idx = buffer.find(delim);
+	author.name = buffer.substr(0,idx);
+	buffer = buffer.substr(idx+1, buffer.size()); 
+
+	idx = buffer.find(delim);
+	author.author = buffer.substr(0,idx);
+	buffer = buffer.substr(idx+1, buffer.size()); 
+
+	idx = buffer.find(delim);
+	author.vote = std::stoi(buffer.substr(0,idx));
+	
+	return author;
+};
 
 ///parsing to withdraw the user's info
 void Parsing::parsing(char* str, char* token1, char* token2) {
