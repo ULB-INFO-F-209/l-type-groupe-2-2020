@@ -23,7 +23,7 @@ void Parsing::profile_to_str(char *buffer, Profile prof){
 	sprintf(buffer, "%s&%d", prof.pseudo, prof.score);
 	//buffer -> "pseudo&score" 
 }
-void Parsing::create_game_to_str(char *buffer, Game_settings * settings){
+void Parsing::create_game_to_str(char *buffer,const Game_settings * settings){
 	sprintf(buffer, "%d&%s&%s&%d&%d&%d&%s", 				 settings->nb_player,
 										 settings->pseudo_hote,
 										 settings->pseudo_other,

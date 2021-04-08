@@ -26,7 +26,7 @@ interface.o: Interface.cpp Interface.hpp screen.hpp
 	g++  -c Interface.cpp $(flag) $(sfml_flag) -o interface.o
 
 menugui.o: MenuGui.hpp MenuGui.cpp
-	g++ -c MenuGui.cpp $(qt_flag) -o menugui.o
+	g++ -c MenuGui.cpp $(qt_flag) $(sfml_flag) -o menugui.o
 
 menuterminal.o: MenuTerminal.hpp MenuTerminal.cpp
 	g++  -c MenuTerminal.cpp $(flag) $(sfml_flag) -o menuterminal.o

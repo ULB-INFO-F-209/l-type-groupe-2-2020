@@ -16,8 +16,7 @@ MenuGui::MenuGui(): QMainWindow(){
 }
 
 void MenuGui::start_session(){
-    Parsing::Level my_level;
-	level_editor(my_level);
+    home();
 	this->show();
 }
 
@@ -675,11 +674,12 @@ void MenuGui::lobby(){
     QLabel *dropRate_label  = new QLabel(QString::fromStdString("Drop rate : "),gridLayoutWidget);
     QSpinBox *lives_spin  = new QSpinBox(gridLayoutWidget);
     lives_spin->setMaximum(3); 
+    lives_spin->setMinimum(1);
 
     QComboBox *Ally_shot_box  = new QComboBox(gridLayoutWidget);
     Ally_shot_box->clear();
-    Ally_shot_box->addItem(QString::fromStdString("Yes"));
     Ally_shot_box->addItem(QString::fromStdString("No"));
+    Ally_shot_box->addItem(QString::fromStdString("Yes"));
 
     QLabel *allyShot_label = new QLabel(QString::fromStdString("Ally shot : "),gridLayoutWidget);;
     QLabel *playersLabel = new QLabel(QString::fromStdString("Player's number : "),gridLayoutWidget);
@@ -798,18 +798,32 @@ void MenuGui::launch_game(int players, int drop_rate, int lives, std::string dif
 
         //connection 
         connect(buttonBox, SIGNAL(rejected()), Dialog, SLOT(reject()));
-        connect(buttonBox, &QDialogButtonBox::accepted,this, [this,buttonBox,pseudoLine,pswdLine](){
+        connect(buttonBox, &QDialogButtonBox::accepted,this, [this,buttonBox,pseudoLine,pswdLine,setting](){
             std::string pseudo = (pseudoLine->text()).toUtf8().constData();
             std::string pswd = (pswdLine->text()).toUtf8().constData();
             char y_pseudo[15]; bool success =0;
             _client.get_pseudo(y_pseudo);
             if(pseudo.compare(std::string(y_pseudo)) != 0)
-                success= _client.signIn(pseudo.c_str(), pswd.c_str(), false); 
-            if(success)
+                success= _client.signIn(pseudo.c_str(), pswd.c_str(), false);
+                
+            if(success){
+                char game_sett_char[Constante::CHAR_SIZE];
+                Parsing::create_game_to_str(game_sett_char,&setting);
+                _client.createGame(game_sett_char);
                 buttonBox->rejected();
+                
+            }
+            
     });
         Dialog->show();
 
+    }
+    else{
+        char game_sett_char[Constante::CHAR_SIZE];
+        Parsing::create_game_to_str(game_sett_char,&setting);
+        std::cout << "voila le str = " << game_sett_char<< std::endl;
+        _client.createGame(game_sett_char);
+        
     }
 }
 

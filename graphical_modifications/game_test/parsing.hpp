@@ -26,7 +26,7 @@ namespace Parsing{
 	//encodage
 	void profile_list_to_str(char *buffer,std::vector<Profile> *prof);
 	void profile_to_str(char *buffer, Profile prof);
-	void create_game_to_str(char *buffer, Game_settings * settings);
+	void create_game_to_str(char *buffer,const Game_settings * settings);
 	void profile_list_to_str(char* buffer, std::vector<std::string> *list);
 	std::string level_to_str(Level *my_level, const std::string name);
 

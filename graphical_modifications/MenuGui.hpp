@@ -104,6 +104,8 @@ private:
 	void print_friends();
 	void lobby();
 	void level_editor(Parsing::Level my_level);
+	void launch_game(Parsing::Game_settings* game_option);
+
 
 
 private slots:
