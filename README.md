@@ -1,10 +1,33 @@
 # L-type
-Template pour le projet INFOF209 de l'année académique 2020-2021.
+## Installation Instructions :
+* ncurses (terminal version) : ``` sudo apt-get install libncurses5-dev libncursesw5-dev ```
+* sfml (graphical version) :``` sudo apt-get install libsfml-dev```
+* Qt (graphical version) : ```sudo apt-get install qt5-default```
+* Clone the repo 
 
-Vous pourrez trouver les documents du projet dans le dossier *doc*.
+## Compilation :
+1. ```make run_server```
+2. ``` make run_client ```
 
-Ce Readme est modifiable à votre guise. Nous vous demandons simplement de compléter le tableau ci-dessous avec la correspondance des GitHub ids / noms pour chaque membre du groupe et de conserver cette information dans votre Readme pour toute la durée du projet.
+## Controls :
+#### Player 1 :
+* **z** - move your spaceship up
+*  **q** - move your spaceship left
+*  **s** - move your spaceship down
+*  **d** - move your spaceship right
+*  **a,e,w,c** - move your spaceship in diagonal
+*  **spacebar** - shoot
+#### Player 2 :
+* **t** - move your spaceship up
+*  **f** - move your spaceship left
+*  **g** - move your spaceship down
+*  **h** - move your spaceship right
+*  **r,y,v,n** - move your spaceship in diagonal
+*  **m** - shoot
 
+
+
+## Authors :
 | GitHub ids | Nom & Prénom      |
 |------------|-------------------|
 | jbarber07  | Barber Jeremy     |
