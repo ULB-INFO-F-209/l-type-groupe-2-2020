@@ -58,6 +58,10 @@ public:
     
     int createGame(char * game_info);
     void createLevel(const char * level_info);
+    std::string viewLevels();
+    std::string myLevels();
+    std::string getLevel(std::string level_name);
+
     
     //state
     inline bool is_playing(){return _inGame;}

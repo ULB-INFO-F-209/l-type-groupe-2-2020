@@ -163,9 +163,29 @@ std::string Client::read_game_pipe(){
 
 void Client::createLevel(const char * level_info){
 	char buffer[Constante::CHAR_SIZE];
-	sprintf(buffer, "%s&%d", level_info,_pid);
+	sprintf(buffer, "LS_%s&%d", level_info,_pid);
 	communication(buffer);
+}
 
+ std::string Client::viewLevels(){
+ 	char buffer[Constante::CHAR_SIZE];
+ 	sprintf(buffer, "LG&%d",_pid);
+ 	communication(buffer);
+ 	return std::string(buffer);
+ }
+
+std::string Client::myLevels(){
+	char buffer[Constante::CHAR_SIZE];
+ 	sprintf(buffer, "LM&%s&%d",_pseudo,_pid);
+ 	communication(buffer);
+ 	return std::string(buffer);
+
+}
+std::string Client::getLevel(std::string level_name){
+	 char buffer[Constante::CHAR_SIZE];
+ 	sprintf(buffer, "LO&%s&%s&%d",level_name.c_str(),_pseudo,_pid);
+ 	communication(buffer);
+ 	return std::string(buffer);
 }
  
 

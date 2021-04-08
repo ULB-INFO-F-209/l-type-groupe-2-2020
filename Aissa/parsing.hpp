@@ -75,7 +75,6 @@ struct Parsing::Obstacle{
 	int hp = 70;
 	int damage=30;
 	int speed = 2; //SLUG, TURTLE, HUMAN, HORSE,CHEETAH
-	
 
 	void get_values(int *res){
 		res[0] = x;
@@ -90,14 +89,13 @@ struct Parsing::Player{
 	int skin2 = 0;
 	int hp = 70;
 	int damage=30;
-	int speed = 2; //SLUG, TURTLE, HUMAN, HORSE,CHEETAHs
 };
 
 struct Parsing::Level{
 	Player player;
 
 	//Enemy session
-	std::vector<Enemy> ennemy_list{};
+	std::vector<Enemy> enemy_list{};
 
 	//obstacle session
 	std::vector<Obstacle> obs_list{};

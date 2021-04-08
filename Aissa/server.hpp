@@ -88,7 +88,6 @@ private:
     void client_exit(std::string* pid);
     void kill_process(const char* pipe);
     
-    
 };
 
 

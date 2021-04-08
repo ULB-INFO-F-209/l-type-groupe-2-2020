@@ -114,7 +114,7 @@ private slots:
 	void launch_game(int players, int drop_rate, int lives, std::string difficulty, bool ally_shot);
 	void level_editor( Level my_level);
 	void save_level(Level my_level);
-	void custom_ennemy(Level my_level, int idx);
+	void custom_enemy(Level my_level, int idx);
 	void custom_obstacle(Level my_level, int idx);
 	void custom_player(Level my_level);
 	void my_level();

@@ -48,6 +48,18 @@ PlayerAttributes|Enemy1Attributes&Enemy2Attributes&....|ObstacleAttributes&Obsta
 LS_name_skin1_skin2_hp_damage_speed|x_tick_skin_hp_damage_bonus_speed&x1_tick1_skin1_hp1_bonus1_speed1&......|x_tick_skin_hp_damage_speed&x1_tick1_skin1_hp1
 
 
+get_levels ranking:
+		client : LG&pid
+		serveur : name_author_vote&name2_author_vote......
+get_my_level : 
+	client : LM&pseudo&pid
+	serveur : name_author_vote&name2_author_vote......
+get one level:
+	client : LO&name&author&pid
+	serveur : LS_name_skin1_skin2_hp_damage_speed|x_tick_skin_hp_damage_bonus_speed&x1_tick1_skin1_hp1_bonus1_speed1&......|x_tick_skin_hp_damage_speed&x1_tick1_skin1_hp1
+
+
+
 résumé en ceci par pure flemme de 
 parsage et pour une question d'optimisation
 et d'ergonomie de code.
