@@ -21,6 +21,7 @@
 #include "screen.hpp"
 #include "game_test/parsing.hpp"
 
+
 #include <iostream>
 #include <QVariant>
 #include <QAction>
@@ -52,6 +53,8 @@
 #include <QFormLayout>
 
 
+#include "DisplayGame.hpp"
+#include <SFML/Graphics.hpp>
 
 
 using namespace Screen;
@@ -104,7 +107,7 @@ private:
 	void print_friends();
 	void lobby();
 	void level_editor(Parsing::Level my_level);
-	void launch_game(Parsing::Game_settings* game_option);
+	void launch_game(const Parsing::Game_settings* game_option);
 
 
 

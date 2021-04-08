@@ -16,11 +16,11 @@ qt_exec_flag = -lQt5Widgets -lQt5Gui -lQt5Core -lGL -lpthread
 server: main_server.cpp server.o database.o account.o parsing.o CurrentGame.o MapHandler.o displaygame.o accountandvectors.o
 	g++  main_server.cpp CurrentGame.o server.o database.o account.o parsing.o MapHandler.o displaygame.o accountandvectors.o $(flag) $(sfml_flag) -o process_server
 
-client_terminal: main_client_terminal.cpp client.o parsing.o interface.o screen.o menuterminal.o CurrentGame.o MapHandler.o displaygame.o
-	g++  main_client_terminal.cpp  client.o parsing.o interface.o screen.o menuterminal.o CurrentGame.o MapHandler.o displaygame.o $(flag) $(sfml_flag) -o process_client_terminal
+client_terminal: main_client_terminal.cpp client.o parsing.o interface.o menuterminal.o CurrentGame.o MapHandler.o displaygame.o
+	g++  main_client_terminal.cpp  client.o parsing.o interface.o menuterminal.o CurrentGame.o MapHandler.o displaygame.o $(flag) $(sfml_flag) -o process_client_terminal
 	
-client_gui: main_client_gui.cpp client.o parsing.o  menugui.o 
-	g++  main_client_gui.cpp  client.o parsing.o  menugui.o $(qt_flag) $(flag) -Wl,-O1 -o process_client_gui  $(qt_exec_flag)
+client_gui: main_client_gui.cpp client.o parsing.o  menugui.o  CurrentGame.o MapHandler.o displaygame.o
+	g++  main_client_gui.cpp  client.o parsing.o menugui.o CurrentGame.o MapHandler.o displaygame.o $(qt_flag) $(sfml_flag) $(flag) -Wl,-O1 -o process_client_gui  $(qt_exec_flag)
 	
 interface.o: Interface.cpp Interface.hpp screen.hpp
 	g++  -c Interface.cpp $(flag) $(sfml_flag) -o interface.o
@@ -41,8 +41,6 @@ displaygame.o: DisplayGame.cpp DisplayGame.hpp
 client.o: Client.hpp Client.cpp Constante.hpp
 	g++  -c Client.cpp $(flag) -o client.o 
 	
-server.o: server.cpp server.hpp Constante.hpp 
-	g++  -c server.cpp $(flag) -o server.o 
 
 
 database.o: game_test/database/database.hpp game_test/database/database.cpp

@@ -810,6 +810,7 @@ void MenuGui::launch_game(int players, int drop_rate, int lives, std::string dif
                 char game_sett_char[Constante::CHAR_SIZE];
                 Parsing::create_game_to_str(game_sett_char,&setting);
                 _client.createGame(game_sett_char);
+                launch_game(&setting);
                 buttonBox->rejected();
                 
             }
@@ -823,7 +824,11 @@ void MenuGui::launch_game(int players, int drop_rate, int lives, std::string dif
         Parsing::create_game_to_str(game_sett_char,&setting);
         std::cout << "voila le str = " << game_sett_char<< std::endl;
         _client.createGame(game_sett_char);
-        
+        launch_game(&setting);
+        this->hide();
+        sleep(90); // [TODO] changer mettre pause et faire une fct qui reagit a un signal ...
+        this->show();
+        std::cout << "salut bg je suis de retoure pour te jouer de mauvais tour";
     }
 }
 
@@ -1446,4 +1451,69 @@ void MenuGui::custom_player(Parsing::Level my_level){
 
     Dialog->show();
 
+}
+
+void MenuGui::launch_game(const Parsing::Game_settings* game_option){
+	DisplayGame display_game;
+	display_game.init(); 
+	display_game.initGraphics();
+	sf::RenderWindow* window = display_game.getWindow();
+
+    bool gameOn = true;
+    std::vector<int> inp;
+	std::string string_game_to_display;
+	std::string string_previous_game_to_display;
+
+
+    while(gameOn && window->isOpen()){ 
+
+		sf::Event event;
+        while (window->pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                window->close();
+			if (event.type == sf::Event::KeyPressed)
+				display_game.getInputWindow(&inp);
+        }
+	
+		window->clear();
+		_client.send_game_input(inp);
+		inp.clear();
+
+		inp.push_back(-1);
+		string_game_to_display = _client.read_game_pipe();
+		if (string_game_to_display != Constante::GAME_END)
+			string_previous_game_to_display = string_game_to_display;
+		if (string_game_to_display == Constante::GAME_END)
+		
+			break;
+			//gameOn = false;
+		display_game.parse_instruction(string_game_to_display);
+		//drawGrid(*window,18,80);
+		window->display();
+
+    }
+	
+	//Last background
+	display_game.parse_instruction(string_previous_game_to_display);
+	window->display();
+
+	//Final Score
+	string_game_to_display = _client.read_game_pipe();
+	display_game.drawEndGame(string_game_to_display);
+	window->display();
+	sf::Event event;
+	
+	while(true){
+		char in_char = -1;
+		while (window->pollEvent(event))
+        {
+			if (event.type == sf::Event::KeyPressed)
+				in_char = display_game.getInputWindow(&inp);
+        }
+        if(in_char == 'p')break;
+    }
+
+    display_game.close();
+	window->close();
 }
