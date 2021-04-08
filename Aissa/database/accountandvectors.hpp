@@ -21,12 +21,15 @@ public:
     // Getters
     int findFriend(char pseudo[20]);
     int findRequest(char pseudo[20]);
+    int findLevel(std::string level);
 
     // Utilities
     int addRequest(char pseudo[20]);
     void removeRequest(char pseudo[20]);
     void addFriend(char pseudo[20]);
     void removeFriend(char pseudo[20]);
+    void incVote(std::string levelName);
+    DatabaseLevel getLevel(std::string levelName);
 
     // Destructor
     ~AccountAndVectors(){ 
