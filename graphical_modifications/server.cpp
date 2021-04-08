@@ -1,7 +1,7 @@
 #include "server.hpp"
 
 #define TEST_GAME1
-#define DEBUG_GAME
+#define DEBUG_GAME1
 bool Server::_is_active = false;
 Database Server::_db{};
 std::mutex Server::mtx;
@@ -53,6 +53,7 @@ void Server::handleIncommingMessages(){
     char response_pipe_path[Constante::CHAR_SIZE],message[Constante::CHAR_SIZE];
     sprintf(response_pipe_path,"%s%s",Constante::PIPE_PATH,Constante::PIPE_DE_REPONSE);
 
+    // ecoute infinis du pipe des requetes
     while (true){
         fd =open(response_pipe_path, O_RDONLY);
         if (fd < 0){
@@ -239,10 +240,9 @@ void Server::initConnexions(){
                 char pipe_input_game[Constante::CHAR_SIZE*2];
                 char pipe_game[Constante::CHAR_SIZE*2];
 
-                PIDinGame tmp(proc_id);
+                PIDinGame tmp(proc_id); // sauvegarde du pid pour savoir s'il est en jeu
                 
                 _pipe_running.push_back(&tmp);
-                std::cout << _pipe_running[0]->pid << std::endl;
                 
                 sprintf(pipe_name,"%s%s",Constante::BASE_PIPE_FILE,proc_id); // constitue le nom du pipe priver entre le serveur et le client
                 sprintf(pipe_input_game,"%s%s",Constante::BASE_INPUT_PIPE,proc_id);
@@ -330,6 +330,7 @@ void Server::viewProfile(char* val) {
     Parsing::profile_to_str(val,prof);
 }
 
+
 bool Server::delFriendRequest(char* val){
     //Mk&pseudo&pseudoF&pid
     char pseudo1[20], pseudo2[20]; 
@@ -408,7 +409,7 @@ void Server::launch_db_save(){
 }
 
 /**
- * @brief Supprime les pipes du client
+ * @brief suppression des infos concernants le client, pipe, structure du jeu, ...
  * 
  * @param input : le pid du client pour pouvoir supprimer les pipes
  */
@@ -426,15 +427,17 @@ void Server::client_exit(std::string *pid){
     
     mtx.lock();
     for(size_t i = 0; i < _pipe_running.size();i++){
+        //le client qui part est-il en jeu ?
         if(_pipe_running.at(i)->in_game && strcmp(_pipe_running.at(i)->pid, pid->c_str()) == 0 ){
             
-            kill_process(input_pipe.c_str());
+            kill_process(input_pipe.c_str()); // tuer le thread qui utilise ce pipe (le pipe de jeu)
             _pipe_running.erase(_pipe_running.cbegin()+i);
             break;
         }
     }
     mtx.unlock();
 
+    // supp pipe
     remove_pipe(processId);
     remove_pipe(game_pipe);
     remove_pipe(input_pipe);
@@ -485,6 +488,7 @@ void Server::get_game_settings(char* input, Parsing::Game_settings* game_sett){
 			  << game_sett->pseudo_other    << "-" << game_sett->drop_rate << "-"
 			  << game_sett->ally_shot << "-" << game_sett->nb_lives << "-"
 			  << game_sett->difficulty_str <<"-"<< game_sett->pid <<std::endl;
+    sleep(5);
     #endif
 
 }

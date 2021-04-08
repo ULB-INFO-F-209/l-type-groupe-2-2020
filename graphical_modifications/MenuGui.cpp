@@ -804,6 +804,7 @@ void MenuGui::launch_game(int players, int drop_rate, int lives, std::string dif
     strcpy(setting.pseudo_hote,my_pseudo);
     setting.diff = !strcmp(setting.difficulty_str,"easy")? easy: !strcmp(setting.difficulty_str,"medium")? medium :hard;
     setting.drop_rate = drop_rate;
+    setting.nb_lives = lives;
     setting.ally_shot = ally_shot;
     setting.nb_player = players;
 
@@ -837,7 +838,9 @@ void MenuGui::launch_game(int players, int drop_rate, int lives, std::string dif
 
         //connection 
         connect(buttonBox, SIGNAL(rejected()), Dialog, SLOT(reject()));
-        connect(buttonBox, &QDialogButtonBox::accepted,this, [this,buttonBox,pseudoLine,pswdLine,&setting](){
+        connect(buttonBox, &QDialogButtonBox::accepted,this, [this,buttonBox,pseudoLine,pswdLine,setting](){
+            Parsing::Game_settings& sett_ref = const_cast<Parsing::Game_settings&>(setting);
+            
             std::string pseudo = (pseudoLine->text()).toUtf8().constData();
             std::string pswd = (pswdLine->text()).toUtf8().constData();
             char y_pseudo[Constante::SIZE_PSEUDO]; bool success =0;
@@ -847,10 +850,10 @@ void MenuGui::launch_game(int players, int drop_rate, int lives, std::string dif
                 
             if(success){
                 char game_sett_char[Constante::CHAR_SIZE];
-                strcpy(setting.pseudo_hote,y_pseudo);
-                Parsing::create_game_to_str(game_sett_char,&setting);
+                strcpy(sett_ref.pseudo_hote,y_pseudo);
+                Parsing::create_game_to_str(game_sett_char,&sett_ref);
                 _client.createGame(game_sett_char);
-                launch_game(&setting);
+                launch_game(&sett_ref);
                 buttonBox->rejected();
                 
             }
@@ -864,9 +867,9 @@ void MenuGui::launch_game(int players, int drop_rate, int lives, std::string dif
         Parsing::create_game_to_str(game_sett_char,&setting);
         std::cout << "voila le str = " << game_sett_char<< std::endl;
         _client.createGame(game_sett_char);
-        launch_game(&setting);
         this->hide();
-        sleep(90); // [TODO] changer mettre pause et faire une fct qui reagit a un signal ...
+        launch_game(&setting);
+        sleep(10); // [TODO] changer mettre pause et faire une fct qui reagit a un signal ...
         this->show();
         std::cout << "salut bg je suis de retoure pour te jouer de mauvais tour";
     }
