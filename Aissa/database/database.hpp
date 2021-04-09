@@ -43,6 +43,8 @@ public:
     std::vector<Profile> getFriendList(char* pseudo);
 	std::vector<Profile> checkLeaderboard();
 	std::vector<DatabaseLevel> checkLevels();
+	std::vector<DatabaseLevel> checkMyLevels(std::string pseudo);
+	DatabaseLevel checkALevel(std::string pseudo, std::string levelName);
 
 	// Utilities
 	bool createAccount(char* pseudo, char* pswd);
