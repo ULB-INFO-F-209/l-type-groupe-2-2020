@@ -1447,11 +1447,9 @@ void Menu::my_level(){
     tableWidget->setRowCount(creator_list.size());
     tableWidget->setGeometry(QRect(50, 80, 200, 200));
 
-    QLabel *label = new QLabel("Levels", gridLayoutWidget);
+    QLabel *label = new QLabel("Levels", centralWidget);
     label->setAlignment(Qt::AlignCenter);
-
-    gridLayout->addWidget(label, 0, 0, 1, 1);
-
+    label->setGeometry(50, 80, 200, 100);
 
     QStringList m_TableHeader;
     m_TableHeader <<"Title"<<"Author"<<"Vote";
@@ -1459,12 +1457,11 @@ void Menu::my_level(){
     tableWidget->verticalHeader()->setVisible(false);
     tableWidget->setShowGrid(false);
     //tableWidget->setGeometry(QApplication::desktop()->screenGeometry());
-    tableWidget->setGeometry(QRect(300, 150, 22, 190));
+    tableWidget->setGeometry(QRect(300, 150, 500, 100));
     tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
     tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
     tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
     tableWidget->setShowGrid(false);
-    tableWidget->setMinimumSize(QSize(255, 500));
     for (size_t i = 0; i < creator_list.size(); i++){
         QTableWidgetItem *item;
         tableWidget->setItem(i, 0, new QTableWidgetItem((creator_list[i].name).c_str()));
