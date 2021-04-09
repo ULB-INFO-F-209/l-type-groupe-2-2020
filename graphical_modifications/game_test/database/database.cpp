@@ -18,11 +18,10 @@ void Database::add(Request request){
         _data[idx]._requests_vector.push_back(request._request);
 }
 
-void Database::add(std::string pseudo, std::string level, std::string name_level, int vote){
+void Database::add(std::string pseudo, std::string level, std::string nameLevel, int vote){
     std::ptrdiff_t idx = find(pseudo.c_str());
-    
     if (idx != -1)
-        _data[idx]._levels_vector.push_back(DatabaseLevel{level,name_level,vote});
+        _data[idx]._levels_vector.push_back(DatabaseLevel{pseudo, level, nameLevel, vote});
     else
         std::cout << "[ERROR DATABASE] PSEUDO NOT FOUND : "<< pseudo <<std::endl;
 }
@@ -125,11 +124,32 @@ std::vector<DatabaseLevel> Database::checkLevels(){
             _levels.push_back(level);
         }
     }
+    // tri du vecteur dans l'ordre decroissant des votes
+    std::sort(_levels.begin(), _levels.end(), [](DatabaseLevel a, DatabaseLevel b) {
+        return a.vote > b.vote;
+    });
     // affichage
     for (auto x : _levels)
-        std::cout << x.level<< " -> "<< x.vote << ", ";
+        std::cout << x.level << "-> " << x.vote << ", " << std::endl;
+
     std::cout << "-----------------" << std::endl;
     return _levels;
+}
+
+std::vector<DatabaseLevel> Database::checkMyLevels(std::string pseudo){
+    std::vector<DatabaseLevel> myLevels;
+    std::ptrdiff_t idx = find(pseudo.c_str());
+    if (idx != -1)
+        myLevels.assign(_data[idx]._levels_vector.begin(), _data[idx]._levels_vector.end());
+    return myLevels;
+}
+
+DatabaseLevel Database::checkALevel(std::string pseudo, std::string levelName){
+    DatabaseLevel res;
+    std::ptrdiff_t idx = find(pseudo.c_str());
+    if (idx != -1)
+        res = _data[idx].getLevel(levelName);
+    return res;
 }
 
 //setter
@@ -226,6 +246,12 @@ int Database::removeFriend(char* pseudo1, char* pseudo2){
     if (idx2 == -1){std::cout << pseudo2 << " does not exist" << std::endl;}
     if (idx1 == idx2){std::cout << pseudo1 << " can not delete him/herself" << std::endl; res = 3;}
     return res;
+}
+
+void Database::incrementVote(std::string pseudo, std::string level){
+    std::ptrdiff_t idx = find(pseudo.c_str());
+    if (idx != -1)
+        _data[idx].incVote(level);         
 }
 
 // File management
@@ -424,4 +450,6 @@ void Database::display(){
 //destructor
 Database::~Database(){
     _data.clear();
+    _profiles.clear();
+    _levels.clear();
 }

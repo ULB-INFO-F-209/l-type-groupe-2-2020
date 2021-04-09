@@ -163,11 +163,42 @@ std::string Client::read_game_pipe(){
 
 void Client::createLevel(const char * level_info){
 	char buffer[Constante::CHAR_SIZE];
-	sprintf(buffer, "%s&%d", level_info,_pid);
+	sprintf(buffer, "LS_%s|%s&%d", level_info,_pseudo,_pid);
 	communication(buffer);
+}
+
+ std::string Client::viewLevels(){
+ 	char buffer[Constante::CHAR_SIZE];
+ 	sprintf(buffer, "LG&%d",_pid);
+ 	communication(buffer);
+ 	return std::string(buffer);
+ }
+
+std::string Client::myLevels(){
+	char buffer[Constante::CHAR_SIZE];
+ 	sprintf(buffer, "LM&%s&%d",_pseudo,_pid);
+ 	communication(buffer);
+ 	return std::string(buffer);
 
 }
- 
+std::string Client::getLevel(std::string level_name, std::string author){
+	 char buffer[Constante::CHAR_SIZE];
+ 	sprintf(buffer, "LO&%s&%s&%d",level_name.c_str(),author.c_str(),_pid);
+ 	communication(buffer);
+ 	return std::string(buffer);
+}
+
+void Client::playLevel(std::string level){
+	char buffer[Constante::CHAR_SIZE];
+ 	sprintf(buffer, "LR&%s&%d",level.c_str(),_pid);
+ 	communication(buffer);
+}
+void Client::voteLevel(std::string name, std::string author){
+	char buffer[Constante::CHAR_SIZE];
+ 	sprintf(buffer, "LV&%s&%s&%d",name.c_str(), author.c_str(),_pid);
+ 	communication(buffer);
+}
+
 
 void Client::send_game_input(int inp){
 

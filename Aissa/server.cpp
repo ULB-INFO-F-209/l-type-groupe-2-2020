@@ -147,19 +147,36 @@ void Server::catchInput(char* input) {
     else if (input[0] == Constante::LEVEL){
         switch(input[1]){
         case Constante::SAVE_LEVEL:{
-            std::string level_input(input);
-            std::string pseudo = level_input.substr(level_input.rfind("|")+1,level_input.rfind(Constante::DELIMITEUR));
-            pseudo = pseudo.substr(0, pseudo.find(Constante::DELIMITEUR));
-            _db.add(pseudo, level_input);
+            addLevel(input);
             resClient(&processId,Constante::ALL_GOOD);
             break;
         }
 
-        case Constante::LOAD_LEVEL:
+        case Constante::ONE_LEVEL:
+            resClient(processId,oneLevel(input));
+            break;
+        
+        case Constante::MY_LEVEL:{
+            resClient(processId,clientLevels(input));
+            break;
+        }
+        case Constante::LEVEL_RANKING:
+            resClient(processId,levelsRanking());
+            break;
+        
+        case Constante::ADD_VOTE:
+            addVote(input);
+            resClient(&processId,Constante::ALL_GOOD);
+            break;
+        
+        case Constante::RUN_LEVEL:{
 
             break;
         }
+        
+
     }
+}
     else {
 		std::cerr << "[ERROR IN INPUT 1]" << std::endl;
 		return;
@@ -320,6 +337,97 @@ bool Server::delFriendRequest(char* val){
     return ret_val;
 }
 
+void Server::addLevel(char * input){
+    std::string level_input(input);
+    std::string pseudo = level_input.substr(level_input.rfind("|")+1,level_input.rfind(Constante::DELIMITEUR));
+    pseudo = pseudo.substr(0, pseudo.find(Constante::DELIMITEUR));
+
+    //level name
+    std::size_t idx = level_input.find('|');
+    std::string player_zone = level_input.substr(0,idx);
+
+    idx = player_zone.find("_");
+    std::string lettre = player_zone.substr(0,idx);
+    player_zone = player_zone.substr(idx+1, player_zone.size());
+
+    idx = player_zone.find("_");
+    std::string name_level = player_zone.substr(0,idx);
+
+    // delete name & pid at the end
+    idx = level_input.rfind("|");
+    level_input = level_input.substr(0, idx);
+
+    std::cout << "name level = " << name_level << std::endl;
+    std::cout << "level = " << level_input << std::endl;
+
+    _db.add(pseudo, level_input, name_level, 0);
+
+}
+
+std::string Server::levelsRanking(){
+    auto level_to_parse = _db.checkLevels();
+    return Parsing::creator_list_to_str(level_to_parse);
+}
+
+std::string Server::clientLevels(char *input){
+    std::string input_str(input);
+    int idx = input_str.find(Constante::DELIMITEUR);
+    input_str.substr(0,idx);
+    input_str = input_str.substr(idx+1, input_str.size()); 
+    idx = input_str.find(Constante::DELIMITEUR);
+    std::string pseudo_str = input_str.substr(0,idx);
+
+    auto level_to_parse = _db.checkMyLevels(pseudo_str);
+    std::cout << " size = " << level_to_parse.size()<<std::endl; 
+    return Parsing::creator_list_to_str(level_to_parse);
+}
+
+std::string Server::oneLevel(char *input){
+    std::string input_str(input);
+    std::string pseudo_str,level_name_str;
+
+    int idx = input_str.find(Constante::DELIMITEUR);
+    input_str.substr(0,idx);
+    input_str = input_str.substr(idx+1, input_str.size()); 
+
+    idx = input_str.find(Constante::DELIMITEUR);
+    level_name_str = input_str.substr(0,idx);
+    input_str = input_str.substr(idx+1, input_str.size()); 
+
+    idx = input_str.find(Constante::DELIMITEUR);
+    pseudo_str = input_str.substr(0,idx);
+    
+    auto res_to_parse = _db.checkALevel(pseudo_str,level_name_str);
+    return res_to_parse.level;
+}
+
+void Server::addVote(char *input){
+    //LV&name&autor&pid
+    std::string input_str(input);
+    std::string pseudo_str,level_name_str;
+
+    int idx = input_str.find(Constante::DELIMITEUR);
+    input_str.substr(0,idx);
+    input_str = input_str.substr(idx+1, input_str.size()); 
+
+    idx = input_str.find(Constante::DELIMITEUR);
+    level_name_str = input_str.substr(0,idx);
+    input_str = input_str.substr(idx+1, input_str.size()); 
+
+    idx = input_str.find(Constante::DELIMITEUR);
+    pseudo_str = input_str.substr(0,idx);
+    _db.incrementVote(pseudo_str,level_name_str);
+
+}
+
+void Server::runLevel(char* input){
+    //LR&level&pid
+    std::string input_str(input);
+    std::string level = input_str.substr(input_str.find(Constante::DELIMITEUR)+1, input_str.rfind(Constante::DELIMITEUR));
+    // TODO RUN LEVEL
+}
+
+
 /**
  * Envoie la réponse au bon client
  * 
@@ -366,6 +474,22 @@ void Server::resClient(std::string* processId, int res) {
     std::cout << "resultat requete : " << message <<" sur le pipe "<<pipe_name << std::endl; 
 
 	fd = open(pipe_name,O_WRONLY);
+    if (fd != -1) write(fd, &message, Constante::CHAR_SIZE);
+    else std::cerr << "[ERROR] requete non ecrite " << std::endl;
+    
+    close(fd);
+    std::cout <<std::endl;
+}
+
+void Server::resClient(std::string processId, std::string res){
+    char message[Constante::CHAR_SIZE];int fd;
+    sprintf(message, "%s", res.c_str());
+
+    char pipe_name[Constante::CHAR_SIZE];
+    sprintf(pipe_name,"%s%s%s", Constante::PIPE_PATH, Constante::BASE_PIPE_FILE,(processId).c_str());
+    std::cout << "resultat requete : " << message <<" sur le pipe "<<pipe_name << std::endl; 
+
+    fd = open(pipe_name,O_WRONLY);
     if (fd != -1) write(fd, &message, Constante::CHAR_SIZE);
     else std::cerr << "[ERROR] requete non ecrite " << std::endl;
     

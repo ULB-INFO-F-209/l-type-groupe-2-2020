@@ -17,6 +17,7 @@
 
 namespace Parsing{
 	using Profile=Profile;
+	using Creator=DatabaseLevel;
 	struct Game_settings;
 	struct Enemy;
 	struct Obstacle;
@@ -29,6 +30,8 @@ namespace Parsing{
 	void create_game_to_str(char *buffer,const Game_settings * settings);
 	void profile_list_to_str(char* buffer, std::vector<std::string> *list);
 	std::string level_to_str(Level *my_level, const std::string name);
+	std::string creator_list_to_str(std::vector<Creator> creator_list);
+	std::string creator_to_str(Creator author);
 
 	//decodage
 	void profile_list_from_str(char *buffer,std::vector<Profile> *prof);
@@ -36,8 +39,9 @@ namespace Parsing{
 	void create_game_from_str(char *buffer, Game_settings * settings);
 	void parsing(char* str, char* token1, char* token2 = nullptr);
 	Level level_from_str(std::string);
+	std::vector<Creator> creator_list_from_str(std::string);
+	Creator creator_from_str(std::string);
 }
-
 
 struct Parsing::Game_settings
 {
@@ -98,7 +102,7 @@ struct Parsing::Level{
 	Player player;
 
 	//Enemy session
-	std::vector<Enemy> ennemy_list{};
+	std::vector<Enemy> enemy_list{};
 
 	//obstacle session
 	std::vector<Obstacle> obs_list{};

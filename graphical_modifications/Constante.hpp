@@ -27,8 +27,12 @@ namespace Constante{
     constexpr char ACTION_MENU_PRINCIPAL = 'M';
     constexpr char GAME_SETTINGS = 'P';
     constexpr char LEVEL = 'L';
+    constexpr char MY_LEVEL = 'M';
+    constexpr char LEVEL_RANKING = 'G';
+    constexpr char RUN_LEVEL = 'R';
+    constexpr char ADD_VOTE = 'V';
+    constexpr char ONE_LEVEL = 'O';
     constexpr char SAVE_LEVEL = 'S';
-    constexpr char LOAD_LEVEL = 'L';
     constexpr char REPONSE_AMI = 'R';
     const char NO_PARTENER[] = {"Null"};
     constexpr char DELIMITEUR = '&';

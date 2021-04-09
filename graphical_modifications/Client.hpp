@@ -56,9 +56,15 @@ public:
     void exit();
     
     //Game
-    void createLevel(const char * level_info);
     int createGame(char * game_info);
-    
+    void createLevel(const char * level_info);
+    std::string viewLevels();
+    std::string myLevels();
+    std::string getLevel(std::string level_name,std::string author);
+    void playLevel(std::string level);
+    void voteLevel(std::string name, std::string author);
+
+
     //state
     inline bool is_playing(){return _inGame;}
     inline void get_pseudo(char *res){strcpy(res, _pseudo);}

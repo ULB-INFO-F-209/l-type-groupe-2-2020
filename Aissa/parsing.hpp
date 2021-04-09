@@ -10,12 +10,13 @@
 #include <iostream>
 #include <string>
 #include <unistd.h>
-#include "database/database.hpp"
+#include "database/structures.hpp"
 
 enum difficulty{easy, medium, hard};
 
 namespace Parsing{
 	using Profile=Profile;
+	using Creator=DatabaseLevel;
 	struct Game_settings;
 	struct Enemy;
 	struct Obstacle;
@@ -28,6 +29,8 @@ namespace Parsing{
 	void create_game_to_str(char *buffer, Game_settings * settings);
 	void profile_list_to_str(char* buffer, std::vector<std::string> *list);
 	std::string level_to_str(Level *my_level, const std::string name);
+	std::string creator_list_to_str(std::vector<Creator> creator_list);
+	std::string creator_to_str(Creator author);
 
 	//decodage
 	void profile_list_from_str(char *buffer,std::vector<Profile> *prof);
@@ -35,8 +38,9 @@ namespace Parsing{
 	void create_game_from_str(char *buffer, Game_settings * settings);
 	void parsing(char* str, char* token1, char* token2 = nullptr);
 	Level level_from_str(std::string);
+	std::vector<Creator> creator_list_from_str(std::string);
+	Creator creator_from_str(std::string);
 }
-
 
 struct Parsing::Game_settings
 {
@@ -75,7 +79,6 @@ struct Parsing::Obstacle{
 	int hp = 70;
 	int damage=30;
 	int speed = 2; //SLUG, TURTLE, HUMAN, HORSE,CHEETAH
-	
 
 	void get_values(int *res){
 		res[0] = x;
@@ -90,14 +93,13 @@ struct Parsing::Player{
 	int skin2 = 0;
 	int hp = 70;
 	int damage=30;
-	int speed = 2; //SLUG, TURTLE, HUMAN, HORSE,CHEETAHs
 };
 
 struct Parsing::Level{
 	Player player;
 
 	//Enemy session
-	std::vector<Enemy> ennemy_list{};
+	std::vector<Enemy> enemy_list{};
 
 	//obstacle session
 	std::vector<Obstacle> obs_list{};
