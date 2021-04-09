@@ -1,6 +1,5 @@
 #ifndef DisplayGame_HPP
 #define DisplayGame_HPP
-#include <ncurses.h>
 #include <vector>
 #include <string>
 #include "game_test/Rect.hpp"
@@ -15,8 +14,6 @@ class DisplayGame
 {
 	//Game's windows
 	sf::RenderWindow* window;
-	WINDOW* main_wnd;
-    WINDOW* game_wnd;
 	rect game_area;
     rect screen_area;
 	//utilities attribut
@@ -72,7 +69,6 @@ class DisplayGame
 public:
 	//Constructor
 	DisplayGame()=default;
-	int init();
 	void initGraphics();
 	//Drawings 
 	void drawStar();
@@ -84,12 +80,10 @@ public:
     void drawBonus(int type, int x, int y);
     void drawBoss(int x, int y);
     void drawUi(int player, int hp, int score, int lives, int bonusType, int level, int tick);
-	void drawEnergyBar(int a);
 	void drawEndGame(std::string score);
 	void drawNewLevel(int tick,int levelTick,int currentLevel);
 	//...
 	int getInputWindow(std::vector<int>* inp);
-	int inline getInput(){return wgetch(main_wnd);}
     
 	//Destructor
 	~DisplayGame()=default;
@@ -104,9 +98,5 @@ private:
 	//utilities
 	void parse_affichage(std::string instruction);
 	void parse_etat(std::string instruction);
-	void refreshWnd();
-	void eraseWnd();
-
-
 };
 #endif

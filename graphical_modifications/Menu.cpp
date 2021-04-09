@@ -311,8 +311,7 @@ void Menu::get_players(Game_settings*set){
 }
 
 void Menu::launch_game(Game_settings* game_option){
-	DisplayGame display_game;
-	display_game.init(); 
+	DisplayGame display_game; 
 	display_game.initGraphics();
 	sf::RenderWindow* window = display_game.getWindow();
 
@@ -371,7 +370,6 @@ void Menu::launch_game(Game_settings* game_option){
         if(in_char == 'p')break;
     }
 
-    display_game.close();
 	window->close();
 }
 

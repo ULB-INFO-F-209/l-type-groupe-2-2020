@@ -7,7 +7,6 @@
 
 void DisplayGame::parse_instruction(std::string chaine_instruction){  // A_B_type_x_y&E_H2_valeur&...
 	//std::string chaine_instruction(buffer);
-	eraseWnd();
 	while(chaine_instruction.size() > 1){
 		std::size_t idx = chaine_instruction.find(delimiteur_instruction);  //idx du premier delimiteur_instruction (&)
 		std::string instruction = chaine_instruction.substr(0,idx);     	// on retire une instruction
@@ -26,27 +25,9 @@ void DisplayGame::parse_instruction(std::string chaine_instruction){  // A_B_typ
 	drawStar();
 	tickStar++;
 	usleep(1000);
-	refreshWnd();
 }
 
-void DisplayGame::refreshWnd(){
-	wrefresh(main_wnd);
-    wrefresh(game_wnd);
-}
 
-void DisplayGame::eraseWnd(){
-
-	werase(game_wnd);
-
-}
-
-void DisplayGame::close(){
-    werase(game_wnd);
-    werase(main_wnd);
-    delwin(main_wnd);
-    delwin(game_wnd);
-    endwin();
-}
 int DisplayGame::getInputWindow(std::vector<int> *inp){
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
 	{
@@ -169,8 +150,8 @@ void DisplayGame::parse_affichage(std::string instruction){
 		tick = std::stoi(instruction.substr(idx+1,instruction.length()));
 		drawPlayer(2,x,y,tick,explo);
 	}
-	//else if(objet=="O")			//obstacle
-		//drawObstacle(x,y);
+	else if(objet=="O")			//obstacle
+		drawObstacle(x,y);
 	else if(objet=="EB") 		//Boss
 		drawBoss(x,y);
 	else if(objet=="B"){		//Bonus
@@ -230,10 +211,8 @@ void DisplayGame::starHandler(){
 }
 void DisplayGame::drawStar() {
     for(auto s : stars){
-        //mvwaddch(game_wnd, s->y-1, s->x, '.');
 		sf::CircleShape shape(2.f);
 		shape.setPosition(sf::Vector2f(s->x, s->y));
-		// change la couleur de la forme pour du vert
 		shape.setFillColor(sf::Color::White);
 		window->draw(shape);
     }
@@ -247,8 +226,6 @@ void DisplayGame::drawNewLevel(int tick,int levelTick,int currentLevel) {
 		guiText.setCharacterSize(22);
 		guiText.setPosition(sf::Vector2f(35*12.5, 8*20));
 		window->draw(guiText);
-
-        mvwprintw(game_wnd, 8, 35, "level %i", currentLevel);
     }
 }
 void DisplayGame::initGraphics(){
@@ -391,82 +368,9 @@ void DisplayGame::initGraphics(){
 	guiText.setFont(font);
 
 }
-int DisplayGame::init() {
-	srand(time(0)); // ??????
 
-    main_wnd = initscr();
-    cbreak();
-    noecho();
-    clear();
-    refresh();
-
-    // hide cursor
-    curs_set(0);
-
-    // enable color modification
-    start_color();
-
-
-    // define area for screen (default terminal size)
-    screen_area = { {0, 0}, {80, 24}};
-
-    //wresize(main_wnd, screen_area.height(), screen_area.width());
-
-
-    // initialize window areas
-    int infopanel_height = 4;
-    game_wnd = newwin( screen_area.height() - infopanel_height - 2,
-                       screen_area.width() - 2,
-                       screen_area.top() + 1,
-                       screen_area.left() + 1);
-
-    main_wnd = newwin(screen_area.height(), screen_area.width(), 0, 0);
-
-    // define area for movement
-    game_area = { {0, 0}, {static_cast<uint_fast16_t>(screen_area.width() - 2), static_cast<uint_fast16_t>(screen_area.height() - infopanel_height - 4)}};
-
-    init_pair(1, COLOR_WHITE, COLOR_BLACK);
-    init_pair(2, COLOR_GREEN, COLOR_BLACK);
-    init_pair(3, COLOR_YELLOW, COLOR_BLACK);
-    init_pair(4, COLOR_RED, COLOR_BLACK);
-    init_pair(5, COLOR_BLUE, COLOR_BLACK);
-
-    // enable function keys
-    keypad(main_wnd, true);
-    keypad(game_wnd, true);
-
-    // disable input blocking
-    nodelay(main_wnd, true);
-    nodelay(game_wnd, true);
-
-
-    if(!has_colors()) {
-        endwin();
-        printf("ERROR: Terminal does not support color.\n");
-        exit(1);
-    }
-
-	wattron(main_wnd, A_BOLD);
-    box(main_wnd, 0, 0);
-    wattroff(main_wnd, A_BOLD);
-
-    // horizontal diving line
-    wmove(main_wnd, game_area.bot() + 3, 1);
-    whline(main_wnd, '-', screen_area.width()- 2);
-
-    // initial draw
-
-    wrefresh(main_wnd);
-    wrefresh(game_wnd);
-
-    return 0;
-
-}
 void DisplayGame::drawObstacle(int x, int y) {
-	
-	wattron(game_wnd, COLOR_PAIR(1));
-	mvwaddch(game_wnd, y, x, '#');
-	wattroff(game_wnd, COLOR_PAIR(1));
+
 	asteroidSprite.setPosition(sf::Vector2f((x+1)*12.5-4.5,y*20));
 	//sf::RectangleShape asteroidShape(sf::Vector2f(12.5*1.5,20*1.5));
 	//asteroidShape.setFillColor(sf::Color(102,51,0));
@@ -478,30 +382,10 @@ void DisplayGame::drawObstacle(int x, int y) {
 }
 void DisplayGame::drawEnemy(int x, int y, int tick, bool isBlinking) {
 
-	wattron(game_wnd, COLOR_PAIR(4));
-	mvwaddch(game_wnd, y, x, '%');
-	wattroff(game_wnd, COLOR_PAIR(4));
-
-
-	wattron(game_wnd, A_ALTCHARSET);
-	mvwaddch(game_wnd, y, x - 1, ACS_LARROW);
-	mvwaddch(game_wnd, y, x + 1, ACS_RARROW);
-	wattroff(game_wnd, A_ALTCHARSET);
 
 	if(isBlinking){
 
-
-		wattron(game_wnd, COLOR_PAIR(4));
-		mvwaddch(game_wnd, y, x, ' ');
-		wattroff(game_wnd, COLOR_PAIR(4));
-
-		wattron(game_wnd, A_ALTCHARSET);
-		mvwaddch(game_wnd, y, x - 1, ' ');
-		mvwaddch(game_wnd, y, x + 1, ' ');
-		wattroff(game_wnd, A_ALTCHARSET);
-
 		enemySprite.setColor(sf::Color::Red);
-
 
 	}
 	else{
@@ -526,27 +410,19 @@ void DisplayGame::drawProjectile(int x, int y, bool enemy, bool player1){
 
 	if(enemy){
 		//projectileShape.setFillColor(sf::Color::Red);
-		wattron(game_wnd, COLOR_PAIR(4));
-        mvwaddch(game_wnd, y, x, '*');
-        wattroff(game_wnd, COLOR_PAIR(4));
 		laserSprite.setPosition(sf::Vector2f((x+1)*12.5+1,y*20+5));
 		window->draw(laserSprite);
 
 	}
 	else if (player1) {
 		//projectileShape.setFillColor(sf::Color::Blue);
-		wattron(game_wnd, COLOR_PAIR(5));
-		mvwaddch(game_wnd, y, x, '*');
-		wattroff(game_wnd, COLOR_PAIR(5));
+
 		laser1Sprite.setPosition(sf::Vector2f((x+1)*12.5+1,y*20+5));
 		window->draw(laser1Sprite);
 
 	}
 	else{
 		//projectileShape.setFillColor(sf::Color::Green);
-		wattron(game_wnd, COLOR_PAIR(2));
-		mvwaddch(game_wnd, y, x, '*');
-		wattroff(game_wnd, COLOR_PAIR(2));
 		laser2Sprite.setPosition(sf::Vector2f((x+1)*12.5+1,y*20+5));
 		window->draw(laser2Sprite);
 
@@ -556,44 +432,9 @@ void DisplayGame::drawProjectile(int x, int y, bool enemy, bool player1){
 }
 void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinking){
 
-        // draw player body
-        int player_color;
-		char player_char;
-        if (player==1){
-            player_color=2;
-			player_char = '1';
-        }
-        else{
-			player_color=5;
-			player_char= '0';
-		}
-        wattron(game_wnd, COLOR_PAIR(player_color));
-        mvwaddch(game_wnd, y, x, player_char);
-        wattroff(game_wnd, COLOR_PAIR(player_color));
-
-        wattron(game_wnd, A_ALTCHARSET);
-        mvwaddch(game_wnd, y, x - 1, ACS_LARROW);
-        mvwaddch(game_wnd, y, x + 1, ACS_RARROW);
-		// draw engines flames
-		if((tick % 10) / 3 && !isBlinking) {
-                wattron(game_wnd, COLOR_PAIR(tick % 2 ? 3 : 4));
-                mvwaddch(game_wnd, y + 1, x, ACS_UARROW);
-                mvwaddch(game_wnd, y + 1, x, ACS_UARROW);
-                wattroff(game_wnd, COLOR_PAIR(tick % 2 ? 3 : 4));
-            }
 		
         if(isBlinking){
             // show player looses a life
-            if(tick % 100 < 50) {
-                wattron(game_wnd, COLOR_PAIR(player_color));
-                mvwaddch(game_wnd, y, x, ' ');
-                wattroff(game_wnd, COLOR_PAIR(player_color));
-
-                wattron(game_wnd, A_ALTCHARSET);
-                mvwaddch(game_wnd, y, x - 1, ' ');
-                mvwaddch(game_wnd, y, x + 1, ' ');
-                wattroff(game_wnd, A_ALTCHARSET);
-			}
 			
 			if(player==1){
 				
@@ -662,7 +503,6 @@ void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinkin
 			} 
 
 		}		
-        wattroff(game_wnd, A_ALTCHARSET);
 
 		//sf::RectangleShape playerShipShape(sf::Vector2f(12.5*3,20*2));
 		//playerShipShape.setPosition(sf::Vector2f(x*12.5,5 + y*20));
@@ -692,45 +532,31 @@ void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinkin
 
 }
 void DisplayGame::drawBonus(int type, int x, int y){
-	sf::RectangleShape bonusShape(sf::Vector2f(12.5,20));
-	bonusShape.setFillColor(sf::Color::Yellow);
-	bonusShape.setPosition(sf::Vector2f((x+1)*12.5,5 + y*20));
+	//sf::RectangleShape bonusShape(sf::Vector2f(12.5,20));
+	//bonusShape.setFillColor(sf::Color::Yellow);
+	//bonusShape.setPosition(sf::Vector2f((x+1)*12.5,5 + y*20));
 	if(y*20 < 350){
-		window->draw(bonusShape);
-		wattron(game_wnd, A_BOLD);
+		//window->draw(bonusShape);
 		if(type==lifeSteal){
-			mvwaddch(game_wnd, y, x, 'L');
 			lifestealSprite.setPosition(sf::Vector2f((x+1)*12.5-11,y*20-15));
 			window->draw(lifestealSprite);
 		}
 		else if(type==minigun){
-			mvwaddch(game_wnd, y, x, 'M');
 			minigunSprite.setPosition(sf::Vector2f((x+1)*12.5-12,y*20-15));
 			window->draw(minigunSprite);
 		}
 		else if(type==damageUp){
-			mvwaddch(game_wnd, y, x, 'D');
 			damageupSprite.setPosition(sf::Vector2f((x+1)*12.5-12,y*20-15));
 			window->draw(damageupSprite);
 		}
 		else if(type==tripleShot){
-			mvwaddch(game_wnd, y, x, 'T');
 			tripleshotSprite.setPosition(sf::Vector2f((x+1)*12.5-12,y*20-15));
 			window->draw(tripleshotSprite);
 		}
-		wattroff(game_wnd, A_BOLD);
 	}
 }
 
 void DisplayGame::drawBoss(int x, int y){
-        wattron(main_wnd, COLOR_PAIR(4));
-        mvwprintw(game_wnd, y,   x, "      ______      ");
-        mvwprintw(game_wnd, y+1, x, " ____|______|____");
-        mvwprintw(game_wnd, y+2, x, "/ |____________| \\");
-        mvwprintw(game_wnd, y+3, x, "| |____________| |");
-        mvwprintw(game_wnd, y+4, x, "\\_|____ ___ ___|_/");
-        mvwprintw(game_wnd, y+5, x, "      |_| |_|     ");
-        wattroff(main_wnd, COLOR_PAIR(4));
 		//sf::RectangleShape bossShape(sf::Vector2f(12.5*18,20*6));
 		//bossShape.setFillColor(sf::Color::Red);
 		//bossShape.setPosition(sf::Vector2f(x*12.5+7,5 + y*20));
@@ -751,42 +577,7 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 		window->draw(line);
 		
 
-	if(player == 0){
-
-
-
-		wmove(main_wnd, 20, 1);
-		whline(main_wnd, ' ', 25); // health bar is 25 chars long
-		wmove(main_wnd, 20, 1);
-		drawEnergyBar(hp);
-		//score
-		mvwprintw(main_wnd, 22, 1, "  score: %i", score);
-		// draw static string to hold percentage
-		mvwprintw(main_wnd, 21, 1, "- P1 HP                -");
-		mvwprintw(main_wnd, 21, 15, "lives: %i",lives);
-		// draw numeric percentage player 1
-		wattron(main_wnd, A_BOLD);
-		if(hp <= 25) {
-			wattron(main_wnd, COLOR_PAIR(4));
-			if(tick % 100 < 50)
-				mvwprintw(main_wnd, 21, 9, "%i%%", hp);
-			wattroff(main_wnd, COLOR_PAIR(4));
-		} else
-			mvwprintw(main_wnd, 21, 9, "%i%%", hp);
-		wattroff(main_wnd, A_BOLD);
-		if (bonusType == minigun)
-			mvwprintw(main_wnd, 22, 16, "  B%d: M",player + 1);
-		else if (bonusType == damageUp)
-			mvwprintw(main_wnd, 22, 16, "  B%d: D",player + 1);
-		else if (bonusType == tripleShot)
-			mvwprintw(main_wnd,22, 16, "  B%d: T",player + 1);
-		else if (bonusType == lifeSteal)
-			mvwprintw(main_wnd, 22, 16, "  B%d: L",player + 1);
-		else if (bonusType == noBonus)
-			mvwprintw(main_wnd, 22, 16, "  B%d:  ",player + 1);
-
-
-		
+	if(player == 0){	
 		//healthbar
 		health_bar.setPosition(sf::Vector2f(3,380));
 		window->draw(health_bar);
@@ -847,38 +638,7 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 	
 	}
     if(player == 1){
-
-        // energy bar player2
-        wmove(main_wnd, 20, 54);
-        whline(main_wnd, ' ', 25); // health bar is 25 chars long
-        wmove(main_wnd, 20, 54);
-        drawEnergyBar(hp);
-        //score
-        mvwprintw(main_wnd, 22, 54, "  score: %i", score);
-        // draw static string to hold percentage
-        mvwprintw(main_wnd, 21, 54, "- P2 HP                -");
-        mvwprintw(main_wnd, 21, 68, "lives: %i",lives);
-        // draw numeric percentage player 2
-        wattron(main_wnd, A_BOLD);
-        if(hp <= 25) {
-            wattron(main_wnd, COLOR_PAIR(4));
-            if(tick % 100 < 50)
-                mvwprintw(main_wnd, 21, 62, "%i%%", hp);
-            wattroff(main_wnd, COLOR_PAIR(4));
-        } else
-            mvwprintw(main_wnd, 21, 62, "%i%%", hp);
-        wattroff(main_wnd, A_BOLD);
-        if (bonusType == minigun)
-            mvwprintw(main_wnd, 22, 69, "  B%d: M", player + 1);
-        else if (bonusType == damageUp)
-            mvwprintw(main_wnd, 22, 69, "  B%d: D", player + 1);
-        else if (bonusType == tripleShot)
-            mvwprintw(main_wnd, 22, 69, "  B%d: T", player + 1);
-        else if (bonusType == lifeSteal)
-            mvwprintw(main_wnd, 22, 69, "  B%d: L", player + 1);
-        else if (bonusType == noBonus)
-            mvwprintw(main_wnd, 22, 69, "  B%d:  ", player + 1);
-		
+		//healthbar
 		health_bar2.setPosition(sf::Vector2f(460+325,380));
 		window->draw(health_bar2);
 		sf::IntRect rect (0,0,200+((texture.getSize().x-200)/100)*hp,texture.getSize().y); //200=0
@@ -937,8 +697,6 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
     }
 
     //level
-    mvwprintw(main_wnd,20,33," LEVEL : %i", level);
-
 	guiText.setString("Level "+std::to_string(level));
 	guiText.setCharacterSize(20);
 	guiText.setColor(sf::Color::White);
@@ -947,26 +705,7 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 
 
 }
-void DisplayGame::drawEnergyBar(int a) {
 
-    int col_pair = 1;
-    for(int i = 0; i < a; i+=4) {
-        if(i > 100)
-            col_pair = 5; // blue
-        else if(i > 50)
-            col_pair = 2; // green
-        else if(i > 25)
-            col_pair = 3; // yellow
-        else
-            col_pair = 4; // red
-
-        wattron(main_wnd, COLOR_PAIR(col_pair));
-        wattron(main_wnd, A_BOLD);
-        waddch(main_wnd, '/');
-        wattroff(main_wnd, A_BOLD);
-        wattroff(main_wnd, COLOR_PAIR(col_pair));
-    }
-}
 
 void DisplayGame::drawEndGame(std::string score){
 	guiText.setString("GAME OVER");
@@ -986,10 +725,4 @@ void DisplayGame::drawEndGame(std::string score){
 	guiText.setColor(sf::Color::White);
 	guiText.setPosition(sf::Vector2f(32*12.5, 12*20));
 	window->draw(guiText);
-
-	mvwprintw(game_wnd,8, 35,"GAME OVER");
-    mvwprintw(game_wnd,9, 35,"SCORE : %i", std::stoi(score));
-    mvwprintw(game_wnd,12, 32,"press p to quit");
-    refreshWnd();
-
 }
