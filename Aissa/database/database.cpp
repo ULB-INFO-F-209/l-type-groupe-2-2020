@@ -248,7 +248,7 @@ int Database::removeFriend(char* pseudo1, char* pseudo2){
 void Database::incrementVote(std::string pseudo, std::string level){
     std::ptrdiff_t idx = find(pseudo.c_str());
     if (idx != -1)
-        _data[idx].incVote(level);
+        _data[idx].incVote(level);         
 }
 
 // File management
