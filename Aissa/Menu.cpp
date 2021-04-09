@@ -995,7 +995,7 @@ void Menu::save_level(Level my_level){
         Level copy_level = my_level;
         std::string string_level = level_to_str(&copy_level, level_name);
         std::cout << "Level parser "<<string_level<<std::endl;
-        //_client.createLevel(string_level.c_str);
+        _client.createLevel(string_level.c_str());
         Dialog->hide();
         level_menu();
     });
@@ -1417,16 +1417,99 @@ void Menu::custom_player(Level my_level){
 }
 
 void Menu::my_level(){
-    std::cout << "/***********test parsing ******/";
-    std::string to_parse = "Fire_Alicia_12&Run_Beyonce_15&Anpaman_BTS_78&";
-    std::vector<Creator> v = creator_list_from_str(to_parse);
-    for(auto a: v){
+    std::cout << "***********test parsing **********";
+    _client.voteLevel("Aissa", "dream");
+    std::string res = _client.viewLevels();
+    std::vector<Creator> creator_list = creator_list_from_str(res);
+    for(auto a: creator_list){
         std::cout << "*********************"<<std::endl;
         std::cout << " NOM : " << a.name<<std::endl;
-        std::cout << " AUTHOR : " << a.author<<std::endl;
+        std::cout << " AUTHOR : " << a.pseudo<<std::endl;
         std::cout << " VOTE : " << a.vote<<std::endl;
         std::cout << "*********************"<<std::endl;
     }
+
+
+    /*QWidget *centralWidget = new QWidget(this);
+    QWidget *gridLayoutWidget = new QWidget(centralWidget);
+    gridLayoutWidget->setGeometry(QRect(60, 150, 800, 350));
+    QGridLayout *gridLayout = new QGridLayout(gridLayoutWidget);
+    QListWidget *listWidget = new QListWidget(gridLayoutWidget);
+
+    gridLayout->addWidget(listWidget, 1, 1, 1, 1, Qt::AlignHCenter);
+
+    QPushButton* back = new QPushButton("Back", gridLayoutWidget);
+    back->setMinimumSize(QSize(0, 50));
+    back->setMaximumSize(QSize(16777215, 50));
+    gridLayout->addWidget(back, 2, 0, 1, 3);
+    connect(back, &QPushButton::clicked, this, &Menu::level_menu);
+
+    QTableWidget* tableWidget = new QTableWidget(gridLayoutWidget);
+    tableWidget->setColumnCount(2);
+    tableWidget->setMaximumSize(QSize(220, 190));
+    tableWidget->setRowCount(friendlist.size());
+    tableWidget->setMinimumSize(QSize(0, 500));
+
+    gridLayout->addWidget(tableWidget, 1, 0, 1, 1, Qt::AlignHCenter|Qt::AlignVCenter);
+
+    QLabel *label = new QLabel("Levels", gridLayoutWidget);
+    label->setAlignment(Qt::AlignCenter);
+
+    gridLayout->addWidget(label, 0, 0, 1, 1);
+
+    gridLayout->addWidget(request_label, 0, 1, 1, 1);
+
+
+    QVBoxLayout *vLayout = new QVBoxLayout(gridLayoutWidget);
+    gridLayout->addLayout(vLayout, 1, 2, 1, 1);
+    vLayout->addWidget(add_button);
+    vLayout->addWidget(del_button);
+
+    gridLayout->addLayout(verticalLayout, 0, 2, 1, 1);
+
+    QStringList m_TableHeader;
+    m_TableHeader <<"Title"<<"Author"<<"Vote";
+    tableWidget->setHorizontalHeaderLabels(m_TableHeader);
+    tableWidget->verticalHeader()->setVisible(false);
+    tableWidget->setShowGrid(false);
+    //tableWidget->setGeometry(QApplication::desktop()->screenGeometry());
+    tableWidget->setGeometry(QRect(300, 150, 22, 190));
+    tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
+    tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
+    tableWidget->setShowGrid(false);
+    tableWidget->setMinimumSize(QSize(255, 500));
+    for (size_t i = 0; i < friendlist.size(); i++){
+        QTableWidgetItem *item;
+        tableWidget->setItem(i, 0, new QTableWidgetItem(friendlist[i].pseudo));
+        item = tableWidget->item(i, 0);
+        item->setTextAlignment(Qt::AlignCenter);
+        int score = friendlist[i].score;
+        char buff[20];
+        sprintf(buff, "%d", score);
+        tableWidget->setItem(i, 1, new QTableWidgetItem(buff));
+        item = tableWidget->item(i, 1);
+        item->setTextAlignment(Qt::AlignCenter);
+    }
+    QFont font;
+    font.setPointSize(13);
+    listWidget->setFont(font);
+    connect(listWidget,&QAbstractItemView::doubleClicked,this,&Menu::request_list);
+    */
+    /****** DESIGN SECTION ****************************/
+    /*this->setStyleSheet("background-color:rgb(8, 82, 40);");
+
+    QLabel *title_label = new QLabel(centralWidget);
+    title_label->setGeometry(QRect(110, 30, 600, 150));
+    QPixmap pix_home_title("images/titles/friends");
+    title_label->setPixmap( pix_home_title);
+    title_label->setAlignment(Qt::AlignCenter);
+    pix_home_title = pix_home_title.scaled(title_label->size(),Qt::KeepAspectRatio);*/
+    /*********END DESIGN SECTION*****************************************/
+
+
+    /*this->setCentralWidget(centralWidget);
+    this->show();*/
 
 }
 void Menu::view_level(){

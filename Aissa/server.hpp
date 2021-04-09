@@ -85,7 +85,7 @@ private:
     std::string oneLevel(char*);
     void addVote(char *);
     void addLevel(char *);
-    void runLevel(char*){
+    void runLevel(char*);
 
     //server utils
     static void launch_db_save();
@@ -96,8 +96,6 @@ private:
     void kill_process(const char* pipe);
     
 };
-
-
 
 #endif //Server
 

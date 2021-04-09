@@ -176,6 +176,7 @@ void Server::catchInput(char* input) {
         
 
     }
+}
     else {
 		std::cerr << "[ERROR IN INPUT 1]" << std::endl;
 		return;
@@ -365,42 +366,56 @@ void Server::addLevel(char * input){
 
 std::string Server::levelsRanking(){
     auto level_to_parse = _db.checkLevels();
-    // TODO PARSER CA
+    return Parsing::creator_list_to_str(level_to_parse);
 }
 
 std::string Server::clientLevels(char *input){
     std::string input_str(input);
-    std::string pseudo_str = input_str.substr(input_str.find(Constante::DELIMITEUR)+1, input_str.rfind(Constante::DELIMITEUR));
-    auto level_to_parse = checkMyLevels(pseudo_str);
-    //TODO parser level_to parse
+    int idx = input_str.find(Constante::DELIMITEUR);
+    input_str.substr(0,idx);
+    input_str = input_str.substr(idx+1, input_str.size()); 
+    idx = input_str.find(Constante::DELIMITEUR);
+    std::string pseudo_str = input_str.substr(0,idx);
+
+    auto level_to_parse = _db.checkMyLevels(pseudo_str);
+    std::cout << " size = " << level_to_parse.size()<<std::endl; 
+    return Parsing::creator_list_to_str(level_to_parse);
 }
 
 std::string Server::oneLevel(char *input){
     std::string input_str(input);
     std::string pseudo_str,level_name_str;
 
-    input_str = input_str.substr(input_str.find(Constante::DELIMITEUR)+1, input_str.length());
+    int idx = input_str.find(Constante::DELIMITEUR);
+    input_str.substr(0,idx);
+    input_str = input_str.substr(idx+1, input_str.size()); 
+
+    idx = input_str.find(Constante::DELIMITEUR);
+    level_name_str = input_str.substr(0,idx);
+    input_str = input_str.substr(idx+1, input_str.size()); 
+
+    idx = input_str.find(Constante::DELIMITEUR);
+    pseudo_str = input_str.substr(0,idx);
     
-    level_name_str = input_str.substr(0,input_str.find(Constante::DELIMITEUR)); // recup le nom du level
-    input_str = input_str.substr(0, input_str.find(Constante::DELIMITEUR));  // enlever le nom du level
-
-    pseudo_str = input_str.substr(0,input_str.find(Constante::DELIMITEUR));
-
     auto res_to_parse = _db.checkALevel(pseudo_str,level_name_str);
+    return res_to_parse.level;
 }
 
 void Server::addVote(char *input){
     //LV&name&autor&pid
-
     std::string input_str(input);
     std::string pseudo_str,level_name_str;
 
-    input_str = input_str.substr(input_str.find(Constante::DELIMITEUR)+1, input_str.length());
-    
-    level_name_str = input_str.substr(0,input_str.find(Constante::DELIMITEUR)); // recup le nom du level
-    input_str = input_str.substr(0, input_str.find(Constante::DELIMITEUR));  // enlever le nom du level
+    int idx = input_str.find(Constante::DELIMITEUR);
+    input_str.substr(0,idx);
+    input_str = input_str.substr(idx+1, input_str.size()); 
 
-    pseudo_str = input_str.substr(0,input_str.find(Constante::DELIMITEUR));
+    idx = input_str.find(Constante::DELIMITEUR);
+    level_name_str = input_str.substr(0,idx);
+    input_str = input_str.substr(idx+1, input_str.size()); 
+
+    idx = input_str.find(Constante::DELIMITEUR);
+    pseudo_str = input_str.substr(0,idx);
     _db.incrementVote(pseudo_str,level_name_str);
 
 }
@@ -459,6 +474,22 @@ void Server::resClient(std::string* processId, int res) {
     std::cout << "resultat requete : " << message <<" sur le pipe "<<pipe_name << std::endl; 
 
 	fd = open(pipe_name,O_WRONLY);
+    if (fd != -1) write(fd, &message, Constante::CHAR_SIZE);
+    else std::cerr << "[ERROR] requete non ecrite " << std::endl;
+    
+    close(fd);
+    std::cout <<std::endl;
+}
+
+void Server::resClient(std::string processId, std::string res){
+    char message[Constante::CHAR_SIZE];int fd;
+    sprintf(message, "%s", res.c_str());
+
+    char pipe_name[Constante::CHAR_SIZE];
+    sprintf(pipe_name,"%s%s%s", Constante::PIPE_PATH, Constante::BASE_PIPE_FILE,(processId).c_str());
+    std::cout << "resultat requete : " << message <<" sur le pipe "<<pipe_name << std::endl; 
+
+    fd = open(pipe_name,O_WRONLY);
     if (fd != -1) write(fd, &message, Constante::CHAR_SIZE);
     else std::cerr << "[ERROR] requete non ecrite " << std::endl;
     

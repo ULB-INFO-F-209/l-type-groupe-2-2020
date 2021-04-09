@@ -137,7 +137,7 @@ std::vector<DatabaseLevel> Database::checkLevels(){
 std::vector<DatabaseLevel> Database::checkMyLevels(std::string pseudo){
     std::vector<DatabaseLevel> myLevels;
     std::ptrdiff_t idx = find(pseudo.c_str());
-    if (idx == -1)
+    if (idx != -1)
         myLevels.assign(_data[idx]._levels_vector.begin(), _data[idx]._levels_vector.end());
     return myLevels;
 }
@@ -145,7 +145,7 @@ std::vector<DatabaseLevel> Database::checkMyLevels(std::string pseudo){
 DatabaseLevel Database::checkALevel(std::string pseudo, std::string levelName){
     DatabaseLevel res;
     std::ptrdiff_t idx = find(pseudo.c_str());
-    if (idx == -1)
+    if (idx != -1)
         res = _data[idx].getLevel(levelName);
     return res;
 }
@@ -248,7 +248,7 @@ int Database::removeFriend(char* pseudo1, char* pseudo2){
 void Database::incrementVote(std::string pseudo, std::string level){
     std::ptrdiff_t idx = find(pseudo.c_str());
     if (idx != -1)
-        _data[idx].incVote(pseudo);
+        _data[idx].incVote(level);
 }
 
 // File management

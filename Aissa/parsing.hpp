@@ -10,18 +10,18 @@
 #include <iostream>
 #include <string>
 #include <unistd.h>
-#include "database/database.hpp"
+#include "database/structures.hpp"
 
 enum difficulty{easy, medium, hard};
 
 namespace Parsing{
 	using Profile=Profile;
+	using Creator=DatabaseLevel;
 	struct Game_settings;
 	struct Enemy;
 	struct Obstacle;
 	struct Player;
 	struct Level;
-	struct Creator;
 
 	//encodage
 	void profile_list_to_str(char *buffer,std::vector<Profile> *prof);
@@ -42,12 +42,6 @@ namespace Parsing{
 	Creator creator_from_str(std::string);
 }
 
-struct Parsing::Creator{
-	std::string author;
-	std::string name;
-	std::string level;
-	int vote;
-};
 struct Parsing::Game_settings
 {
 	int nb_player = 1;

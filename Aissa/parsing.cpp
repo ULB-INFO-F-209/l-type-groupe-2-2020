@@ -68,11 +68,12 @@ std::string Parsing::creator_list_to_str(std::vector<Creator> creator_list){
 
 std::string Parsing::creator_to_str(Creator author){
 	std::string buffer = ""; 
-	buffer += author.name + author.author + std::to_string(author.vote);
-	buffer += "&";
+	buffer += author.name + "_"+ author.pseudo  + "_" + std::to_string(author.vote);
 
 	return buffer;
 }
+
+
 
 //decodage
 void Parsing::profile_list_from_str(char *buffer,std::vector<Profile> *prof){
@@ -330,7 +331,7 @@ Parsing::Creator Parsing::creator_from_str(std::string buffer){
 	buffer = buffer.substr(idx+1, buffer.size()); 
 
 	idx = buffer.find(delim);
-	author.author = buffer.substr(0,idx);
+	author.pseudo = buffer.substr(0,idx);
 	buffer = buffer.substr(idx+1, buffer.size()); 
 
 	idx = buffer.find(delim);
