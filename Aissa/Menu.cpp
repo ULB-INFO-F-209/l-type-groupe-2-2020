@@ -1418,54 +1418,40 @@ void Menu::custom_player(Level my_level){
 
 void Menu::my_level(){
     std::cout << "***********test parsing **********";
-    _client.voteLevel("Aissa", "dream");
-    std::string res = _client.viewLevels();
-    std::vector<Creator> creator_list = creator_list_from_str(res);
-    for(auto a: creator_list){
+    //_client.voteLevel("Mylevel", "icarus");
+    
+    /*for(auto a: creator_list){
         std::cout << "*********************"<<std::endl;
         std::cout << " NOM : " << a.name<<std::endl;
         std::cout << " AUTHOR : " << a.pseudo<<std::endl;
         std::cout << " VOTE : " << a.vote<<std::endl;
         std::cout << "*********************"<<std::endl;
-    }
+    }*/
+    std::string res = _client.viewLevels();
+    std::vector<Creator> creator_list = creator_list_from_str(res);
 
+    QWidget *centralWidget = new QWidget(this);
+    //QWidget *gridLayoutWidget = new QWidget(centralWidget);
+    //gridLayoutWidget->setGeometry(QRect(60, 150, 800, 350));
+    //QGridLayout *gridLayout = new QGridLayout(gridLayoutWidget);
+    QListWidget *listWidget = new QListWidget(centralWidget);
 
-    /*QWidget *centralWidget = new QWidget(this);
-    QWidget *gridLayoutWidget = new QWidget(centralWidget);
-    gridLayoutWidget->setGeometry(QRect(60, 150, 800, 350));
-    QGridLayout *gridLayout = new QGridLayout(gridLayoutWidget);
-    QListWidget *listWidget = new QListWidget(gridLayoutWidget);
+    //gridLayout->addWidget(listWidget, 1, 1, 1, 1, Qt::AlignHCenter);
 
-    gridLayout->addWidget(listWidget, 1, 1, 1, 1, Qt::AlignHCenter);
-
-    QPushButton* back = new QPushButton("Back", gridLayoutWidget);
-    back->setMinimumSize(QSize(0, 50));
-    back->setMaximumSize(QSize(16777215, 50));
-    gridLayout->addWidget(back, 2, 0, 1, 3);
+    QPushButton* back = new QPushButton("Back", centralWidget);
+    back->setGeometry(QRect(50, 500, 150, 45));
     connect(back, &QPushButton::clicked, this, &Menu::level_menu);
 
-    QTableWidget* tableWidget = new QTableWidget(gridLayoutWidget);
-    tableWidget->setColumnCount(2);
-    tableWidget->setMaximumSize(QSize(220, 190));
-    tableWidget->setRowCount(friendlist.size());
-    tableWidget->setMinimumSize(QSize(0, 500));
-
-    gridLayout->addWidget(tableWidget, 1, 0, 1, 1, Qt::AlignHCenter|Qt::AlignVCenter);
+    QTableWidget* tableWidget = new QTableWidget(centralWidget);
+    tableWidget->setColumnCount(3);
+    tableWidget->setRowCount(creator_list.size());
+    tableWidget->setGeometry(QRect(50, 80, 200, 200));
 
     QLabel *label = new QLabel("Levels", gridLayoutWidget);
     label->setAlignment(Qt::AlignCenter);
 
     gridLayout->addWidget(label, 0, 0, 1, 1);
 
-    gridLayout->addWidget(request_label, 0, 1, 1, 1);
-
-
-    QVBoxLayout *vLayout = new QVBoxLayout(gridLayoutWidget);
-    gridLayout->addLayout(vLayout, 1, 2, 1, 1);
-    vLayout->addWidget(add_button);
-    vLayout->addWidget(del_button);
-
-    gridLayout->addLayout(verticalLayout, 0, 2, 1, 1);
 
     QStringList m_TableHeader;
     m_TableHeader <<"Title"<<"Author"<<"Vote";
@@ -1479,23 +1465,26 @@ void Menu::my_level(){
     tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
     tableWidget->setShowGrid(false);
     tableWidget->setMinimumSize(QSize(255, 500));
-    for (size_t i = 0; i < friendlist.size(); i++){
+    for (size_t i = 0; i < creator_list.size(); i++){
         QTableWidgetItem *item;
-        tableWidget->setItem(i, 0, new QTableWidgetItem(friendlist[i].pseudo));
+        tableWidget->setItem(i, 0, new QTableWidgetItem((creator_list[i].name).c_str()));
         item = tableWidget->item(i, 0);
         item->setTextAlignment(Qt::AlignCenter);
-        int score = friendlist[i].score;
-        char buff[20];
-        sprintf(buff, "%d", score);
-        tableWidget->setItem(i, 1, new QTableWidgetItem(buff));
+        int vote = creator_list[i].vote;
+        std::string author = creator_list[i].pseudo;
+        //char buff[20], buff[20];
+        //sprintf(buff, "%s%d", author.c_str(), vote);
+        tableWidget->setItem(i, 1, new QTableWidgetItem(author.c_str()));
         item = tableWidget->item(i, 1);
+        tableWidget->setItem(i, 2, new QTableWidgetItem(std::to_string(vote).c_str()));
+        item = tableWidget->item(i, 2);
         item->setTextAlignment(Qt::AlignCenter);
     }
     QFont font;
     font.setPointSize(13);
     listWidget->setFont(font);
     connect(listWidget,&QAbstractItemView::doubleClicked,this,&Menu::request_list);
-    */
+
     /****** DESIGN SECTION ****************************/
     /*this->setStyleSheet("background-color:rgb(8, 82, 40);");
 
@@ -1508,8 +1497,8 @@ void Menu::my_level(){
     /*********END DESIGN SECTION*****************************************/
 
 
-    /*this->setCentralWidget(centralWidget);
-    this->show();*/
+    this->setCentralWidget(centralWidget);
+    this->show();
 
 }
 void Menu::view_level(){

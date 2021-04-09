@@ -432,7 +432,7 @@ void Database::display(){
         
         std::cout << "levels : [";
         for (auto level: _data[i]._levels_vector){
-            std::cout << level.level << "-> " << level.vote << "|" << level.name << ", ";
+            std::cout << level.level << "-> " << level.vote << ", ";
         }
         std::cout << "]" << std::endl << std::endl;
     }
