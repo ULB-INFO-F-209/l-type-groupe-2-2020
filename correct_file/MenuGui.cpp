@@ -25,13 +25,29 @@ void MenuGui::home(){
     this->setStyleSheet(QStringLiteral("background-color:black;"));
     QWidget *centralWidget = new QWidget(this);
 
+        //exageration
+    QLabel *lbl = new QLabel(centralWidget);
+    QMovie *mv = new QMovie("images/ciel.gif");
+    mv->setScaledSize(QSize(800,600));
+    lbl->setGeometry(QRect(0, 0, 800, 600));
+    mv->start();
+    lbl->setAttribute(Qt::WA_TranslucentBackground);
+    lbl->setMovie(mv);
+    /*-QPixmap pix = QPixmap::grabWidget(lbl,20,30,741,481);
+    pix.fill(Qt::transparent);
+       QPalette p;
+    p.setBrush(QPalette::Base,pix);
+    p.base();*/
+    //QLabel *lbl_list[100]; 
+
 
     //layout box
     QWidget *verticalLayoutWidget = new QWidget(centralWidget);
     verticalLayoutWidget->setGeometry(QRect(50, 150, 700, 450));
+    verticalLayoutWidget->setAttribute(Qt::WA_TranslucentBackground);
     //layout button
     QHBoxLayout *button_v_layout = new QHBoxLayout(verticalLayoutWidget);
-    button_v_layout->setContentsMargins(11, 11, 11, 11);
+    button_v_layout->setContentsMargins(11, 0, 0, 11);
     //home button
     QPushButton *home_button[SIZE_HOME];
     int signIn = 0, signUp = 1, quit = 2;
@@ -88,6 +104,13 @@ void MenuGui::check_data(bool sign_in){
 
 void MenuGui::connexion(bool sign_in){
     QWidget *centralWidget = new QWidget(this);
+    QLabel *lbl = new QLabel(centralWidget);
+    QMovie *mv = new QMovie("images/ciel.gif");
+    mv->setScaledSize(QSize(800,600));
+    lbl->setGeometry(QRect(0, 0, 800, 600));
+    mv->start();
+    lbl->setAttribute(Qt::WA_TranslucentBackground);
+    lbl->setMovie(mv);
 
     pseudo_line = new QLineEdit(centralWidget);
     pseudo_line->setGeometry(QRect(230, 270, 400, 45));
@@ -116,7 +139,9 @@ void MenuGui::connexion(bool sign_in){
     pswd_label->setStyleSheet("QLabel { background-color : black; color : white; }");
 
     QWidget *horizontalLayoutWidget = new QWidget(centralWidget);
-    horizontalLayoutWidget->setGeometry(QRect(110, 440, 680, 100));
+    horizontalLayoutWidget->setGeometry(QRect(110, 440, 680, 200));
+    horizontalLayoutWidget->setAttribute(Qt::WA_TranslucentBackground);
+
     QHBoxLayout *horizontalLayout =  new QHBoxLayout(horizontalLayoutWidget);
     horizontalLayout->setSpacing(50);
     horizontalLayout->setContentsMargins(11, 11, 11, 11);
@@ -137,6 +162,7 @@ void MenuGui::connexion(bool sign_in){
     title_label->setGeometry(QRect(110, 50, 600, 150));
     QPixmap pix_home_title = QPixmap();
     title_label->setAlignment(Qt::AlignCenter);
+    title_label->setAttribute(Qt::WA_TranslucentBackground);
     this->setStyleSheet(QStringLiteral("background-color:black;"));
 
     /****************************CONNECTIONS*****************************************************/
