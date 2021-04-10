@@ -52,7 +52,7 @@ get_levels ranking:
 		client : LG&pid
 		serveur : name_author_vote&name2_author_vote......
 get_my_level : 
-	client : LM&pseudo&pid
+	client : LM&pseudo&pid[LS_
 	serveur : name_author_vote&name2_author_vote......
 get one level:
 	client : LO&name&author&pid

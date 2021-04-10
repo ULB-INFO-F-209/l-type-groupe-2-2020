@@ -361,8 +361,12 @@ void Menu::level_menu(){
         Level my_level;
         level_editor(my_level);
     });
-    connect(button[ranking], &QPushButton::clicked, this,&Menu::view_level);
-    connect(button[my_levels], &QPushButton::clicked, this, &Menu::my_level);
+    connect(button[ranking], &QPushButton::clicked, this,[this](){
+        view_level(false);
+    });
+    connect(button[my_levels], &QPushButton::clicked, this, [this](){
+        view_level(true);
+    });
     connect(button[back], &QPushButton::clicked, this, &Menu::main_m);
 
 
@@ -1416,71 +1420,108 @@ void Menu::custom_player(Level my_level){
 
 }
 
-void Menu::my_level(){
-    std::cout << "***********test parsing **********";
-    //_client.voteLevel("Mylevel", "icarus");
-    
-    /*for(auto a: creator_list){
-        std::cout << "*********************"<<std::endl;
-        std::cout << " NOM : " << a.name<<std::endl;
-        std::cout << " AUTHOR : " << a.pseudo<<std::endl;
-        std::cout << " VOTE : " << a.vote<<std::endl;
-        std::cout << "*********************"<<std::endl;
-    }*/
-    std::string res = _client.viewLevels();
+void Menu::view_level(bool mine){
+
+    std::string res; 
+    if(mine)
+       res =  _client.myLevels();
+    else
+        res = _client.viewLevels();
     std::vector<Creator> creator_list = creator_list_from_str(res);
 
     QWidget *centralWidget = new QWidget(this);
-    //QWidget *gridLayoutWidget = new QWidget(centralWidget);
-    //gridLayoutWidget->setGeometry(QRect(60, 150, 800, 350));
-    //QGridLayout *gridLayout = new QGridLayout(gridLayoutWidget);
-    QListWidget *listWidget = new QListWidget(centralWidget);
-
-    //gridLayout->addWidget(listWidget, 1, 1, 1, 1, Qt::AlignHCenter);
 
     QPushButton* back = new QPushButton("Back", centralWidget);
-    back->setGeometry(QRect(50, 500, 150, 45));
+    back->setGeometry(QRect(330, 504, 151, 41));
     connect(back, &QPushButton::clicked, this, &Menu::level_menu);
 
     QTableWidget* tableWidget = new QTableWidget(centralWidget);
-    tableWidget->setColumnCount(3);
-    tableWidget->setRowCount(creator_list.size());
-    tableWidget->setGeometry(QRect(50, 80, 200, 200));
+    if(mine)
+        tableWidget->setColumnCount(4);
+    else
+        tableWidget->setColumnCount(5);
 
-    QLabel *label = new QLabel("Levels", centralWidget);
+    tableWidget->setRowCount(creator_list.size());
+
+    QLabel *label = new QLabel("MY LEVELS", centralWidget);
     label->setAlignment(Qt::AlignCenter);
-    label->setGeometry(50, 80, 200, 100);
+    label->setGeometry(QRect(100, 10, 601, 71));
+    label->setFrameShape(QFrame::WinPanel);
+    label->setAlignment(Qt::AlignCenter);
 
     QStringList m_TableHeader;
-    m_TableHeader <<"Title"<<"Author"<<"Vote";
+    m_TableHeader <<"Title"<<"Author"<<"Vote"<<"Play"<<"Like";
     tableWidget->setHorizontalHeaderLabels(m_TableHeader);
     tableWidget->verticalHeader()->setVisible(false);
     tableWidget->setShowGrid(false);
     //tableWidget->setGeometry(QApplication::desktop()->screenGeometry());
-    tableWidget->setGeometry(QRect(300, 150, 500, 100));
+    tableWidget->setGeometry(QRect(100, 140, 621, 341));
     tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
+    tableWidget->setSelectionBehavior(QAbstractItemView::SelectItems);
     tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
-    tableWidget->setShowGrid(false);
+
+    /*QPalette palette = tableWidget->palette();
+    palette.setBrush(QPalette::Highlight,QBrush(Qt::white));
+    palette.setBrush(QPalette::HighlightedText,QBrush(Qt::black));
+    tableWidget->setPalette(palette);*/
+
+    connect(tableWidget,&QAbstractItemView::clicked,this,[this,creator_list,mine](const QModelIndex& idx){
+        if(idx.column()==3){
+            int i = idx.row();
+            std::string level = _client.getLevel(creator_list[i].name, std::string(creator_list[i].pseudo));
+            std::cout << "level to play : "<< level<<std::endl;
+            _client.playLevel(level);
+        }
+        else if(idx.column()==4){
+            int i = idx.row();
+            _client.voteLevel(creator_list[i].name, std::string(creator_list[i].pseudo));
+            view_level(mine);
+        }
+    });
+    
     for (size_t i = 0; i < creator_list.size(); i++){
         QTableWidgetItem *item;
         tableWidget->setItem(i, 0, new QTableWidgetItem((creator_list[i].name).c_str()));
         item = tableWidget->item(i, 0);
         item->setTextAlignment(Qt::AlignCenter);
+        item->setFlags(Qt::ItemIsEnabled);
+        item->setSizeHint(QSize(100, 100));
+
         int vote = creator_list[i].vote;
         std::string author = creator_list[i].pseudo;
-        //char buff[20], buff[20];
-        //sprintf(buff, "%s%d", author.c_str(), vote);
         tableWidget->setItem(i, 1, new QTableWidgetItem(author.c_str()));
         item = tableWidget->item(i, 1);
+        item->setTextAlignment(Qt::AlignCenter);
+        item->setFlags(Qt::ItemIsEnabled);
+        item->setSizeHint(QSize(100, 100));
+
         tableWidget->setItem(i, 2, new QTableWidgetItem(std::to_string(vote).c_str()));
         item = tableWidget->item(i, 2);
         item->setTextAlignment(Qt::AlignCenter);
+        item->setFlags(Qt::ItemIsEnabled);
+
+        tableWidget->setItem(i, 3, new QTableWidgetItem("run"));
+        item = tableWidget->item(i, 3);
+        item->setTextAlignment(Qt::AlignCenter);
+        item->setFlags(Qt::ItemIsEnabled);
+
+        if(not mine){
+            QPixmap pix("images/heart");
+            QIcon icon(pix);
+            QTableWidgetItem *item;
+            tableWidget->setItem(i, 4, new QTableWidgetItem());
+            item = tableWidget->item(i, 4);
+            tableWidget->setIconSize(QSize(50, 50));
+            item->setIcon(icon);
+            item->setTextAlignment(Qt::AlignCenter);
+            item->setSizeHint(QSize(100, 100));
+            //connect(tableWidget->item(i, 3), &QTableWidget::itemClicked, this, &Menu::main_m);
+            /*connect(tableWidget->item(i, 3), &QTableWidget::itemSelectionChanged,this, [this, creator_list, i](){
+                _client.voteLevel(creator_list[i].name, std::string(creator_list[i].pseudo));
+
+            });*/
+        }
     }
-    QFont font;
-    font.setPointSize(13);
-    listWidget->setFont(font);
-    connect(listWidget,&QAbstractItemView::doubleClicked,this,&Menu::request_list);
 
     /****** DESIGN SECTION ****************************/
     /*this->setStyleSheet("background-color:rgb(8, 82, 40);");
@@ -1496,9 +1537,6 @@ void Menu::my_level(){
 
     this->setCentralWidget(centralWidget);
     this->show();
-
-}
-void Menu::view_level(){
 
 }
 

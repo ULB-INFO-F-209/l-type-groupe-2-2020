@@ -50,6 +50,7 @@
 #include <QSlider>
 #include <QRadioButton>
 #include <QFormLayout>
+#include <QPalette>
 
 
 
@@ -117,8 +118,7 @@ private slots:
 	void custom_enemy(Level my_level, int idx);
 	void custom_obstacle(Level my_level, int idx);
 	void custom_player(Level my_level);
-	void my_level();
-	void view_level();
+	void view_level(bool mine=true);
 
 };
 
