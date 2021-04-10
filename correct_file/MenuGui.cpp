@@ -1,3 +1,4 @@
+#include <QThread>
 #include "MenuGui.hpp"
 
 /********************* TODO ********************************************
@@ -25,7 +26,6 @@ void MenuGui::home(){
     this->setStyleSheet(QStringLiteral("background-color:black;"));
     QWidget *centralWidget = new QWidget(this);
 
-
     //layout box
     QWidget *verticalLayoutWidget = new QWidget(centralWidget);
     verticalLayoutWidget->setGeometry(QRect(50, 150, 700, 450));
@@ -50,6 +50,7 @@ void MenuGui::home(){
    /*************************CONNECTIONS***********************************/
     connect(home_button[signIn], &QPushButton::clicked, this, [this]() {
        connexion(true);
+
    });
     connect(home_button[signUp], &QPushButton::clicked, this, [this]() {
        connexion(false);
@@ -140,13 +141,14 @@ void MenuGui::connexion(bool sign_in){
     this->setStyleSheet(QStringLiteral("background-color:black;"));
 
     /****************************CONNECTIONS*****************************************************/
-    
     if(sign_in){
         //this->setStyleSheet(QStringLiteral("background-color:rgb(183, 110, 34);"));
         pix_home_title.load("images/titles/signIn");
         title_label->setPixmap( pix_home_title);
         pix_home_title = pix_home_title.scaled(title_label->size(),Qt::KeepAspectRatio);
         connect(ok_button, &QPushButton::clicked, this,  [this]() {
+            usleep(100000);
+            std::cout << "Big man ting " << std::endl;
             check_data(true);});
 
     }
@@ -1407,7 +1409,7 @@ void MenuGui::custom_player(Parsing::Level my_level){
 
 
     /*************PLAYER2_ZONE********************/
-    QWidget *widget1 = new QWidget(Dialog);
+    /*QWidget *widget1 = new QWidget(Dialog);
     widget1->setGeometry(QRect(330, 140, 191, 291));
     QVBoxLayout *verticalLayout_2 = new QVBoxLayout(widget1);
     verticalLayout_2->setContentsMargins(0, 0, 0, 0);
@@ -1425,9 +1427,10 @@ void MenuGui::custom_player(Parsing::Level my_level){
              skin_player2[i]->setChecked(true);
         verticalLayout_2->addWidget(skin_player2[i]);
     }
-
+    */
     /*************SAME SIZE LABEL********************/
-    QLabel * label_legend[] ={player1_label,player2_label};
+    QLabel * label_legend[] ={player1_label};
+    //,player2_label};
     for(auto lbl : label_legend){
         lbl->setMinimumSize(QSize(100, 45));
         lbl->setMaximumSize(QSize(100, 45));
@@ -1437,7 +1440,8 @@ void MenuGui::custom_player(Parsing::Level my_level){
     }
 
     /***************CONNECTION********************/
-    connect(button[ok], &QPushButton::clicked, this, [this, my_level,Dialog, spin_box, skin_player1, skin_player2](){
+    //, skin_player2
+    connect(button[ok], &QPushButton::clicked, this, [this, my_level,Dialog, spin_box, skin_player1](){
         Parsing::Level copy_level = my_level;
         copy_level.player.hp = spin_box[0]->value();
         copy_level.player.damage = spin_box[1]->value();
@@ -1445,12 +1449,12 @@ void MenuGui::custom_player(Parsing::Level my_level){
             if(skin_player1[i]->isChecked())
                 copy_level.player.skin = i;
         }
-
+        /*
         for (int i = 0; i < 3; ++i){
             if(skin_player2[i]->isChecked())
                 copy_level.player.skin2 = i;
         }
-
+        */
         Dialog->hide();
         level_editor(copy_level);
     });
