@@ -51,6 +51,7 @@
 #include <QSlider>
 #include <QRadioButton>
 #include <QFormLayout>
+#include <QPalette>
 
 
 #include "DisplayGame.hpp"
@@ -109,7 +110,6 @@ private:
 	void lobby();
 	void level_editor(Parsing::Level my_level);
 	void launch_game(const Parsing::Game_settings* game_option);
-	void my_level();
 	void view_level();
 
 
@@ -125,10 +125,10 @@ private slots:
 	void accept_friend();
 	void launch_game(int players, int drop_rate, int lives, std::string difficulty, bool ally_shot);
 	void save_level(Parsing::Level my_level);
-	void custom_ennemy(Parsing::Level my_level, int idx);
+	void custom_enemy(Parsing::Level my_level, int idx);
 	void custom_obstacle(Parsing::Level my_level, int idx);
 	void custom_player(Parsing::Level my_level);
-
+	void view_level(bool mine=true);
 };
 
 #endif //MENU_HPP

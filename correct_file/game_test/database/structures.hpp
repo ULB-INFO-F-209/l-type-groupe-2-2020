@@ -13,7 +13,7 @@ struct Profile{
 
 struct DatabaseLevel{
 	std::string pseudo;
-	std::string level;
+   	std::string level;
    	std::string name;
    	int vote;
 };

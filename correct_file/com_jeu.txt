@@ -39,7 +39,30 @@
 	Score joueur 2			: 			E_S2_valeur
 
 
-// ne pas oublier le level
+******************************
+	L E V E L  E D I T O R
+******************************
+
+PlayerAttributes|Enemy1Attributes&Enemy2Attributes&....|ObstacleAttributes&Obstacle|
+
+LS_name_skin1_skin2_hp_damage_speed|x_tick_skin_hp_damage_bonus_speed&x1_tick1_skin1_hp1_bonus1_speed1&......|x_tick_skin_hp_damage_speed&x1_tick1_skin1_hp1
+
+
+get_levels ranking:
+		client : LG&pid
+		serveur : name_author_vote&name2_author_vote......
+get_my_level : 
+	client : LM&pseudo&pid[LS_
+	serveur : name_author_vote&name2_author_vote......
+get one level:
+	client : LO&name&author&pid
+	serveur : LS_name_skin1_skin2_hp_damage_speed|x_tick_skin_hp_damage_bonus_speed&x1_tick1_skin1_hp1_bonus1_speed1&......|x_tick_skin_hp_damage_speed&x1_tick1_skin1_hp1|pseudo&pid
+incremente vote: 
+	client : LV&name&author&pid
+	serveur : 0
+run level 
+	client : LR&level&pid
+	serveur : 0
 
 
 résumé en ceci par pure flemme de 

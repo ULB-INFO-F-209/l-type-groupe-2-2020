@@ -170,7 +170,8 @@ void Server::catchInput(char* input) {
             break;
         
         case Constante::RUN_LEVEL:{
-
+            runLevel(input);
+            resClient(&processId,Constante::ALL_GOOD);
             break;
         }
         
@@ -339,21 +340,19 @@ bool Server::delFriendRequest(char* val){
 
 void Server::addLevel(char * input){
     std::string level_input(input);
+
+    size_t idx = level_input.find("_");
+    level_input.substr(0,idx);
+    level_input = level_input.substr(idx+1, level_input.size()); 
+
     std::string pseudo = level_input.substr(level_input.rfind("|")+1,level_input.rfind(Constante::DELIMITEUR));
     pseudo = pseudo.substr(0, pseudo.find(Constante::DELIMITEUR));
 
     //level name
-    std::size_t idx = level_input.find('|');
-    std::string player_zone = level_input.substr(0,idx);
+    idx = level_input.find('_');
+    std::string name_level = level_input.substr(0,idx);
 
-    idx = player_zone.find("_");
-    std::string lettre = player_zone.substr(0,idx);
-    player_zone = player_zone.substr(idx+1, player_zone.size());
-
-    idx = player_zone.find("_");
-    std::string name_level = player_zone.substr(0,idx);
-
-    // delete name & pid at the end
+    // delete pid at the end
     idx = level_input.rfind("|");
     level_input = level_input.substr(0, idx);
 
@@ -420,10 +419,19 @@ void Server::addVote(char *input){
 
 }
 
-void Server::runLevel(char* input){
+void Server::runLevel(char* input){ 
     //LR&level&pid
     std::string input_str(input);
-    std::string level = input_str.substr(input_str.find(Constante::DELIMITEUR)+1, input_str.rfind(Constante::DELIMITEUR));
+
+    int idx = input_str.find(Constante::DELIMITEUR);
+    input_str.substr(0,idx);
+    input_str = input_str.substr(idx+1, input_str.size()); 
+
+    idx = input_str.find(Constante::DELIMITEUR);
+    std::string level = input_str.substr(0,idx);
+
+    std::cout << "level reçu =  "<<level<<std::endl;
+    Parsing::Level level_to_play = Parsing::level_from_str(level);
     // TODO RUN LEVEL
 }
 

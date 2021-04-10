@@ -70,7 +70,8 @@ void AccountAndVectors::removeFriend(char pseudo[20]){
 void AccountAndVectors::incVote(std::string level){
     int idx = findLevel(level);
     if (idx != -1)
-        _levels_vector.at(idx).vote++;
+        _levels_vector.at(idx).vote = _levels_vector.at(idx).vote +1;
+    std::cout << "Vote : " << _levels_vector.at(idx).vote << std::endl; 
 }
 
 DatabaseLevel AccountAndVectors::getLevel(std::string levelName){
