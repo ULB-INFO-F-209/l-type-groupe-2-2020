@@ -54,7 +54,7 @@
 #include <QPalette>
 
 
-#include "DisplayGame.hpp"
+#include "DisplayGameGui.hpp"
 #include <SFML/Graphics.hpp>
 
 

@@ -5,73 +5,73 @@
 namespace Screen{
 
 	//MENU TITLES
-	const std::string HOME_TITLE = "H O M E";
-	const std::string MAIN_TITLE = "M A I N  M E N U";
-	const std::string FRIENDS_TITLE = "F R I E N D S";
-	const std::string LOBBY_TITLE = "L O B B Y";
+	extern std::string HOME_TITLE;
+	extern std::string MAIN_TITLE;
+	extern std::string FRIENDS_TITLE;
+	extern std::string LOBBY_TITLE;
 
 	//OTHER MENU TITLE
-	const std::string  SIGN_IN = "S I G N  I N";
-	const std::string  SIGN_UP = "S I G N  U P";
-	const std::string  ADD_FRIEND = "A D D  F R I E N D";
-	const std::string  DEL_FRIEND = "D E L  F R I E N D";
-	const std::string  REQUEST = "Y O U R  F R I E N D 'S  R E Q U E S T S";
-	const std::string  YOUR_FRIENDS ="Y O U R  F R I E N D S";
-	const std::string  PROFILE = "Y O U R  P R O F I L E";
-	const std::string  PROFILE2 = "P R O F I L E";
-	const std::string  LEADERBOARD =" L E A D E R B O A R D";
-	const std::string  CHECK_USER = "I D E N T I T Y  V E R I F I C A T I O N ";
+	extern std::string SIGN_IN;
+	extern std::string SIGN_UP;
+	extern std::string ADD_FRIEND;
+	extern std::string DEL_FRIEND;
+	extern std::string REQUEST;
+	extern std::string YOUR_FRIENDS;
+	extern std::string PROFILE;
+	extern std::string LEADERBOARD;
+	extern std::string  CHECK_USER;
+	extern std::string  PROFILE2;
 
 	//SAYING FOR MENU 
-	const std::string HOME_SAYING = "May all who enter as guest leaves as regular user !";
-	const std::string MAIN_SAYING = "Whoever said money can't buy hapiness";
-	const std::string MAIN_SAYING2 = "has clearly already played this game";
-	const std::string Y_FRIENDS_SAYING = "A sweet friendship refreshes the soul, ";
-	const std::string Y_FRIENDS_SAYING2 = " unless you created them yourself !";
-	const std::string LOBBY_SAYING = "Winning is not everything, it's the only thing.";
-	const std::string LOBBY_SAYING2 = "So keep playing !";
-	const std::string SIGN_IN_SAYING = "Oh no ! Not you again !";
-	const std::string SIGN_IN_SAYING2 = "Playing this game will save yours.";
-	const std::string SIGN_UP_SAYING = "Welcome to the dark side. Surprised we lied about the cookies";
-	const std::string ADD_SAYING = "Making new friends shouldn't mean losing old ones.";
-	const std::string ADD_SAYING2 = "But you can only have 100 friends here !";
-	const std::string DEL_SAYING = "Fortunately, it's not as easy to unfriend";
-	const std::string DEL_SAYING2 = "someone in real life as your're doing now.";
-	const std::string REQUEST_SAYING = "Friends becomes our chosen family. So don't accept anyone !";
-	const std::string FRIENDS_SAYING = "If you want the rainbow, you have to endure the rain.";
-	const std::string PROFILE_SAYING = "Winners are losers who never quit. So try again to be the best !";
-	const std::string PROFILE2_SAYING = "Would you like to be friend with this user ?";
-	const std::string LEADBOARD_SAYING = "Win or learn ! Never lose. ";
-	const std::string CHECK_USER_SAYING = "We are who we are. Not who we say we are.";
-	const std::string CHECK_USER_SAYING2 = "So prove that there is a second player !";
-
-	//INSTRUCTIONS
-	const std::string SIGN_UP_SAYING1 = "Username and password must be at least 7 characters long and maximum 15.";
-	const std::string SIGN_UP_SAYING2 = "Only letters, numbers and the underscore characters are allowed.";
-	const std::string BACK = "Don't you know how to return? Use the keyleft !";
-	const std::string SWITCH = "Use the keyup and keydown to navigate on a menu !";
-	const std::string RANGE = "Use the keyup and keydown to change value !";
-
+	extern std::string HOME_SAYING;
+	extern std::string MAIN_SAYING;
+	extern std::string MAIN_SAYING2;
+	extern std::string Y_FRIENDS_SAYING;
+	extern std::string Y_FRIENDS_SAYING2;
+	extern std::string LOBBY_SAYING;
+	extern std::string LOBBY_SAYING2;
+	extern std::string SIGN_IN_SAYING;
+	extern std::string SIGN_IN_SAYING2;
+	extern std::string SIGN_UP_SAYING;
+	extern std::string ADD_SAYING;
+	extern std::string ADD_SAYING2;
+	extern std::string DEL_SAYING;
+	extern std::string DEL_SAYING2;
+	extern std::string REQUEST_SAYING;
+	extern std::string FRIENDS_SAYING;
+	extern std::string PROFILE_SAYING;
+	extern std::string PROFILE2_SAYING;
+	extern std::string LEADBOARD_SAYING;
+	extern std::string CHECK_USER_SAYING;
+	extern std::string CHECK_USER_SAYING2;
 
 
 	//ERROR MESSAGES
-	const std::string SHORT_PSEUDO = "Username is too short!";
-	const std::string SHORT_PSWD = "Password is too short!";
-	const std::string SHORT_ALL = "Username and password are too short!";
-	const std::string NO_USER_MSG = "User does not exist!";
-	const std::string TAKEN_PSEUDO_MSG = "This Username is already taken. Try to sign in.";
-	const std::string ALREADY_FRIENDS = "You are already friends. check your friendlist";
-	const std::string NOT_FRIENDS =  "You are not friends yet";
-	const std::string ALREADY_REQUESTED =  "You had already sent a request!";
-	const std::string YOURSEL_MSG = "What is your username? And what did you enter?";
-	const std::string DEFAULT_ERROR = "There is an error. Try again !";
+	extern std::string SHORT_PSEUDO;
+	extern std::string SHORT_PSWD;
+	extern std::string SHORT_ALL;
+	extern std::string NO_USER_MSG;
+	extern std::string TAKEN_PSEUDO_MSG;
+	extern std::string ALREADY_FRIENDS;
+	extern std::string NOT_FRIENDS;
+	extern std::string ALREADY_REQUESTED;
+	extern std::string YOURSEL_MSG;
+	extern std::string DEFAULT_ERROR;
+
+	//INSTRUCTION
+	extern std::string SIGN_UP_SAYING1;
+	extern std::string SIGN_UP_SAYING2;
+	extern std::string BACK;
+	extern std::string SWITCH;
+	extern std::string RANGE;
+
 	//CAPTION
-	const std::string PSEUDO_ZONE = "USERNAME :";
-	const std::string PSWD_ZONE = "PASSWORD :";
-	const char MASK = '*';
-	const char CURSOR = '|';
-	const std::string Username = "USERNAME : ";
-	const std::string SCORE = "SCORE : ";
+	extern std::string PSEUDO_ZONE;
+	extern std::string PSWD_ZONE;
+	extern char CURSOR;
+	extern char MASK;
+	extern std::string PSEUDO;
+	extern std::string SCORE;
 
 	//SECTIONS
 	const int HOME = 0;

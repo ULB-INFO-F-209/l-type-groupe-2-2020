@@ -7,6 +7,7 @@
 #include "game_test/CurrentGame.hpp"
 #include "game_test/parsing.hpp"
 #include "DisplayGame.hpp"
+#include "DisplayGameGui.hpp"
 
 // C++
 #include <thread>

@@ -857,7 +857,6 @@ void MenuGui::launch_game(int players, int drop_rate, int lives, std::string dif
         _client.createGame(game_sett_char);
         this->hide();
         launch_game(&setting);
-        sleep(10); // [TODO] changer mettre pause et faire une fct qui reagit a un signal ...
         this->show();
         std::cout << "salut bg je suis de retoure pour te jouer de mauvais tour";
     }
@@ -1586,8 +1585,7 @@ void MenuGui::view_level(bool mine){
 }
 
 void MenuGui::launch_game(const Parsing::Game_settings* game_option){
-	DisplayGame display_game;
-	display_game.init(); 
+	DisplayGameGui display_game;
 	display_game.initGraphics();
 	sf::RenderWindow* window = display_game.getWindow();
 
@@ -1643,7 +1641,6 @@ void MenuGui::launch_game(const Parsing::Game_settings* game_option){
         if(in_char == 'p')break;
     }
 
-    display_game.close();
 	window->close();
 }
 

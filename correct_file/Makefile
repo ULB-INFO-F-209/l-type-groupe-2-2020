@@ -13,14 +13,14 @@ qt_flag = -pipe -O2 -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO
 qt_exec_flag = -lQt5Widgets -lQt5Gui -lQt5Core -lGL -lpthread 
 
 
-server: main_server.cpp server.o database.o account.o parsing.o CurrentGame.o MapHandler.o displaygame.o accountandvectors.o
-	g++  main_server.cpp CurrentGame.o server.o database.o account.o parsing.o MapHandler.o displaygame.o accountandvectors.o $(flag) $(sfml_flag) -o process_server
+server: main_server.cpp server.o database.o account.o parsing.o CurrentGame.o MapHandler.o displaygame.o displaygamegui.o accountandvectors.o
+	g++  main_server.cpp CurrentGame.o server.o database.o account.o parsing.o MapHandler.o displaygame.o displaygamegui.o accountandvectors.o $(flag) $(sfml_flag) -o process_server
 
 client_terminal: main_client_terminal.cpp client.o parsing.o interface.o menuterminal.o CurrentGame.o MapHandler.o displaygame.o
 	g++  main_client_terminal.cpp  client.o parsing.o interface.o menuterminal.o CurrentGame.o MapHandler.o displaygame.o $(flag) $(sfml_flag) -o process_client_terminal
 	
-client_gui: main_client_gui.cpp client.o parsing.o  menugui.o  CurrentGame.o MapHandler.o displaygame.o
-	g++  main_client_gui.cpp  client.o parsing.o menugui.o CurrentGame.o MapHandler.o displaygame.o $(qt_flag) $(sfml_flag) $(flag) -Wl,-O1 -o process_client_gui  $(qt_exec_flag)
+client_gui: main_client_gui.cpp client.o parsing.o  menugui.o  CurrentGame.o MapHandler.o displaygamegui.o
+	g++  main_client_gui.cpp  client.o parsing.o menugui.o CurrentGame.o MapHandler.o displaygamegui.o $(qt_flag) $(sfml_flag) $(flag) -Wl,-O1 -o process_client_gui  $(qt_exec_flag)
 	
 interface.o: Interface.cpp Interface.hpp screen.hpp
 	g++  -c Interface.cpp $(flag) $(sfml_flag) -o interface.o
@@ -35,8 +35,10 @@ screen.o:screen.hpp screen.cpp
 	g++  -c screen.cpp $(flag) -o screen.o
 
 displaygame.o: DisplayGame.cpp DisplayGame.hpp
-	g++  -c DisplayGame.cpp $(flag) $(sfml_flag) -o displaygame.o
+	g++  -c DisplayGame.cpp $(flag) -o displaygame.o
 
+displaygamegui.o: DisplayGameGui.cpp DisplayGameGui.hpp
+	g++  -c DisplayGameGui.cpp $(flag) $(sfml_flag) -o displaygamegui.o
 
 client.o: Client.hpp Client.cpp Constante.hpp
 	g++  -c Client.cpp $(flag) -o client.o 

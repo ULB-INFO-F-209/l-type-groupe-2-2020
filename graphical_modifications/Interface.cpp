@@ -102,7 +102,7 @@ int Interface::print_menu(size_t size, std::string *choices, int type, Game_sett
 					res++; //tu peux pas descendre plus bas que terre
 				break;
 			case KEY_LEFT:
-				choice = 0; //quit MenuTerminal
+				choice = 0; //quit menu
 				res = -1;
 				break;
 			case 10:
@@ -397,7 +397,7 @@ int Interface::range(int n, Game_settings *set, bool percent){
 					focus++; //tu peux pas descendre plus bas que terre
 				break;
 			case KEY_LEFT:
-				choice = 0; //quit MenuTerminal
+				choice = 0; //quit menu
 				break;
 			case 10:
 				choice = 0;

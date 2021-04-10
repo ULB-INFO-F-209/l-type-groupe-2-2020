@@ -41,8 +41,8 @@ public:
     //constructor
     explicit Client();
     //Communication
-    bool signIn(const char *pseudo,const char *pswd, bool true_conn=true);
-    bool signUp(const char *pseudo,const char *pswd);
+    bool signIn(char *pseudo, char *pswd, bool true_conn=true);
+    bool signUp(char *pseudo, char *pswd);
     bool addFriend(char *pseudo);
     int delFriend(char *pseudo);
     int sendFriendRequest(char *pseudo);
@@ -56,15 +56,9 @@ public:
     void exit();
     
     //Game
+    
     int createGame(char * game_info);
-    void createLevel(const char * level_info);
-    std::string viewLevels();
-    std::string myLevels();
-    std::string getLevel(std::string level_name,std::string author);
-    void playLevel(std::string level);
-    void voteLevel(std::string name, std::string author);
-
-
+    
     //state
     inline bool is_playing(){return _inGame;}
     inline void get_pseudo(char *res){strcpy(res, _pseudo);}

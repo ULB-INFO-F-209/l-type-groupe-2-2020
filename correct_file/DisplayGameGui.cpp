@@ -3,9 +3,9 @@
 // print lifebar boss
 
 
-#include "DisplayGame.hpp"
+#include "DisplayGameGui.hpp"
 
-void DisplayGame::parse_instruction(std::string chaine_instruction){  // A_B_type_x_y&E_H2_valeur&...
+void DisplayGameGui::parse_instruction(std::string chaine_instruction){  // A_B_type_x_y&E_H2_valeur&...
 	//std::string chaine_instruction(buffer);
 	while(chaine_instruction.size() > 1){
 		std::size_t idx = chaine_instruction.find(delimiteur_instruction);  //idx du premier delimiteur_instruction (&)
@@ -28,7 +28,7 @@ void DisplayGame::parse_instruction(std::string chaine_instruction){  // A_B_typ
 }
 
 
-int DisplayGame::getInputWindow(std::vector<int> *inp){
+int DisplayGameGui::getInputWindow(std::vector<int> *inp){
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
 	{
 		inp->push_back('q');
@@ -108,7 +108,7 @@ int DisplayGame::getInputWindow(std::vector<int> *inp){
 	}
 	
 }
-void DisplayGame::parse_affichage(std::string instruction){
+void DisplayGameGui::parse_affichage(std::string instruction){
 	std::string objet; size_t idx ;
 	int x, y;
 	idx = instruction.find(delimiteur_parametre); 				//on va voir le premier param de l instruction
@@ -167,7 +167,7 @@ void DisplayGame::parse_affichage(std::string instruction){
 
 
 }
-void DisplayGame::parse_etat(std::string instruction){
+void DisplayGameGui::parse_etat(std::string instruction){
 	//E_2_HP2_Vies_Score_bonus_level_tick
 	size_t idx;
 	int player,hp, life, score,level,tick,bonustype;
@@ -200,7 +200,7 @@ void DisplayGame::parse_etat(std::string instruction){
 	tick = std::stoi(instruction.substr(0,idx));
 	drawUi(player,hp, score, life,bonustype,level,tick);
 }
-void DisplayGame::starHandler(){
+void DisplayGameGui::starHandler(){
 
     stars.push_back(new vec2i{rand() % window->getSize().x, 0});
     for(size_t i = 0; i < stars.size(); i++) {
@@ -209,7 +209,7 @@ void DisplayGame::starHandler(){
                 stars.erase(stars.begin() + i);
         }
 }
-void DisplayGame::drawStar() {
+void DisplayGameGui::drawStar() {
     for(auto s : stars){
 		sf::CircleShape shape(2.f);
 		shape.setPosition(sf::Vector2f(s->x, s->y));
@@ -219,7 +219,7 @@ void DisplayGame::drawStar() {
 
 }
 
-void DisplayGame::drawNewLevel(int tick,int levelTick,int currentLevel) {
+void DisplayGameGui::drawNewLevel(int tick,int levelTick,int currentLevel) {
     if(levelTick != 0 && tick <= levelTick + 600 && tick > levelTick+100){
 		guiText.setString("Level " + std::to_string(currentLevel));
 		guiText.setColor(sf::Color::White);
@@ -228,7 +228,7 @@ void DisplayGame::drawNewLevel(int tick,int levelTick,int currentLevel) {
 		window->draw(guiText);
     }
 }
-void DisplayGame::initGraphics(){
+void DisplayGameGui::initGraphics(){
 	window = new sf::RenderWindow(sf::VideoMode(1000, 480), "L-TYPE");
 /*
 	sf::Vector2f viewCenter(500, 240);
@@ -369,8 +369,8 @@ void DisplayGame::initGraphics(){
 
 }
 
-void DisplayGame::drawObstacle(int x, int y) {
-
+void DisplayGameGui::drawObstacle(int x, int y) {
+	
 	asteroidSprite.setPosition(sf::Vector2f((x+1)*12.5-4.5,y*20));
 	//sf::RectangleShape asteroidShape(sf::Vector2f(12.5*1.5,20*1.5));
 	//asteroidShape.setFillColor(sf::Color(102,51,0));
@@ -380,7 +380,7 @@ void DisplayGame::drawObstacle(int x, int y) {
 		window->draw(asteroidSprite);
 
 }
-void DisplayGame::drawEnemy(int x, int y, int tick, bool isBlinking) {
+void DisplayGameGui::drawEnemy(int x, int y, int tick, bool isBlinking) {
 
 
 	if(isBlinking){
@@ -402,7 +402,7 @@ void DisplayGame::drawEnemy(int x, int y, int tick, bool isBlinking) {
 	}
 
 }
-void DisplayGame::drawProjectile(int x, int y, bool enemy, bool player1){
+void DisplayGameGui::drawProjectile(int x, int y, bool enemy, bool player1){
 	//sf::RectangleShape projectileShape(sf::Vector2f(12.5,20));
 
 	//projectileShape.setPosition(sf::Vector2f((x+1)*12.5,5 + y*20));
@@ -430,7 +430,7 @@ void DisplayGame::drawProjectile(int x, int y, bool enemy, bool player1){
 	//window->draw(projectileShape);
 
 }
-void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinking){
+void DisplayGameGui::drawPlayer(int player, int x , int y, int tick, bool isBlinking){
 
 		
         if(isBlinking){
@@ -531,12 +531,12 @@ void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinkin
 
 
 }
-void DisplayGame::drawBonus(int type, int x, int y){
-	//sf::RectangleShape bonusShape(sf::Vector2f(12.5,20));
-	//bonusShape.setFillColor(sf::Color::Yellow);
-	//bonusShape.setPosition(sf::Vector2f((x+1)*12.5,5 + y*20));
+void DisplayGameGui::drawBonus(int type, int x, int y){
+	// sf::RectangleShape bonusShape(sf::Vector2f(12.5,20));
+	// bonusShape.setFillColor(sf::Color::Yellow);
+	// bonusShape.setPosition(sf::Vector2f((x+1)*12.5,5 + y*20));
 	if(y*20 < 350){
-		//window->draw(bonusShape);
+		// window->draw(bonusShape);
 		if(type==lifeSteal){
 			lifestealSprite.setPosition(sf::Vector2f((x+1)*12.5-11,y*20-15));
 			window->draw(lifestealSprite);
@@ -556,7 +556,7 @@ void DisplayGame::drawBonus(int type, int x, int y){
 	}
 }
 
-void DisplayGame::drawBoss(int x, int y){
+void DisplayGameGui::drawBoss(int x, int y){
 		//sf::RectangleShape bossShape(sf::Vector2f(12.5*18,20*6));
 		//bossShape.setFillColor(sf::Color::Red);
 		//bossShape.setPosition(sf::Vector2f(x*12.5+7,5 + y*20));
@@ -564,7 +564,7 @@ void DisplayGame::drawBoss(int x, int y){
 		//window->draw(bossShape);
 		window->draw(bossSprite);
 }
-void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType, int level, int tick){
+void DisplayGameGui::drawUi(int player, int hp, int score, int lives, int bonusType, int level, int tick){
 		
 		/*
 		sf::RectangleShape cadre(sf::Vector2f(990, 470));
@@ -577,7 +577,7 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 		window->draw(line);
 		
 
-	if(player == 0){	
+	if(player == 0){ 
 		//healthbar
 		health_bar.setPosition(sf::Vector2f(3,380));
 		window->draw(health_bar);
@@ -707,7 +707,7 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 }
 
 
-void DisplayGame::drawEndGame(std::string score){
+void DisplayGameGui::drawEndGame(std::string score){
 	guiText.setString("GAME OVER");
 	guiText.setCharacterSize(20);
 	guiText.setColor(sf::Color::White);

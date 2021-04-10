@@ -1,5 +1,5 @@
-#ifndef DisplayGame_HPP
-#define DisplayGame_HPP
+#ifndef DisplayGameGUI_HPP
+#define DisplayGameGUI_HPP
 #include <vector>
 #include <string>
 #include "game_test/Rect.hpp"
@@ -9,8 +9,7 @@
 #include <fstream>
 #include <iostream>
 
-
-class DisplayGame
+class DisplayGameGui
 {
 	//Game's windows
 	sf::RenderWindow* window;
@@ -68,7 +67,7 @@ class DisplayGame
 
 public:
 	//Constructor
-	DisplayGame()=default;
+	DisplayGameGui()=default;
 	void initGraphics();
 	//Drawings 
 	void drawStar();
@@ -86,7 +85,7 @@ public:
 	int getInputWindow(std::vector<int>* inp);
     
 	//Destructor
-	~DisplayGame()=default;
+	~DisplayGameGui()=default;
 	void close();
 
 	//parsing
