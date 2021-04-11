@@ -11,6 +11,7 @@
 MenuGui::MenuGui(): QMainWindow(){
     this->setWindowTitle(QApplication::translate("L-Type", "L-Type", nullptr));
     this->resize(800, 600);
+    this->setFixedSize(size());
     this->setStyleSheet(QStringLiteral("background-color:white;"));
 
 }
@@ -25,20 +26,14 @@ void MenuGui::home(){
     this->setStyleSheet(QStringLiteral("background-color:black;"));
     QWidget *centralWidget = new QWidget(this);
 
-        //exageration
+    //exageration
     QLabel *lbl = new QLabel(centralWidget);
-    QMovie *mv = new QMovie("images/ciel.gif");
+    QMovie *mv = new QMovie("images/background/ciel.gif");
     mv->setScaledSize(QSize(800,600));
     lbl->setGeometry(QRect(0, 0, 800, 600));
     mv->start();
     lbl->setAttribute(Qt::WA_TranslucentBackground);
     lbl->setMovie(mv);
-    /*-QPixmap pix = QPixmap::grabWidget(lbl,20,30,741,481);
-    pix.fill(Qt::transparent);
-       QPalette p;
-    p.setBrush(QPalette::Base,pix);
-    p.base();*/
-    //QLabel *lbl_list[100]; 
 
 
     //layout box
@@ -53,8 +48,7 @@ void MenuGui::home(){
     int signIn = 0, signUp = 1, quit = 2;
     QPixmap pix_home_button[SIZE_HOME] = {QPixmap("images/buttons/signIn"),QPixmap("images/buttons/signUp"),QPixmap("images/buttons/quit")};
     QIcon icon_home[SIZE_HOME];
-    for (size_t i = 0; i < SIZE_HOME; ++i)
-    {
+    for (size_t i = 0; i < SIZE_HOME; ++i){
        home_button[i] = new QPushButton(verticalLayoutWidget);
        home_button[i]->setMinimumSize(QSize(200, 200));
        icon_home[i] = QIcon(pix_home_button[i]);
@@ -105,7 +99,7 @@ void MenuGui::check_data(bool sign_in){
 void MenuGui::connexion(bool sign_in){
     QWidget *centralWidget = new QWidget(this);
     QLabel *lbl = new QLabel(centralWidget);
-    QMovie *mv = new QMovie("images/ciel.gif");
+    QMovie *mv = new QMovie("images/background/ciel.gif");
     mv->setScaledSize(QSize(800,600));
     lbl->setGeometry(QRect(0, 0, 800, 600));
     mv->start();
@@ -205,40 +199,50 @@ void MenuGui::connexion(bool sign_in){
 void MenuGui::main_m(){
     QWidget *centralWidget = new QWidget(this);
 
-    QWidget *verticalLayoutWidget  = new QWidget(centralWidget);
-    verticalLayoutWidget->setGeometry(QRect(80, 210, 651, 351));
+    //exageration
+    QLabel *lbl = new QLabel(centralWidget);
+    QMovie *mv = new QMovie("images/background/ciel.gif");
+    mv->setScaledSize(QSize(800,600));
+    lbl->setGeometry(QRect(0, 0, 800, 600));
+    mv->start();
+    lbl->setAttribute(Qt::WA_TranslucentBackground);
+    lbl->setMovie(mv);
 
-    QVBoxLayout *verticalLayout  = new QVBoxLayout(verticalLayoutWidget);
-    verticalLayout->setContentsMargins(100, 0, 100, 0);
+    QWidget *horizontalLayoutWidget  = new QWidget(centralWidget);
+    horizontalLayoutWidget->setGeometry(QRect(80, 210, 651, 351));
 
-    QPushButton *main_button[SIZE_MAIN_MENU];
+    QVBoxLayout *HLayout  = new QVBoxLayout(horizontalLayoutWidget);
+    HLayout->setContentsMargins(100, 0, 100, 0);
+
+    QPushButton *button[SIZE_MAIN_MENU];
+    QPixmap pix_main_button[SIZE_MAIN_MENU] = {QPixmap("images/buttons/game"),QPixmap("images/buttons/friends"),QPixmap("images/buttons/lead"),
+    										   QPixmap("images/buttons/profile"),QPixmap("images/buttons/level"),QPixmap("images/buttons/logout")};
+    QIcon icon_main[SIZE_MAIN_MENU];
+    int ngame = 0, friends=1, lead=2, prof=3, level=4, logout=5;
     for (size_t i = 0; i < SIZE_MAIN_MENU; ++i){
-       main_button[i] = new QPushButton(QString::fromStdString(main_menu[i]),verticalLayoutWidget);
-       main_button[i]->setMinimumSize(QSize(25, 50));
-       verticalLayout->addWidget(main_button[i]);
+       button[i] = new QPushButton(horizontalLayoutWidget);
+       button[i]->setMinimumSize(QSize(80, 80));
+       icon_main[i] = QIcon(pix_main_button[i]);
+       button[i]->setIcon(icon_main[i]);
+       button[i]->setIconSize(QSize(80, 80));
+       button[i]->setFlat(true);
+       HLayout->addWidget(button[i]);
     }
-    QPushButton *new_game = (main_button[0]);
-    QPushButton *friends = (main_button[1]);
-    QPushButton *leaderboard = (main_button[2]);
-    QPushButton *profile = (main_button[3]);
-    QPushButton *level = (main_button[4]);
-    QPushButton *log_out = (main_button[5]);
 
-    connect(friends, &QPushButton::clicked, this, &MenuGui::print_friends);
-    connect(leaderboard, &QPushButton::clicked, this,&MenuGui::print_leaderboard);
-    connect(profile, &QPushButton::clicked, this, &MenuGui::print_profile);
-    connect(log_out, &QPushButton::clicked, this,&MenuGui::home);
-    connect(new_game, &QPushButton::clicked, this,&MenuGui::lobby);
-    connect(level, &QPushButton::clicked, this, &MenuGui::level_menu);
+    connect(button[friends], &QPushButton::clicked, this, &MenuGui::print_friends);
+    connect(button[lead], &QPushButton::clicked, this,&MenuGui::print_leaderboard);
+    connect(button[prof], &QPushButton::clicked, this, &MenuGui::print_profile);
+    connect(button[logout], &QPushButton::clicked, this,&MenuGui::home);
+    connect(button[ngame], &QPushButton::clicked, this,&MenuGui::lobby);
+    connect(button[level], &QPushButton::clicked, this, &MenuGui::level_menu);
 
     /****** DESIGN SECTION ****************************/
-    this->setStyleSheet(QStringLiteral("background-color:white;"));
     QLabel *title_label = new QLabel(centralWidget);
     title_label->setGeometry(QRect(110, 30, 600, 150));
     QPixmap pix_home_title("images/titles/mainMenu");
+    pix_home_title = pix_home_title.scaled(title_label->size(),Qt::KeepAspectRatio);
     title_label->setPixmap( pix_home_title);
     title_label->setAlignment(Qt::AlignCenter);
-    pix_home_title = pix_home_title.scaled(title_label->size(),Qt::KeepAspectRatio);
     /*********END DESIGN SECTION*****************************************/
     this->setCentralWidget(centralWidget);
     this->show();
@@ -251,12 +255,26 @@ void MenuGui::print_profile(){
     std::string pseudo = profile.pseudo, score =  std::to_string(profile.score);
 
     QWidget *centralWidget = new QWidget(this);
+    QLabel *lbl = new QLabel(centralWidget);
+    QMovie *mv = new QMovie("images/background/ciel.gif");
+    mv->setScaledSize(QSize(800,600));
+    lbl->setGeometry(QRect(0, 0, 800, 600));
+    mv->start();
+    lbl->setAttribute(Qt::WA_TranslucentBackground);
+    lbl->setMovie(mv);
+
+
     QWidget *gridLayoutWidget = new QWidget(centralWidget);
     gridLayoutWidget->setGeometry(QRect(40, 110, 731, 431));
+    gridLayoutWidget->setAttribute(Qt::WA_TranslucentBackground);
+
     QGridLayout *gridLayout = new QGridLayout(gridLayoutWidget);
     gridLayout->setContentsMargins(0, 0, 0, 0);
     QLabel *username = new QLabel((QString::fromStdString("USERNAME :")),gridLayoutWidget);
+    username->setStyleSheet("QLabel { background-color : black; color : white; }");
     QLabel *score_l = new QLabel(QString::fromStdString("SCORE :"),gridLayoutWidget);
+    score_l->setStyleSheet("QLabel { background-color : black; color : white; }");
+
     
     QFont font1;
     font1.setFamily(QStringLiteral("Ubuntu"));
@@ -270,6 +288,7 @@ void MenuGui::print_profile(){
 
     QPushButton *back = new QPushButton((QString::fromStdString("Back")),gridLayoutWidget);
     back->setMinimumSize(QSize(0, 45));
+    back->setStyleSheet("QLabel { background-color : black; color : white; }");
     connect(back, &QPushButton::clicked, this,&MenuGui::main_m);
 
     gridLayout->addWidget(back, 3, 0, 1, 3);
@@ -279,23 +298,26 @@ void MenuGui::print_profile(){
     font2.setFamily(QStringLiteral("aakar"));
     font2.setPointSize(16);
     pseudo_label->setFont(font2);
+    pseudo_label->setStyleSheet("QLabel { background-color : black; color : white; }");
     
     gridLayout->addWidget(pseudo_label, 0, 1, 1, 1);
 
     QLabel *score_label = new QLabel(QString::fromStdString(score),gridLayoutWidget);
     score_label->setFont(font2);
+    score_label->setStyleSheet("QLabel { background-color : black; color : white; }");
+
 
     gridLayout->addWidget(score_label, 2, 1, 1, 1);
 
 
     /****** DESIGN SECTION ****************************/
-    //this->setStyleSheet("background-color:rgb(62, 153, 150);");
     QLabel *title_label = new QLabel(centralWidget);
     title_label->setGeometry(QRect(110, 30, 600, 150));
     QPixmap pix_home_title("images/titles/profile");
+    pix_home_title = pix_home_title.scaled(title_label->size(),Qt::KeepAspectRatio);
     title_label->setPixmap( pix_home_title);
     title_label->setAlignment(Qt::AlignCenter);
-    pix_home_title = pix_home_title.scaled(title_label->size(),Qt::KeepAspectRatio);
+    title_label->setAttribute(Qt::WA_TranslucentBackground);
     /*********END DESIGN SECTION*****************************************/
 
     this->setCentralWidget(centralWidget);
@@ -310,6 +332,13 @@ void MenuGui::print_leaderboard(){
     Parsing::profile_list_from_str(buffer, &profile_list);
 
     QWidget *centralWidget = new QWidget(this);
+    QLabel *lbl = new QLabel(centralWidget);
+    QMovie *mv = new QMovie("images/background/ciel.gif");
+    mv->setScaledSize(QSize(800,600));
+    lbl->setGeometry(QRect(0, 0, 800, 600));
+    mv->start();
+    lbl->setAttribute(Qt::WA_TranslucentBackground);
+    lbl->setMovie(mv);
 
     QWidget * verticalLayoutWidget = new QWidget(centralWidget);
     verticalLayoutWidget->setObjectName(QString::fromUtf8("verticalLayoutWidget"));
@@ -375,6 +404,16 @@ void MenuGui::print_leaderboard(){
 
 void MenuGui::level_menu(){
     QWidget *centralwidget = new QWidget(this);
+    //exageration
+    QLabel *lbl = new QLabel(centralwidget);
+    QMovie *mv = new QMovie("images/background/ciel.gif");
+    mv->setScaledSize(QSize(800,600));
+    lbl->setGeometry(QRect(0, 0, 800, 600));
+    mv->start();
+    lbl->setAttribute(Qt::WA_TranslucentBackground);
+    lbl->setMovie(mv);
+
+
     QLabel *title_label = new QLabel("LEVEL EDITOR",centralwidget);
     title_label->setGeometry(QRect(90, 20, 631, 71));
     title_label->setFrameShape(QFrame::WinPanel);
@@ -427,7 +466,15 @@ void MenuGui::print_friends(){
 	_client.getFriendRequest(buffer2);
 	Parsing::profile_list_from_str(buffer2, &requestlist);
 
-    QWidget *centralWidget = new QWidget(this);
+    QWidget *centralWidget = new QWidget(this);    
+    QLabel *lbl = new QLabel(centralWidget);
+    QMovie *mv = new QMovie("images/background/ciel.gif");
+    mv->setScaledSize(QSize(800,600));
+    lbl->setGeometry(QRect(0, 0, 800, 600));
+    mv->start();
+    lbl->setAttribute(Qt::WA_TranslucentBackground);
+    lbl->setMovie(mv);
+
     QWidget *gridLayoutWidget = new QWidget(centralWidget);
     gridLayoutWidget->setGeometry(QRect(60, 150, 800, 350));
     QGridLayout *gridLayout = new QGridLayout(gridLayoutWidget);
@@ -712,6 +759,14 @@ void MenuGui::lobby(){
     QWidget *centralWidget =  new QWidget(this);
 
     QWidget *gridLayoutWidget = new QWidget(centralWidget);
+    QLabel *lbl = new QLabel(centralWidget);
+    QMovie *mv = new QMovie("images/background/ciel.gif");
+    mv->setScaledSize(QSize(800,600));
+    lbl->setGeometry(QRect(0, 0, 800, 600));
+    mv->start();
+    lbl->setAttribute(Qt::WA_TranslucentBackground);
+    lbl->setMovie(mv);
+
     gridLayoutWidget->setGeometry(QRect(20, 120, 771, 311));
     QGridLayout *gridLayout = new QGridLayout(gridLayoutWidget);
     gridLayout->setContentsMargins(0, 0, 0, 0);
