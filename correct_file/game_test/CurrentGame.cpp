@@ -1,6 +1,12 @@
 /**
  * TODO:
- *  enlever static_cast !!
+ * 
+ * liste à dire:
+ * ajouter drop rate général
+ * supprimer vitesse ennemis, remplacer par vitesse générale
+ * nb_joueur parsing,etc...
+ * ajouter nb_vie player
+ * 
  */
 #include "CurrentGame.hpp"
 
@@ -19,6 +25,20 @@ CurrentGame::CurrentGame(Parsing::Game_settings game_sett):twoPlayers(game_sett.
         map.setBounds(game_area);
         
     }
+CurrentGame::CurrentGame(Parsing::Level level_sett):twoPlayers(false),friendlyFire(level_sett.player.ally_shot), dropRate(80), dif(easy),screen_area( {0, 0}, {80, 24}),game_area( {0, 0}, {78, 16}),map(dropRate,dif) {
+    playership1 = new PlayerShip(10, 5, { {9, 5 }, { 3, 2 } }, '0',level_sett.player.hp,0,100,0);
+    player1 = new Player(3); // à modif
+    listPlayer.push_back(player1);
+    if(twoPlayers){
+                playership2 = new PlayerShip(50, 5, { { 49, 5 }, { 3, 2 } }, '1',level_sett.player.hp, 1,100,0);
+                player2 = new Player(3); // à modif
+                listPlayer.push_back(player2);
+            }
+    map.playerInit(playership1,playership2);
+    map.setBounds(game_area);
+    enemy_queue=level_sett.enemy_list; // ca peut buguer
+    obstacles_queue=level_sett.obs_list;
+}
 
 
 void CurrentGame::execInput(int* inChar, uint_fast16_t x1, uint_fast16_t y1, bool firstPlayer){

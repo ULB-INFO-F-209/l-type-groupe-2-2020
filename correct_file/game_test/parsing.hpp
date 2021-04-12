@@ -1,5 +1,5 @@
 /*
-	ensemble d'opération d'encodage et de decodage!
+	ensemble d'opÃ©ration d'encodage et de decodage!
 */
 
 #ifndef PARSING_HPP
@@ -19,8 +19,8 @@ namespace Parsing{
 	using Profile=Profile;
 	using Creator=DatabaseLevel;
 	struct Game_settings;
-	struct Enemy;
-	struct Obstacle;
+	struct Enemy_template;
+	struct Obstacle_template;
 	struct Player;
 	struct Level;
 
@@ -56,7 +56,7 @@ struct Parsing::Game_settings
     char pid[10];
 
 };
-struct Parsing::Enemy{
+struct Parsing::Enemy_template{
 	int x = 0;
 	int tick = 0;
 	int skin = 0; // skin 1, skin2, skin3
@@ -73,7 +73,7 @@ struct Parsing::Enemy{
 	}
 };
 
-struct Parsing::Obstacle{
+struct Parsing::Obstacle_template{
 	int x = 0; 
 	int tick = 0;
 	int skin = 0; //planete, soleil, lune, etoiles
@@ -96,16 +96,18 @@ struct Parsing::Player{
 	int hp = 70;
 	int damage=30;
 	int speed = 2; //SLUG, TURTLE, HUMAN, HORSE,CHEETAHs
+	bool ally_shot=true;
+	int drop_rate=100;
 };
 
 struct Parsing::Level{
 	Player player;
 
 	//Enemy session
-	std::vector<Enemy> enemy_list{};
+	std::vector<Enemy_template> enemy_list{};
 
 	//obstacle session
-	std::vector<Obstacle> obs_list{};
+	std::vector<Obstacle_template> obs_list{};
 
 };
 #endif

@@ -960,12 +960,12 @@ void MenuGui::level_editor(Parsing::Level my_level){
             save_level(my_level);
         });
     connect(enemy_button, &QPushButton::clicked, this,[this, my_level](){
-            Parsing::Enemy newE{}; Parsing::Level level_copy = my_level; //probleme de constance
+            Parsing::Enemy_template newE{}; Parsing::Level level_copy = my_level; //probleme de constance
             level_copy.enemy_list.push_back(newE);
             custom_enemy(level_copy, level_copy.enemy_list.size()-1);
         });
     connect(obstacle_button, &QPushButton::clicked, this,[this, my_level](){
-            Parsing::Obstacle newO{}; Parsing::Level level_copy = my_level; //probleme de constance
+            Parsing::Obstacle_template newO{}; Parsing::Level level_copy = my_level; //probleme de constance
             level_copy.obs_list.push_back(newO);
             custom_obstacle(level_copy, level_copy.obs_list.size()-1);
         });

@@ -47,13 +47,16 @@ class CurrentGame {
     void saveScore();
     void destroyPlayership();
     std::string getPlayerState(std::string state);
-
+    // vecteur pour level editor
+    std::vector<Parsing::Obstacle_template> obstacles_queue;
+    std::vector<Parsing::Enemy_template> enemy_queue;
 
 
 public:
     CurrentGame()=default;
     int getScore(){return finalScore1+finalScore2;}
     CurrentGame(Parsing::Game_settings);
+    CurrentGame(Parsing::Level);
     std::string run_server(int *move_to_exec);
 };
 

@@ -183,6 +183,7 @@ class MapHandler final{
     std::vector<PlayerShip*> player_ships_set;
     std::vector<EnemyShip*> enemy_ships_set;
     std::vector<Bonus*> bonuses_set;
+    
 public:
     MapHandler()=default;
     MapHandler(int p,difficulty d);
