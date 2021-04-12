@@ -864,7 +864,95 @@ void MenuGui::lobby(){
     this->show();
 
 }
+void MenuGui::launch_level(std::string my_level, bool from_lead){
+    QDialog * Dialog = new QDialog(this);
+    Dialog->setModal(true);
+    Dialog->resize(741, 527);
+    QLabel *player_label;
+    QComboBox *player_box;
+    QLabel *name_label;
+    QLabel *pswd_label;
+    QLabel *title_label;
+    QLineEdit *username_line;
+    QLineEdit *pass_line;
+    QPushButton *play_button;
+    QPushButton *cancel_button;
+    player_label = new QLabel("NB PLAYER : ",Dialog);
+    player_label->setGeometry(QRect(70, 150, 85, 25));
+    player_box = new QComboBox(Dialog);
+    player_box->setGeometry(QRect(210, 150, 378, 25));
+    player_box->clear();
+    player_box->addItem("1 player");
+    player_box->addItem("2 players");
+    name_label = new QLabel("USERNAME : ",Dialog);
+    name_label->setGeometry(QRect(70, 260, 86, 17));
+    name_label->hide();
+    pswd_label = new QLabel("PASSWORD : ",Dialog);
+    pswd_label->setGeometry(QRect(70, 326, 91, 31));
+    pswd_label->hide();
+    title_label = new QLabel("RUN LEVEL",Dialog);
+    title_label->setGeometry(QRect(30, 20, 681, 61));
+    title_label->setFrameShape(QFrame::WinPanel);
+    title_label->setAlignment(Qt::AlignCenter);
+    username_line = new QLineEdit(Dialog);
+    username_line->setGeometry(QRect(210, 260, 371, 30));
+    username_line->hide();
+    pass_line = new QLineEdit(Dialog);
+    pass_line->setGeometry(QRect(210, 330, 371, 30));
+    pass_line->hide();
+    play_button = new QPushButton("PLAY",Dialog);
+    play_button->setGeometry(QRect(150, 430, 100, 45));
+    cancel_button = new QPushButton("CANCEL",Dialog);
+    cancel_button->setGeometry(QRect(490, 430, 100, 45));
+    connect(player_box, QOverload<int>::of(&QComboBox::currentIndexChanged),[this,player_box, username_line,pass_line,pswd_label, name_label](int idx){
+         if(idx==1){
+            username_line->show();
+            pass_line->show();
+            pswd_label->show();
+            name_label->show();
+        }
+        else{
+            username_line->hide();
+            pass_line->hide();
+            pswd_label->hide();
+            name_label->hide();
+        }
+    });
 
+
+    connect(play_button, &QPushButton::clicked, this,[this,player_box,username_line,pass_line, my_level](){
+        int nb_player = player_box->currentIndex() + 1;
+        char y_pseudo[Constante::SIZE_PSEUDO]; 
+        _client.get_pseudo(y_pseudo);
+        if(nb_player == 2){
+            std::string pseudo = (username_line->text()).toUtf8().constData();
+            std::string pswd = (pass_line->text()).toUtf8().constData();
+            std::cout <<"Player = " << pseudo<<std::endl;
+            bool success =0;
+            if(pseudo.compare(std::string(y_pseudo)) != 0)
+                success= _client.signIn(pseudo.c_str(), pswd.c_str(), false);
+            if(success){
+                //TODO :LAUNCH GAME 
+            }
+
+        }
+        else{
+            //TODO :LAUNCH GAME 
+        }
+
+
+    });
+    connect(cancel_button, &QPushButton::clicked, this,[this, from_lead, Dialog](){
+        Dialog->hide();
+        if(from_lead)
+            view_level(false);
+        view_level(true);
+    });
+    
+
+    Dialog->show();
+
+}
 
 void MenuGui::launch_game(int players, int drop_rate, int lives, std::string difficulty, bool ally_shot){
     Parsing::Game_settings setting; char my_pseudo[Constante::SIZE_PSEUDO];
@@ -922,7 +1010,7 @@ void MenuGui::launch_game(int players, int drop_rate, int lives, std::string dif
                 strcpy(sett_ref.pseudo_hote,y_pseudo);
                 Parsing::create_game_to_str(game_sett_char,&sett_ref);
                 _client.createGame(game_sett_char);
-                launch_game(&sett_ref);
+                launch_game();
                 buttonBox->rejected();
                 
             }
@@ -937,7 +1025,7 @@ void MenuGui::launch_game(int players, int drop_rate, int lives, std::string dif
         std::cout << "voila le str = " << game_sett_char<< std::endl;
         _client.createGame(game_sett_char);
         this->hide();
-        launch_game(&setting);
+        launch_game();
         this->show();
         std::cout << "salut bg je suis de retoure pour te jouer de mauvais tour";
     }
@@ -945,6 +1033,7 @@ void MenuGui::launch_game(int players, int drop_rate, int lives, std::string dif
 
 
 void MenuGui::level_editor(Parsing::Level my_level){
+	 this->setStyleSheet(QStringLiteral("background-color:white;"));
     //faire des boucle pour les rept de code
     QWidget *centralwidget = new QWidget(this);
     QFrame *game_zone = new QFrame(centralwidget);
@@ -1081,6 +1170,7 @@ void MenuGui::level_editor(Parsing::Level my_level){
 }
 
 void MenuGui::save_level(Parsing::Level my_level){
+	 this->setStyleSheet(QStringLiteral("background-color:white;"));
     QDialog * Dialog = new QDialog(this);
     Dialog->resize(452, 345);
     Dialog->setModal(true);
@@ -1133,6 +1223,7 @@ void MenuGui::save_level(Parsing::Level my_level){
 }
 
 void MenuGui::custom_enemy(Parsing::Level my_level, int idx){
+	this->setStyleSheet(QStringLiteral("background-color:white;"));
     QDialog * Dialog = new QDialog(this);
     Dialog->resize(859, 665);
     Dialog->setModal(true);
@@ -1288,6 +1379,7 @@ void MenuGui::custom_enemy(Parsing::Level my_level, int idx){
 }
 
 void MenuGui::custom_obstacle(Parsing::Level my_level, int idx){
+	this->setStyleSheet(QStringLiteral("background-color:white;"));
     QDialog * Dialog = new QDialog(this);
     Dialog->resize(859, 665);
     Dialog->setModal(true);
@@ -1416,6 +1508,7 @@ void MenuGui::custom_obstacle(Parsing::Level my_level, int idx){
 
 
 void MenuGui::custom_player(Parsing::Level my_level){
+	this->setStyleSheet(QStringLiteral("background-color:white;"));
     QDialog * Dialog = new QDialog(this);
     Dialog->resize(859, 665);
     Dialog->setModal(true);
@@ -1428,13 +1521,13 @@ void MenuGui::custom_player(Parsing::Level my_level){
     /*************SPIN AND THEIR LEGENDE ZONE********************/
     QWidget *formLayoutWidget = new QWidget(Dialog);
     formLayoutWidget->setGeometry(QRect(590, 160, 258, 275));
-     QFormLayout *formLayout = new QFormLayout(formLayoutWidget);
-    int hp=0, damage=1; 
-    std::string legende[] = {"HP :","DAMAGE :"};
-    QLabel *label[2];
-    int spin_value[2] = {my_level.player.hp, my_level.player.damage};
-    QSpinBox * spin_box[2];
-    for (int i = 0; i < 2; ++i){
+    QFormLayout *formLayout = new QFormLayout(formLayoutWidget);
+    int hp=0, damage=1, drop=2; 
+    std::string legende[] = {"HP :","DAMAGE :","DROP RATE :"};
+    QLabel *label[3];
+    int spin_value[3] = {my_level.player.hp, my_level.player.damage, my_level.player.drop_rate};
+    QSpinBox * spin_box[3];
+    for (int i = 0; i < 3; ++i){
         //legende
         label[i] = new QLabel(legende[i].c_str(), formLayoutWidget);
         formLayout->setWidget(i, QFormLayout::LabelRole, label[i] );
@@ -1446,10 +1539,21 @@ void MenuGui::custom_player(Parsing::Level my_level){
         spin_box[i] = new QSpinBox(formLayoutWidget);
         spin_box[i]->setMinimumSize(QSize(100, 45));
         spin_box[i]->setMaximumSize(QSize(100, 45));
+        spin_box[i]->setMaximum(100);
         spin_box[i]->setValue(spin_value[i]);
         formLayout->setWidget(i, QFormLayout::FieldRole, spin_box[i]);
     }
-    
+
+    QComboBox *ally_box = new QComboBox(formLayoutWidget);
+    ally_box->setMinimumSize(QSize(100, 45));
+    ally_box->setMaximumSize(QSize(100, 45));
+    formLayout->setWidget(3, QFormLayout::FieldRole, ally_box);
+    QLabel *ally_label = new QLabel("ALLY SHOT :");
+    formLayout->setWidget(3, QFormLayout::LabelRole, ally_label );
+    ally_box->clear();
+    ally_box->addItem("False");
+    ally_box->addItem("True");
+    ally_box->setCurrentIndex(my_level.player.ally_shot);
     /*************BUTTON_ZONE********************/
     QWidget *horizontalLayoutWidget = new QWidget(Dialog);
     horizontalLayoutWidget->setGeometry(QRect(40, 540, 771, 80));
@@ -1518,10 +1622,12 @@ void MenuGui::custom_player(Parsing::Level my_level){
     }
 
     /***************CONNECTION********************/
-    connect(button[ok], &QPushButton::clicked, this, [this, my_level,Dialog, spin_box, skin_player1, skin_player2](){
+    connect(button[ok], &QPushButton::clicked, this, [this, my_level,Dialog, spin_box, skin_player1, skin_player2, ally_box](){
         Parsing::Level copy_level = my_level;
+        copy_level.player.ally_shot = ally_box->currentIndex();
         copy_level.player.hp = spin_box[0]->value();
         copy_level.player.damage = spin_box[1]->value();
+        copy_level.player.drop_rate = spin_box[2]->value();
         for (int i = 0; i < 3; ++i){
             if(skin_player1[i]->isChecked())
                 copy_level.player.skin = i;
@@ -1546,7 +1652,7 @@ void MenuGui::custom_player(Parsing::Level my_level){
 }
 
 void MenuGui::view_level(bool mine){
-
+	this->setStyleSheet(QStringLiteral("background-color:white;"));
     std::string res; 
     if(mine)
        res =  _client.myLevels();
@@ -1591,13 +1697,13 @@ void MenuGui::view_level(bool mine){
     tableWidget->setPalette(palette);*/
 
     connect(tableWidget,&QAbstractItemView::clicked,this,[this,creator_list,mine](const QModelIndex& idx){
-        if(idx.column()==3){
+        if(idx.column()==3){ //run
             int i = idx.row();
             std::string level = _client.getLevel(creator_list[i].name, std::string(creator_list[i].pseudo));
             std::cout << "level to play : "<< level<<std::endl;
-            _client.playLevel(level);
+            launch_level(level, !mine);
         }
-        else if(idx.column()==4){
+        else if(idx.column()==4){ //like
             int i = idx.row();
             _client.voteLevel(creator_list[i].name, std::string(creator_list[i].pseudo));
             view_level(mine);
@@ -1665,7 +1771,7 @@ void MenuGui::view_level(bool mine){
 
 }
 
-void MenuGui::launch_game(const Parsing::Game_settings* game_option){
+void MenuGui::launch_game(){
 	DisplayGameGui display_game;
 	display_game.initGraphics();
 	sf::RenderWindow* window = display_game.getWindow();

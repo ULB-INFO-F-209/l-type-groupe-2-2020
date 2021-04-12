@@ -429,7 +429,7 @@ void Server::runLevel(char* input){
     std::cout << "level reçu =  "<<level<<std::endl;
     Parsing::Level level_to_play = Parsing::level_from_str(level);
     // TODO RUN LEVEL
-    //CurrentGame level_to_run = CurrentGame(level_to_play);
+    //CurrentGame level_to_run = CurrentGame(level_to_play, nb_player);
 }
 
 

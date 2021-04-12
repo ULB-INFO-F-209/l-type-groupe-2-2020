@@ -40,7 +40,7 @@ std::string Parsing::level_to_str(Level *my_level, const std::string name){
 	//player info
 	Player p = (my_level->player);
 	buffer += std::to_string(p.skin) +"_" + std::to_string(p.skin2) + "_" + std::to_string(p.hp) + "_" + std::to_string(p.damage);
-
+	buffer += "_" + std::to_string(p.ally_shot) +"_" +std::to_string(p.drop_rate);
 	//enemy
 	buffer += "|";
 	for(auto e : my_level->enemy_list){
@@ -219,6 +219,15 @@ Parsing::Level Parsing::level_from_str(std::string buffer){
 	idx = player_zone.find(delim_attr);
 	my_level.player.damage = std::stoi(player_zone.substr(0,idx)); //damage
 	player_zone = player_zone.substr(idx+1, player_zone.size());
+
+	idx = player_zone.find(delim_attr);
+	my_level.player.ally_shot = std::stoi(player_zone.substr(0,idx)); //damage
+	player_zone = player_zone.substr(idx+1, player_zone.size());
+
+	idx = player_zone.find(delim_attr);
+	my_level.player.drop_rate = std::stoi(player_zone.substr(0,idx)); //damage
+	player_zone = player_zone.substr(idx+1, player_zone.size());
+
 
 	//enemy zone
 	idx = buffer.find(delim_zone);
