@@ -16,7 +16,7 @@ std::vector<Server::PIDinGame*> Server::_pipe_running{};
 Server::Server(){
 
     signal(SIGINT,close_me); // gestion du CTRL + C ==> save db 
-    signal(SIGPIPE, error_pip); // redirection du signal SIGPIPE vers SIG_IGN pour l'ignorer 
+    //signal(SIGPIPE, error_pip); // redirection du signal SIGPIPE vers SIG_IGN pour l'ignorer 
     
     if (!isServerActive()){ // pas actif
 
@@ -172,8 +172,18 @@ void Server::catchInput(char* input) {
                 break;
             
             case Constante::RUN_LEVEL:{
-                runLevel(input);
+                Parsing::Level level_to_play = runLevel(input);
                 resClient(&processId,Constante::ALL_GOOD);
+                for(auto p: _pipe_running){ // mettre l'état du jeu pour le pid à true
+                    if(processId == p->pid){
+                        p->in_game=true;
+                        break;
+                    }
+                }
+                mtx_game.unlock(); 
+                std::thread t5(&Server::launch_custom_game,this,&level_to_play); // thread du jeu
+                t5.detach();
+                break;
                 break;
             }
         }
@@ -416,7 +426,7 @@ void Server::addVote(char *input){
 
 }
 
-void Server::runLevel(char* input){
+Parsing::Level Server::runLevel(char* input){
     //LR&level&pid
     std::string input_str(input);
 
@@ -426,10 +436,15 @@ void Server::runLevel(char* input){
 
     std::string level = input_str.substr(0,input_str.rfind(Constante::DELIMITEUR));
 
+    std::string pid = input_str.substr(input_str.rfind(Constante::DELIMITEUR)+1);
+
+    std::cout << "PID = "<<pid<<std::endl;
     std::cout << "level reçu =  "<<level<<std::endl;
     Parsing::Level level_to_play = Parsing::level_from_str(level);
+    sprintf(level_to_play.pid, "%s", pid.c_str());
     // TODO RUN LEVEL
     //CurrentGame level_to_run = CurrentGame(level_to_play, nb_player);
+    return level_to_play;
 }
 
 
@@ -743,6 +758,66 @@ void Server::close_me(int sig){
 }// handle CTRL + C signal ==> save db
 
 
+
+void Server::launch_custom_game(Parsing::Level* level_sett){
+    char input_pipe[Constante::CHAR_SIZE],send_response_pipe[Constante::CHAR_SIZE];
+    bool gameOn=true;int inp[11];
+    
+    // mise en place des pipes
+    sprintf(input_pipe,"%s%s%s",Constante::PIPE_PATH,Constante::BASE_INPUT_PIPE,level_sett->pid);
+    sprintf(send_response_pipe,"%s%s%s",Constante::PIPE_PATH,Constante::BASE_GAME_PIPE,level_sett->pid);
+    
+    CurrentGame game{*level_sett};
+    std::string resp;
+
+    while(gameOn){
+        int state = read_game_input(input_pipe, inp);  
+        if(state == Constante::ERROR_PIPE_GAME || state == Constante::CLIENT_LEAVE_GAME){
+            // Le client est parti ou alors le pipe a été supprimer 
+            std::cout << level_sett->pid << " A LA PROCHAINE "<<std::endl;
+            return;
+        }
+        resp = game.run_server(inp, level_sett->player, level_sett->enemy_list,level_sett->obs_list);                                                        //  le jeu du server
+        if(resp == Constante::GAME_END){  // if game over
+            gameOn=false;
+        }
+        resClient(send_response_pipe,&resp);
+        usleep(10000); // 10 ms
+
+        #ifdef TEST_GAME  // test l'affichage jeu/client 
+            interface_game.parse_instruction(resp);
+            refresh();
+        #endif
+    }
+
+    std::string the_score = std::to_string(game.getScore()); // envoie du score au client une dernier fois
+    resClient(send_response_pipe,&the_score);
+
+    #ifdef TEST_GAME
+        interface_game.close();
+    #endif
+
+    //sauvegarde du score
+   save_score(level_sett->pseudo_hote,game.getScore());
+   if (level_sett->nb_player == 2){
+       save_score(level_sett->pseudo_other,game.getScore());
+   }
+
+    std::cout << " score : " << game.getScore() << std::endl;
+
+    // mettre l'etat du jeu pour ce client a false pour qu'il puisse lancer un autre jeu
+    mtx_game.lock();
+    for(size_t i =0; i < _pipe_running.size(); i++){
+        if(strcmp(_pipe_running.at(i)->pid,level_sett->pid)== 0){
+            // mettre le jeu a false pour lancer une autre partie
+           _pipe_running.at(i)->in_game = false; break; 
+        }
+    }
+    
+    mtx_game.unlock();
+
+
+}
 
 
 

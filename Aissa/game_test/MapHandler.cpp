@@ -296,16 +296,14 @@ void MapHandler::update_server(MapObject::type typ,int t){
 
         }
     }
-    if(!customGame)
-        add_object_server(typ,t);
-    
+    add_object_server(typ,t);
 }
 
 void MapHandler::add_object_server(MapObject::type typ,int t){
     // spawn a new object
     if(typ == MapObject::star )
         stars_set.push_back(new Star(rand() % field_bounds.width(), 0));
-    if(typ == MapObject::obstacle && t % 200 == 0 && !changingLevel && !bossSpawned){
+    else if(typ == MapObject::obstacle && t % 200 == 0 && !changingLevel && !bossSpawned){
         int x = rand() % (field_bounds.width()-1)+1;
         obstacles_set.push_back(new Obstacle(x, 0, obstacleStartDamage,obstacleStartHp));
     }
@@ -324,32 +322,25 @@ void MapHandler::add_object_server(MapObject::type typ,int t){
     }
 
 }
-void MapHandler::add_object_server(MapObject::type typ,int t,std::vector<Enemy_template> *enemy_list,std::vector<Obstacle_template> *obs_list){
+void MapHandler::add_object_server(MapObject::type typ,int t,int x){
     // spawn a new object
-    /*if(typ == MapObject::star )
+    if(typ == MapObject::star )
         stars_set.push_back(new Star(rand() % field_bounds.width(), 0));
-        */
-    for (size_t i = 0; i < obs_list->size(); i++)
-    {
-        if((obs_list->at(i).tick *100)== t)
-            obstacles_set.push_back(new Obstacle(obs_list->at(i).x, 0, obs_list->at(i).damage,obs_list->at(i).hp));
-
+    else if(typ == MapObject::obstacle && t % 200 == 0 && !changingLevel && !bossSpawned){
+        obstacles_set.push_back(new Obstacle(x, 0, obstacleStartDamage,obstacleStartHp));
     }
-    
-    for (size_t j = 0; j < enemy_list->size(); j++)
-    {
-        if((enemy_list->at(j).tick *100)== t){
-            int enemy_tick = t + rand() % 100;
-            enemy_ships_set.push_back(new EnemyShip(enemy_list->at(j).x, 0, {{10 - 1, 5},{3,2}}, '%', enemy_list->at(j).hp,enemy_tick, enemy_list->at(j).damage));
-            enemyCount++;
-        }
-        
+    else if (typ == MapObject::enemyship && t%300==0 && !changingLevel&&!bossSpawned) {
+        int enemy_tick = t + rand() % 100;
+        enemy_ships_set.push_back(new EnemyShip(x, 0, {{10 - 1, 5},{3,2}}, '%', enemyStartHp,enemy_tick, enemyStartProjectileDamage));
+        enemyCount++;
+          if(enemyCount >= enemyLimit){
+              changingLevel = true;
+          }
     }
-    
-    
-        
-    
-    
+    else if (typ==MapObject::boss && (currentLevel==3) && !bossSpawned){
+        boss_set.push_back(new Boss(0,0,{{0, 0},{18,6}},'&',bossStartHp,t + 100, enemyStartProjectileDamage));
+        bossSpawned=true;
+    }
 
 }
 

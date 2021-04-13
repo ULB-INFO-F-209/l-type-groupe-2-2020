@@ -937,7 +937,12 @@ void MenuGui::launch_level(std::string my_level, bool from_lead){
 
         }
         else{
-            //TODO :LAUNCH GAME 
+            std::cout << "voila le level = " << my_level<< std::endl;
+            _client.playLevel(my_level);
+            this->hide();
+            launch_game();
+            this->show();
+            std::cout << "salut bg je suis de retoure pour te jouer de mauvais tour";
         }
 
 
@@ -1130,12 +1135,12 @@ void MenuGui::level_editor(Parsing::Level my_level){
             save_level(my_level);
         });
     connect(enemy_button, &QPushButton::clicked, this,[this, my_level](){
-            Parsing::Enemy newE{}; Parsing::Level level_copy = my_level; //probleme de constance
+            Parsing::Enemy_template newE{}; Parsing::Level level_copy = my_level; //probleme de constance
             level_copy.enemy_list.push_back(newE);
             custom_enemy(level_copy, level_copy.enemy_list.size()-1);
         });
     connect(obstacle_button, &QPushButton::clicked, this,[this, my_level](){
-            Parsing::Obstacle newO{}; Parsing::Level level_copy = my_level; //probleme de constance
+            Parsing::Obstacle_template newO{}; Parsing::Level level_copy = my_level; //probleme de constance
             level_copy.obs_list.push_back(newO);
             custom_obstacle(level_copy, level_copy.obs_list.size()-1);
         });
@@ -1206,7 +1211,7 @@ void MenuGui::save_level(Parsing::Level my_level){
     connect(ok, &QPushButton::clicked, this, [this, Dialog, my_level, name_edit](){
         std::string level_name = (name_edit->text()).toUtf8().constData();
         Parsing::Level copy_level = my_level;
-        std::string string_level = level_to_str(&copy_level, level_name);
+        std::string string_level = Parsing::level_to_str(&copy_level, level_name);
         
         _client.createLevel(string_level.c_str());
         Dialog->hide();

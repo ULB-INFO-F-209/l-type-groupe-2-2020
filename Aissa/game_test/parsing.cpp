@@ -40,7 +40,7 @@ std::string Parsing::level_to_str(Level *my_level, const std::string name){
 	//player info
 	Player p = (my_level->player);
 	buffer += std::to_string(p.skin) +"_" + std::to_string(p.skin2) + "_" + std::to_string(p.hp) + "_" + std::to_string(p.damage);
-
+	buffer += "_" + std::to_string(p.ally_shot) +"_" +std::to_string(p.drop_rate);
 	//enemy
 	buffer += "|";
 	for(auto e : my_level->enemy_list){
@@ -178,7 +178,7 @@ void Parsing::create_game_from_str(char *buffer, Game_settings * settings){
 	index = cpp_str_buffer.find(delimiteur_score);
 	option = cpp_str_buffer.substr(0,index);
 	cpp_str_buffer = cpp_str_buffer.substr(index+1,cpp_str_buffer.size());
-	settings->diff = !strcmp(option.c_str(), "easy")? difficulty::easy: !strcmp(option.c_str(), "medium")? difficulty::medium: difficulty::hard;
+	settings->diff = !strcmp(option.c_str(), "easy")? easy: !strcmp(option.c_str(), "medium")? medium: hard;
 	
 	//pid
 	strcpy(settings->pid,cpp_str_buffer.c_str());
@@ -220,13 +220,22 @@ Parsing::Level Parsing::level_from_str(std::string buffer){
 	my_level.player.damage = std::stoi(player_zone.substr(0,idx)); //damage
 	player_zone = player_zone.substr(idx+1, player_zone.size());
 
+	idx = player_zone.find(delim_attr);
+	my_level.player.ally_shot = std::stoi(player_zone.substr(0,idx)); //damage
+	player_zone = player_zone.substr(idx+1, player_zone.size());
+
+	idx = player_zone.find(delim_attr);
+	my_level.player.drop_rate = std::stoi(player_zone.substr(0,idx)); //damage
+	player_zone = player_zone.substr(idx+1, player_zone.size());
+
+
 	//enemy zone
 	idx = buffer.find(delim_zone);
 	std::string enemy_zone = buffer.substr(0,idx);
 	buffer = buffer.substr(idx+1, buffer.size());
 
 	while(enemy_zone.size() > 1){
-		Enemy_template e;
+		Enemy e;
 
 		idx = enemy_zone.find(delim_obj);
 		std::string object = enemy_zone.substr(0,idx);
@@ -270,7 +279,7 @@ Parsing::Level Parsing::level_from_str(std::string buffer){
 	buffer = buffer.substr(idx+1, buffer.size());
 
 	while(obs_zone.size() > 1){
-		Obstacle_template e;
+		Obstacle e;
 
 		idx = obs_zone.find(delim_obj);
 		std::string object = obs_zone.substr(0,idx);
