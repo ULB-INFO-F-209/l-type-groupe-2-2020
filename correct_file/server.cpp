@@ -182,7 +182,7 @@ void Server::catchInput(char* input) {
                     }
                 }
                 mtx_game.unlock(); 
-
+                sleep(3);
                 std::thread t5(&Server::launch_custom_game,this,&level_to_play); // thread du jeu
                 t5.detach();
                 break;
@@ -405,6 +405,7 @@ std::string Server::oneLevel(char *input){
     pseudo_str = input_str.substr(0,idx);
     
     auto res_to_parse = _db.checkALevel(pseudo_str,level_name_str);
+    std::cout<<"RESTOPARSE: "<<res_to_parse.level<<std::endl;
     return res_to_parse.level;
 }
 
