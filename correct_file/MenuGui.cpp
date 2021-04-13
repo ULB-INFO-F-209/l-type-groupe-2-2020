@@ -1035,7 +1035,7 @@ void MenuGui::save_level(Parsing::Level my_level){
     connect(ok, &QPushButton::clicked, this, [this, Dialog, my_level, name_edit](){
         std::string level_name = (name_edit->text()).toUtf8().constData();
         Parsing::Level copy_level = my_level;
-        std::string string_level = level_to_str(&copy_level, level_name);
+        std::string string_level = Parsing::level_to_str(&copy_level, level_name);
         
         _client.createLevel(string_level.c_str());
         Dialog->hide();

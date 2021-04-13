@@ -178,7 +178,7 @@ void Parsing::create_game_from_str(char *buffer, Game_settings * settings){
 	index = cpp_str_buffer.find(delimiteur_score);
 	option = cpp_str_buffer.substr(0,index);
 	cpp_str_buffer = cpp_str_buffer.substr(index+1,cpp_str_buffer.size());
-	settings->diff = !strcmp(option.c_str(), "easy")? easy: !strcmp(option.c_str(), "medium")? medium: hard;
+	settings->diff = !strcmp(option.c_str(), "easy")? difficulty::easy: !strcmp(option.c_str(), "medium")? difficulty::medium: difficulty::hard;
 	
 	//pid
 	strcpy(settings->pid,cpp_str_buffer.c_str());

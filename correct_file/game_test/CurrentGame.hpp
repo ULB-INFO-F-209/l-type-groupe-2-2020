@@ -15,6 +15,7 @@
 #include "parsing.hpp"
 
 
+
 class CurrentGame {
     // lance et gère la partie sur base des inputs du serveur
     rect game_area; // cadre comprenant l'espace de jeu
@@ -58,6 +59,7 @@ public:
     CurrentGame(Parsing::Game_settings);
     CurrentGame(Parsing::Level);
     std::string run_server(int *move_to_exec);
+    std::string run_server(int *move_to_exec,Parsing::Player player,std::vector<Parsing::Enemy_template> enemy_list,std::vector<Parsing::Obstacle_template> obs_list);
 };
 
 

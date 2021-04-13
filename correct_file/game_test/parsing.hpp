@@ -12,17 +12,19 @@
 #include <unistd.h>
 #include "database/database.hpp"
 #include "MapHandler.hpp"
+#include "Template.hpp"
 
 //enum difficulty{easy, medium, hard};
 
 namespace Parsing{
 	using Profile=Profile;
 	using Creator=DatabaseLevel;
-	struct Game_settings;
-	struct Enemy_template;
-	struct Obstacle_template;
-	struct Player;
-	struct Level;
+	using Game_settings=Template::Game_settings;
+	using Enemy_template=Template::Enemy_template;
+	using Obstacle_template=Template::Obstacle_template;
+	using Player=Template::Player_template;
+	using Level=Template::Level;
+	using difficulty=Template::difficulty;
 
 	//encodage
 	void profile_list_to_str(char *buffer,std::vector<Profile> *prof);
@@ -43,71 +45,5 @@ namespace Parsing{
 	Creator creator_from_str(std::string);
 }
 
-struct Parsing::Game_settings
-{
-	int nb_player = 1;
-	char pseudo_hote[20];
-	char pseudo_other[20] = {"Null"};
-	int drop_rate=100;
-	bool ally_shot=false;
-	int nb_lives=1;
-	char difficulty_str[20] = "easy";
-	difficulty diff{easy};
-    char pid[10];
 
-};
-struct Parsing::Enemy_template{
-	int x = 0;
-	int tick = 0;
-	int skin = 0; // skin 1, skin2, skin3
-	int hp = 70;
-	int damage=30;
-	int bonus = 0;
-	int speed = 2; //SLUG, TURTLE, HUMAN, HORSE,CHEETAH
-
-	void get_values(int *res){
-		res[0] = x;
-		res[1] = hp;
-		res[2] = tick;
-		res[3] = damage;
-	}
-};
-
-struct Parsing::Obstacle_template{
-	int x = 0; 
-	int tick = 0;
-	int skin = 0; //planete, soleil, lune, etoiles
-	int hp = 70;
-	int damage=30;
-	int speed = 2; //SLUG, TURTLE, HUMAN, HORSE,CHEETAH
-	
-
-	void get_values(int *res){
-		res[0] = x;
-		res[1] = hp;
-		res[2] = tick;
-		res[3] = damage;
-	}
-};
-
-struct Parsing::Player{
-	int skin = 0; //planete, soleil, lune, etoiles
-	int skin2 = 0;
-	int hp = 70;
-	int damage=30;
-	int speed = 2; //SLUG, TURTLE, HUMAN, HORSE,CHEETAHs
-	bool ally_shot=true;
-	int drop_rate=100;
-};
-
-struct Parsing::Level{
-	Player player;
-
-	//Enemy session
-	std::vector<Enemy_template> enemy_list{};
-
-	//obstacle session
-	std::vector<Obstacle_template> obs_list{};
-
-};
 #endif

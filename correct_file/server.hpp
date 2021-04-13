@@ -88,13 +88,14 @@ private:
     std::string oneLevel(char*);
     void addVote(char *);
     void addLevel(char *);
-    void runLevel(char*);
+    Parsing::Level initLevel(char*);
 
     //server utils
     static void launch_db_save();
     void save_score(char* pseudo1, int score);
     void get_game_settings(char* input, Parsing::Game_settings* game_sett);
     void launch_game(Parsing::Game_settings* sett_game);
+    void launch_custom_game(Parsing::Level* level_sett);
     void client_exit(std::string* pid);
     void kill_process(const char* pipe);
     

@@ -1,6 +1,6 @@
 /**
  * TODO:
- * 
+ *  demander pout surcharge launch_game (thread)
  * liste à dire:
  * ajouter drop rate général
  * supprimer vitesse ennemis, remplacer par vitesse générale
@@ -25,7 +25,7 @@ CurrentGame::CurrentGame(Parsing::Game_settings game_sett):twoPlayers(game_sett.
         map.setBounds(game_area);
         
     }
-CurrentGame::CurrentGame(Parsing::Level level_sett):twoPlayers(false),friendlyFire(level_sett.player.ally_shot), dropRate(80), dif(easy),screen_area( {0, 0}, {80, 24}),game_area( {0, 0}, {78, 16}),map(dropRate,dif) {
+CurrentGame::CurrentGame(Parsing::Level level_sett):twoPlayers(false),friendlyFire(level_sett.player.ally_shot), dropRate(80), dif(difficulty::easy),screen_area( {0, 0}, {80, 24}),game_area( {0, 0}, {78, 16}),map(dropRate,dif) {
     playership1 = new PlayerShip(10, 5, { {9, 5 }, { 3, 2 } }, '0',level_sett.player.hp,0,100,0);
     player1 = new Player(3); // à modif
     listPlayer.push_back(player1);
@@ -243,6 +243,34 @@ std::string CurrentGame::run_server(int *move_to_exec){
 
     return to_ret;
 };
+
+std::string CurrentGame::run_server(int *move_to_exec,Parsing::Player player,std::vector<Parsing::Enemy_template> enemy_list,std::vector<Parsing::Obstacle_template> obs_list){
+    execInput(move_to_exec, playership1->getPos().x, playership1->getPos().y, true);
+    if(twoPlayers){
+        execInput(move_to_exec, playership2->getPos().x, playership2->getPos().y, false);
+    }
+    map.setCustomGame(true);
+    // mise à jour des positions des objets
+    if(tick % 7 == 0)
+        map.update_server(MapObject::projectile, tick);
+    if(tick > 100 && tick %50  == 0)
+        map.update_server(MapObject::obstacle, tick);
+    if (tick > 100 && tick %150 ==0)
+        map.update_server(MapObject::enemyship, tick);
+    if(tick %50  == 0) {
+        map.update_server(MapObject::bonus, tick);
+    }
+    if(map.getCurrentLevel()==3 && tick%10==0 && !map.getChangingLevel()){
+        map.update_server(MapObject::boss,tick);
+    }
+
+    if(tick%100==0)
+        map.add_object_server(MapObject::enemyship,tick,&enemy_list,&obs_list);
+
+
+
+}
+
 
 std::string CurrentGame::getPlayerState(std::string state){
     // state                                /*E_1_HP1_Vies_Score_bonus_level_tick*/
