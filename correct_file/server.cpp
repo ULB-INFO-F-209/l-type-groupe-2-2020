@@ -182,7 +182,7 @@ void Server::catchInput(char* input) {
                     }
                 }
                 mtx_game.unlock(); 
-
+                sleep(3);
                 std::thread t5(&Server::launch_custom_game,this,&level_to_play); // thread du jeu
                 t5.detach();
                 break;
@@ -405,6 +405,7 @@ std::string Server::oneLevel(char *input){
     pseudo_str = input_str.substr(0,idx);
     
     auto res_to_parse = _db.checkALevel(pseudo_str,level_name_str);
+    std::cout<<"RESTOPARSE: "<<res_to_parse.level<<std::endl;
     return res_to_parse.level;
 }
 
@@ -694,7 +695,7 @@ void Server::launch_custom_game(Parsing::Level* level_sett){
     
     CurrentGame game{*level_sett};
     std::string resp;
-/*
+
     while(gameOn){
         int state = read_game_input(input_pipe, inp);  
         if(state == Constante::ERROR_PIPE_GAME || state == Constante::CLIENT_LEAVE_GAME){
@@ -713,10 +714,10 @@ void Server::launch_custom_game(Parsing::Level* level_sett){
             interface_game.parse_instruction(resp);
             refresh();
         #endif
-    }*/
+    }
 
     std::string the_score = std::to_string(game.getScore()); // envoie du score au client une dernier fois
-    //resClient(send_response_pipe,&the_score);
+    resClient(send_response_pipe,&the_score);
 
     #ifdef TEST_GAME
         interface_game.close();
