@@ -109,7 +109,7 @@ private:
 	void print_friends();
 	void lobby();
 	void level_editor(Parsing::Level my_level);
-	void launch_game(const Parsing::Game_settings* game_option);
+	void launch_game();
 	void view_level();
 
 
@@ -129,6 +129,7 @@ private slots:
 	void custom_obstacle(Parsing::Level my_level, int idx);
 	void custom_player(Parsing::Level my_level);
 	void view_level(bool mine=true);
+	void launch_level(std::string my_level,bool from_lead=true);
 };
 
 #endif //MENU_HPP

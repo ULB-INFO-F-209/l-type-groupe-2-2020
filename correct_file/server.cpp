@@ -694,7 +694,7 @@ void Server::launch_custom_game(Parsing::Level* level_sett){
     
     CurrentGame game{*level_sett};
     std::string resp;
-/*
+
     while(gameOn){
         int state = read_game_input(input_pipe, inp);  
         if(state == Constante::ERROR_PIPE_GAME || state == Constante::CLIENT_LEAVE_GAME){
@@ -713,10 +713,10 @@ void Server::launch_custom_game(Parsing::Level* level_sett){
             interface_game.parse_instruction(resp);
             refresh();
         #endif
-    }*/
+    }
 
     std::string the_score = std::to_string(game.getScore()); // envoie du score au client une dernier fois
-    //resClient(send_response_pipe,&the_score);
+    resClient(send_response_pipe,&the_score);
 
     #ifdef TEST_GAME
         interface_game.close();
