@@ -12,7 +12,7 @@
  **/
 namespace Constante{
 
-    const size_t CHAR_SIZE = 2500;                      /** Tailles d'un message à lire sur les pipes, grand car possibilité de faire passer le classement  **/
+    const size_t CHAR_SIZE = 1000;                      /** Tailles d'un message à lire sur les pipes, grand car possibilité de faire passer le classement  **/
 
     //pipe
     const char PIPE_DE_CONNEXION[] = {"connexion"};     /** recoit les 1er connexions des clients **/

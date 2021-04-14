@@ -17,6 +17,7 @@
 #include <thread>
 
 #include "Constante.hpp"
+#include "game_test/MapHandler.hpp"
 
 class Client{
     //state
@@ -40,8 +41,8 @@ public:
     //constructor
     explicit Client();
     //Communication
-    bool signIn(const char *pseudo, const char *pswd, bool true_conn=true);
-    bool signUp(const char *pseudo, const char *pswd);
+    bool signIn(const char *pseudo,const char *pswd, bool true_conn=true);
+    bool signUp(const char *pseudo,const char *pswd);
     bool addFriend(char *pseudo);
     int delFriend(char *pseudo);
     int sendFriendRequest(char *pseudo);
@@ -51,11 +52,12 @@ public:
     void checkLeaderboard(char * res);
     void get_profile(char *res);
     std::string read_game_pipe();
-    void send_game_input(int inp);
+    void send_game_input(std::vector<int> inp);
+    void send_game_input(int& inp);
+
     void exit();
     
     //Game
-    
     int createGame(char * game_info);
     void createLevel(const char * level_info);
     std::string viewLevels();
@@ -64,7 +66,7 @@ public:
     void playLevel(std::string level);
     void voteLevel(std::string name, std::string author);
 
-    
+
     //state
     inline bool is_playing(){return _inGame;}
     inline void get_pseudo(char *res){strcpy(res, _pseudo);}
