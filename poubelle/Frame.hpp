@@ -8,6 +8,7 @@
 #include <QVariant>
 #include <QAction>
 #include <QLabel>
+#include "label.hpp"
 
 QT_BEGIN_NAMESPACE
 class QDragEnterEvent;
@@ -59,7 +60,7 @@ protected:
 	        QPoint offset;
 	        dataStream >> pixmap >> offset;
 
-	        QLabel *newIcon = new QLabel(this);
+	        ClickableLabel *newIcon = new ClickableLabel(this);
 	        newIcon->setPixmap(pixmap);
 	        newIcon->move(event->pos() - offset);
 	        newIcon->show();
@@ -76,7 +77,7 @@ protected:
 	    }
 	}
     void mousePressEvent(QMouseEvent *event) override{
-    	QLabel *child = static_cast<QLabel*>(childAt(event->pos()));
+    	ClickableLabel *child = static_cast<ClickableLabel*>(childAt(event->pos()));
     	if (!child)
         	return;
 
@@ -107,7 +108,7 @@ protected:
 	        child->show();
 	        child->setPixmap(pixmap);
 	    }
-	    }
+	}
 };
 
 #endif // FRAME_HPP

@@ -1091,7 +1091,7 @@ void MenuGui::level_editor(Parsing::Level my_level){
     title_label->setAlignment(Qt::AlignCenter);
     title_label->setAttribute(Qt::WA_TranslucentBackground);
 
-    QLabel *dragTest = new QLabel(game_zone);
+    ClickableLabel *dragTest = new ClickableLabel(game_zone);
     
     dragTest->setPixmap(QPixmap("images/custom/e1"));
     dragTest->move(10, 10);
