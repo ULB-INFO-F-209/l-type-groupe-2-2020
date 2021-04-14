@@ -20,6 +20,7 @@
 #include "Client.hpp"
 #include "screen.hpp"
 #include "game_test/parsing.hpp"
+#include "Frame.hpp"
 
 
 #include <iostream>
@@ -92,14 +93,14 @@ class MenuGui : public QMainWindow{
 
 	int button_size = 60;
 
+	//game area
 	int X_MIN = 0;
-	int X_MAX = 551-button_size; // ASK PQ ENLEVER CA !!!
+	int X_MAX = 1000-button_size; // ASK PQ ENLEVER CA !!!
 
 
 public:
 	MenuGui();
 	virtual ~MenuGui(){}
-
 	void start_session();
 private:
 	//MenuGui
@@ -107,12 +108,10 @@ private:
 	void home();
 	void main_m();
 	void print_friends();
-	void lobby();
+	void lobby(std::string my_level="0",bool from_lead=false);
 	void level_editor(Parsing::Level my_level);
 	void launch_game();
 	void view_level();
-
-
 
 private slots:
 	void connexion(bool sign_in=true);
@@ -123,7 +122,7 @@ private slots:
 	void verif_friend(QDialog*, bool adding=true);
 	void request_list(const QModelIndex &index);
 	void accept_friend();
-	void launch_game(int players, int drop_rate, int lives, std::string difficulty, bool ally_shot);
+	void launch_game(int players, int drop_rate, int lives, std::string difficulty, bool ally_shot, std::string my_level="0",bool from_lead=false);
 	void save_level(Parsing::Level my_level);
 	void custom_enemy(Parsing::Level my_level, int idx);
 	void custom_obstacle(Parsing::Level my_level, int idx);

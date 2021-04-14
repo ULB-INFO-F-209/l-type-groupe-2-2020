@@ -13,7 +13,6 @@ MenuGui::MenuGui(): QMainWindow(){
     this->resize(800, 600);
     this->setFixedSize(size());
     this->setStyleSheet(QStringLiteral("background-color:white;"));
-
 }
 
 void MenuGui::start_session(){
@@ -209,7 +208,7 @@ void MenuGui::main_m(){
     lbl->setMovie(mv);
 
     QWidget *horizontalLayoutWidget  = new QWidget(centralWidget);
-    horizontalLayoutWidget->setGeometry(QRect(80, 210, 651, 351));
+    horizontalLayoutWidget->setGeometry(QRect(80, 150, 651, 450));
 
     QVBoxLayout *HLayout  = new QVBoxLayout(horizontalLayoutWidget);
     HLayout->setContentsMargins(100, 0, 100, 0);
@@ -221,10 +220,10 @@ void MenuGui::main_m(){
     int ngame = 0, friends=1, lead=2, prof=3, level=4, logout=5;
     for (size_t i = 0; i < SIZE_MAIN_MENU; ++i){
        button[i] = new QPushButton(horizontalLayoutWidget);
-       button[i]->setMinimumSize(QSize(80, 80));
+       button[i]->setMinimumSize(QSize(400,100 ));
        icon_main[i] = QIcon(pix_main_button[i]);
        button[i]->setIcon(icon_main[i]);
-       button[i]->setIconSize(QSize(80, 80));
+       button[i]->setIconSize(QSize(400, 100));
        button[i]->setFlat(true);
        HLayout->addWidget(button[i]);
     }
@@ -233,7 +232,9 @@ void MenuGui::main_m(){
     connect(button[lead], &QPushButton::clicked, this,&MenuGui::print_leaderboard);
     connect(button[prof], &QPushButton::clicked, this, &MenuGui::print_profile);
     connect(button[logout], &QPushButton::clicked, this,&MenuGui::home);
-    connect(button[ngame], &QPushButton::clicked, this,&MenuGui::lobby);
+    connect(button[ngame], &QPushButton::clicked, this,[this](){
+        lobby();
+    });
     connect(button[level], &QPushButton::clicked, this, &MenuGui::level_menu);
 
     /****** DESIGN SECTION ****************************/
@@ -755,13 +756,13 @@ void MenuGui::verif_friend(QDialog* dialog, bool adding){
 }
 
 
-void MenuGui::lobby(){
+void MenuGui::lobby(std::string my_level, bool from_lead){
     QWidget *centralWidget =  new QWidget(this);
 
     this->setStyleSheet(QStringLiteral("background-color:white;"));
 
-    /*QWidget *gridLayoutWidget = new QWidget(centralWidget);
-    QLabel *lbl = new QLabel(centralWidget);
+    QWidget *gridLayoutWidget = new QWidget(centralWidget);
+    /*QLabel *lbl = new QLabel(centralWidget);
     QMovie *mv = new QMovie("images/background/ciel.gif");
     mv->setScaledSize(QSize(800,600));
     lbl->setGeometry(QRect(0, 0, 800, 600));
@@ -842,13 +843,20 @@ void MenuGui::lobby(){
     gridLayout->addWidget(player1Title_label, 2, 0, 1, 1);
     gridLayout->addWidget(player1Name, 2, 1, 1, 1);
     //connections
-    connect(back_button, &QPushButton::clicked, this,&MenuGui::main_m);
-    connect(play_button, &QPushButton::clicked, this,[this, players_box, lives_spin, Ally_shot_box,droprate_spin, difficulty_box](){
+    connect(back_button, &QPushButton::clicked, this,[this, my_level, from_lead](){
+        if(my_level=="0")
+            main_m();
+        else if(from_lead)
+            view_level(!from_lead);
+        else
+            view_level(from_lead);
+    });
+    connect(play_button, &QPushButton::clicked, this,[this, players_box, lives_spin, Ally_shot_box,droprate_spin, difficulty_box, my_level,from_lead](){
         int drop_rate = droprate_spin->value() , lives = lives_spin->value(); 
         int players = (players_box->currentText()).toInt();
         std::string difficulty = (difficulty_box->currentText()).toStdString();
         bool ally_shot = ((Ally_shot_box->currentText()).toStdString()).compare("Yes") == 0;
-        launch_game(players, drop_rate, lives, difficulty,ally_shot);
+        launch_game(players, drop_rate, lives, difficulty,ally_shot, my_level, from_lead);
        
     });
 
@@ -866,7 +874,8 @@ void MenuGui::lobby(){
     this->show();
 
 }
-void MenuGui::launch_level(std::string my_level, bool from_lead){
+
+/*void MenuGui::launch_level(std::string my_level, bool from_lead){
     QDialog * Dialog = new QDialog(this);
     Dialog->setModal(true);
     Dialog->resize(741, 527);
@@ -960,8 +969,9 @@ void MenuGui::launch_level(std::string my_level, bool from_lead){
     Dialog->show();
 
 }
+*/
 
-void MenuGui::launch_game(int players, int drop_rate, int lives, std::string difficulty, bool ally_shot){
+void MenuGui::launch_game(int players, int drop_rate, int lives, std::string difficulty, bool ally_shot, std::string my_level, bool from_lead){
     Parsing::Game_settings setting; char my_pseudo[Constante::SIZE_PSEUDO];
     _client.get_pseudo(my_pseudo);
     strcpy(setting.difficulty_str, difficulty.c_str());
@@ -1002,7 +1012,7 @@ void MenuGui::launch_game(int players, int drop_rate, int lives, std::string dif
 
         //connection 
         connect(buttonBox, SIGNAL(rejected()), Dialog, SLOT(reject()));
-        connect(buttonBox, &QDialogButtonBox::accepted,this, [this,buttonBox,pseudoLine,pswdLine,setting](){
+        connect(buttonBox, &QDialogButtonBox::accepted,this, [this,buttonBox,pseudoLine,pswdLine,setting,my_level](){
             Parsing::Game_settings& sett_ref = const_cast<Parsing::Game_settings&>(setting);
             
             std::string pseudo = (pseudoLine->text()).toUtf8().constData();
@@ -1016,8 +1026,13 @@ void MenuGui::launch_game(int players, int drop_rate, int lives, std::string dif
                 char game_sett_char[Constante::CHAR_SIZE];
                 strcpy(sett_ref.pseudo_hote,y_pseudo);
                 Parsing::create_game_to_str(game_sett_char,&sett_ref);
-                _client.createGame(game_sett_char);
-                launch_game();
+                if(my_level=="0")
+                    _client.createGame(game_sett_char);
+                else
+                    _client.playLevel(my_level,game_sett_char);
+                std::cout << "level a jouer = "<<my_level<<std::endl;
+                std::cout << "settings lobby  = "<<game_sett_char<<std::endl;
+                //launch_game();
                 buttonBox->rejected();
                 
             }
@@ -1030,9 +1045,14 @@ void MenuGui::launch_game(int players, int drop_rate, int lives, std::string dif
         char game_sett_char[Constante::CHAR_SIZE];
         Parsing::create_game_to_str(game_sett_char,&setting);
         std::cout << "voila le str = " << game_sett_char<< std::endl;
-        _client.createGame(game_sett_char);
+        if(my_level=="0")
+            _client.createGame(game_sett_char);
+        else
+            _client.playLevel(my_level,game_sett_char);
+        std::cout << "level a jouer = "<<my_level<<std::endl;
+        std::cout << "settings lobby  = "<<game_sett_char<<std::endl;
         this->hide();
-        launch_game();
+        //launch_game();
         this->show();
         std::cout << "salut bg je suis de retoure pour te jouer de mauvais tour";
     }
@@ -1040,47 +1060,72 @@ void MenuGui::launch_game(int players, int drop_rate, int lives, std::string dif
 
 
 void MenuGui::level_editor(Parsing::Level my_level){
-	 this->setStyleSheet(QStringLiteral("background-color:white;"));
-    //faire des boucle pour les rept de code
+
+	this->setStyleSheet(QStringLiteral("background-color:black;"));
+    this->setFixedSize(1500,800);
+
+
     QWidget *centralwidget = new QWidget(this);
-    QFrame *game_zone = new QFrame(centralwidget);
-    game_zone->setGeometry(QRect(20, 130, 551, 371));
+    Frame *game_zone = new Frame(centralwidget);
+    game_zone->setGeometry(QRect(100, 150, 1000, 480));;
     game_zone->setStyleSheet(QStringLiteral("background-color: rgb(85, 87, 83);"));
     game_zone->setFrameShape(QFrame::WinPanel);
     game_zone->setFrameShadow(QFrame::Plain);
     game_zone->setLineWidth(3);
+    
+    QLabel *lbl = new QLabel(game_zone);
+    lbl->setGeometry(QRect(0, 0, 1000, 480));
+    QMovie *mv = new QMovie("images/background/ciel.gif");
+    mv->setScaledSize(lbl->size());
+    mv->start();
+    lbl->setAttribute(Qt::WA_TranslucentBackground);
+    lbl->setMovie(mv);
 
-    QLabel *title_label = new QLabel("LEVEL EDITOR",centralwidget);
-    title_label->setGeometry(QRect(120, 30, 571, 81));
-    title_label->setFrameShape(QFrame::WinPanel);
+    QLabel *title_label = new QLabel(centralwidget);
+    title_label->setGeometry(QRect(400, 10, 621, 81));
+    QPixmap pix_title("images/titles/levelEditor");
+    pix_title = pix_title.scaled(title_label->size(),Qt::KeepAspectRatio);
+    title_label->setPixmap( pix_title);
     title_label->setAlignment(Qt::AlignCenter);
+    title_label->setAttribute(Qt::WA_TranslucentBackground);
+
+    QLabel *dragTest = new QLabel(game_zone);
+    
+    dragTest->setPixmap(QPixmap("images/custom/e1"));
+    dragTest->move(10, 10);
+    dragTest->setAttribute(Qt::WA_DeleteOnClose);
 
     QWidget *verticalLayoutWidget = new QWidget(centralwidget);
-    verticalLayoutWidget->setGeometry(QRect(580, 130, 170, 361));
+    verticalLayoutWidget->setGeometry(QRect(1260, 150, 160, 591));
     QVBoxLayout *verticalLayout = new QVBoxLayout(verticalLayoutWidget);
     verticalLayout->setContentsMargins(10, 0, 10, 0);
-    QPushButton *enemy_button = new QPushButton("Enemy", verticalLayoutWidget);
-    enemy_button->setMinimumSize(QSize(150, 45));
-    enemy_button->setMaximumSize(QSize(150, 45));
-    QPushButton *obstacle_button = new QPushButton("Obstacle",verticalLayoutWidget);
-    obstacle_button->setMinimumSize(QSize(150, 45));
-    obstacle_button->setMaximumSize(QSize(150, 45));
-    QPushButton *save = new QPushButton("Save",verticalLayoutWidget);
-    save->setMinimumSize(QSize(150, 45));
-    save->setMaximumSize(QSize(150, 45));
-    QPushButton *cancel = new QPushButton("Cancel",verticalLayoutWidget);
-    cancel->setMinimumSize(QSize(150, 45));
-    cancel->setMaximumSize(QSize(150, 45));
+
+    int enemy=0, obs=1, player=2, save=3, cancel =4;
+    QPixmap pix[] = {QPixmap("images/custom/e1"),QPixmap("images/custom/o2"),QPixmap("images/custom/p1"),QPixmap("images/custom/save"),QPixmap("images/custom/cancel")};
+    QIcon icon[5];
+    QPushButton * button[5];
+    for (int i = 0; i < 5; ++i){
+        icon[i] = QIcon(pix[i]);
+        button[i] = new QPushButton(verticalLayoutWidget);
+        button[i]->setMinimumSize(QSize(100, 100));
+        button[i]->setMaximumSize(QSize(100, 100));
+        button[i]->setIcon(icon[i]);
+        button[i]->setIconSize(QSize(100, 100));
+        button[i]->setFlat(true);
+        verticalLayout->addWidget(button[i]);
+    }
     QWidget *horizontalLayoutWidget = new QWidget(centralwidget);
-    horizontalLayoutWidget->setGeometry(QRect(20, 515, 771, 81));
+    horizontalLayoutWidget->setGeometry(QRect(10, 649, 1231, 91));
     QHBoxLayout *horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
     horizontalLayout->setContentsMargins(0, 0, 0, 0);
     QLabel *tick_label = new QLabel("Tick : ",horizontalLayoutWidget);
     tick_label->setMinimumSize(QSize(80, 0));
-    tick_label->setFrameShape(QFrame::WinPanel);
-    tick_label->setLineWidth(3);
+    //tick_label->setFrameShape(QFrame::WinPanel);
+    //tick_label->setLineWidth(3);
     tick_label->setTextFormat(Qt::RichText);
     tick_label->setAlignment(Qt::AlignCenter);
+    tick_label->setStyleSheet("QLabel { background-color : black; color : white; }");
+    tick_label->setAttribute(Qt::WA_TranslucentBackground);
     QSlider *tick_slider = new QSlider(horizontalLayoutWidget);
     tick_slider->setMaximum(20);
     tick_slider->setPageStep(1);
@@ -1090,21 +1135,14 @@ void MenuGui::level_editor(Parsing::Level my_level){
     tick_slider->setMaximum(3000);
     tick_slider->setSingleStep(150);
     tick_slider->setPageStep(300);
+    tick_slider->setStyleSheet("color: black; background-color: white");
+    tick_slider->setAttribute(Qt::WA_TranslucentBackground);
     QLCDNumber *tick_lcd = new QLCDNumber(horizontalLayoutWidget);
     tick_lcd->setFrameShape(QFrame::WinPanel);
     tick_lcd->setFrameShadow(QFrame::Plain);
     tick_lcd->setLineWidth(3);
     tick_lcd->setDigitCount(4);
-
-    QPushButton *player_button = new QPushButton("Player",verticalLayoutWidget);
-    player_button->setMinimumSize(QSize(150, 45));
-    player_button->setMaximumSize(QSize(150, 45));
-
-    verticalLayout->addWidget(enemy_button);
-    verticalLayout->addWidget(obstacle_button);
-    verticalLayout->addWidget(player_button);
-    verticalLayout->addWidget(save);
-    verticalLayout->addWidget(cancel);
+    tick_lcd->setStyleSheet("color: black; background-color: white");
 
     horizontalLayout->addWidget(tick_label);
     horizontalLayout->addWidget(tick_slider);
@@ -1132,21 +1170,24 @@ void MenuGui::level_editor(Parsing::Level my_level){
     }
 
     //connect section
-    connect(cancel, &QPushButton::clicked, this,&MenuGui::level_menu);
-    connect(save, &QPushButton::clicked, this,[this, my_level](){
+    connect(button[cancel], &QPushButton::clicked, this,[this](){
+        this->setFixedSize(800,600);
+        level_menu();
+    });
+    connect(button[save], &QPushButton::clicked, this,[this, my_level](){
             save_level(my_level);
         });
-    connect(enemy_button, &QPushButton::clicked, this,[this, my_level](){
+    connect(button[enemy], &QPushButton::clicked, this,[this, my_level](){
             Parsing::Enemy_template newE{}; Parsing::Level level_copy = my_level; //probleme de constance
             level_copy.enemy_list.push_back(newE);
             custom_enemy(level_copy, level_copy.enemy_list.size()-1);
         });
-    connect(obstacle_button, &QPushButton::clicked, this,[this, my_level](){
+    connect(button[obs], &QPushButton::clicked, this,[this, my_level](){
             Parsing::Obstacle_template newO{}; Parsing::Level level_copy = my_level; //probleme de constance
             level_copy.obs_list.push_back(newO);
             custom_obstacle(level_copy, level_copy.obs_list.size()-1);
         });
-    connect(player_button, &QPushButton::clicked, this,[this, my_level](){
+    connect(button[player], &QPushButton::clicked, this,[this, my_level](){
             Parsing::Level level_copy = my_level; //probleme de constance
             custom_player(level_copy);
         });
@@ -1217,6 +1258,7 @@ void MenuGui::save_level(Parsing::Level my_level){
         
         _client.createLevel(string_level.c_str());
         Dialog->hide();
+        this->setFixedSize(800,600);
         level_menu();
     });
     connect(cancel, &QPushButton::clicked, this, [this, Dialog](){
@@ -1264,27 +1306,12 @@ void MenuGui::custom_enemy(Parsing::Level my_level, int idx){
         spin_box[i]->setValue(spin_value[i]);
         formLayout->setWidget(i, QFormLayout::FieldRole, spin_box[i]);
     }
-    std::string box_value[] = {"SLUG", "TURTLE", "HUMAN", "HORSE", "CHEETAH"};
     spin_box[position]->setMaximum(X_MAX);
     spin_box[position]->setValue(spin_value[position]);
     spin_box[tick]->setMaximum(3000);
     spin_box[tick]->setSingleStep(150);
     spin_box[tick]->setValue(spin_value[tick]);
     spin_box[tick]->findChild<QLineEdit*>()->setReadOnly(true);
-    QComboBox *speed_box = new QComboBox(formLayoutWidget);
-    speed_box->setMinimumSize(QSize(100, 45));
-    speed_box->setMaximumSize(QSize(100, 45));
-    formLayout->setWidget(4, QFormLayout::FieldRole, speed_box);
-    speed_box->clear();
-    QLabel *speed_label = new QLabel("SPEED :");
-    formLayout->setWidget(4, QFormLayout::LabelRole, speed_label );
-    speed_label->setMinimumSize(QSize(100, 45));
-    speed_label->setMaximumSize(QSize(100, 45));
-    speed_label->setAlignment(Qt::AlignCenter);
-    for(auto val :box_value){
-        speed_box->addItem(QString::fromStdString(val));
-    }
-    speed_box->setCurrentIndex(my_level.enemy_list[idx].speed);
 
     /*************BUTTON_ZONE********************/
     QWidget *horizontalLayoutWidget = new QWidget(Dialog);
@@ -1355,9 +1382,8 @@ void MenuGui::custom_enemy(Parsing::Level my_level, int idx){
     }
 
     /***************CONNECTION********************/
-    connect(button[ok], &QPushButton::clicked, this, [this, my_level,Dialog, spin_box, idx, bonus, skin,speed_box](){
+    connect(button[ok], &QPushButton::clicked, this, [this, my_level,Dialog, spin_box, idx, bonus, skin](){
         Parsing::Level copy_level = my_level;
-        copy_level.enemy_list[idx].speed = speed_box->currentIndex();
         copy_level.enemy_list[idx].x = spin_box[0]->value();
         copy_level.enemy_list[idx].hp = spin_box[1]->value();
         copy_level.enemy_list[idx].tick = spin_box[2]->value();
@@ -1420,27 +1446,12 @@ void MenuGui::custom_obstacle(Parsing::Level my_level, int idx){
         spin_box[i]->setValue(spin_value[i]);
         formLayout->setWidget(i, QFormLayout::FieldRole, spin_box[i]);
     }
-    std::string box_value[] = {"SLUG", "TURTLE", "HUMAN", "HORSE", "CHEETAH"};
     spin_box[position]->setMaximum(X_MAX);
     spin_box[position]->setValue(spin_value[position]);
     spin_box[tick]->setMaximum(3000);
     spin_box[tick]->setSingleStep(150);
     spin_box[tick]->setValue(spin_value[tick]);
     spin_box[tick]->findChild<QLineEdit*>()->setReadOnly(true);
-    QComboBox *speed_box = new QComboBox(formLayoutWidget);
-    speed_box->setMinimumSize(QSize(100, 45));
-    speed_box->setMaximumSize(QSize(100, 45));
-    formLayout->setWidget(4, QFormLayout::FieldRole, speed_box);
-    speed_box->clear();
-    QLabel *speed_label = new QLabel("SPEED :");
-    formLayout->setWidget(4, QFormLayout::LabelRole, speed_label );
-    speed_label->setMinimumSize(QSize(100, 45));
-    speed_label->setMaximumSize(QSize(100, 45));
-    speed_label->setAlignment(Qt::AlignCenter);
-    for(auto val :box_value){
-        speed_box->addItem(QString::fromStdString(val));
-    }
-    speed_box->setCurrentIndex(my_level.obs_list[idx].speed);
 
     /*************BUTTON_ZONE********************/
     QWidget *horizontalLayoutWidget = new QWidget(Dialog);
@@ -1487,9 +1498,8 @@ void MenuGui::custom_obstacle(Parsing::Level my_level, int idx){
     skin_label->setLineWidth(3);
 
     /***************CONNECTION********************/
-    connect(button[ok], &QPushButton::clicked, this, [this, my_level,Dialog, spin_box, idx,skin,speed_box](){
+    connect(button[ok], &QPushButton::clicked, this, [this, my_level,Dialog, spin_box, idx,skin](){
         Parsing::Level copy_level = my_level;
-        copy_level.obs_list[idx].speed = speed_box->currentIndex();
         copy_level.obs_list[idx].x = spin_box[0]->value();
         copy_level.obs_list[idx].hp = spin_box[1]->value();
         copy_level.obs_list[idx].tick = spin_box[2]->value();
@@ -1530,11 +1540,11 @@ void MenuGui::custom_player(Parsing::Level my_level){
     formLayoutWidget->setGeometry(QRect(590, 160, 258, 275));
     QFormLayout *formLayout = new QFormLayout(formLayoutWidget);
     int hp=0, damage=1, drop=2; 
-    std::string legende[] = {"HP :","DAMAGE :","DROP RATE :"};
-    QLabel *label[3];
-    int spin_value[3] = {my_level.player.hp, my_level.player.damage, my_level.player.drop_rate};
-    QSpinBox * spin_box[3];
-    for (int i = 0; i < 3; ++i){
+    std::string legende[] = {"HP :","DAMAGE :"};
+    QLabel *label[2];
+    int spin_value[2] = {my_level.player.hp, my_level.player.damage};
+    QSpinBox * spin_box[2];
+    for (int i = 0; i < 2; ++i){
         //legende
         label[i] = new QLabel(legende[i].c_str(), formLayoutWidget);
         formLayout->setWidget(i, QFormLayout::LabelRole, label[i] );
@@ -1551,16 +1561,21 @@ void MenuGui::custom_player(Parsing::Level my_level){
         formLayout->setWidget(i, QFormLayout::FieldRole, spin_box[i]);
     }
 
-    QComboBox *ally_box = new QComboBox(formLayoutWidget);
-    ally_box->setMinimumSize(QSize(100, 45));
-    ally_box->setMaximumSize(QSize(100, 45));
-    formLayout->setWidget(3, QFormLayout::FieldRole, ally_box);
-    QLabel *ally_label = new QLabel("ALLY SHOT :");
-    formLayout->setWidget(3, QFormLayout::LabelRole, ally_label );
-    ally_box->clear();
-    ally_box->addItem("False");
-    ally_box->addItem("True");
-    ally_box->setCurrentIndex(my_level.player.ally_shot);
+    QComboBox *speed_box = new QComboBox(formLayoutWidget);
+    speed_box->setMinimumSize(QSize(100, 45));
+    speed_box->setMaximumSize(QSize(100, 45));
+    formLayout->setWidget(3, QFormLayout::FieldRole, speed_box);
+    speed_box->clear();
+    QLabel *speed_label = new QLabel("SPEED :");
+    formLayout->setWidget(3, QFormLayout::LabelRole, speed_label );
+    speed_label->setMinimumSize(QSize(100, 45));
+    speed_label->setMaximumSize(QSize(100, 45));
+    speed_label->setAlignment(Qt::AlignCenter);
+    std::string box_value[] = {"SLUG", "TURTLE", "HUMAN", "HORSE","CHEETAHS"};
+    for(auto val :box_value){
+        speed_box->addItem(QString::fromStdString(val));
+    }
+    speed_box->setCurrentIndex(my_level.player.speed);
     /*************BUTTON_ZONE********************/
     QWidget *horizontalLayoutWidget = new QWidget(Dialog);
     horizontalLayoutWidget->setGeometry(QRect(40, 540, 771, 80));
@@ -1629,12 +1644,11 @@ void MenuGui::custom_player(Parsing::Level my_level){
     }
 
     /***************CONNECTION********************/
-    connect(button[ok], &QPushButton::clicked, this, [this, my_level,Dialog, spin_box, skin_player1, skin_player2, ally_box](){
+    connect(button[ok], &QPushButton::clicked, this, [this, my_level,Dialog, spin_box, skin_player1, skin_player2, speed_box](){
         Parsing::Level copy_level = my_level;
-        copy_level.player.ally_shot = ally_box->currentIndex();
+        copy_level.player.speed = speed_box->currentIndex();
         copy_level.player.hp = spin_box[0]->value();
         copy_level.player.damage = spin_box[1]->value();
-        copy_level.player.drop_rate = spin_box[2]->value();
         for (int i = 0; i < 3; ++i){
             if(skin_player1[i]->isChecked())
                 copy_level.player.skin = i;
@@ -1708,7 +1722,7 @@ void MenuGui::view_level(bool mine){
             int i = idx.row();
             std::string level = _client.getLevel(creator_list[i].name, std::string(creator_list[i].pseudo));
             std::cout << "level to play : "<< level<<std::endl;
-            launch_level(level, !mine);
+            lobby(level, mine);
         }
         else if(idx.column()==4){ //like
             int i = idx.row();
@@ -1837,4 +1851,5 @@ void MenuGui::launch_game(){
 
 	window->close();
 }
+
 

@@ -188,9 +188,9 @@ std::string Client::getLevel(std::string level_name, std::string author){
  	return std::string(buffer);
 }
 
-void Client::playLevel(std::string level){
+void Client::playLevel(std::string level, char *game_sett){
 	char buffer[Constante::CHAR_SIZE];
- 	sprintf(buffer, "LR&%s&%d",level.c_str(),_pid);
+ 	sprintf(buffer, "LR&%s&%s&%d",level.c_str(),game_sett,_pid);
  	communication(buffer);
 }
 void Client::voteLevel(std::string name, std::string author){

@@ -61,7 +61,7 @@ public:
     std::string viewLevels();
     std::string myLevels();
     std::string getLevel(std::string level_name,std::string author);
-    void playLevel(std::string level);
+    void playLevel(std::string level, char *game_sett);
     void voteLevel(std::string name, std::string author);
 
 
