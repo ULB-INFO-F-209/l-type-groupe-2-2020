@@ -25,36 +25,35 @@ Client::Client():_pid(getpid()){
 void Client::communication(char *buffer){
 	
 	_fd_send_query =  open(_pipe_to_server, O_WRONLY); 
-	if (_fd_get_query != -1){
+	if (_fd_send_query != -1){
 		int res = write(_fd_send_query, buffer, Constante::CHAR_SIZE); //sending query
-		std::cout << "voila le res du write : "<< res << std::endl;
-		std::cout << "voile ce que j'ai write : "<< buffer<<std::endl;
 		close(_fd_send_query);
-		while(true){
-			_fd_get_query = open(_pipe_from_server, O_RDONLY);
-			if(_fd_get_query != -1){
-				std::cout <<"je suis entre les 2 :("<<std::endl;
+
+		_fd_get_query = open(_pipe_from_server, O_RDONLY|O_NONBLOCK); // lecture du pipe en non bloquant pour eviter l'attente de l'autre process
+		if(_fd_get_query != -1){ // aucun probleme
+			while(true){ 
 				int res = read(_fd_get_query , buffer, Constante::CHAR_SIZE);
-				std::cout << "voila le res du read : "<< res << std::endl;
+
 				if (res == -1){
-					std::cout << " [ERROR] " <<_pid << "n'a pas reussit a lire"<<std::endl;
+					if(errno != EAGAIN && errno != EWOULDBLOCK) //erreur le pipe est non bloquant 
+						std::cout << " [ERROR] " <<_pid << "n'a pas reussit a lire"<<std::endl;
 				}
-				else if(res == 0){
-					std::cout<<"Je sais pas ce que ca veut dire !"<<std::endl;
+				else if(res == 0){// le pipe a deja ete lu bg
+					std::cout<<"LECTURE EN BOUCLE"<<std::endl;
+					continue;
+				}
+				else{ // message recu 
 					break;
 				}
-				else{
-					break;
-				}
-				close(_fd_get_query );
-			}
-			else{
-				std::cout <<" Il y a un big trouble"<<std::endl;
 			}
 		}
+		else{
+			std::cerr << "[ERROR] OUVERTURE DU PIPE POUR LA RECEPTION DE RESULTATS"<<std::endl;
+		}
+		close(_fd_get_query );
 	}
 	else{
-		std::cout << "J'ai pas reussit a vouvrir le pipe : "<< _fd_send_query<<std::endl;
+		std::cerr << "J'ai pas reussit a ouvrir le pipe : "<< _fd_send_query<<std::endl;
 		close(_fd_send_query);
 	}
 }
@@ -229,4 +228,8 @@ void Client::send_game_input(std::vector<int> inp){
 	int fd =  open(_pipe_input_game, O_WRONLY); 
 	write(fd, res, sizeof(int)*11); //sending query
 	close(fd);
+}
+
+void Client::send_game_input(int& inp){
+	// TODO
 }

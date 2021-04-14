@@ -53,7 +53,7 @@ public:
 	//destructor
 	~Interface();
 private:
-	void set_screen(std::string *title,std::string *saying1, std::string *saying2);
+	void set_screen(const std::string *title, const std::string *saying1, const std::string *saying2);
 	void update_menu(size_t size,  std::string *choices, int highlight, int type);
 	bool verify_cara(char *c);
 	void print_cara(WINDOW *win , const char *c, int x, int y);
@@ -64,7 +64,7 @@ private:
 	void init_pseudo_win();
 	void set_request(int highlight);
 	void set_settings(Game_settings *set);
-	void print_message(std::string *msg1, bool up=true );
+	void print_message(const std::string &msg1, bool up=true );
 
 };
 

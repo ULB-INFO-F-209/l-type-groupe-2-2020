@@ -86,11 +86,11 @@ int Interface::print_menu(size_t size, std::string *choices, int type, Game_sett
 	while(choice){
 		update_menu(size,choices,res, type);
 		if(type==HOME)
-			print_message(&BACK,false);
+			print_message(BACK,false);
 		else if(type==LOBBY)
 			set_settings(set);
 		else if(type==MAIN or FRIENDS)
-			print_message(&SWITCH,false);
+			print_message(SWITCH,false);
 
 		choice = getch();
 		switch(choice){
@@ -128,8 +128,8 @@ bool Interface::get_connexion(char pseudo[20], char pswd[20], int error, int typ
 	move_cursor(_pseudo_win, px, py);
 	while(choice){
 		if(type==S_UP){
-			print_message(&SIGN_UP_SAYING1);
-			print_message(&SIGN_UP_SAYING2,false);
+			print_message(SIGN_UP_SAYING1);
+			print_message(SIGN_UP_SAYING2,false);
 		}
 
 		choice = getch();
@@ -228,7 +228,7 @@ int  Interface::print_profile(Profile *prof, int type){
 		int choice = 1;
 		while(choice){
 			set_request(focus);
-			print_message(&BACK, false);
+			print_message(BACK, false);
 			choice = getch();
 			switch(choice){
 				case KEY_RIGHT:
@@ -273,7 +273,7 @@ bool Interface::print_profile(std::vector<Profile> *vect, int type, int *answer)
 
 	while(choice){
 		print_users(vect, focus, idx_min, idx_max,type);
-		print_message(&BACK, false);
+		print_message(BACK, false);
 		choice = getch();
 		switch(choice){
 			case KEY_UP:
@@ -386,7 +386,7 @@ int Interface::range(int n, Game_settings *set, bool percent){
 		else
 			s += " lives";
 		print_cara(_main_win, s.c_str(), x-(s.size()/2),y);
-		print_message(&RANGE, false);
+		print_message(RANGE, false);
 		choice = getch();
 		switch(choice){
 			case KEY_DOWN:
@@ -412,7 +412,7 @@ int Interface::range(int n, Game_settings *set, bool percent){
 
 
 //PRIVATE METHODES 
-void Interface::set_screen(std::string *title,std::string *saying1, std::string *saying2){
+void Interface::set_screen(const std::string *title, const std::string *saying1, const std::string *saying2){
 	clear(); wclear(_main_win);
 	wclear(_pseudo_win); wclear(_pass_win); wclear(_saying_win);
 	resize_win(); //maybe do the resize only if terminal change
@@ -703,11 +703,11 @@ void Interface::set_settings(Game_settings *set){
 	wattroff(_settings_win2, COLOR_PAIR(2));
 }
 
-void Interface::print_message(std::string *msg1, bool up ){
+void Interface::print_message(const std::string &msg1, bool up ){
 	int x=WIN_WIDTH/2, y=9*WIN_HEIGHT/10;;
 	if(up)
 		y = 4*WIN_HEIGHT/10;
-	print_cara(_main_win, msg1->c_str(), x-msg1->size()/2, y);
+	print_cara(_main_win, msg1.c_str(), x-msg1.size()/2, y);
 }
 
 
