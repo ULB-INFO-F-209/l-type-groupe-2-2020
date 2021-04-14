@@ -175,7 +175,8 @@ std::string CurrentGame::run_server(char move_to_exec){
     if(tick %50  == 0) {
         map.update_server(MapObject::bonus, tick);
     }
-    if(map.getCurrentLevel()==3 && tick%10==0 && !map.getChangingLevel()){
+    if((map.getCurrentLevel()==2 || map.getCurrentLevel()==4) && tick%10==0 && !map.getChangingLevel()){
+        //on met à jour les boss
         map.update_server(MapObject::boss,tick);
     }
 
@@ -189,7 +190,8 @@ std::string CurrentGame::run_server(char move_to_exec){
     map.checkCollision_server(tick, friendlyFire);
 
 
-    if(map.getBoss().empty() && map.getBossSpawned())
+    //if(map.getBoss().empty() && map.getBossSpawned())
+    if (map.getCurrentLevel() == lastLevel+1) //Dernier lvl = x, si on est à x+1 -> on a gagné
         game_over = true;
 
     if(twoPlayers){

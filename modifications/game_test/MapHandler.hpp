@@ -128,7 +128,7 @@ public:
 };
 
 class EnemyShip final : public Ship{
-    int shootTime; // détermine la cadence de tir
+    int shootTime;
 public:
     EnemyShip()=default;
     EnemyShip(int x, int y, rect b, char c,int h, int t, int shootDam){pos.x = x; pos.y = y; setBounds(b); setHp(h); setChar(c); setDammage(10); shootTime=t; shootDamage = shootDam; projectileHp = 10;}
@@ -138,11 +138,12 @@ public:
 };
 
 class Boss : public Ship{
-    int shootTime; // détermine la cadence de tir
+    int shootTime;
     bool movingRight;
+    int bossType;
 public:
     Boss()= default;
-    Boss(int x, int y, rect b, char c,int h, int t,int shootDam) {pos.x = x; pos.y = y; bounds=b; hp=h; disp_char=c; collisionDamage=100; shootTime = t;shootDamage = shootDam; projectileHp = 30; movingRight=true;}
+    Boss(int x, int y, rect b, char c,int h, int t,int shootDam, int typ) {pos.x = x; pos.y = y; bounds=b; hp=h; disp_char=c; collisionDamage=100; shootTime = t;shootDamage = shootDam; bossType = typ; projectileHp = 30; movingRight=true;}
     void move() override{
         if(movingRight)
             pos.x++;

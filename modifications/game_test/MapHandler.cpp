@@ -209,10 +209,8 @@ void MapHandler::update_server(MapObject::type typ,int t){
 
         }
     }
-    else if (typ == MapObject::projectile) {
 
-
-    }else if (typ == MapObject::enemyship) {
+else if (typ == MapObject::enemyship) {
         for(size_t i = 0; i < enemy_ships_set.size(); i++) {
             if(enemy_ships_set.at(i)->getPos().y > field_bounds.bot() + 1){
                 enemy_ships_set.erase(enemy_ships_set.begin() + i);
@@ -312,10 +310,18 @@ void MapHandler::add_object_server(MapObject::type typ,int t){
               changingLevel = true;
           }
     }
-    else if (typ==MapObject::boss && (currentLevel==3) && !bossSpawned){
-        boss_set.push_back(new Boss(0,0,{{0, 0},{18,6}},'&',1000,t + 100, enemyStartProjectileDamage));
+    else if (typ==MapObject::boss && !bossSpawned){
+        //création des boss
+        if (currentLevel==2){
+            boss_set.push_back(new Boss(0,0,{{0, 0},{18,6}},'&',1000,t + 100, enemyStartProjectileDamage, 1));  
+        }  
+        if (currentLevel==4){
+            boss_set.push_back(new Boss(0,0,{{0, 0},{18,6}},'&',1000,t + 100, enemyStartProjectileDamage, 2));  
+
+        }
         bossSpawned=true;
     }
+    
 
 }
 
@@ -519,6 +525,7 @@ void MapHandler::checkCollision_server(int t, bool friendlyFire) {
                 levelTick = t;
                 enemyCount = 0;
                 currentLevel++;
+                bossSpawned = false;
             }
         }
     }
@@ -544,6 +551,7 @@ void MapHandler::checkCollision_server(int t, bool friendlyFire) {
 }
 
 // 3 fonctions suivantes à supprimer ???
+/*
 void MapHandler::spawnObstacle(int posx){
     obstacles_set.push_back(new Obstacle(posx, 0, obstacleStartDamage,obstacleStartHp));
 }
@@ -560,6 +568,7 @@ void MapHandler::spawnBoss(int tick){
     boss_set.push_back(new Boss(0,0,{{0, 0},{18,6}},'&',1000,tick, enemyStartProjectileDamage));
     bossSpawned=true;
 }
+*/
 
 
 std::string MapHandler::getState(int nlives_j1,int nlives_j2,int tick){
