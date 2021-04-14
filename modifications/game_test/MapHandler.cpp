@@ -111,6 +111,9 @@ void MapHandler::updateBounds() {
     for(EnemyShip* e: enemy_ships_set){
         e->setBounds({{static_cast<uint_fast16_t>(e->getPos().x-1), e->getPos().y},{3,1}});
     }
+    for(EnemyShip2* e: enemy_ships2_set){
+        e->setBounds({{static_cast<uint_fast16_t>(e->getPos().x-1), e->getPos().y},{3,1}});
+    }
     for(Boss* b: boss_set){
         b->setBounds({{static_cast<uint_fast16_t>(b->getPos().x), b->getPos().y},{18,6}});
     }
@@ -214,7 +217,21 @@ else if (typ == MapObject::enemyship) {
         for(size_t i = 0; i < enemy_ships_set.size(); i++) {
             if(enemy_ships_set.at(i)->getPos().y > field_bounds.bot() + 1){
                 enemy_ships_set.erase(enemy_ships_set.begin() + i);
-                if(enemyCount == enemyLimit && changingLevel && enemy_ships_set.empty()){
+                if(enemyCount == enemyLimit && changingLevel && enemy_ships_set.empty() && enemy_ships2_set.empty() ){
+                levelTick = t;
+                enemyCount = 0;
+                currentLevel++;
+                }
+            }
+
+
+        }
+    }
+    else if (typ == MapObject::enemyship2) {
+        for(size_t i = 0; i < enemy_ships2_set.size(); i++) {
+            if(enemy_ships2_set.at(i)->getPos().x > field_bounds.right() + 1){
+                enemy_ships2_set.erase(enemy_ships2_set.begin() + i);
+                if(enemyCount == enemyLimit && changingLevel && enemy_ships2_set.empty() && enemy_ships_set.empty()){
                 levelTick = t;
                 enemyCount = 0;
                 currentLevel++;
@@ -282,6 +299,11 @@ else if (typ == MapObject::enemyship) {
 
         }
     }
+    else if (typ == MapObject::enemyship2) {
+        for(auto & i : enemy_ships2_set) {
+            i->move();
+        }
+    }
 
     else if (typ == MapObject::bonus) {
         for(size_t i = 0; i < bonuses_set.size(); i++) {
@@ -317,10 +339,19 @@ void MapHandler::add_object_server(MapObject::type typ,int t){
         }  
         if (currentLevel==4){
             boss_set.push_back(new Boss(0,0,{{0, 0},{18,6}},'&',1000,t + 100, enemyStartProjectileDamage, 2));  
-
         }
-        bossSpawned=true;
+        bossSpawned=true;    
     }
+    else if (typ == MapObject::enemyship2 && t%400==0 && !changingLevel&&!bossSpawned) {
+        int y = rand() % (field_bounds.height()/2) + 1;
+        int enemy_tick = t + rand() % 100;
+        enemy_ships2_set.push_back(new EnemyShip2(1, y, {{10 - 1, 5},{3,2}}, '@', enemyStartHp,enemy_tick, enemyStartProjectileDamage));
+        enemyCount++;
+          if(enemyCount >= enemyLimit){
+              changingLevel = true;
+          }
+    }
+
     
 
 }
@@ -333,6 +364,11 @@ void MapHandler::bossShoot_server(int tick) {
             spawnProjectile(posx+7,posy+5,b->getShootDamage(),false,b->getProjectileHp(),0);
             spawnProjectile(posx+11,posy+5,b->getShootDamage(),false,b->getProjectileHp(),0);
 
+            if (b->getBossType()==2) {
+                spawnProjectile(posx+3,posy+5,b->getShootDamage(),false,b->getProjectileHp(),0);
+                spawnProjectile(posx+15,posy+5,b->getShootDamage(),false,b->getProjectileHp(),0);
+            }
+
             b->setShootTime(tick);
 
         }
@@ -342,6 +378,13 @@ void MapHandler::bossShoot_server(int tick) {
 void MapHandler::enemyShoot_server(int tick) {
     for (auto & i : enemy_ships_set) {
         if (tick== i->getShootTime()+100){
+            int posx = i->getPos().x, posy = i->getPos().y+1;
+            spawnProjectile(posx,posy,i->getShootDamage(),false,i->getProjectileHp(),0);
+            i->setShootTime(tick);
+        }
+    }
+    for (auto & i : enemy_ships2_set) {
+        if (tick== i->getShootTime()+50){
             int posx = i->getPos().x, posy = i->getPos().y+1;
             spawnProjectile(posx,posy,i->getShootDamage(),false,i->getProjectileHp(),0);
             i->setShootTime(tick);
@@ -383,6 +426,16 @@ void MapHandler::checkCollision_server(int t, bool friendlyFire) {
     // collision enemy/player
     for(PlayerShip* p : player_ships_set){
         for(auto & e : enemy_ships_set){
+            if(p->getBounds().contains(e->getBounds()) && p->getHp()>0){
+                p->touched(p->getHp());
+                e->touched(p->getDammage());
+            }
+        }
+    }
+
+    // collision enemy2/player
+    for(PlayerShip* p : player_ships_set){
+        for(auto & e : enemy_ships2_set){
             if(p->getBounds().contains(e->getBounds()) && p->getHp()>0){
                 p->touched(p->getHp());
                 e->touched(p->getDammage());
@@ -432,6 +485,32 @@ void MapHandler::checkCollision_server(int t, bool friendlyFire) {
 
     //collision enemy/projectile
     for(EnemyShip* e : enemy_ships_set){
+        for(auto & proj : projectiles_set){
+            if(e->getBounds().contains(proj->getPos()) && e->getHp()>0){
+                e->touched(proj->getDamage());
+                proj->touched(e->getDammage());
+                if(player_ships_set.size() == 2){
+                    player_ships_set.at(proj->getPlayer()-1)->setScore(player_ships_set.at(proj->getPlayer()-1)->getScore() + 10);
+                    if(e->getHp()==0 && player_ships_set.at(proj->getPlayer()-1)->getCurrentBonus()==lifeSteal && player_ships_set.at(proj->getPlayer()-1)->getHp()<100){
+                        if ((player_ships_set.at(proj->getPlayer()-1)->getHp()+10) <= 100)
+                            player_ships_set.at(proj->getPlayer()-1)->setHp(player_ships_set.at(proj->getPlayer()-1)->getHp()+10);
+                        else player_ships_set.at(proj->getPlayer()-1)->setHp(100);
+                    }
+
+                }
+                else if (player_ships_set.size() == 1) {
+                    player_ships_set.at(0)->setScore(player_ships_set.at(0)->getScore() + 10);
+                    if(e->getHp()==0 && player_ships_set.at(0)->getCurrentBonus()==lifeSteal && player_ships_set.at(0)->getHp()<100){
+                        if ((player_ships_set.at(0)->getHp()+10) <= 100)
+                            player_ships_set.at(0)->setHp(player_ships_set.at(0)->getHp()+10);
+                        else player_ships_set.at(0)->setHp(100);
+                    }
+                }
+            }
+        }
+    }
+    //collision enemy2/projectile
+    for(EnemyShip2* e : enemy_ships2_set){
         for(auto & proj : projectiles_set){
             if(e->getBounds().contains(proj->getPos()) && e->getHp()>0){
                 e->touched(proj->getDamage());
@@ -510,7 +589,24 @@ void MapHandler::checkCollision_server(int t, bool friendlyFire) {
                 int rand_spawn_bonus = spawnBonuses(posx, posy);
             }
             enemy_ships_set.erase(enemy_ships_set.begin() + e);
-            if(enemyCount == enemyLimit && changingLevel && enemy_ships_set.empty()){
+            if(enemyCount == enemyLimit && changingLevel && enemy_ships_set.empty() && enemy_ships2_set.empty()){
+                levelTick = t;
+                enemyCount = 0;
+                currentLevel++;
+            }
+        }
+    }
+
+    //erase enemy2
+    for(size_t e = 0; e < enemy_ships2_set.size(); e++){
+        if(enemy_ships2_set.at(e)->getHp() <= 0){
+            if (rand()%100<=probaBonus){
+                int posx = enemy_ships2_set.at(e)->getPos().x;
+                int posy = enemy_ships2_set.at(e)->getPos().y;
+                int rand_spawn_bonus = spawnBonuses(posx, posy);
+            }
+            enemy_ships2_set.erase(enemy_ships2_set.begin() + e);
+            if(enemyCount == enemyLimit && changingLevel && enemy_ships2_set.empty() && enemy_ships_set.empty()){
                 levelTick = t;
                 enemyCount = 0;
                 currentLevel++;
@@ -521,12 +617,13 @@ void MapHandler::checkCollision_server(int t, bool friendlyFire) {
     for(size_t e = 0; e < boss_set.size(); e++){
         if(boss_set.at(e)->getHp() <= 0){
             boss_set.erase(boss_set.begin() + e);
-            if(enemyCount == enemyLimit && changingLevel && boss_set.empty()){
-                levelTick = t;
-                enemyCount = 0;
-                currentLevel++;
-                bossSpawned = false;
-            }
+        
+            levelTick = t;
+            enemyCount = 0;
+            currentLevel++;
+            bossSpawned = false;
+            changingLevel=true;
+        
         }
     }
     // erase bonus
@@ -550,26 +647,6 @@ void MapHandler::checkCollision_server(int t, bool friendlyFire) {
     }
 }
 
-// 3 fonctions suivantes à supprimer ???
-/*
-void MapHandler::spawnObstacle(int posx){
-    obstacles_set.push_back(new Obstacle(posx, 0, obstacleStartDamage,obstacleStartHp));
-}
-
-void MapHandler::spawnEnemy(int posx,int tick){
-    enemy_ships_set.push_back(new EnemyShip(posx, 0, {{10 - 1, 5},{3,2}}, '%', enemyStartHp,tick, enemyStartProjectileDamage));
-    enemyCount++;
-    if(enemyCount >= enemyLimit){
-        changingLevel = true;
-    }
-}
-
-void MapHandler::spawnBoss(int tick){
-    boss_set.push_back(new Boss(0,0,{{0, 0},{18,6}},'&',1000,tick, enemyStartProjectileDamage));
-    bossSpawned=true;
-}
-*/
-
 
 std::string MapHandler::getState(int nlives_j1,int nlives_j2,int tick){
     std::string state{};
@@ -584,7 +661,10 @@ std::string MapHandler::getState(int nlives_j1,int nlives_j2,int tick){
         pos = boss->getPos();
         x = std::to_string(pos.x);
         y = std::to_string(pos.y);
-        state.append("A_EB_");
+        if (boss->getBossType()==1)
+            state.append("A_EB_");
+        else
+            state.append("A_EB2_");
         state.append(x);
         state.append("_");
         state.append(y);
@@ -626,6 +706,7 @@ std::string MapHandler::getState(int nlives_j1,int nlives_j2,int tick){
         state.append(y);
         state.append("&");
     }
+    
 
     // player_ships_set;
     for (auto player : player_ships_set){           // A_1_x_y_explosion  or  A_2_x_y_explosion
@@ -676,6 +757,21 @@ std::string MapHandler::getState(int nlives_j1,int nlives_j2,int tick){
         x = std::to_string(pos.x);
         y = std::to_string(pos.y);
         state.append("A_E_");
+        state.append(x);
+        state.append("_");
+        state.append(y);
+        state.append("_");
+        state.append(std::to_string(enemy_explosion));
+        state.append("_");
+        state.append(std::to_string(tick));
+        state.append("&");
+    }
+    //enemy2
+    for (auto enemy : enemy_ships2_set){         // A_PE2_x_y
+        pos = enemy->getPos();
+        x = std::to_string(pos.x);
+        y = std::to_string(pos.y);
+        state.append("A_E2_");
         state.append(x);
         state.append("_");
         state.append(y);
