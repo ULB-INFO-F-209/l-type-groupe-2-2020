@@ -184,10 +184,6 @@ void Parsing::create_game_from_str(char *buffer, Game_settings * settings){
 	//pid
 	strcpy(settings->pid,cpp_str_buffer.c_str());
 	//cpp_str_buffer = cpp_str_buffer.substr(index+1,cpp_str_buffer.size());
-
-	
-
-
 }
 
 Parsing::Level Parsing::level_from_str(std::string buffer){
@@ -297,7 +293,6 @@ Parsing::Level Parsing::level_from_str(std::string buffer){
 		idx = object.find(delim_attr);
 		e.damage = std::stoi(object.substr(0,idx)); //damage
 		object = object.substr(idx+1, object.size());
-		
 		my_level.obs_list.push_back(e);
 	}
 

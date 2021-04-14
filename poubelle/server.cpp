@@ -775,7 +775,7 @@ void Server::launch_custom_game(Parsing::Level* level_sett,Parsing::Game_setting
     sprintf(input_pipe,"%s%s%s",Constante::PIPE_PATH,Constante::BASE_INPUT_PIPE,game_settings->pid);
     sprintf(send_response_pipe,"%s%s%s",Constante::PIPE_PATH,Constante::BASE_GAME_PIPE,game_settings->pid);
     
-    CurrentGame game{*level_sett/*, *game_settings*/}; //TODO
+    CurrentGame game{*level_sett};/*, *game_settings*/ //TODO
     std::string resp;
 
     while(gameOn){
