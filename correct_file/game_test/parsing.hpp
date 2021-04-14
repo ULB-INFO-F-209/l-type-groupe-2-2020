@@ -96,8 +96,6 @@ struct Parsing::Player{
 	int hp = 70;
 	int damage=30;
 	int speed = 2; //SLUG, TURTLE, HUMAN, HORSE,CHEETAHs
-	bool ally_shot=true;
-	int drop_rate=100;
 };
 
 struct Parsing::Level{
