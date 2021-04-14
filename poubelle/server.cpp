@@ -2,10 +2,10 @@
 
 #define TEST_GAME1
 #define DEBUG_GAME1
-bool Server::_is_active = false;
+bool Server::_is_active = false; // savoir si le serveur est actif 
 Database Server::_db{};
-std::mutex Server::mtx;
-std::mutex Server::mtx_game;
+std::mutex Server::mtx{};
+std::mutex Server::mtx_game{};
 std::vector<Server::PIDinGame*> Server::_pipe_running{};
 
 
@@ -17,15 +17,15 @@ Server::Server(){
 
     signal(SIGINT,close_me); // gestion du CTRL + C ==> save db 
     //signal(SIGPIPE, error_pip); // redirection du signal SIGPIPE vers SIG_IGN pour l'ignorer 
-    
-    if (!isServerActive()){ // pas actif
+    //TODO decommente au dessus
 
+    if (!isServerActive()){ // pas actif
+        _is_active = true; 
         _db.dbLoad();
 
         createPipe(Constante::PIPE_DE_CONNEXION);
         createPipe(Constante::PIPE_DE_REPONSE);
         
-        _is_active = true;
         std::thread t1(&Server::initConnexions,this); // thread d'ecoute de connex (deamon)
         t1.detach();
         std::thread t2(&Server::handleIncommingMessages,this); // thread d'ecoute des requetes (deamon)
@@ -43,7 +43,7 @@ Server::Server(){
 }
 
 /**
- * Ecoute le pipe de reponse et cree un nouveau thread(catchInput) pour gerer 
+ * Ecoute le pipe de reponse et cree un nouveau thread(catchInput) pour gérer 
  * l'input et envoyer la reponse
  * 
  **/
@@ -53,27 +53,32 @@ void Server::handleIncommingMessages(){
     char response_pipe_path[Constante::CHAR_SIZE],message[Constante::CHAR_SIZE];
     sprintf(response_pipe_path,"%s%s",Constante::PIPE_PATH,Constante::PIPE_DE_REPONSE);
     // ecoute infini du pipe des requetes
-    while (true){
-        fd =open(response_pipe_path, O_RDONLY);
-        if (fd < 0){
-            std::cerr << "[ERROR OPENING PIPE("<<response_pipe_path<<")]" <<std::endl;
-            //exit(-1);
-        }
+    fd =open(response_pipe_path, O_RDONLY|O_NONBLOCK); // NON bloquant parce qu'on veut pas que le serveur bloque en attendant un mesage
+    while (_is_active){
 
-        val = read(fd,message,Constante::CHAR_SIZE);
-        if (val < 0){
-            std::cerr << "[ERROR READING PIPE("<<response_pipe_path<<")]" <<std::endl;
+        if (fd < 0){
+            std::cerr << "[ERROR OPENING PIPE("<<response_pipe_path<<")] " << errno <<std::endl;
             //exit(-1);
         }
-        else if (val >= 0){
+        val = read(fd,message,Constante::CHAR_SIZE);
+        if(val == 0){// il relis encore le pipe
+            continue;
+        }
+        else if (val > 0){
         
             std::thread t1(&Server::catchInput,this,message); // thread de reponse 
             t1.detach();
         }
-        close(fd);
+        else { //les erreurs possibles
+            if(errno == EAGAIN || errno == EWOULDBLOCK)
+                continue; // erreur qui indique que le pipe est non bloquant not relevant :)
+            else
+                std::cerr << "[ERROR READING PIPE("<<response_pipe_path<<")] " << errno <<std::endl;
+            //exit(-1);
+        }
     }
+    close(fd);
 }
-
 /**
  * gère les messages client et envoie la reponse au bon client
  * 
@@ -141,7 +146,6 @@ void Server::catchInput(char* input) {
             }
         }
         mtx_game.unlock(); 
-
         std::thread t5(&Server::launch_game,this,&game_sett); // thread du jeu
         t5.detach();
 
@@ -232,7 +236,7 @@ void Server::initConnexions(){
     char proc_id[Constante::CHAR_SIZE], connex_pipe_path[Constante::CHAR_SIZE], message[Constante::CHAR_SIZE];
     sprintf(connex_pipe_path,"%s%s",Constante::PIPE_PATH,Constante::PIPE_DE_CONNEXION);
 
-    while (true){
+    while (_is_active){
         std::cout << std::endl;
         fd =open(connex_pipe_path, O_RDONLY);
         if (fd != -1){
@@ -467,8 +471,7 @@ void Server::resClient(std::string* processId, bool res) {
     char pipe_name[Constante::CHAR_SIZE];
     sprintf(pipe_name,"%s%s%s", Constante::PIPE_PATH, Constante::BASE_PIPE_FILE,(*processId).c_str());
 
-
-	fd = open(pipe_name,O_RDWR);
+	fd = open(pipe_name,O_WRONLY);
     if (fd != -1) write(fd, &message, Constante::CHAR_SIZE);
     else std::cerr << "[ERROR] requete non ecrite " << std::endl;
     
@@ -724,8 +727,24 @@ int Server::read_game_input(char * pipe, int *inp){
     int fd =open(pipe, O_RDONLY); //open pipe
     if (fd != -1){
         int val = read(fd,&message,sizeof(int)*11); 
-        if (val == -1)std::cerr << "[ERROR] CAN'T READ IN INPUT 2 PIPE " <<std::endl;
-        
+        if (val == -1){
+            std::cerr << "[ERROR] CAN'T READ IN INPUT 2 PIPE " <<std::endl;
+            std::cerr << "La cause : ";
+            for (auto i: message){
+                std::cerr << i << " ";
+            }
+            std::cerr<<std::endl;
+            return Constante::ERROR_PIPE_GAME;
+        };
+        if (val == 0){
+            std::cout << "Tu veux que je rate ? ";
+            std::cerr << "La cause : ";
+            for (auto i: message){
+                std::cerr << i << " ";
+            }
+            std::cerr<<std::endl;
+            return Constante::ERROR_PIPE_GAME;
+        }
     }
     else{ // erreur possible
         std::cerr << "[ERROR PIPE INPUT 2 ]" <<std::endl;
@@ -758,11 +777,15 @@ void Server::save_score(char* pseudo, int score){
 }
 
 void Server::close_me(int sig){
-    for(size_t i=0;i < _pipe_running.size();i++){
-        kill(atoi(_pipe_running.at(i)->pid),SIGINT);
+    if(_is_active){
+        _is_active = false;
+        for(size_t i=0;i < _pipe_running.size();i++){
+            kill(atoi(_pipe_running.at(i)->pid),SIGINT);
+        }
+        std::cout <<"\n -----------------------|    FERMETURE EN COURS    |-----------------------\n\n " << std::endl;
+        sleep(2);
+
     }
-    std::cout <<"\n -----------------------|    FERMETURE EN COURS    |-----------------------\n\n " << std::endl;
-    sleep(2);
 }// handle CTRL + C signal ==> save db
 
 

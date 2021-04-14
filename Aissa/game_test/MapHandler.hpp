@@ -10,11 +10,12 @@
 #include "Player.hpp"
 #include "InternGameObject.hpp"
 #include "Rect.hpp"
-#include <iostream>
+#include "Template.hpp"
 
+#include <iostream>
+using namespace Template;
 
 enum bonusType{damageUp, tripleShot, lifeSteal, minigun,noBonus};
-enum difficulty{easy, medium, hard};
 
 class MapObject{
 /**
@@ -166,6 +167,7 @@ class MapHandler final{
     int levelTick = 0; // sauvegarde du moment où on change de niveau
     bool changingLevel = false;
     bool bossSpawned = false;
+    bool customGame = false;
     int enemyCount = 0;
     int enemyLimit = 5; //nombre d'ennemis max par niveau
     int enemyStartHp = 30;
@@ -174,6 +176,7 @@ class MapHandler final{
     int obstacleStartDamage = 10;
     int bossStartHp = 1000;
     difficulty dif;
+
     // Vecteur d'objets de la map
     std::vector<Boss*> boss_set;
     std::vector<Star*> stars_set;
@@ -183,6 +186,7 @@ class MapHandler final{
     std::vector<PlayerShip*> player_ships_set;
     std::vector<EnemyShip*> enemy_ships_set;
     std::vector<Bonus*> bonuses_set;
+    
 public:
     MapHandler()=default;
     MapHandler(int p,difficulty d);
@@ -192,6 +196,8 @@ public:
     void setLevelTick(int t){levelTick = t;}
     bool getChangingLevel() const{return changingLevel;}
     void setChangingLevel(bool c){changingLevel = c;}
+    void setCustomGame(bool c){customGame = c;}
+    bool getCustomGame() const{return customGame;}
     void erase(size_t, MapObject::type);
     std::vector<Star*> getStars() const;
     std::vector<Obstacle*> getObstacles() const;
@@ -218,7 +224,7 @@ public:
     void enemyShoot_server(int tick); // tire automatique des ennemis
     void checkCollision_server(int t, bool friendlyFire);
     void add_object_server(MapObject::type type,int i);
-    void add_object_server(MapObject::type typ,int t,int x);
+    void add_object_server(MapObject::type typ,int t,std::vector<Enemy_template> *enemy_list,std::vector<Obstacle_template> *obs_list);
     void spawnObstacle(int posx);
     void spawnEnemy(int posx,int tick);
     void spawnBoss(int tick);

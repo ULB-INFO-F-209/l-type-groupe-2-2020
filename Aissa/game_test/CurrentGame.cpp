@@ -1,6 +1,12 @@
 /**
  * TODO:
- *  enlever static_cast !!
+ *  demander pout surcharge launch_game (thread)
+ * liste à dire:
+ * ajouter drop rate général
+ * supprimer vitesse ennemis, remplacer par vitesse générale
+ * nb_joueur parsing,etc...
+ * ajouter nb_vie player
+ * 
  */
 #include "CurrentGame.hpp"
 
@@ -19,6 +25,20 @@ CurrentGame::CurrentGame(Parsing::Game_settings game_sett):twoPlayers(game_sett.
         map.setBounds(game_area);
         
     }
+CurrentGame::CurrentGame(Parsing::Level level_sett):twoPlayers(false),friendlyFire(false /*TODO MODFIER CA AVEC GAME SETTINGS */), dropRate(80), dif(difficulty::easy),screen_area( {0, 0}, {80, 24}),game_area( {0, 0}, {78, 16}),map(dropRate,dif) {
+    playership1 = new PlayerShip(10, 5, { {9, 5 }, { 3, 2 } }, '0',level_sett.player.hp,0,100,0);
+    player1 = new Player(3); // à modif
+    listPlayer.push_back(player1);
+    if(twoPlayers){
+                playership2 = new PlayerShip(50, 5, { { 49, 5 }, { 3, 2 } }, '1',level_sett.player.hp, 1,100,0);
+                player2 = new Player(3); // à modif
+                listPlayer.push_back(player2);
+            }
+    map.playerInit(playership1,playership2);
+    map.setBounds(game_area);
+    enemy_queue=level_sett.enemy_list; // ca peut buguer
+    obstacles_queue=level_sett.obs_list;
+}
 
 
 void CurrentGame::execInput(int* inChar, uint_fast16_t x1, uint_fast16_t y1, bool firstPlayer){
@@ -223,6 +243,75 @@ std::string CurrentGame::run_server(int *move_to_exec){
 
     return to_ret;
 };
+
+std::string CurrentGame::run_server(int *move_to_exec,Parsing::Player player,std::vector<Parsing::Enemy_template> enemy_list,std::vector<Parsing::Obstacle_template> obs_list){
+    execInput(move_to_exec, playership1->getPos().x, playership1->getPos().y, true);
+    if(twoPlayers){
+        execInput(move_to_exec, playership2->getPos().x, playership2->getPos().y, false);
+    }
+    map.setCustomGame(true);
+    // mise à jour des positions des objets
+    if(tick % 7 == 0)
+        map.update_server(MapObject::projectile, tick);
+    if(tick > 100 && tick %50  == 0)
+        map.update_server(MapObject::obstacle, tick);
+    if (tick > 100 && tick %150 ==0)
+        map.update_server(MapObject::enemyship, tick);
+    if(tick %50  == 0) {
+        map.update_server(MapObject::bonus, tick);
+    }
+    if(map.getCurrentLevel()==3 && tick%10==0 && !map.getChangingLevel()){
+        map.update_server(MapObject::boss,tick);
+    }
+
+    if(tick%100==0)
+        map.add_object_server(MapObject::enemyship,tick,&enemy_list,&obs_list);
+
+
+    for( PlayerShip* p : map.getListPlayer()){
+        if (p->getCurrentBonus()==minigun && p->getHp()>0 && tick % 7 == 0)
+            map.spawnProjectile(p->getPos().x, p->getPos().y, p->getShootDamage(), true, 10, p->getPlayerNb()+1);
+    }
+    map.enemyShoot_server(tick);
+    map.bossShoot_server(tick);
+    map.updateBounds();
+
+    if(map.getBoss().empty() && map.getBossSpawned())
+        game_over = true;
+
+    if(twoPlayers){
+        if (player1->getnLives() < 1 && player2->getnLives() < 1)
+            game_over = true;
+    }else{
+        if (player1->getnLives() < 1)
+            game_over = true;
+    }
+
+    heal(); 
+
+    // Fait une pause de 5 sec 1 sec après avoir tué tous les ennemis, puis passe au niveau suivant
+    if(map.getLevelTick() != 0 && tick <= map.getLevelTick() + 600 && tick > map.getLevelTick()+100){
+            if(tick == map.getLevelTick() + 600) {
+                map.changeLevel();
+                map.setChangingLevel(false);
+            }
+        }
+
+
+    destroyPlayership();
+    map.checkCollision_server(tick, friendlyFire);
+    saveScore();// sauvegarde le score
+
+    tick++;
+    std::string to_ret = getPlayerState(map.getState(player1->getnLives(), player2 == nullptr?0:player2->getnLives(),tick));
+    if(game_over || exit_requested){
+         return "END GAME";
+    }
+
+    return to_ret;
+
+}
+
 
 std::string CurrentGame::getPlayerState(std::string state){
     // state                                /*E_1_HP1_Vies_Score_bonus_level_tick*/

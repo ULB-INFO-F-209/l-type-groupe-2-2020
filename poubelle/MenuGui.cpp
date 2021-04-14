@@ -1032,7 +1032,7 @@ void MenuGui::launch_game(int players, int drop_rate, int lives, std::string dif
                     _client.playLevel(my_level,game_sett_char);
                 std::cout << "level a jouer = "<<my_level<<std::endl;
                 std::cout << "settings lobby  = "<<game_sett_char<<std::endl;
-                //launch_game();
+                launch_game();
                 buttonBox->rejected();
                 
             }
@@ -1047,12 +1047,14 @@ void MenuGui::launch_game(int players, int drop_rate, int lives, std::string dif
         std::cout << "voila le str = " << game_sett_char<< std::endl;
         if(my_level=="0")
             _client.createGame(game_sett_char);
-        else
+        else{
             _client.playLevel(my_level,game_sett_char);
-        std::cout << "level a jouer = "<<my_level<<std::endl;
+            std::cout << "level a jouer = "<<my_level<<std::endl;
+
+        }
         std::cout << "settings lobby  = "<<game_sett_char<<std::endl;
         this->hide();
-        //launch_game();
+        launch_game();
         this->show();
         std::cout << "salut bg je suis de retoure pour te jouer de mauvais tour";
     }
@@ -1795,13 +1797,13 @@ void MenuGui::view_level(bool mine){
 void MenuGui::launch_game(){
 	DisplayGameGui display_game;
 	display_game.initGraphics();
+    std::cout << "on est la bg"<< std::endl;
 	sf::RenderWindow* window = display_game.getWindow();
 
     bool gameOn = true;
     std::vector<int> inp;
 	std::string string_game_to_display;
 	std::string string_previous_game_to_display;
-
 
     while(gameOn && window->isOpen()){ 
 

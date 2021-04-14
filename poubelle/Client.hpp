@@ -53,6 +53,8 @@ public:
     void get_profile(char *res);
     std::string read_game_pipe();
     void send_game_input(std::vector<int> inp);
+    void send_game_input(int& inp);
+
     void exit();
     
     //Game

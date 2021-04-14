@@ -23,7 +23,7 @@ void Parsing::profile_to_str(char *buffer, Profile prof){
 	sprintf(buffer, "%s&%d", prof.pseudo, prof.score);
 	//buffer -> "pseudo&score" 
 }
-void Parsing::create_game_to_str(char *buffer, Game_settings * settings){
+void Parsing::create_game_to_str(char *buffer,const Game_settings * settings){
 	sprintf(buffer, "%d&%s&%s&%d&%d&%d&%s", 				 settings->nb_player,
 										 settings->pseudo_hote,
 										 settings->pseudo_other,
@@ -39,19 +39,20 @@ std::string Parsing::level_to_str(Level *my_level, const std::string name){
 
 	//player info
 	Player p = (my_level->player);
-	buffer += std::to_string(p.skin) +"_" + std::to_string(p.skin2) + "_" + std::to_string(p.hp) + "_" + std::to_string(p.damage);
+	buffer += std::to_string(p.skin) +"_" + std::to_string(p.skin2) + "_" + std::to_string(p.hp) + "_" + std::to_string(p.damage)+ "_" + std::to_string(p.speed);
 
 	//enemy
 	buffer += "|";
 	for(auto e : my_level->enemy_list){
 		buffer += std::to_string(e.x) + "_" + std::to_string(e.tick) + "_" + std::to_string(e.skin) + "_" ;
-		buffer += std::to_string(e.hp) + "_" + std::to_string(e.damage) + "_" + std::to_string(e.bonus) + "_" + std::to_string(e.speed);
+		buffer += std::to_string(e.hp) + "_" + std::to_string(e.damage) + "_" + std::to_string(e.bonus);
 		buffer += "&";
 	}
+
 	buffer += "|";
 	for(auto o : my_level->obs_list){
 		buffer += std::to_string(o.x) + "_" + std::to_string(o.tick) + "_" + std::to_string(o.skin) + "_" ;
-		buffer += std::to_string(o.hp) + "_" + std::to_string(o.damage) + "_" + std::to_string(o.speed);
+		buffer += std::to_string(o.hp) + "_" + std::to_string(o.damage);
 		buffer += "&";
 	}
 	return buffer;
@@ -178,7 +179,7 @@ void Parsing::create_game_from_str(char *buffer, Game_settings * settings){
 	index = cpp_str_buffer.find(delimiteur_score);
 	option = cpp_str_buffer.substr(0,index);
 	cpp_str_buffer = cpp_str_buffer.substr(index+1,cpp_str_buffer.size());
-	settings->diff = !strcmp(option.c_str(), "easy")? easy: !strcmp(option.c_str(), "medium")? medium: hard;
+	settings->diff = !strcmp(option.c_str(), "easy")? difficulty::easy: !strcmp(option.c_str(), "medium")? difficulty::medium: difficulty::hard;
 	
 	//pid
 	strcpy(settings->pid,cpp_str_buffer.c_str());
@@ -220,13 +221,17 @@ Parsing::Level Parsing::level_from_str(std::string buffer){
 	my_level.player.damage = std::stoi(player_zone.substr(0,idx)); //damage
 	player_zone = player_zone.substr(idx+1, player_zone.size());
 
+	idx = player_zone.find(delim_attr);
+	my_level.player.speed = std::stoi(player_zone.substr(0,idx)); // general speed
+	player_zone = player_zone.substr(idx+1, player_zone.size());
+
 	//enemy zone
 	idx = buffer.find(delim_zone);
 	std::string enemy_zone = buffer.substr(0,idx);
 	buffer = buffer.substr(idx+1, buffer.size());
 
 	while(enemy_zone.size() > 1){
-		Enemy e;
+		Enemy_template e;
 
 		idx = enemy_zone.find(delim_obj);
 		std::string object = enemy_zone.substr(0,idx);
@@ -257,10 +262,6 @@ Parsing::Level Parsing::level_from_str(std::string buffer){
 		e.bonus = std::stoi(object.substr(0,idx)); //speed
 		object = object.substr(idx+1, object.size());
 
-		idx = object.find(delim_attr);
-		e.speed = std::stoi(object.substr(0,idx)); //speed
-		object = object.substr(idx+1, object.size());
-
 		my_level.enemy_list.push_back(e);
 	}
 
@@ -270,7 +271,7 @@ Parsing::Level Parsing::level_from_str(std::string buffer){
 	buffer = buffer.substr(idx+1, buffer.size());
 
 	while(obs_zone.size() > 1){
-		Obstacle e;
+		Obstacle_template e;
 
 		idx = obs_zone.find(delim_obj);
 		std::string object = obs_zone.substr(0,idx);
@@ -296,11 +297,7 @@ Parsing::Level Parsing::level_from_str(std::string buffer){
 		idx = object.find(delim_attr);
 		e.damage = std::stoi(object.substr(0,idx)); //damage
 		object = object.substr(idx+1, object.size());
-
-		idx = object.find(delim_attr);
-		e.speed = std::stoi(object.substr(0,idx)); //speed
-		object = object.substr(idx+1, object.size());
-
+		
 		my_level.obs_list.push_back(e);
 	}
 
