@@ -172,6 +172,8 @@ std::string CurrentGame::run_server(char move_to_exec){
         map.update_server(MapObject::obstacle, tick);
     if (tick > 100 && tick %150 ==0)
         map.update_server(MapObject::enemyship, tick);
+    if (tick > 100 && tick %20 ==0)
+        map.update_server(MapObject::enemyship2, tick);
     if(tick %50  == 0) {
         map.update_server(MapObject::bonus, tick);
     }

@@ -68,7 +68,14 @@ void DisplayGame::parse_affichage(std::string instruction){
 		idx = instruction.find(delimiteur_parametre);
 		explo = std::stoi(instruction.substr(0,idx));
 		tick = std::stoi(instruction.substr(idx+1,instruction.size()));
-		drawEnemy(x,y,tick,explo);
+		drawEnemy(x,y,tick,explo, 1);
+	}
+	else if(objet=="E2"){			//Vaisseau ennemie
+		int explo,tick;
+		idx = instruction.find(delimiteur_parametre);
+		explo = std::stoi(instruction.substr(0,idx));
+		tick = std::stoi(instruction.substr(idx+1,instruction.size()));
+		drawEnemy(x,y,tick,explo, 2);
 	}
 	else if(objet=="1"){		//Vaisseau joueur 1     A_1_x_y_explosion_tick
 		int explo,tick;
@@ -236,10 +243,14 @@ void DisplayGame::drawObstacle(int x, int y) {
 	wattroff(game_wnd, COLOR_PAIR(1));
   
 }
-void DisplayGame::drawEnemy(int x, int y, int tick, bool isBlinking) {
+void DisplayGame::drawEnemy(int x, int y, int tick, bool isBlinking, int type) {
     
 	wattron(game_wnd, COLOR_PAIR(4));
-	mvwaddch(game_wnd, y, x, '%');
+	if(type == 1)
+		mvwaddch(game_wnd, y, x, '%');
+	else
+		mvwaddch(game_wnd, y, x, '@');
+		
 	wattroff(game_wnd, COLOR_PAIR(4));
 
 
