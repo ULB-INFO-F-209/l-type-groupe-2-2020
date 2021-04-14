@@ -1,54 +1,25 @@
 #include "MenuTerminal.hpp"
 
-void drawGrid(sf::RenderWindow& win, int rows, int cols){
-    // initialize values
-    int numLines = rows+cols-2;
-    sf::VertexArray grid(sf::Lines, 2*(numLines));
-    win.setView(win.getDefaultView());
-    auto size = win.getView().getSize();
-    float rowH = 370/rows;
-    float colW = size.x/cols;
-    // row separators
-    for(int i=0; i < rows-1; i++){
-        int r = i+1;
-        float rowY = rowH*r;
-        grid[i*2].position = {0, 5 + rowY};
-        grid[i*2+1].position = {size.x, 5 +rowY};
-    }
-    // column separators
-    for(int i=rows-1; i < numLines; i++){
-        int c = i-rows+2;
-        float colX = colW*c;
-        grid[i*2].position = {colX, 0};
-        grid[i*2+1].position = {colX, size.y};
-    }
-    // draw it
-    win.draw(grid);
-}
-
-
-
-
 Interface MenuTerminal::window = Interface();
 
 void MenuTerminal::start_session(){
 	signal(SIGINT,handle_SIGINT);
-	int MenuTerminal = HOME;
-	while(MenuTerminal != -1){ //-1 = quiter programme
-		if(MenuTerminal==HOME)
-			MenuTerminal = home();
-		else if(MenuTerminal==MAIN)
-			MenuTerminal = main_m();
-		else if(MenuTerminal==FRIENDS)
-			MenuTerminal = friends();
-		else if(MenuTerminal==SETTINGS)
-			MenuTerminal = lobby();
+	int menu = HOME;
+	while(menu != -1){ //-1 = quiter programme
+		if(menu==HOME)
+			menu = home();
+		else if(menu==MAIN)
+			menu = main_m();
+		else if(menu==FRIENDS)
+			menu = friends();
+		else if(menu==SETTINGS)
+			menu = lobby();
 	}
 	//_client.exit();
 	std::cout << "EXIT !"<<std::endl;
 }
 
-//MenuTerminal
+//MENU
 int MenuTerminal::home(){
 	int res=-1; 
 	int choice = window.print_menu(SIZE_HOME, connexion_menu,HOME);
@@ -63,7 +34,7 @@ int MenuTerminal::home(){
 			res = -1;
 			break;
 	}
-	return res; //next MenuTerminal
+	return res; //next menu
 }
 
 int  MenuTerminal::friends(){ //decouper en fonction
@@ -72,11 +43,11 @@ int  MenuTerminal::friends(){ //decouper en fonction
 	switch(choice){
 		case 0: //Friend list
 			afficher_friends();
-			res = FRIENDS; //return to friends MenuTerminal 
+			res = FRIENDS; //return to friends menu 
 			break;
 		case 1: //Friend request
 			request_management();
-			res = FRIENDS; //return to friend MenuTerminal
+			res = FRIENDS; //return to friend menu
 			break;
 		case 2: //add friend
 			add_del_friends(true);
@@ -86,7 +57,7 @@ int  MenuTerminal::friends(){ //decouper en fonction
 			add_del_friends(false);
 			res = FRIENDS;
 			break;
-		default: //back to main MenuTerminal (-1)
+		default: //back to main menu (-1)
 			res = MAIN;
 			break;
 	}
@@ -312,67 +283,26 @@ void MenuTerminal::get_players(Game_settings*set){
 
 void MenuTerminal::launch_game(Game_settings* game_option){
 	DisplayGame display_game;
-	display_game.init(); 
-	display_game.initGraphics();
-	sf::RenderWindow* window = display_game.getWindow();
-
+	display_game.init();
     bool gameOn = true;
-    std::vector<int> inp;
+    int inp = -1;
 	std::string string_game_to_display;
-	std::string string_previous_game_to_display;
 
+    while(gameOn){
 
-    while(gameOn && window->isOpen()){ 
-
-		sf::Event event;
-        while (window->pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window->close();
-			if (event.type == sf::Event::KeyPressed)
-				display_game.getInputWindow(&inp);
-        }
-	
-		window->clear();
-		_client.send_game_input(inp);
-		inp.clear();
-
-		inp.push_back(-1);
-		string_game_to_display = _client.read_game_pipe();
-		if (string_game_to_display != Constante::GAME_END)
-			string_previous_game_to_display = string_game_to_display;
-		if (string_game_to_display == Constante::GAME_END)
+        inp = display_game.getInput();
 		
-			break;
-			//gameOn = false;
+		_client.send_game_input(inp);
+		string_game_to_display = _client.read_game_pipe();
+		if (string_game_to_display == Constante::GAME_END) break;
 		display_game.parse_instruction(string_game_to_display);
-		//drawGrid(*window,18,80);
-		window->display();
+		
 
     }
-	
-	//Last background
-	display_game.parse_instruction(string_previous_game_to_display);
-	window->display();
-
-	//Final Score
 	string_game_to_display = _client.read_game_pipe();
+	std::cout << string_game_to_display;
 	display_game.drawEndGame(string_game_to_display);
-	window->display();
-	sf::Event event;
-	
-	while(true){
-		char in_char = -1;
-		while (window->pollEvent(event))
-        {
-			if (event.type == sf::Event::KeyPressed)
-				in_char = display_game.getInputWindow(&inp);
-        }
-        if(in_char == 'p')break;
-    }
-
     display_game.close();
-	window->close();
 }
 
 
@@ -388,4 +318,3 @@ void MenuTerminal::handle_SIGINT(int sig){
 	window.erase_win();
 	exit(EXIT_SUCCESS);
 }
-
