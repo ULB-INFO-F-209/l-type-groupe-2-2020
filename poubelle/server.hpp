@@ -71,7 +71,7 @@ private:
     void handleIncommingMessages();
     void catchInput(char *); 
     int read_game_input(char * pipe, int* char_tab);
-    void launch_custom_game(Parsing::Level* level_sett);
+    void launch_custom_game(Parsing::Level*, Parsing::Game_settings*);
 
     //queries
     bool signIn(char* );
@@ -89,7 +89,7 @@ private:
     std::string oneLevel(char*);
     void addVote(char *);
     void addLevel(char *);
-    Parsing::Level runLevel(char*);
+    Parsing::Level runLevel(char*, Parsing::Game_settings *);
 
     //server utils
     static void launch_db_save();
@@ -98,8 +98,6 @@ private:
     void launch_game(Parsing::Game_settings* sett_game);
     void client_exit(std::string* pid);
     void kill_process(const char* pipe);
-    
-    
 };
 
 #endif //Server

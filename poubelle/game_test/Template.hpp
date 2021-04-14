@@ -17,7 +17,6 @@ struct Template::Enemy_template{
 	int hp = 70;
 	int damage=30;
 	int bonus = 0;
-	int speed = 2; //SLUG, TURTLE, HUMAN, HORSE,CHEETAH
 
 	void get_values(int *res){
 		res[0] = x;
@@ -33,8 +32,6 @@ struct Template::Obstacle_template{
 	int skin = 0; //planete, soleil, lune, etoiles
 	int hp = 70;
 	int damage=30;
-	int speed = 2; //SLUG, TURTLE, HUMAN, HORSE,CHEETAH
-	
 
 	void get_values(int *res){
 		res[0] = x;
@@ -49,13 +46,10 @@ struct Template::Player_template{
 	int skin2 = 0;
 	int hp = 70;
 	int damage=30;
-	//int speed = 2; //SLUG, TURTLE, HUMAN, HORSE,CHEETAHs
-	bool ally_shot=true;
-	int drop_rate=100;
+	int speed = 2; //SLUG, TURTLE, HUMAN, HORSE,CHEETAHs
 };
 
 struct Template::Level{
-	int nb_player = 1;
 	Player_template player;
 
 	//Enemy session
@@ -63,11 +57,8 @@ struct Template::Level{
 
 	//obstacle session
 	std::vector<Obstacle_template> obs_list{};
-	char pid[10];
-	char pseudo_hote[20];
-	char pseudo_other[20] = {"Null"};
-
 };
+
 struct Template::Game_settings
 {
 	int nb_player = 1;
@@ -79,6 +70,5 @@ struct Template::Game_settings
 	char difficulty_str[20] = "easy";
 	difficulty diff{difficulty::easy};
     char pid[10];
-
 };
 #endif

@@ -758,14 +758,16 @@ void MenuGui::verif_friend(QDialog* dialog, bool adding){
 void MenuGui::lobby(){
     QWidget *centralWidget =  new QWidget(this);
 
-    QWidget *gridLayoutWidget = new QWidget(centralWidget);
+    this->setStyleSheet(QStringLiteral("background-color:white;"));
+
+    /*QWidget *gridLayoutWidget = new QWidget(centralWidget);
     QLabel *lbl = new QLabel(centralWidget);
     QMovie *mv = new QMovie("images/background/ciel.gif");
     mv->setScaledSize(QSize(800,600));
     lbl->setGeometry(QRect(0, 0, 800, 600));
     mv->start();
     lbl->setAttribute(Qt::WA_TranslucentBackground);
-    lbl->setMovie(mv);
+    lbl->setMovie(mv);*/
 
     gridLayoutWidget->setGeometry(QRect(20, 120, 771, 311));
     QGridLayout *gridLayout = new QGridLayout(gridLayoutWidget);
