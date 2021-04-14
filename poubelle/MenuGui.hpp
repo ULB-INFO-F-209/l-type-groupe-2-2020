@@ -21,6 +21,7 @@
 #include "screen.hpp"
 #include "game_test/parsing.hpp"
 #include "Frame.hpp"
+#include "label.hpp"
 
 
 #include <iostream>
