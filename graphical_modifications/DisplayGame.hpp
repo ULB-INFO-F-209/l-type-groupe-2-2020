@@ -35,6 +35,8 @@ class DisplayGame
 	sf::Texture minigunTex;
 	sf::Texture enemy;
 	sf::Texture boss;
+	sf::Texture enemyH;
+	sf::Texture boss2;
 	sf::IntRect rectSourceSprite1{0,0,256,256};
 	sf::Sprite explosionSprite1;
 	sf::Clock clock1;
@@ -64,6 +66,8 @@ class DisplayGame
 	sf::Sprite minigunSprite;
 	sf::Sprite enemySprite;
 	sf::Sprite bossSprite;
+	sf::Sprite boss2Sprite;
+	sf::Sprite enemyHSprite;
 	sf::RectangleShape line{sf::Vector2f(990, 2)};
 
 public:

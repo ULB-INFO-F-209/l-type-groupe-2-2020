@@ -52,6 +52,9 @@ void MapObject::touched(int dam) {
 
 void MapHandler::spawnProjectile(int x, int y, int damage, bool type, int hp, int player){
     if (y-1 >= 0) {
+        /*for(auto & projA : projectiles_set){
+            if(projA->getPos().x == x && projA->getPos().y == y-1) return;
+        }*/
         if(player!=0) {
             if (player_ships_set.size() == 2) {
                 if (player_ships_set.at(player - 1)->getCurrentBonus() == tripleShot) {
@@ -86,10 +89,8 @@ void MapHandler::spawnProjectile(int x, int y, int damage, bool type, int hp, in
                     projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
                 }
                 else if (player_ships_set.at(0)->getCurrentBonus() == damageUp) {
-                    if (player_ships_set.at(0)->getShootDamage() != 20)
-                        player_ships_set.at(0)->setShootDamage(20);
                     projectiles_set.push_back(
-                            new Projectile(x, y - 1, player_ships_set.at(0)->getShootDamage(), type, hp, player));
+                            new Projectile(x, y - 1, player_ships_set.at(0)->getShootDamage()+40, type, hp, player));
                 }
             }
         }
@@ -335,10 +336,10 @@ void MapHandler::add_object_server(MapObject::type typ,int t){
     else if (typ==MapObject::boss && !bossSpawned){
         //création des boss
         if (currentLevel==2){
-            boss_set.push_back(new Boss(0,0,{{0, 0},{18,6}},'&',1000,t + 100, enemyStartProjectileDamage, 1));  
+            boss_set.push_back(new Boss(0,0,{{0, 0},{18,6}},'&',5000,t + 100, enemyStartProjectileDamage, 1));  
         }  
         if (currentLevel==4){
-            boss_set.push_back(new Boss(0,0,{{0, 0},{18,6}},'&',1000,t + 100, enemyStartProjectileDamage, 2));  
+            boss_set.push_back(new Boss(0,0,{{0, 0},{18,6}},'&',10000,t + 100, enemyStartProjectileDamage, 2));  
         }
         bossSpawned=true;    
     }

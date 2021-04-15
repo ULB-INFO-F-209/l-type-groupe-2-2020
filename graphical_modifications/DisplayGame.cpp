@@ -305,7 +305,15 @@ void DisplayGame::initGraphics(){
 	{
 		// erreur...
 	}
-	if (!boss.loadFromFile("boss.png"))
+	if (!boss.loadFromFile("boss2.png"))
+	{
+		// erreur...
+	}
+	if (!enemyH.loadFromFile("enemy2.png"))
+	{
+		// erreur...
+	}
+	if (!boss2.loadFromFile("boss.png"))
 	{
 		// erreur...
 	}
@@ -363,6 +371,14 @@ void DisplayGame::initGraphics(){
 	bossSprite.setScale(sf::Vector2f(0.9,0.8));
 	bossSprite.setRotation(180);
 	bossSprite.setTexture(boss);
+
+	enemyHSprite.setScale(sf::Vector2f(0.16,0.22));
+	enemyHSprite.setRotation(180);
+	enemyHSprite.setTexture(enemyH);
+
+	boss2Sprite.setScale(sf::Vector2f(0.9,0.8));
+	boss2Sprite.setRotation(180);
+	boss2Sprite.setTexture(boss2);
 	
 	line.setFillColor(sf::Color::Magenta);
 	line.setPosition(sf::Vector2f(5, 370));
@@ -411,7 +427,23 @@ void DisplayGame::drawEnemy(int x, int y, int tick, bool isBlinking, int type) {
 		}
 	}
 	else{
+		if(isBlinking){
 
+			enemyHSprite.setColor(sf::Color::Red);
+
+		}
+		else{
+			enemyHSprite.setColor(sf::Color::White); //default color
+		}
+		
+		//sf::RectangleShape enemyShape(sf::Vector2f(12.5*3,20));
+		//enemyShape.setFillColor(sf::Color::Red);
+		//enemyShape.setPosition(sf::Vector2f(x*12.5,5 + y*20));
+		enemyHSprite.setPosition(sf::Vector2f(x*12.5+ 60 ,5 + y*20 + 60));
+		if(y*20 < 350){
+			//window->draw(enemyShape);
+			window->draw(enemyHSprite);
+		}
 	}
 
 }
@@ -578,7 +610,9 @@ void DisplayGame::drawBoss(int x, int y, int type){
 			//window->draw(bossShape);
 			window->draw(bossSprite);
 		}else{
-			
+			boss2Sprite.setPosition(sf::Vector2f(x*12.5+7 +340,5 + y*20 + 260));
+			//window->draw(bossShape);
+			window->draw(boss2Sprite);
 		}
 }
 void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType, int level, int tick){
