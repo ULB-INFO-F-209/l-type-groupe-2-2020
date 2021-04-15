@@ -96,10 +96,13 @@ int DisplayGame::getInputWindow(std::vector<int> *inp){
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
 	{
 		inp->push_back('m');
+		if(twoPlayer)
+			laserSound.play();
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
 		inp->push_back(' ');
+		laserSound.play();
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::P))
 	{
@@ -389,7 +392,25 @@ void DisplayGame::initGraphics(){
 	explosionSprite2.setTexture(explosionTex);
 	explosionSprite2.setTextureRect(rectSourceSprite2);
 	
+	
+	if (!music.openFromFile("song.ogg"))
+		{
+			std::cout<<"PAS DE SON"<<std::endl;
+		}
+	if (!buffer.loadFromFile("laserSound.wav"))
+		{
+			std::cout<<"PAS DE LASER"<<std::endl;
+		}
+	if (!buffer1.loadFromFile("explosionSound.wav"))
+		{
+			std::cout<<"PAS D'EXPLOSION"<<std::endl;
+		}
 
+	laserSound.setBuffer(buffer);
+	explosionSound.setBuffer(buffer1);
+	//music.setVolume (100.0f);
+	music.play();
+	music.setLoop(true);
 	guiText.setFont(font);
 
 }
@@ -400,7 +421,6 @@ void DisplayGame::drawObstacle(int x, int y) {
 	//sf::RectangleShape asteroidShape(sf::Vector2f(12.5*1.5,20*1.5));
 	//asteroidShape.setFillColor(sf::Color(102,51,0));
 	//asteroidShape.setPosition(sf::Vector2f((x+1)*12.5-3,y*20));
-
 	if(y*20 < 350)
 		window->draw(asteroidSprite);
 
@@ -504,7 +524,13 @@ void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinkin
 					if (!explo1PosSaved)
 						explosionSprite1.setPosition(sf::Vector2f(x*12.5-125,5 + y*20-110));
 						explo1PosSaved=true;
+					if(!soundExploded1){
+						explosionSound.play();
+						soundExploded1=true;
+					}
 					window->draw(explosionSprite1);
+					
+						
 				}
 				
 					
@@ -530,9 +556,15 @@ void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinkin
 				if(!exploded2){
 					if (!explo2PosSaved)
 						explosionSprite2.setPosition(sf::Vector2f(x*12.5-125,5 + y*20-110));
-						explo2PosSaved=true;					
-					window->draw(explosionSprite2);
+						explo2PosSaved=true;
+					if(!soundExploded2){
+						explosionSound.play();
+						soundExploded2=true;
 					}
+					window->draw(explosionSprite2);
+					
+
+				}
 			}
 
         }
@@ -540,10 +572,13 @@ void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinkin
 			if(player==1 && exploded1){
 				exploded1=false;
 				explo1PosSaved=false;
+				soundExploded1=false;
 			} 
 			if(player==2 && exploded2){
 				exploded2=false;
 				explo2PosSaved=false;
+				soundExploded2=false;
+
 
 			} 
 
@@ -689,6 +724,7 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
 	
 	}
     if(player == 1){
+		twoPlayer=true;
 		//healthbar
 		health_bar2.setPosition(sf::Vector2f(460+325,380));
 		window->draw(health_bar2);
@@ -776,4 +812,6 @@ void DisplayGame::drawEndGame(std::string score){
 	guiText.setColor(sf::Color::White);
 	guiText.setPosition(sf::Vector2f(32*12.5, 12*20));
 	window->draw(guiText);
+
+	
 }

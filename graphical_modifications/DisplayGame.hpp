@@ -6,12 +6,18 @@
 #include "game_test/MapHandler.hpp"
 #include <unistd.h>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <fstream>
 #include <iostream>
 
 
 class DisplayGame
 {
+	sf::Music music;
+	sf::SoundBuffer buffer;
+	sf::SoundBuffer buffer1;
+	sf::Sound laserSound;
+	sf::Sound explosionSound;
 	//Game's windows
 	sf::RenderWindow* window;
 	rect game_area;
@@ -48,7 +54,9 @@ class DisplayGame
 	bool exploded2=false;
 	bool explo2PosSaved=false;
 	bool explo1PosSaved=false;
-
+	bool twoPlayer=false;
+	bool soundExploded1=false;
+	bool soundExploded2=false;
 	sf::Font font;
 	sf::Text guiText;
 	sf::Sprite heartSprite;
