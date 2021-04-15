@@ -23,7 +23,7 @@ Client::Client():_pid(getpid()){
 
 //utilities
 void Client::communication(char *buffer){
-	
+	std::cout << "Ce que j'envoie : " << buffer <<std::endl;
 	_fd_send_query =  open(_pipe_to_server, O_WRONLY); 
 	if (_fd_send_query != -1){
 		int res = write(_fd_send_query, buffer, Constante::CHAR_SIZE); //sending query
@@ -31,7 +31,7 @@ void Client::communication(char *buffer){
 
 		_fd_get_query = open(_pipe_from_server, O_RDONLY|O_NONBLOCK); // lecture du pipe en non bloquant pour eviter l'attente de l'autre process
 		if(_fd_get_query != -1){ // aucun probleme
-			while(true){ 
+			while(true){ // attendre la reponse du serveur
 				int res = read(_fd_get_query , buffer, Constante::CHAR_SIZE);
 
 				if (res == -1){
@@ -39,10 +39,11 @@ void Client::communication(char *buffer){
 						std::cout << " [ERROR] " <<_pid << "n'a pas reussit a lire"<<std::endl;
 				}
 				else if(res == 0){// le pipe a deja ete lu bg
-					std::cout<<"LECTURE EN BOUCLE"<<std::endl;
+					//std::cout<<"LECTURE EN BOUCLE"<<std::endl;
 					continue;
 				}
 				else{ // message recu 
+					std::cout << "ce que je viens de lire : " <<buffer <<std::endl;
 					break;
 				}
 			}
@@ -207,7 +208,7 @@ std::string Client::getLevel(std::string level_name, std::string author){
 
 void Client::playLevel(std::string level){
 	char buffer[Constante::CHAR_SIZE];
- 	sprintf(buffer, "LR&%s&%d",level.c_str(),_pid);
+ 	sprintf(buffer, "LR&%s#%s#%d",level.c_str(),"1&aa&Null&100&0&3&Easy",_pid);
  	communication(buffer);
 }
 void Client::voteLevel(std::string name, std::string author){

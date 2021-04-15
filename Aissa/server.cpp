@@ -182,7 +182,9 @@ void Server::catchInput(char* input) {
             case Constante::RUN_LEVEL:{
                 Parsing::Game_settings game_settings;
                 Parsing::Level level_to_play = runLevel(input, &game_settings);
-                resClient(&processId,Constante::ALL_GOOD);
+                processId = processId.substr(processId.rfind("#")+1);
+                strcpy(game_settings.pid,processId.c_str());
+                resClient(&processId,Constante::GAME_CAN_BE_LAUNCH);
                 for(auto p: _pipe_running){ // mettre l'état du jeu pour le pid à true
                     if(processId == p->pid){
                         p->in_game=true;
@@ -190,9 +192,9 @@ void Server::catchInput(char* input) {
                     }
                 }
                 mtx_game.unlock(); 
+                std::cout << "le pid pour de vrai " <<game_settings.pid <<std::endl;
                 std::thread t5(&Server::launch_custom_game,this,&level_to_play, &game_settings); // thread du jeu
                 t5.detach();
-                break;
                 break;
             }
         }
@@ -443,23 +445,25 @@ Parsing::Level Server::runLevel(char* input,Parsing::Game_settings * game_settin
     input_str.substr(0,idx); //LR poubelle 
     input_str = input_str.substr(idx+1, input_str.size()); 
 
-    idx = input_str.find(Constante::DELIMITEUR);
+    idx = input_str.find("#");
     std::string level = input_str.substr(0,idx); //level
     input_str = input_str.substr(idx+1, input_str.size()); 
 
-    idx = input_str.find(Constante::DELIMITEUR);
+    idx = input_str.find("#");
     std::string  game_str = input_str.substr(0,idx); //game sett
     std::string pid = input_str.substr(idx+1, input_str.size()); 
 
     std::cout << "PID = "<<pid<<std::endl;
     std::cout << "level reçu =  "<<level<<std::endl;
     std::cout << "settings level  =  "<<game_str<<std::endl;
-    sprintf(game_settings->pid, "%s", pid.c_str());
+    strcpy(game_settings->pid,pid.c_str());
+    std::cout << "PID = "<<game_settings->pid<<std::endl;
 
     char buffer[Constante::CHAR_SIZE];
     sprintf(buffer, "%s", game_str.c_str()); 
-    Parsing::create_game_from_str(buffer, game_settings);
 
+    Parsing::create_game_from_str(buffer, game_settings);
+    std::cout << "je suis la pret a sortir "<<std::endl;
     return Parsing::level_from_str(level);
 }
 
@@ -477,7 +481,11 @@ void Server::resClient(std::string* processId, bool res) {
 
 	fd = open(pipe_name,O_WRONLY);
     if (fd != -1) write(fd, &message, Constante::CHAR_SIZE);
-    else std::cerr << "[ERROR] requete non ecrite " << std::endl;
+    else {
+
+        std::cerr << "[ERROR] requete non ecrite sur :" << pipe_name << "\npour le message : " << message << std::endl;
+        std::cout << errno << std::endl;
+    }
     
     close(fd);
     std::cout << "resultat requete : " << message <<" sur le pipe "<<pipe_name << std::endl; 
@@ -752,7 +760,13 @@ int Server::read_game_input(char * pipe, int *inp){
         }
     }
     else{ // erreur possible
-        std::cerr << "[ERROR PIPE INPUT 2 ]" <<std::endl;
+        std::cerr << "[ERROR PIPE INPUT 2 ] le type : " <<errno <<std::endl;
+        std::cerr << "le pipe : "<<pipe << std::endl;
+        std::cerr << "La cause : ";
+        for (auto i: message){
+            std::cerr << i << " ";
+        }
+        std::cerr<<std::endl;
         close(fd);
         return Constante::ERROR_PIPE_GAME;
     };
@@ -797,12 +811,14 @@ void Server::close_me(int sig){
 
 void Server::launch_custom_game(Parsing::Level* level_sett,Parsing::Game_settings* game_settings){
     char input_pipe[Constante::CHAR_SIZE],send_response_pipe[Constante::CHAR_SIZE];
-    bool gameOn=true;int inp[11];
+    bool gameOn=true;int inp[11]{};
     
     // mise en place des pipes
     sprintf(input_pipe,"%s%s%s",Constante::PIPE_PATH,Constante::BASE_INPUT_PIPE,game_settings->pid);
     sprintf(send_response_pipe,"%s%s%s",Constante::PIPE_PATH,Constante::BASE_GAME_PIPE,game_settings->pid);
     
+
+
     CurrentGame game{*level_sett/*, *game_settings*/}; //TODO
     std::string resp;
 
