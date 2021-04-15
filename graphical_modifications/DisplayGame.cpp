@@ -159,10 +159,16 @@ void DisplayGame::parse_affichage(std::string instruction){
 	}
 	else if(objet=="O")			//obstacle
 		drawObstacle(x,y);
-	else if(objet=="EB") 		//Boss
-		drawBoss(x,y,1);
-	else if(objet=="EB2")
-		drawBoss(x,y,2);
+	else if(objet=="EB") { //Boss
+		idx = instruction.find(delimiteur_parametre);
+		int bossHp = std::stoi(instruction.substr(0, idx));
+		drawBoss(x,y,1, bossHp);
+	} 		
+	else if(objet=="EB2") {
+		idx = instruction.find(delimiteur_parametre);
+		int bossHp = std::stoi(instruction.substr(0, idx));
+		drawBoss(x,y,2, bossHp);
+	} 		
 	else if(objet=="B"){		//Bonus
 		idx = instruction.find(delimiteur_parametre);
 		int type = std::stoi(instruction.substr(0,idx));
@@ -392,6 +398,16 @@ void DisplayGame::initGraphics(){
 
 	guiText.setFont(font);
 
+	bossText.setFont(font);
+	bossText.setString("BOSS");
+	bossText.setPosition(sf::Vector2f(472,425));
+	bossText.setCharacterSize(20);
+	//bossText.setColor(sf::Color::White);
+
+	bossLifeBar.setSize(sf::Vector2f(200, 10));
+	bossLifeBar.setFillColor(sf::Color::Red);
+	bossLifeBar.setPosition(405,450);
+
 }
 
 void DisplayGame::drawObstacle(int x, int y) {
@@ -601,7 +617,7 @@ void DisplayGame::drawBonus(int type, int x, int y){
 	}
 }
 
-void DisplayGame::drawBoss(int x, int y, int type){
+void DisplayGame::drawBoss(int x, int y, int type, int bossHp){
 		//sf::RectangleShape bossShape(sf::Vector2f(12.5*18,20*6));
 		//bossShape.setFillColor(sf::Color::Red);
 		//bossShape.setPosition(sf::Vector2f(x*12.5+7,5 + y*20));
@@ -609,11 +625,22 @@ void DisplayGame::drawBoss(int x, int y, int type){
 			bossSprite.setPosition(sf::Vector2f(x*12.5+7 +340,5 + y*20 + 260));
 			//window->draw(bossShape);
 			window->draw(bossSprite);
+
+			//maxHp de boss1 = 5000
+			bossLifeBar.setSize(sf::Vector2f(200.f/5000.f*bossHp, 10));
 		}else{
 			boss2Sprite.setPosition(sf::Vector2f(x*12.5+7 +340,5 + y*20 + 260));
 			//window->draw(bossShape);
 			window->draw(boss2Sprite);
+
+			//maxHp de boss1 = 10000
+			bossLifeBar.setSize(sf::Vector2f(200/10000*bossHp, 10));
 		}
+		//bossText.setString(std::to_string(bossHp)); //Debug: voir les hp du boss
+		window->draw(bossText);
+		
+		
+		window->draw(bossLifeBar);
 }
 void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType, int level, int tick){
 		

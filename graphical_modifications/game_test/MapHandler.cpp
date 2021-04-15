@@ -652,7 +652,7 @@ void MapHandler::checkCollision_server(int t, bool friendlyFire) {
 std::string MapHandler::getState(int nlives_j1,int nlives_j2,int tick){
     std::string state{};
     vec2i pos{};
-    std::string x, y;
+    std::string x, y, bossHp;
     int lives[2] = {nlives_j1,nlives_j2};
     // DISPLAY OBJECTS
 
@@ -662,6 +662,7 @@ std::string MapHandler::getState(int nlives_j1,int nlives_j2,int tick){
         pos = boss->getPos();
         x = std::to_string(pos.x);
         y = std::to_string(pos.y);
+        bossHp = std::to_string(boss->getHp()); 
         if (boss->getBossType()==1)
             state.append("A_EB_");
         else
@@ -669,6 +670,8 @@ std::string MapHandler::getState(int nlives_j1,int nlives_j2,int tick){
         state.append(x);
         state.append("_");
         state.append(y);
+        state.append("_");
+        state.append(bossHp);
         state.append("&");
     }
 
