@@ -133,7 +133,14 @@ void DisplayGame::parse_affichage(std::string instruction){
 		idx = instruction.find(delimiteur_parametre);
 		explo = std::stoi(instruction.substr(0,idx));
 		tick = std::stoi(instruction.substr(idx+1,instruction.size()));
-		drawEnemy(x,y,tick,explo);
+		drawEnemy(x,y,tick,explo, 1);
+	}
+	else if(objet=="E2"){			//Vaisseau ennemie
+		int explo,tick;
+		idx = instruction.find(delimiteur_parametre);
+		explo = std::stoi(instruction.substr(0,idx));
+		tick = std::stoi(instruction.substr(idx+1,instruction.size()));
+		drawEnemy(x,y,tick,explo, 2);
 	}
 	else if(objet=="1"){		//Vaisseau joueur 1     A_1_x_y_explosion_tick
 		int explo,tick;
@@ -153,7 +160,9 @@ void DisplayGame::parse_affichage(std::string instruction){
 	else if(objet=="O")			//obstacle
 		drawObstacle(x,y);
 	else if(objet=="EB") 		//Boss
-		drawBoss(x,y);
+		drawBoss(x,y,1);
+	else if(objet=="EB2")
+		drawBoss(x,y,2);
 	else if(objet=="B"){		//Bonus
 		idx = instruction.find(delimiteur_parametre);
 		int type = std::stoi(instruction.substr(0,idx));
@@ -380,25 +389,29 @@ void DisplayGame::drawObstacle(int x, int y) {
 		window->draw(asteroidSprite);
 
 }
-void DisplayGame::drawEnemy(int x, int y, int tick, bool isBlinking) {
+void DisplayGame::drawEnemy(int x, int y, int tick, bool isBlinking, int type) {
 
+	if(type == 1){
+		if(isBlinking){
 
-	if(isBlinking){
+			enemySprite.setColor(sf::Color::Red);
 
-		enemySprite.setColor(sf::Color::Red);
-
+		}
+		else{
+			enemySprite.setColor(sf::Color::White); //default color
+		}
+		
+		//sf::RectangleShape enemyShape(sf::Vector2f(12.5*3,20));
+		//enemyShape.setFillColor(sf::Color::Red);
+		//enemyShape.setPosition(sf::Vector2f(x*12.5,5 + y*20));
+		enemySprite.setPosition(sf::Vector2f(x*12.5+ 60 ,5 + y*20 + 60));
+		if(y*20 < 350){
+			//window->draw(enemyShape);
+			window->draw(enemySprite);
+		}
 	}
 	else{
-		enemySprite.setColor(sf::Color::White); //default color
-	}
-	
-	//sf::RectangleShape enemyShape(sf::Vector2f(12.5*3,20));
-	//enemyShape.setFillColor(sf::Color::Red);
-	//enemyShape.setPosition(sf::Vector2f(x*12.5,5 + y*20));
-	enemySprite.setPosition(sf::Vector2f(x*12.5+ 60 ,5 + y*20 + 60));
-	if(y*20 < 350){
-		//window->draw(enemyShape);
-		window->draw(enemySprite);
+
 	}
 
 }
@@ -556,13 +569,17 @@ void DisplayGame::drawBonus(int type, int x, int y){
 	}
 }
 
-void DisplayGame::drawBoss(int x, int y){
+void DisplayGame::drawBoss(int x, int y, int type){
 		//sf::RectangleShape bossShape(sf::Vector2f(12.5*18,20*6));
 		//bossShape.setFillColor(sf::Color::Red);
 		//bossShape.setPosition(sf::Vector2f(x*12.5+7,5 + y*20));
-		bossSprite.setPosition(sf::Vector2f(x*12.5+7 +340,5 + y*20 + 260));
-		//window->draw(bossShape);
-		window->draw(bossSprite);
+		if(type == 1){
+			bossSprite.setPosition(sf::Vector2f(x*12.5+7 +340,5 + y*20 + 260));
+			//window->draw(bossShape);
+			window->draw(bossSprite);
+		}else{
+			
+		}
 }
 void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType, int level, int tick){
 		

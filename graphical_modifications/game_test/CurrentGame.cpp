@@ -174,10 +174,13 @@ std::string CurrentGame::run_server(int *move_to_exec){
         map.update_server(MapObject::obstacle, tick);
     if (tick > 100 && tick %150 ==0)
         map.update_server(MapObject::enemyship, tick);
+    if (tick > 100 && tick %20 ==0)
+        map.update_server(MapObject::enemyship2, tick);
     if(tick %50  == 0) {
         map.update_server(MapObject::bonus, tick);
     }
-    if(map.getCurrentLevel()==3 && tick%10==0 && !map.getChangingLevel()){
+    if((map.getCurrentLevel()==2 || map.getCurrentLevel()==4) && tick%10==0 && !map.getChangingLevel()){
+        //on met à jour les boss
         map.update_server(MapObject::boss,tick);
     }
 
@@ -189,7 +192,9 @@ std::string CurrentGame::run_server(int *move_to_exec){
     map.bossShoot_server(tick);
     map.updateBounds();
 
-    if(map.getBoss().empty() && map.getBossSpawned())
+    //if(map.getBoss().empty() && map.getBossSpawned())
+    //   game_over = true;
+    if (map.getCurrentLevel() == lastLevel+1) //Dernier lvl = x, si on est à x+1 -> on a gagné
         game_over = true;
 
     if(twoPlayers){
