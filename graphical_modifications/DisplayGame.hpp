@@ -59,6 +59,7 @@ class DisplayGame
 	bool soundExploded2=false;
 	sf::Font font;
 	sf::Text guiText;
+	sf::Text bossText;
 	sf::Sprite heartSprite;
 	sf::Sprite health_bar;
 	sf::Sprite health_bar2;
@@ -77,6 +78,7 @@ class DisplayGame
 	sf::Sprite boss2Sprite;
 	sf::Sprite enemyHSprite;
 	sf::RectangleShape line{sf::Vector2f(990, 2)};
+	sf::RectangleShape bossLifeBar;
 
 public:
 	//Constructor
@@ -90,7 +92,7 @@ public:
     void drawProjectile(int x, int y, bool enemy, bool player1);
     void drawPlayer(int player, int x , int y, int tick, bool isBlinking);
     void drawBonus(int type, int x, int y);
-    void drawBoss(int x, int y, int type);
+    void drawBoss(int x, int y, int type, int bossHp);
     void drawUi(int player, int hp, int score, int lives, int bonusType, int level, int tick);
 	void drawEndGame(std::string score);
 	void drawNewLevel(int tick,int levelTick,int currentLevel);
