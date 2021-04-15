@@ -669,7 +669,7 @@ void DisplayGame::drawBoss(int x, int y, int type, int bossHp){
 			window->draw(boss2Sprite);
 
 			//maxHp de boss1 = 10000
-			bossLifeBar.setSize(sf::Vector2f(200/10000*bossHp, 10));
+			bossLifeBar.setSize(sf::Vector2f(200.f/10000.f*bossHp, 10));
 		}
 		//bossText.setString(std::to_string(bossHp)); //Debug: voir les hp du boss
 		window->draw(bossText);

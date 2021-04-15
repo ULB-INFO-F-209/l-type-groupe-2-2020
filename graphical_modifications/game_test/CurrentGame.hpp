@@ -27,6 +27,7 @@ class CurrentGame {
     MapHandler map;
 
     int tick=0;  // 1 tick = 1 boucle du jeu
+    int tickGameOver = -1;
     int finalScore1{};
     int finalScore2{};
 
