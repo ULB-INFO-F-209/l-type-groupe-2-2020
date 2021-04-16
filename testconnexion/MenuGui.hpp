@@ -117,7 +117,8 @@ private:
 	void set_title(QWidget *parent, std::string image);
 	QLabel *create_label(QWidget *parent, std::string value,QRect pos);
 	QPushButton *create_button(QWidget *parent,std::string image, int width, int height);
-	QComboBox *Menu::create_box(QWidget *parent, std::string *values,QRect pos);
+	QPushButton *create_button(QWidget *parent,std::string image, int width, int height, QRect size);
+	QComboBox *create_box(QWidget *parent, std::vector<std::string> values, QRect pos);
 
 private slots:
 	void connexion(bool sign_in=true);

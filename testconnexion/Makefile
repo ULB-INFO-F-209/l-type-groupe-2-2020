@@ -20,7 +20,7 @@ client_terminal: main_client_terminal.cpp client.o parsing.o interface.o menuter
 	g++  main_client_terminal.cpp  client.o parsing.o interface.o menuterminal.o CurrentGame.o MapHandler.o displaygame.o $(flag) $(sfml_flag) -o process_client_terminal
 	
 client_gui: main_client_gui.cpp client.o parsing.o  menugui.o  CurrentGame.o MapHandler.o displaygamegui.o
-	g++  main_client_gui.cpp  client.o parsing.o menugui.o CurrentGame.o MapHandler.o displaygamegui.o $(qt_flag) $(sfml_flag) $(flag) -Wl,-O1 -o process_client_gui  $(qt_exec_flag)
+	g++  main_client_gui.cpp client.o parsing.o menugui.o CurrentGame.o MapHandler.o displaygamegui.o $(qt_flag) $(sfml_flag) $(flag) -Wl,-O1 -o process_client_gui  $(qt_exec_flag)
 	
 interface.o: Interface.cpp Interface.hpp screen.hpp
 	g++  -c Interface.cpp $(flag) $(sfml_flag) -o interface.o
@@ -42,7 +42,6 @@ displaygamegui.o: DisplayGameGui.cpp DisplayGameGui.hpp
 
 client.o: Client.hpp Client.cpp Constante.hpp
 	g++  -c Client.cpp $(flag) -o client.o 
-	
 
 
 database.o: game_test/database/database.hpp game_test/database/database.cpp
