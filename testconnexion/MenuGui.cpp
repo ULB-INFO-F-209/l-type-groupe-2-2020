@@ -79,7 +79,7 @@ void MenuGui::home(){
 
 }
 
-void MenuGui::check_data(bool sign_in){
+void MenuGui::check_data(QLineEdit *pseudo_line, QLineEdit *pswd_line, bool sign_in){
     std::string pseudo = (pseudo_line->text()).toUtf8().constData();
     std::string pswd = (pswd_line->text()).toUtf8().constData();
     int success;
@@ -95,41 +95,69 @@ void MenuGui::check_data(bool sign_in){
     }
 }
 
-void MenuGui::connexion(bool sign_in){
-    QWidget *centralWidget = new QWidget(this);
-    QLabel *lbl = new QLabel(centralWidget);
+void Menu::set_background(QWidget *centralwidget){
+    QLabel *lbl = new QLabel(centralwidget);
     QMovie *mv = new QMovie("images/background/ciel.gif");
     mv->setScaledSize(QSize(800,600));
     lbl->setGeometry(QRect(0, 0, 800, 600));
     mv->start();
     lbl->setAttribute(Qt::WA_TranslucentBackground);
     lbl->setMovie(mv);
+}
 
-    pseudo_line = new QLineEdit(centralWidget);
-    pseudo_line->setGeometry(QRect(230, 270, 400, 45));
-    pseudo_line->setMaxLength(15);
-    /**********/
-    pseudo_line->setStyleSheet(QLatin1String("background-color: rgb(255, 255, 255);\n"
-                                            "font: 75 13pt \"Tlwg Typo\";\n"
-                                            "border-color: rgb(0, 0, 0);\n"
-                                            "gridline-color: rgb(238, 238, 236);"));
-    /*********/
+QComboBox *Menu::create_box(QWidget *parent, std::string *values,QRect pos){
+    QComboBox *box = new QComboBox(parent);
+    box->setGeometry(pos);
+    box->clear();
+    for(auto val: values)
+        box->addItem(QString::fromStdString(values[i]));
+    return box;
+}
 
-    pswd_line = new QLineEdit(centralWidget);
-    pswd_line->setGeometry(QRect(230, 370, 400, 45));
-    pswd_line->setMaxLength(15);
-    pswd_line->setStyleSheet(QLatin1String("background-color: rgb(255, 255, 255);\n"
-                                            "font: 75 13pt \"Tlwg Typo\";\n"
-                                            "border-color: rgb(0, 0, 0);\n"
-                                            "gridline-color: rgb(238, 238, 236);"));
+QLabel *Menu::create_label(QWidget *parent, std::string value, QRect pos){
+    QLabel *label = new QLabel(QString::fromStdString(value),parent);
+    label->setGeometry(pos);
+    label->setStyleSheet("QLabel { background-color : black; color : white; }");
+    
+    return label;
+}
 
-    QLabel *pseudo_label = new QLabel(QString::fromStdString("USERNAME : "),centralWidget);
-    pseudo_label->setGeometry(QRect(140, 270, 91, 45));
-    pseudo_label->setStyleSheet("QLabel { background-color : black; color : white; }");
+QPushButton *Menu::create_button(QWidget *parent,std::string image, int width, int height){
+    QPushButton * button = new QPushButton(parent);
+    button->setMinimumSize(QSize(width, height));
+    QPixmap pix(QString::fromStdString(image));
+    pix = pix.scaled(button->size(),Qt::KeepAspectRatio);
+    QIcon icon(pix);
+    button->setIcon(icon);
+    button->setIconSize(QSize(width, height));
+    button->setFlat(true);
 
-    QLabel *pswd_label = new QLabel(QString::fromStdString("PASSWORD : "),centralWidget);
-    pswd_label->setGeometry(QRect(130, 370, 101, 45));
-    pswd_label->setStyleSheet("QLabel { background-color : black; color : white; }");
+    return button;
+}
+
+void MenuGui::connexion(bool sign_in){
+    QWidget *centralWidget = new QWidget(this);
+    set_background(centralWidget);
+
+    int pseudo = 0, pswd=1;
+    QLineEdit *lines[2];
+    int pos_y[2] = {270,370};
+    for(int i = 0; i < 2; i++){
+        lines[i] = QLineEdit(centralWidget)
+        lines[i]->setGeometry(QRect(230, pos_y[i], 400, 45));
+        lines[i]->setMaxLength(15);
+        /**********/
+        lines[i]->setStyleSheet(QLatin1String("background-color: rgb(255, 255, 255);\n"
+                                                "font: 75 13pt \"Tlwg Typo\";\n"
+                                                "border-color: rgb(0, 0, 0);\n"
+                                                "gridline-color: rgb(238, 238, 236);"));
+        /*********/
+
+    }
+    QRect pos_pseudo(140, 270, 91, 45)
+    QRect pos_pswd(130, 370, 101, 45)
+    QLabel *pseudo_label = create_label(centralWidget, pos_pseudo);
+    QLabel *pswd_label = create_label(centralWidget, pos_pswd);
 
     QWidget *horizontalLayoutWidget = new QWidget(centralWidget);
     horizontalLayoutWidget->setGeometry(QRect(110, 440, 680, 200));
@@ -139,16 +167,12 @@ void MenuGui::connexion(bool sign_in){
     horizontalLayout->setSpacing(50);
     horizontalLayout->setContentsMargins(11, 11, 11, 11);
 
-    QPushButton *ok_button =  new QPushButton(QString::fromStdString("Ok"),horizontalLayoutWidget);
-    ok_button->setMinimumSize(QSize(150, 150));
+    QPushButton *ok_button =  create_button(horizontalLayoutWidget,"images/buttons/ok", 150,150 );
     horizontalLayout->addWidget(ok_button);
-    QPixmap pix_ok("images/buttons/ok");
-    QIcon icon_ok(pix_ok);
-    pix_ok = pix_ok.scaled(ok_button->size(),Qt::KeepAspectRatio);
-    ok_button->setIcon(icon_ok);
-    ok_button->setIconSize(QSize(150, 150));
-    ok_button->setFlat(true);
 
+    QPushButton *cancel_button = create_button(horizontalLayoutWidget,"images/buttons/back", 150,150 );
+    horizontalLayout->addWidget(cancel_button);
+    
 
     /****************************DESIGN*****************************************************/
     QLabel *title_label = new QLabel(centralWidget);
@@ -158,74 +182,45 @@ void MenuGui::connexion(bool sign_in){
     title_label->setAttribute(Qt::WA_TranslucentBackground);
     this->setStyleSheet(QStringLiteral("background-color:black;"));
 
-    /****************************CONNECTIONS*****************************************************/
-    
-    if(sign_in){
-        //this->setStyleSheet(QStringLiteral("background-color:rgb(183, 110, 34);"));
+    if(sign_in)
         pix_home_title.load("images/titles/signIn");
-        title_label->setPixmap( pix_home_title);
-        pix_home_title = pix_home_title.scaled(title_label->size(),Qt::KeepAspectRatio);
-        connect(ok_button, &QPushButton::clicked, this,  [this]() {
-            check_data(true);});
-
-    }
-    else{
-        //this->setStyleSheet(QStringLiteral("background-color:rgb(19, 43, 15);"));
+    else
         pix_home_title.load("images/titles/signUp");
-        title_label->setPixmap( pix_home_title);
-        pix_home_title = pix_home_title.scaled(title_label->size(),Qt::KeepAspectRatio);
-        connect(ok_button, &QPushButton::clicked, this, [this]() {
-            check_data(false);});
-    }
-    /*************************************************/
-    QPushButton *cancel_button = new QPushButton(QString::fromStdString("Cancel"),horizontalLayoutWidget);
-    cancel_button->setMinimumSize(QSize(150, 150));
-    QPixmap pix_cancel("images/buttons/back");
-    QIcon icon_cancel(pix_cancel);
-    cancel_button->setIcon(icon_cancel);
-    cancel_button->setIconSize(QSize(150, 1500));
-    pix_cancel = pix_cancel.scaled(cancel_button->size(),Qt::KeepAspectRatio);
-    cancel_button->setFlat(true);
-    connect(cancel_button, &QPushButton::clicked, this, [this](){
-        home();
+
+    /****************************CONNECTIONS*****************************************************/
+    pix_home_title = pix_home_title.scaled(title_label->size(),Qt::KeepAspectRatio);
+    title_label->setPixmap( pix_home_title);
+    connect(ok_button, &QPushButton::clicked, this, [this,sign_in,lines]() {
+            check_data(lines[pseudo],lines[pswd],sign_in);
     });
-    horizontalLayout->addWidget(cancel_button);
+    
+    connect(cancel_button, &QPushButton::clicked, this,&Menu::home);
 
     this->setCentralWidget(centralWidget);
     this->show();
 
 }
+
 void MenuGui::main_m(){
     QWidget *centralWidget = new QWidget(this);
-
-    //exageration
-    QLabel *lbl = new QLabel(centralWidget);
-    QMovie *mv = new QMovie("images/background/ciel.gif");
-    mv->setScaledSize(QSize(800,600));
-    lbl->setGeometry(QRect(0, 0, 800, 600));
-    mv->start();
-    lbl->setAttribute(Qt::WA_TranslucentBackground);
-    lbl->setMovie(mv);
+    set_background(centralWidget);
 
     QWidget *horizontalLayoutWidget  = new QWidget(centralWidget);
     horizontalLayoutWidget->setGeometry(QRect(80, 150, 651, 450));
 
-    QVBoxLayout *HLayout  = new QVBoxLayout(horizontalLayoutWidget);
-    HLayout->setContentsMargins(100, 0, 100, 0);
+    QHBoxLayout *HLayout1  = new QHBoxLayout(horizontalLayoutWidget);
+    QHBoxLayout *HLayout2  = new QHBoxLayout(horizontalLayoutWidget);
 
     QPushButton *button[SIZE_MAIN_MENU];
-    QPixmap pix_main_button[SIZE_MAIN_MENU] = {QPixmap("images/buttons/game"),QPixmap("images/buttons/friends"),QPixmap("images/buttons/lead"),
-    										   QPixmap("images/buttons/profile"),QPixmap("images/buttons/level"),QPixmap("images/buttons/logout")};
-    QIcon icon_main[SIZE_MAIN_MENU];
+    std::string pix_main[SIZE_MAIN_MENU] = {"images/buttons/game","images/buttons/friends","images/buttons/lead",
+    										   "images/buttons/profile","images/buttons/level","images/buttons/logout"};
     int ngame = 0, friends=1, lead=2, prof=3, level=4, logout=5;
     for (size_t i = 0; i < SIZE_MAIN_MENU; ++i){
-       button[i] = new QPushButton(horizontalLayoutWidget);
-       button[i]->setMinimumSize(QSize(400,100 ));
-       icon_main[i] = QIcon(pix_main_button[i]);
-       button[i]->setIcon(icon_main[i]);
-       button[i]->setIconSize(QSize(400, 100));
-       button[i]->setFlat(true);
-       HLayout->addWidget(button[i]);
+       button[i] = create_button("horizontalLayoutWidget",pix_main[i],100,100,);
+       if(i < 3)
+            HLayout1->addWidget(button[i]);
+        else
+            HLayout2->addWidget(button[i]);
     }
 
     connect(button[friends], &QPushButton::clicked, this, &MenuGui::print_friends);

@@ -113,10 +113,13 @@ private:
 	void level_editor(Parsing::Level my_level);
 	void launch_game();
 	void view_level();
+	void set_background(QWidget *centralwidget);
+	QLabel *create_label(QWidget *parent, std::string value,QRect pos);
+	QPushButton *create_button(QWidget *parent,std::string image, int width, int height);
 
 private slots:
 	void connexion(bool sign_in=true);
-	void check_data(bool sign_in=true);
+	void check_data( QLineEdit *pseudo_line, QLineEdit *pswd_line,bool sign_in=true);
 	void print_profile();
 	void print_leaderboard();
 	void add_del_friend(bool adding=true);
