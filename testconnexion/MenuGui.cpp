@@ -205,7 +205,7 @@ void MenuGui::main_m(){
     QWidget *centralWidget = new QWidget(this);
     set_background(centralWidget);
     set_title(centralWidget,"images/titles/mainMenu");
-    
+
     QWidget *horizontalLayoutWidget  = new QWidget(centralWidget);
     horizontalLayoutWidget->setGeometry(QRect(80, 150, 651, 450));
 
@@ -244,13 +244,7 @@ void MenuGui::print_profile(){
     std::string pseudo = profile.pseudo, score =  std::to_string(profile.score);
 
     QWidget *centralWidget = new QWidget(this);
-    QLabel *lbl = new QLabel(centralWidget);
-    QMovie *mv = new QMovie("images/background/ciel.gif");
-    mv->setScaledSize(QSize(800,600));
-    lbl->setGeometry(QRect(0, 0, 800, 600));
-    mv->start();
-    lbl->setAttribute(Qt::WA_TranslucentBackground);
-    lbl->setMovie(mv);
+    set_background(centralWidget);
 
 
     QWidget *gridLayoutWidget = new QWidget(centralWidget);
@@ -259,7 +253,7 @@ void MenuGui::print_profile(){
 
     QGridLayout *gridLayout = new QGridLayout(gridLayoutWidget);
     gridLayout->setContentsMargins(0, 0, 0, 0);
-    QLabel *username = new QLabel((QString::fromStdString("USERNAME :")),gridLayoutWidget);
+    QLabel *username = create_label("USERNAME :",gridLayoutWidget);
     username->setStyleSheet("QLabel { background-color : black; color : white; }");
     QLabel *score_l = new QLabel(QString::fromStdString("SCORE :"),gridLayoutWidget);
     score_l->setStyleSheet("QLabel { background-color : black; color : white; }");
