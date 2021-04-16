@@ -437,6 +437,7 @@ void DisplayGameGui::drawObstacle(int x, int y) {
 	//sf::RectangleShape asteroidShape(sf::Vector2f(12.5*1.5,20*1.5));
 	//asteroidShape.setFillColor(sf::Color(102,51,0));
 	//asteroidShape.setPosition(sf::Vector2f((x+1)*12.5-3,y*20));
+
 	if(y*20 < 350)
 		window->draw(asteroidSprite);
 

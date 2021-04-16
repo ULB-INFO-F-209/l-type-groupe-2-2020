@@ -6,7 +6,7 @@ flag = -std=c++17 -lncurses -fconcepts -pthread \
 		 -Wnoexcept -Wctor-dtor-privacy -Woverloaded-virtual -Wsign-promo -Wzero-as-null-pointer-constant\
 		 -Wsuggest-final-types -Wsuggest-final-methods  -Wsuggest-override 
 
-sfml_flag = -lsfml-graphics -lsfml-window -lsfml-system
+sfml_flag = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
 qt_flag = -pipe -O2 -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -I. -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++
 

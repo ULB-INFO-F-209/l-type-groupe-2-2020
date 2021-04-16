@@ -57,7 +57,7 @@ public:
     CurrentGame()=default;
     int getScore(){return finalScore1+finalScore2;}
     CurrentGame(Parsing::Game_settings);
-    CurrentGame(Parsing::Level);
+    CurrentGame(Parsing::Level, Parsing::Game_settings);
     std::string run_server(int *move_to_exec);
     std::string run_server(int *move_to_exec,Parsing::Player player,std::vector<Parsing::Enemy_template> enemy_list,std::vector<Parsing::Obstacle_template> obs_list);
 };

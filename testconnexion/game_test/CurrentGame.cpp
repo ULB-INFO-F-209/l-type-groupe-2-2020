@@ -1,5 +1,6 @@
-/**
+/*
  * TODO:
+ *  enlever static_cast !!
  *  demander pout surcharge launch_game (thread)
  * liste à dire:
  * ajouter drop rate général
@@ -25,7 +26,7 @@ CurrentGame::CurrentGame(Parsing::Game_settings game_sett):twoPlayers(game_sett.
         map.setBounds(game_area);
         
     }
-CurrentGame::CurrentGame(Parsing::Level level_sett, Parsing::Game_settings sett):twoPlayers(false),friendlyFire(sett.ally_shot), dropRate(sett.drop_rate), dif(sett.diff),screen_area( {0, 0}, {80, 24}),game_area( {0, 0}, {78, 16}),map(dropRate,dif) {
+CurrentGame::CurrentGame(Parsing::Level level_sett, Parsing::Game_settings sett):twoPlayers(false),friendlyFire(sett.ally_shot), dropRate(sett.drop_rate), dif(sett.diff),screen_area( {0, 0}, {80, 24}),game_area( {0, 0}, {78, 16}),map(dropRate,dif){
     playership1 = new PlayerShip(10, 5, { {9, 5 }, { 3, 2 } }, '0',level_sett.player.hp,0,100,0);
     player1 = new Player(3); // à modif
     listPlayer.push_back(player1);
@@ -194,10 +195,13 @@ std::string CurrentGame::run_server(int *move_to_exec){
         map.update_server(MapObject::obstacle, tick);
     if (tick > 100 && tick %150 ==0)
         map.update_server(MapObject::enemyship, tick);
+    if (tick > 100 && tick %20 ==0)
+        map.update_server(MapObject::enemyship2, tick);
     if(tick %50  == 0) {
         map.update_server(MapObject::bonus, tick);
     }
-    if(map.getCurrentLevel()==3 && tick%10==0 && !map.getChangingLevel()){
+    if((map.getCurrentLevel()==2 || map.getCurrentLevel()==4) && tick%10==0 && !map.getChangingLevel()){
+        //on met à jour les boss
         map.update_server(MapObject::boss,tick);
     }
 
@@ -209,16 +213,21 @@ std::string CurrentGame::run_server(int *move_to_exec){
     map.bossShoot_server(tick);
     map.updateBounds();
 
-    if(map.getBoss().empty() && map.getBossSpawned())
-        game_over = true;
+    //if(map.getBoss().empty() && map.getBossSpawned())
+    //   game_over = true;
+    if (map.getCurrentLevel() == lastLevel+1 && tickGameOver == -1) //Dernier lvl = x, si on est à x+1 -> on a gagné
+        tickGameOver = tick;
 
     if(twoPlayers){
-        if (player1->getnLives() < 1 && player2->getnLives() < 1)
-            game_over = true;
+        if (player1->getnLives() < 1 && player2->getnLives() < 1 && tickGameOver == -1)
+            tickGameOver = tick;
     }else{
-        if (player1->getnLives() < 1)
-            game_over = true;
+        if (player1->getnLives() < 1 && tickGameOver == -1)
+            tickGameOver = tick;
     }
+
+    if(tickGameOver != -1 && tick >= tickGameOver + 300)
+        game_over = true;
 
     heal(); 
 
