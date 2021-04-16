@@ -178,7 +178,7 @@ void Parsing::create_game_from_str(char *buffer, Game_settings * settings){
 	index = cpp_str_buffer.find(delimiteur_score);
 	option = cpp_str_buffer.substr(0,index);
 	cpp_str_buffer = cpp_str_buffer.substr(index+1,cpp_str_buffer.size());
-	settings->diff = !strcmp(option.c_str(), "easy")? easy: !strcmp(option.c_str(), "medium")? medium: hard;
+	settings->diff = !strcmp(option.c_str(), "easy")? difficulty::easy: !strcmp(option.c_str(), "medium")? difficulty::medium: difficulty::hard;
 	
 	//pid
 	strcpy(settings->pid,cpp_str_buffer.c_str());
@@ -226,7 +226,7 @@ Parsing::Level Parsing::level_from_str(std::string buffer){
 	buffer = buffer.substr(idx+1, buffer.size());
 
 	while(enemy_zone.size() > 1){
-		Enemy e;
+		Enemy_template e;
 
 		idx = enemy_zone.find(delim_obj);
 		std::string object = enemy_zone.substr(0,idx);
@@ -270,7 +270,7 @@ Parsing::Level Parsing::level_from_str(std::string buffer){
 	buffer = buffer.substr(idx+1, buffer.size());
 
 	while(obs_zone.size() > 1){
-		Obstacle e;
+		Obstacle_template e;
 
 		idx = obs_zone.find(delim_obj);
 		std::string object = obs_zone.substr(0,idx);
