@@ -27,6 +27,7 @@ class CurrentGame {
     MapHandler map;
 
     int tick=0;  // 1 tick = 1 boucle du jeu
+    int tickGameOver = -1;
     int finalScore1{};
     int finalScore2{};
 
@@ -40,6 +41,7 @@ class CurrentGame {
 
     bool exit_requested = false;
     bool game_over = false;
+    int lastLevel = 4;
 
     void execInput(int inChar, uint_fast16_t x1, uint_fast16_t y1, bool firstPlayer);
     // Si Player a encore au moins 1 vie : reset les hp du PlayerShip à 100 après sa mort

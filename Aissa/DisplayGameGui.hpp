@@ -6,11 +6,17 @@
 #include "game_test/MapHandler.hpp"
 #include <unistd.h>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <fstream>
 #include <iostream>
 
 class DisplayGameGui
 {
+	sf::Music music;
+	sf::SoundBuffer buffer;
+	sf::SoundBuffer buffer1;
+	sf::Sound laserSound;
+	sf::Sound explosionSound;
 	//Game's windows
 	sf::RenderWindow* window;
 	rect game_area;
@@ -34,6 +40,8 @@ class DisplayGameGui
 	sf::Texture minigunTex;
 	sf::Texture enemy;
 	sf::Texture boss;
+	sf::Texture enemyH;
+	sf::Texture boss2;
 	sf::IntRect rectSourceSprite1{0,0,256,256};
 	sf::Sprite explosionSprite1;
 	sf::Clock clock1;
@@ -45,9 +53,12 @@ class DisplayGameGui
 	bool exploded2=false;
 	bool explo2PosSaved=false;
 	bool explo1PosSaved=false;
-
+	bool twoPlayer=false;
+	bool soundExploded1=false;
+	bool soundExploded2=false;
 	sf::Font font;
 	sf::Text guiText;
+	sf::Text bossText;
 	sf::Sprite heartSprite;
 	sf::Sprite health_bar;
 	sf::Sprite health_bar2;
@@ -63,7 +74,10 @@ class DisplayGameGui
 	sf::Sprite minigunSprite;
 	sf::Sprite enemySprite;
 	sf::Sprite bossSprite;
+	sf::Sprite boss2Sprite;
+	sf::Sprite enemyHSprite;
 	sf::RectangleShape line{sf::Vector2f(990, 2)};
+	sf::RectangleShape bossLifeBar;
 
 public:
 	//Constructor
@@ -73,11 +87,11 @@ public:
 	void drawStar();
 	void starHandler();
     void drawObstacle(int x, int y);
-    void drawEnemy(int x, int y, int tick, bool isBlinking);
+    void drawEnemy(int x, int y, int tick, bool isBlinking, int type);
     void drawProjectile(int x, int y, bool enemy, bool player1);
     void drawPlayer(int player, int x , int y, int tick, bool isBlinking);
     void drawBonus(int type, int x, int y);
-    void drawBoss(int x, int y);
+    void drawBoss(int x, int y, int type, int bossHp);
     void drawUi(int player, int hp, int score, int lives, int bonusType, int level, int tick);
 	void drawEndGame(std::string score);
 	void drawNewLevel(int tick,int levelTick,int currentLevel);

@@ -25,7 +25,7 @@ public:
     virtual void move();
     virtual vec2i getPos() const;
     void setPos(int x, int y){pos.x = x; pos.y = y;}
-    enum type{star,obstacle,playership,projectile,bonus,enemyship,boss};
+    enum type{star,obstacle,playership,projectile,bonus,enemyship,enemyship2,boss};
     virtual void touched(int damage);
     virtual void setHp(int h){hp =h;}
     virtual int getHp(){return hp;}
@@ -127,8 +127,9 @@ public:
 
 };
 
-class EnemyShip final : public Ship{
-    int shootTime; // détermine la cadence de tir
+class EnemyShip : public Ship{
+protected:
+    int shootTime;
 public:
     EnemyShip()=default;
     EnemyShip(int x, int y, rect b, char c,int h, int t, int shootDam){pos.x = x; pos.y = y; setBounds(b); setHp(h); setChar(c); setDammage(10); shootTime=t; shootDamage = shootDam; projectileHp = 10;}
@@ -137,12 +138,22 @@ public:
     ~EnemyShip(){};
 };
 
+class EnemyShip2 : public EnemyShip{
+    public:
+    EnemyShip2()=default;
+    EnemyShip2(int x, int y, rect b, char c,int h, int t, int shootDam){pos.x = x; pos.y = y; setBounds(b); setHp(h); setChar(c); setDammage(10); shootTime=t; shootDamage = shootDam; projectileHp = 10;}
+    void move() override {pos.x += 1;}
+};
+
+
+
 class Boss : public Ship{
-    int shootTime; // détermine la cadence de tir
+    int shootTime;
     bool movingRight;
+    int bossType;
 public:
     Boss()= default;
-    Boss(int x, int y, rect b, char c,int h, int t,int shootDam) {pos.x = x; pos.y = y; bounds=b; hp=h; disp_char=c; collisionDamage=100; shootTime = t;shootDamage = shootDam; projectileHp = 30; movingRight=true;}
+    Boss(int x, int y, rect b, char c,int h, int t,int shootDam, int typ) {pos.x = x; pos.y = y; bounds=b; hp=h; disp_char=c; collisionDamage=100; shootTime = t;shootDamage = shootDam; bossType = typ; projectileHp = 30; movingRight=true;}
     void move() override{
         if(movingRight)
             pos.x++;
@@ -152,6 +163,7 @@ public:
     bool getMovingRight() const{return movingRight;}
     void setShootTime(int t){shootTime=t;}
     int getShootTime() const{return shootTime;}
+    int getBossType() const{return bossType;}
     ~Boss(){};
 
 };
@@ -167,7 +179,7 @@ class MapHandler final{
     bool changingLevel = false;
     bool bossSpawned=false;
     int enemyCount = 0;
-    int enemyLimit=5; //nombre d'ennemis max par niveau
+    int enemyLimit=10; //nombre d'ennemis max par niveau
     int enemyStartHp = 30;
     int enemyStartProjectileDamage = 10;
     int obstacleStartHp = 10;
@@ -181,6 +193,7 @@ class MapHandler final{
     std::vector<Projectile*> projectilesEnemy_set;
     std::vector<PlayerShip*> player_ships_set;
     std::vector<EnemyShip*> enemy_ships_set;
+    std::vector<EnemyShip2*> enemy_ships2_set;
     std::vector<Bonus*> bonuses_set;
 public:
     MapHandler()=default;
@@ -197,6 +210,7 @@ public:
     std::vector<Projectile*> getProjectiles() const;
     std::vector<Projectile*> getProjectilesEnemy() const;
     std::vector<EnemyShip*> getEnemy() const;
+    std::vector<EnemyShip2*> getEnemy2() const;
     std::vector<Bonus*> getBonus() const;
     std::vector<Boss*> getBoss() const;
     std::vector<PlayerShip*>  getListPlayer()const;
