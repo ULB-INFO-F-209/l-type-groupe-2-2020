@@ -25,42 +25,42 @@ class MapObject{
 public:
     virtual void move();
     virtual vec2i getPos() const;
-    void setPos(int x, int y){pos.x = x; pos.y = y;}
+    void setPos(uint_fast16_t x, uint_fast16_t y){pos.x = x; pos.y = y;}
     enum type{star,obstacle,playership,projectile,bonus,enemyship,enemyship2,boss};
     virtual void touched(int damage);
     virtual void setHp(int h){hp =h;}
     virtual int getHp(){return hp;}
     virtual ~MapObject(){};
-    type typ;
+    type typ=star;
 
 protected:
-    vec2i pos; // (x, y)
-    int hp;
+    vec2i pos{}; // (x, y)
+    int hp=0;
 };
 
 class Star final : public MapObject{ //background
 public:
     Star()=default;
-    Star(int nx, int ny) { pos.x = nx; pos.y = ny;typ=star;}
+    Star(uint_fast16_t nx, uint_fast16_t ny) { pos.x = nx; pos.y = ny;typ=star;}
     ~Star(){};
 };
 
 class Obstacle final: public MapObject{
-    int damage;
+    int damage=0;
 public:
     Obstacle()=default;
-    Obstacle(int nx, int ny,int dam,int h) {pos.x = nx; pos.y = ny; damage=dam;typ=obstacle;hp=h;}
+    Obstacle(uint_fast16_t nx, uint_fast16_t ny,int dam,int h) {pos.x = nx; pos.y = ny; damage=dam;typ=obstacle;hp=h;}
     int get_damage() const {return damage;};
     ~Obstacle(){};
 };
 
 class Ship: public MapObject{
 protected:
-    int collisionDamage; // dégats causés par une collision
-    char disp_char; // caractère représentant le Ship
-    rect bounds; // dimension du ship (rectangle)
-    int shootDamage; // dégats causés par le projectile envoyé
-    int projectileHp; // vie du projectile
+    int collisionDamage=0; // dégats causés par une collision
+    char disp_char{}; // caractère représentant le Ship
+    rect bounds{}; // dimension du ship (rectangle)
+    int shootDamage=0; // dégats causés par le projectile envoyé
+    int projectileHp=0; // vie du projectile
 
 
 public:
@@ -80,13 +80,13 @@ public:
 };
 
 class Projectile final: public MapObject{
-    int damage;
-    bool shipType; // enlever TODO
-    int player;   // 0 = enemy; 1 = player1; 2 = player2
+    int damage{};
+    bool shipType{}; // enlever TODO
+    int player{};   // 0 = enemy; 1 = player1; 2 = player2
 public:
     Projectile()=default;
     void move() override;
-    Projectile(int nx, int ny,int dam,bool ship_t, int h, int p) {pos.x = nx; pos.y = ny; damage=dam; shipType=ship_t;typ=projectile; hp = h; player = p;}
+    Projectile(uint_fast16_t nx, uint_fast16_t ny,int dam,bool ship_t, int h, int p) {pos.x = nx; pos.y = ny; damage=dam; shipType=ship_t;typ=projectile; hp = h; player = p;}
     int getDamage() const{return damage;}
     bool getShipType() const{return shipType;}
     int getPlayer() const{return player;}
@@ -94,26 +94,26 @@ public:
 };
 
 class Bonus final: public MapObject{
-    bonusType bonustype;
+    bonusType bonustype{};
 public:
     Bonus(){hp=20;};
-    Bonus(int nx, int ny,bonusType bonus_t) :bonustype(bonus_t)  {pos.x = nx; pos.y = ny; hp=10;};
-    bonusType const getBonusType() const {return bonustype;}
+    Bonus(uint_fast16_t nx, uint_fast16_t ny,bonusType bonus_t) :bonustype(bonus_t)  {pos.x = nx; pos.y = ny; hp=10;};
+    bonusType getBonusType() const {return bonustype;}
     ~Bonus(){};
 
 };
 
 class PlayerShip final: public Ship{
-    int killTime; // sauvegarde du moment où Playership est mort (pour faire clignoter)
-    bool isAlive;  
-    int playerNb; // 0, 1
-    int score;
-    bonusType currentBonus;
+    int killTime{}; // sauvegarde du moment où Playership est mort (pour faire clignoter)
+    bool isAlive{};  
+    int playerNb{}; // 0, 1
+    int score{};
+    bonusType currentBonus{};
 
 
 public:
     PlayerShip()=default;
-    PlayerShip(int x, int y, rect b, char c, int h, int nb, int dam, int s){pos.x = x; pos.y = y; bounds=b; hp=h; disp_char=c;isAlive=true; playerNb = nb; collisionDamage=dam; score = s;currentBonus=noBonus;shootDamage=10; projectileHp = 10;}
+    PlayerShip(uint_fast16_t x, uint_fast16_t y, rect b, char c, int h, int nb, int dam, int s){pos.x = x; pos.y = y; bounds=b; hp=h; disp_char=c;isAlive=true; playerNb = nb; collisionDamage=dam; score = s;currentBonus=noBonus;shootDamage=10; projectileHp = 10;}
     int getKillTime() const{return killTime;}
     bool getIsAlive() const{return isAlive;}
     void setKillTime(int t){killTime=t;}
@@ -130,10 +130,10 @@ public:
 
 class EnemyShip : public Ship{
 protected:
-    int shootTime;
+    int shootTime{};
 public:
     EnemyShip()=default;
-    EnemyShip(int x, int y, rect b, char c,int h, int t, int shootDam){pos.x = x; pos.y = y; setBounds(b); setHp(h); setChar(c); setDammage(10); shootTime=t; shootDamage = shootDam; projectileHp = 10;}
+    EnemyShip(uint_fast16_t x, uint_fast16_t y, rect b, char c,int h, int t, int shootDam){pos.x = x; pos.y = y; setBounds(b); setHp(h); setChar(c); setDammage(10); shootTime=t; shootDamage = shootDam; projectileHp = 10;}
     void setShootTime(int t){shootTime=t;}
     int getShootTime() const{return shootTime;}
     ~EnemyShip(){};
@@ -142,19 +142,19 @@ public:
 class EnemyShip2 : public EnemyShip{
     public:
     EnemyShip2()=default;
-    EnemyShip2(int x, int y, rect b, char c,int h, int t, int shootDam){pos.x = x; pos.y = y; setBounds(b); setHp(h); setChar(c); setDammage(10); shootTime=t; shootDamage = shootDam; projectileHp = 10;}
+    EnemyShip2(uint_fast16_t x, uint_fast16_t y, rect b, char c,int h, int t, int shootDam){pos.x = x; pos.y = y; setBounds(b); setHp(h); setChar(c); setDammage(10); shootTime=t; shootDamage = shootDam; projectileHp = 10;}
     void move() override {pos.x += 1;}
 };
 
 
 
 class Boss : public Ship{
-    int shootTime;
-    bool movingRight;
-    int bossType;
+    int shootTime{};
+    bool movingRight{};
+    int bossType{};
 public:
     Boss()= default;
-    Boss(int x, int y, rect b, char c,int h, int t,int shootDam, int typ) {pos.x = x; pos.y = y; bounds=b; hp=h; disp_char=c; collisionDamage=100; shootTime = t;shootDamage = shootDam; bossType = typ; projectileHp = 30; movingRight=true;}
+    Boss(uint_fast16_t x, uint_fast16_t y, rect b, char c,int h, int t,int shootDam, int typ) {pos.x = x; pos.y = y; bounds=b; hp=h; disp_char=c; collisionDamage=100; shootTime = t;shootDamage = shootDam; bossType = typ; projectileHp = 30; movingRight=true;}
     void move() override{
         if(movingRight)
             pos.x++;
@@ -174,7 +174,7 @@ class MapHandler final{
      * MapHandler va s'occuper de tous les objets de la map ainsi que leurs interactions (création, collision, destruction)
      *  
     **/
-    int probaBonus; // probabilité qu'un bonus apparaissent 
+    int probaBonus{}; // probabilité qu'un bonus apparaissent 
     int currentLevel = 1;
     int levelTick = 0; // sauvegarde du moment où on change de niveau
     bool changingLevel = false;
@@ -187,7 +187,7 @@ class MapHandler final{
     int obstacleStartHp = 10;
     int obstacleStartDamage = 10;
     bool customGame = false;
-    difficulty dif;
+    difficulty dif{};
 
     // Vecteur d'objets de la map
     std::vector<Boss*> boss_set;
@@ -223,12 +223,12 @@ public:
     std::vector<PlayerShip*>  getListPlayer()const;
 
     bool getBossSpawned() const{return bossSpawned;}
+    int getEnemyCount() const{return enemyCount;}
     void setBounds(rect);
     void spawnProjectile(int x, int y, int damage, bool type, int hp, int player);
     rect field_bounds;
     void playerInit(PlayerShip* p1,PlayerShip* p2); // insertion des playership dans le vecteur
     void updateBounds(); // mise à jour de l'emplacement du rectangle du ship
-    void bossShoot(int tick);
     void explosion(); // lorsque Playership meurt, tous les ennemyShips perdent des HP
     int spawnBonuses(int x, int y);
     int spawnBonuses(int x, int y, bonusType bonus);

@@ -1170,19 +1170,13 @@ void MenuGui::level_editor(Parsing::Level my_level){
         connect(e, &ClickableLabel::clicked, this,[this, my_level,i](){
             custom_enemy(my_level, i);});
 
-        Enemy_template * p = &my_level.enemy_list[i];
-        connect(e, &ClickableLabel::changedPos, this,[this, p,i, game_zone](){
+        connect(e, &ClickableLabel::changedPos, this,[this, my_level,i, game_zone](){
             std::cout << "je fonctionne avant "<<std::endl;
-            std::cout << "le x : " << p->x;
-            std::cout << " le y :" << p->y << std::endl;
-            Enemy_template *q = const_cast<Enemy_template*>(p);
-            
-            q->x = (game_zone->get_enemy(i))->posx();
-            q->y = (game_zone->get_enemy(i))->posy();
+            auto lev = my_level;
+            lev.enemy_list[i].x = (game_zone->get_enemy(i))->posx();
+            lev.enemy_list[i].y = (game_zone->get_enemy(i))->posy();
 
-            std::cout << "je fonctionne apres "<<std::endl;
-            std::cout << "le x : " << p->x;
-            std::cout << " le y :" << p->y << std::endl;
+            level_editor(lev);
 
         });
     }
@@ -1201,19 +1195,13 @@ void MenuGui::level_editor(Parsing::Level my_level){
             custom_obstacle(my_level, i);
         });
 
-        Obstacle_template * p = &my_level.obs_list[i];
-        connect(e, &ClickableLabel::changedPos, this,[this, p,i, game_zone](){
+        connect(e, &ClickableLabel::changedPos, this,[this, my_level,i, game_zone](){
             std::cout << "je fonctionne avant "<<std::endl;
-            std::cout << "le x : " << p->x;
-            std::cout << " le y :" << p->y << std::endl;
-            auto *q = const_cast<Obstacle_template*>(p);
+            auto lev = my_level;
+            lev.obs_list[i].x = (game_zone->get_obs(i))->posx();
+            lev.obs_list[i].y = (game_zone->get_obs(i))->posy();
+            level_editor(lev);
             
-            q->x = (game_zone->get_obs(i))->posx();
-            q->y = (game_zone->get_obs(i))->posy();
-
-            std::cout << "je fonctionne apres "<<std::endl;
-            std::cout << "le x : " << p->x;
-            std::cout << " le y :" << p->y << std::endl;
 
         });
     }
@@ -1320,7 +1308,6 @@ void MenuGui::save_level(Parsing::Level my_level){
 }
 
 void MenuGui::custom_enemy(Parsing::Level my_level, int idx){
-    std::cout << " Aissa est dans la place "<< std::endl;
 	this->setStyleSheet(QStringLiteral("background-color:white;"));
     QDialog * Dialog = new QDialog(this);
     Dialog->resize(859, 665);
@@ -1339,7 +1326,6 @@ void MenuGui::custom_enemy(Parsing::Level my_level, int idx){
     std::string legende[] = {"POSITION :","HP :","TICK :","DAMAGE :"};
     QLabel *label[4];
     int spin_value[4]; my_level.enemy_list[idx].get_values(spin_value);
-    std::cout << "mon idx : "<< idx << std::endl;
     QSpinBox * spin_box[4];
     for (int i = 0; i < 4; ++i){
         //legende
