@@ -269,12 +269,8 @@ std::string CurrentGame::run_server(int *move_to_exec,Parsing::Player player,std
     if(tick %50  == 0) {
         map.update_server(MapObject::bonus, tick);
     }
-    if(map.getCurrentLevel()==3 && tick%10==0 && !map.getChangingLevel()){
-        map.update_server(MapObject::boss,tick);
-    }
 
-    if(tick%100==0)
-        map.add_object_server(MapObject::enemyship,tick,&enemy_list,&obs_list);
+    map.add_object_server(MapObject::enemyship,tick,&enemy_list,&obs_list);
 
 
     for( PlayerShip* p : map.getListPlayer()){
@@ -285,7 +281,7 @@ std::string CurrentGame::run_server(int *move_to_exec,Parsing::Player player,std
     map.bossShoot_server(tick);
     map.updateBounds();
 
-    if(map.getBoss().empty() && map.getBossSpawned())
+    if(map.getEnemyCount() == enemy_list.size() && map.getEnemy().size() == 0)
         game_over = true;
 
     if(twoPlayers){
@@ -298,13 +294,6 @@ std::string CurrentGame::run_server(int *move_to_exec,Parsing::Player player,std
 
     heal(); 
 
-    // Fait une pause de 5 sec 1 sec après avoir tué tous les ennemis, puis passe au niveau suivant
-    if(map.getLevelTick() != 0 && tick <= map.getLevelTick() + 600 && tick > map.getLevelTick()+100){
-            if(tick == map.getLevelTick() + 600) {
-                map.changeLevel();
-                map.setChangingLevel(false);
-            }
-        }
 
 
     destroyPlayership();

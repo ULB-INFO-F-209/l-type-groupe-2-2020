@@ -4,7 +4,7 @@
 //class PlayerShip;
 
 class Player{
-    int nLives;
+    int nLives = 0;
 
 public:
     Player()=default;
