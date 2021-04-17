@@ -25,7 +25,7 @@ class MapObject{
 public:
     virtual void move();
     virtual vec2i getPos() const;
-    void setPos(int x, int y){pos.x = x; pos.y = y;}
+    void setPos(uint_fast16_t x, uint_fast16_t y){pos.x = x; pos.y = y;}
     enum type{star,obstacle,playership,projectile,bonus,enemyship,enemyship2,boss};
     virtual void touched(int damage);
     virtual void setHp(int h){hp =h;}
@@ -41,7 +41,7 @@ protected:
 class Star final : public MapObject{ //background
 public:
     Star()=default;
-    Star(int nx, int ny) { pos.x = nx; pos.y = ny;typ=star;}
+    Star(uint_fast16_t nx, uint_fast16_t ny) { pos.x = nx; pos.y = ny;typ=star;}
     ~Star(){};
 };
 
@@ -49,7 +49,7 @@ class Obstacle final: public MapObject{
     int damage;
 public:
     Obstacle()=default;
-    Obstacle(int nx, int ny,int dam,int h) {pos.x = nx; pos.y = ny; damage=dam;typ=obstacle;hp=h;}
+    Obstacle(uint_fast16_t nx, uint_fast16_t ny,int dam,int h) {pos.x = nx; pos.y = ny; damage=dam;typ=obstacle;hp=h;}
     int get_damage() const {return damage;};
     ~Obstacle(){};
 };
@@ -86,7 +86,7 @@ class Projectile final: public MapObject{
 public:
     Projectile()=default;
     void move() override;
-    Projectile(int nx, int ny,int dam,bool ship_t, int h, int p) {pos.x = nx; pos.y = ny; damage=dam; shipType=ship_t;typ=projectile; hp = h; player = p;}
+    Projectile(uint_fast16_t nx, uint_fast16_t ny,int dam,bool ship_t, int h, int p) {pos.x = nx; pos.y = ny; damage=dam; shipType=ship_t;typ=projectile; hp = h; player = p;}
     int getDamage() const{return damage;}
     bool getShipType() const{return shipType;}
     int getPlayer() const{return player;}
@@ -97,7 +97,7 @@ class Bonus final: public MapObject{
     bonusType bonustype;
 public:
     Bonus(){hp=20;};
-    Bonus(int nx, int ny,bonusType bonus_t) :bonustype(bonus_t)  {pos.x = nx; pos.y = ny; hp=10;};
+    Bonus(uint_fast16_t nx, uint_fast16_t ny,bonusType bonus_t) :bonustype(bonus_t)  {pos.x = nx; pos.y = ny; hp=10;};
     bonusType const getBonusType() const {return bonustype;}
     ~Bonus(){};
 
@@ -113,7 +113,7 @@ class PlayerShip final: public Ship{
 
 public:
     PlayerShip()=default;
-    PlayerShip(int x, int y, rect b, char c, int h, int nb, int dam, int s){pos.x = x; pos.y = y; bounds=b; hp=h; disp_char=c;isAlive=true; playerNb = nb; collisionDamage=dam; score = s;currentBonus=noBonus;shootDamage=10; projectileHp = 10;}
+    PlayerShip(uint_fast16_t x, uint_fast16_t y, rect b, char c, int h, int nb, int dam, int s){pos.x = x; pos.y = y; bounds=b; hp=h; disp_char=c;isAlive=true; playerNb = nb; collisionDamage=dam; score = s;currentBonus=noBonus;shootDamage=10; projectileHp = 10;}
     int getKillTime() const{return killTime;}
     bool getIsAlive() const{return isAlive;}
     void setKillTime(int t){killTime=t;}
@@ -133,7 +133,7 @@ protected:
     int shootTime;
 public:
     EnemyShip()=default;
-    EnemyShip(int x, int y, rect b, char c,int h, int t, int shootDam){pos.x = x; pos.y = y; setBounds(b); setHp(h); setChar(c); setDammage(10); shootTime=t; shootDamage = shootDam; projectileHp = 10;}
+    EnemyShip(uint_fast16_t x, uint_fast16_t y, rect b, char c,int h, int t, int shootDam){pos.x = x; pos.y = y; setBounds(b); setHp(h); setChar(c); setDammage(10); shootTime=t; shootDamage = shootDam; projectileHp = 10;}
     void setShootTime(int t){shootTime=t;}
     int getShootTime() const{return shootTime;}
     ~EnemyShip(){};
@@ -142,7 +142,7 @@ public:
 class EnemyShip2 : public EnemyShip{
     public:
     EnemyShip2()=default;
-    EnemyShip2(int x, int y, rect b, char c,int h, int t, int shootDam){pos.x = x; pos.y = y; setBounds(b); setHp(h); setChar(c); setDammage(10); shootTime=t; shootDamage = shootDam; projectileHp = 10;}
+    EnemyShip2(uint_fast16_t x, uint_fast16_t y, rect b, char c,int h, int t, int shootDam){pos.x = x; pos.y = y; setBounds(b); setHp(h); setChar(c); setDammage(10); shootTime=t; shootDamage = shootDam; projectileHp = 10;}
     void move() override {pos.x += 1;}
 };
 
@@ -154,7 +154,7 @@ class Boss : public Ship{
     int bossType;
 public:
     Boss()= default;
-    Boss(int x, int y, rect b, char c,int h, int t,int shootDam, int typ) {pos.x = x; pos.y = y; bounds=b; hp=h; disp_char=c; collisionDamage=100; shootTime = t;shootDamage = shootDam; bossType = typ; projectileHp = 30; movingRight=true;}
+    Boss(uint_fast16_t x, uint_fast16_t y, rect b, char c,int h, int t,int shootDam, int typ) {pos.x = x; pos.y = y; bounds=b; hp=h; disp_char=c; collisionDamage=100; shootTime = t;shootDamage = shootDam; bossType = typ; projectileHp = 30; movingRight=true;}
     void move() override{
         if(movingRight)
             pos.x++;
