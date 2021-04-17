@@ -20,7 +20,8 @@
 #include "Client.hpp"
 #include "screen.hpp"
 #include "game_test/parsing.hpp"
-#include "label.hpp"
+//#include "label.hpp"
+#include "Label.hpp"
 #include "Frame.hpp"
 
 
@@ -92,7 +93,7 @@ class MenuGui : public QMainWindow{
     QAction* m_pActAdd = nullptr;
     QAction* m_pActRemove = nullptr;
 
-	int button_size = 60;
+	int button_size = 150;
 
 	//game area
 	int X_MIN = 0;

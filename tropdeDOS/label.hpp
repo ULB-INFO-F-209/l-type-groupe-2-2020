@@ -7,7 +7,7 @@
 #include <iostream>
 #include <QtWidgets>
 #include <QVariant>
-//#include "Frame.hpp"
+#include "Frame.hpp"
 
 class ClickableLabel : public QLabel { 
 public:
