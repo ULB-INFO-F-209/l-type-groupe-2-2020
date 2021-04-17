@@ -223,6 +223,7 @@ public:
     std::vector<PlayerShip*>  getListPlayer()const;
 
     bool getBossSpawned() const{return bossSpawned;}
+    int getEnemyCount() const{return enemyCount;}
     void setBounds(rect);
     void spawnProjectile(int x, int y, int damage, bool type, int hp, int player);
     rect field_bounds;

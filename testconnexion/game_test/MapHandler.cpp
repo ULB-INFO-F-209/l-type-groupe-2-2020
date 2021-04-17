@@ -372,7 +372,7 @@ void MapHandler::add_object_server(MapObject::type typ,int t,std::vector<Enemy_t
     for (size_t i = 0; i < obs_list->size(); i++)
     {
         if((obs_list->at(i).tick)== t)
-            obstacles_set.push_back(new Obstacle(obs_list->at(i).x, 0, obs_list->at(i).damage,obs_list->at(i).hp));
+            obstacles_set.push_back(new Obstacle((obs_list->at(i).x+12.53)/12.53, 0, obs_list->at(i).damage,obs_list->at(i).hp));
 
     }
     
@@ -381,7 +381,7 @@ void MapHandler::add_object_server(MapObject::type typ,int t,std::vector<Enemy_t
         if((enemy_list->at(j).tick)== t){
             int enemy_tick = t + rand() % 100;
             //TODO changer le modulo et le tick
-            enemy_ships_set.push_back(new EnemyShip(enemy_list->at(j).x % 78, 0, {{10 - 1, 5},{3,2}}, '%', enemy_list->at(j).hp,enemy_tick, enemy_list->at(j).damage));
+            enemy_ships_set.push_back(new EnemyShip((enemy_list->at(j).x+ 12.53)/12.53, 0, {{10 - 1, 5},{3,2}}, '%', enemy_list->at(j).hp,enemy_tick, enemy_list->at(j).damage));
             enemyCount++;
         }
         std::cout<<"check "<<j<<" "<<enemy_list->at(j).x<<" "<<enemy_list->at(j).tick<<std::endl;
