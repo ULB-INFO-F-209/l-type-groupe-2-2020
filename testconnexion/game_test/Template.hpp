@@ -50,7 +50,7 @@ struct Template::Player_template{
 };
 
 struct Template::Level{
-	Player_template player;
+	Player_template player{};
 
 	//Enemy session
 	std::vector<Enemy_template> enemy_list{};

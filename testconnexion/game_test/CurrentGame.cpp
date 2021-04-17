@@ -26,18 +26,18 @@ CurrentGame::CurrentGame(Parsing::Game_settings game_sett):twoPlayers(game_sett.
         map.setBounds(game_area);
         
     }
-CurrentGame::CurrentGame(Parsing::Level level_sett, Parsing::Game_settings sett):twoPlayers(false),friendlyFire(sett.ally_shot), dropRate(sett.drop_rate), dif(sett.diff),screen_area( {0, 0}, {80, 24}),game_area( {0, 0}, {78, 16}),map(dropRate,dif){
+CurrentGame::CurrentGame(Parsing::Level level_sett, Parsing::Game_settings sett):twoPlayers(sett.nb_player ==2 ? true:false),friendlyFire(sett.ally_shot), dropRate(sett.drop_rate), dif(sett.diff),screen_area( {0, 0}, {80, 24}),game_area( {0, 0}, {78, 16}),map(dropRate,dif){
     playership1 = new PlayerShip(10, 5, { {9, 5 }, { 3, 2 } }, '0',level_sett.player.hp,0,100,0);
-    player1 = new Player(3); // à modif
+    player1 = new Player(sett.nb_lives); 
     listPlayer.push_back(player1);
     if(twoPlayers){
                 playership2 = new PlayerShip(50, 5, { { 49, 5 }, { 3, 2 } }, '1',level_sett.player.hp, 1,100,0);
-                player2 = new Player(3); // à modif
+                player2 = new Player(sett.nb_lives);
                 listPlayer.push_back(player2);
             }
     map.playerInit(playership1,playership2);
     map.setBounds(game_area);
-    enemy_queue=level_sett.enemy_list; // ca peut buguer
+    enemy_queue=level_sett.enemy_list; 
     obstacles_queue=level_sett.obs_list;
 }
 
