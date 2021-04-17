@@ -214,23 +214,14 @@ void MenuGui::main_m(){
     set_background(centralWidget);
     set_title(centralWidget,"images/titles/mainMenu");
 
-    QWidget *horizontalLayoutWidget  = new QWidget(centralWidget);
-    horizontalLayoutWidget->setGeometry(QRect(80, 150, 651, 450));
-
-    QHBoxLayout *HLayout1  = new QHBoxLayout(horizontalLayoutWidget);
-    QHBoxLayout *HLayout2  = new QHBoxLayout(horizontalLayoutWidget);
-
     QPushButton *button[SIZE_MAIN_MENU];
     std::string pix_main[SIZE_MAIN_MENU] = {"images/buttons/game","images/buttons/friends","images/buttons/lead",
     										   "images/buttons/profile","images/buttons/level","images/buttons/logout"};
     int ngame = 0, friends=1, lead=2, prof=3, level=4, logout=5;
-    for (size_t i = 0; i < SIZE_MAIN_MENU; ++i){
-       button[i] = create_button(horizontalLayoutWidget,pix_main[i],100,100);
-       if(i < 3)
-            HLayout1->addWidget(button[i]);
-        else
-            HLayout2->addWidget(button[i]);
-    }
+    QRect rects[SIZE_MAIN_MENU] = {QRect(280, 280, 241, 100), QRect(540, 370, 241, 100), QRect(20, 190, 241, 100), QRect(540, 190, 241, 100), QRect(20, 370, 241, 100), QRect(280, 470, 241, 100)};
+
+    for (size_t i = 0; i < SIZE_MAIN_MENU; ++i)
+       button[i] = create_button(centralWidget,pix_main[i],241,100, rects[i]);
 
     connect(button[friends], &QPushButton::clicked, this, &MenuGui::print_friends);
     connect(button[lead], &QPushButton::clicked, this,&MenuGui::print_leaderboard);
@@ -240,7 +231,6 @@ void MenuGui::main_m(){
         lobby();
     });
     connect(button[level], &QPushButton::clicked, this, &MenuGui::level_menu);
-
     this->setCentralWidget(centralWidget);
     this->show();
 }
