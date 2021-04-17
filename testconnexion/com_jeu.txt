@@ -1,0 +1,75 @@
+
+// TOUJOURS FINIR UNE INSTRUCTION PAR LE CARACTERE &
+
+***************************
+	A F F I C H A G E
+***************************
+	
+	Joueur 1				:			A_1_x_y_explosion_tick
+
+	Joueur 2				: 			A_2_x_y_explosion_tick
+
+	Ennemy					: 			A_E_x_y_explosion_tick
+
+	Boss 					: 			A_EB_x_y
+
+	Bonus					:			A_B_x_y_type
+
+	Obstacle				:			A_O_x_y
+
+	Projectile ennemy		:			A_PE_x_y
+
+	Projectile Joueur		:			A_PJ_x_y
+
+	Level					:			A_L_tick_levelTick_currentLevel
+
+***************************
+	É T A T S
+***************************
+	HP joueur 1 			:			E_H1_valeur
+
+	HP joueur 2				: 			E_H2_valeur
+
+	NB vies joueur 1		:			E_V1_valeur
+
+	NB vies joueur 2		:			E_V2_valeur
+
+	Score joueur 1			: 			E_S1_valeur
+
+	Score joueur 2			: 			E_S2_valeur
+
+
+******************************
+	L E V E L  E D I T O R
+******************************
+
+PlayerAttributes|Enemy1Attributes&Enemy2Attributes&....|ObstacleAttributes&Obstacle|
+
+LS_name_skin1_skin2_hp_damage_speed|x_tick_skin_hp_damage_bonus_speed&x1_tick1_skin1_hp1_bonus1_speed1&......|x_tick_skin_hp_damage_speed&x1_tick1_skin1_hp1
+
+
+get_levels ranking:
+		client : LG&pid
+		serveur : name_author_vote&name2_author_vote......
+get_my_level : 
+	client : LM&pseudo&pid[LS_
+	serveur : name_author_vote&name2_author_vote......
+get one level:
+	client : LO&name&author&pid
+	serveur : LS_name_skin1_skin2_hp_damage_speed|x_tick_skin_hp_damage_bonus_speed&x1_tick1_skin1_hp1_bonus1_speed1&......|x_tick_skin_hp_damage_speed&x1_tick1_skin1_hp1|pseudo&pid
+incremente vote: 
+	client : LV&name&author&pid
+	serveur : 0
+run level 
+	client : LR&level&pid
+	serveur : 0
+
+
+résumé en ceci par pure flemme de 
+parsage et pour une question d'optimisation
+et d'ergonomie de code.
+
+==> 	
+	État joueur 1			: 			E_1_HP1_Vies_Score_bonus_level_tick
+	État joueur 2			: 			E_2_HP2_Vies_Score_bonus_level_tick
+	
