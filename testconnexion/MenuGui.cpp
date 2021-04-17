@@ -313,40 +313,18 @@ void MenuGui::print_leaderboard(){
     Parsing::profile_list_from_str(buffer, &profile_list);
 
     QWidget *centralWidget = new QWidget(this);
-    QLabel *lbl = new QLabel(centralWidget);
-    QMovie *mv = new QMovie("images/background/ciel.gif");
-    mv->setScaledSize(QSize(800,600));
-    lbl->setGeometry(QRect(0, 0, 800, 600));
-    mv->start();
-    lbl->setAttribute(Qt::WA_TranslucentBackground);
-    lbl->setMovie(mv);
+    set_background(centralWidget);
 
-    QWidget * verticalLayoutWidget = new QWidget(centralWidget);
-    verticalLayoutWidget->setObjectName(QString::fromUtf8("verticalLayoutWidget"));
-    verticalLayoutWidget->setGeometry(QRect(80, 110, 620, 500));
-    QVBoxLayout* verticalLayout = new QVBoxLayout(verticalLayoutWidget);
-    verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
-    verticalLayout->setContentsMargins(0, 0, 0, 0);
-    QVBoxLayout* verticalLayout_2 = new QVBoxLayout();
-    verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
-    QHBoxLayout* horizontalLayout = new QHBoxLayout();
-    horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
-    QTableWidget* tableWidget = new QTableWidget(verticalLayoutWidget);
+    QTableWidget* tableWidget = new QTableWidget(centralWidget);
+    tableWidget->setGeometry(QRect(275, 160, 261, 192));
     tableWidget->setColumnCount(2);
     tableWidget->setMaximumSize(QSize(300, 200));
     tableWidget->setRowCount(profile_list.size());
 
-    horizontalLayout->addWidget(tableWidget);
-
-    verticalLayout_2->addLayout(horizontalLayout);
-
-    verticalLayout->addLayout(verticalLayout_2);
-
-    QPushButton* back = new QPushButton((QString::fromStdString("Back")), verticalLayoutWidget);
+    QPushButton* back = new QPushButton("Back", centralWidget);
+    back->setGeometry(QRect(240, 430, 341, 81));
     back->setMaximumSize(QSize(1000, 45));
     connect(back, &QPushButton::clicked, this,&MenuGui::main_m);
-
-    verticalLayout->addWidget(back);
 
     QStringList m_TableHeader;
     m_TableHeader <<"Pseudo"<<"Score";
@@ -354,7 +332,7 @@ void MenuGui::print_leaderboard(){
     tableWidget->verticalHeader()->setVisible(false);
     tableWidget->setShowGrid(false);
     //tableWidget->setGeometry(QApplication::desktop()->screenGeometry());
-    tableWidget->setGeometry(QRect(300, 300, 500, 300));
+    //tableWidget->setGeometry(QRect(300, 300, 500, 300));
     tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
     tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
     tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -376,7 +354,6 @@ void MenuGui::print_leaderboard(){
     title_label->setAlignment(Qt::AlignCenter);
     pix_home_title = pix_home_title.scaled(title_label->size(),Qt::KeepAspectRatio);
     /*********END DESIGN SECTION*****************************************/
-
 
     this->setCentralWidget(centralWidget);
     //this->update();
@@ -1035,23 +1012,12 @@ void MenuGui::level_editor(Parsing::Level my_level){
 
     QLabel *title_label = new QLabel(centralwidget);
     title_label->setGeometry(QRect(400, 10, 621, 81));
-    QPixmap pix_title("images/titles/levelEditor");
+    QPixmap pix_title("images/titles/level_lab");
     pix_title = pix_title.scaled(title_label->size(),Qt::KeepAspectRatio);
     title_label->setPixmap( pix_title);
     title_label->setAlignment(Qt::AlignCenter);
     title_label->setAttribute(Qt::WA_TranslucentBackground);
 
-    /*ClickableLabel *dragTest = new ClickableLabel(0,0,game_zone); //index, type
-    //dragTest->setGeometry(QRect(0, 0, 100, 100));
-
-    dragTest->setPixmap(QPixmap("images/custom/e1"));
-    dragTest->move(10, 10);
-    dragTest->setAttribute(Qt::WA_DeleteOnClose);
-    game_zone->add_enemy(dragTest);
-    connect(dragTest, &ClickableLabel::clicked, this,[this](){
-        std::cout << "on m'appelle l'ovni"<<std::endl;
-    });
-    */
     QWidget *verticalLayoutWidget = new QWidget(centralwidget);
     verticalLayoutWidget->setGeometry(QRect(1260, 150, 160, 591));
     QVBoxLayout *verticalLayout = new QVBoxLayout(verticalLayoutWidget);
