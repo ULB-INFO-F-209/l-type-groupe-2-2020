@@ -1012,11 +1012,12 @@ void MenuGui::launch_game(int players, int drop_rate, int lives, std::string dif
 
 void MenuGui::level_editor(Parsing::Level my_level){
 
-	this->setStyleSheet(QStringLiteral("background-color:black;"));
+    this->setStyleSheet(QStringLiteral("background-color:white;"));
     this->setFixedSize(1500,800);
 
 
     QWidget *centralwidget = new QWidget(this);
+
     Frame *game_zone = new Frame(centralwidget);
     game_zone->setGeometry(QRect(100, 150, 1000, 480));;
     game_zone->setStyleSheet(QStringLiteral("background-color: rgb(85, 87, 83);"));
@@ -1040,12 +1041,17 @@ void MenuGui::level_editor(Parsing::Level my_level){
     title_label->setAlignment(Qt::AlignCenter);
     title_label->setAttribute(Qt::WA_TranslucentBackground);
 
-    /*ClickableLabel *dragTest = new ClickableLabel(game_zone);
-    
+    /*ClickableLabel *dragTest = new ClickableLabel(0,0,game_zone); //index, type
+    //dragTest->setGeometry(QRect(0, 0, 100, 100));
+
     dragTest->setPixmap(QPixmap("images/custom/e1"));
     dragTest->move(10, 10);
-    dragTest->setAttribute(Qt::WA_DeleteOnClose);*/
-
+    dragTest->setAttribute(Qt::WA_DeleteOnClose);
+    game_zone->add_enemy(dragTest);
+    connect(dragTest, &ClickableLabel::clicked, this,[this](){
+        std::cout << "on m'appelle l'ovni"<<std::endl;
+    });
+    */
     QWidget *verticalLayoutWidget = new QWidget(centralwidget);
     verticalLayoutWidget->setGeometry(QRect(1260, 150, 160, 591));
     QVBoxLayout *verticalLayout = new QVBoxLayout(verticalLayoutWidget);
@@ -1100,24 +1106,48 @@ void MenuGui::level_editor(Parsing::Level my_level){
     horizontalLayout->addWidget(tick_lcd);
 
     //placer sur la frame:
-    std::vector<QPushButton *> pic_enemy;
     for(int i = 0; i < my_level.enemy_list.size(); i++){
-        pic_enemy.push_back(new QPushButton("enemy" , game_zone));
-        pic_enemy[pic_enemy.size()-1]->setGeometry(QRect(X_MIN + my_level.enemy_list[i].x , 10, button_size, button_size));
+        ClickableLabel * e = new ClickableLabel(i,0,game_zone);
+        QPixmap pix("images/custom/e1");
+        pix = pix.scaled(QSize(button_size,button_size));
+        e->setPixmap(pix);
+        e->setGeometry(QRect(X_MIN + my_level.enemy_list[i].x , my_level.enemy_list[i].y, button_size, button_size));
+        game_zone->add_enemy(e);
         if(my_level.enemy_list[i].tick != tick_lcd->intValue())
-            pic_enemy[pic_enemy.size()-1]->hide();
-        connect(pic_enemy[pic_enemy.size()-1], &QPushButton::clicked, this,[this, my_level,i](){
+           e->hide();
+
+        connect(e, &ClickableLabel::clicked, this,[this, my_level,i](){
             custom_enemy(my_level, i);});
+
+        Enemy_template * p = &my_level.enemy_list[i];
+        connect(e, &ClickableLabel::changedPos, this,[this, p,i, game_zone](){
+            std::cout << "je fonctionne "<<std::endl;
+            p->x = (game_zone->get_enemy(i))->posx();
+            p->y = (game_zone->get_enemy(i))->posy();
+
+        });
     }
 
-    std::vector<QPushButton *> pic_obstacle;
     for(int i = 0; i < my_level.obs_list.size(); i++){
-        pic_obstacle.push_back(new QPushButton("obstacle" , game_zone));
-        pic_obstacle[pic_obstacle.size()-1]->setGeometry(QRect(X_MIN + my_level.obs_list[i].x , 10, button_size, button_size));
+        ClickableLabel * e = new ClickableLabel(i,1,game_zone);
+        QPixmap pix("images/custom/o2");
+        pix = pix.scaled(QSize(button_size,button_size));
+        e->setPixmap(pix);
+        e->setGeometry(QRect(X_MIN + my_level.obs_list[i].x ,  my_level.obs_list[i].y, button_size, button_size));
+        game_zone->add_obs(e);
         if(my_level.obs_list[i].tick != tick_lcd->intValue())
-            pic_obstacle[pic_obstacle.size()-1]->hide();
-        connect(pic_obstacle[pic_obstacle.size()-1], &QPushButton::clicked, this,[this, my_level,i](){
-            custom_obstacle(my_level, i);});
+           e->hide();
+
+        connect(e, &ClickableLabel::clicked, this,[this, my_level,i](){
+            custom_obstacle(my_level, i);
+        });
+
+       /* Obstacle_template * p = &my_level.obs_list[i];
+        connect(e, &ClickableLabel::changedPos, this,[this, p,i, game_zone](){
+            p->x = (game_zone->get_obs(i))->posx();
+            p->y = (game_zone->get_obs(i))->posy();
+
+        });*/
     }
 
     //connect section
@@ -1143,22 +1173,21 @@ void MenuGui::level_editor(Parsing::Level my_level){
             custom_player(level_copy);
         });
     connect(tick_slider, SIGNAL(valueChanged(int)),tick_lcd, SLOT(display(int)));
-    connect(tick_slider, &QSlider::valueChanged,this, [this,tick_lcd, my_level, pic_enemy, pic_obstacle](){
-        //SLOT(display(int))
+    connect(tick_slider, &QSlider::valueChanged,this, [this,tick_lcd, my_level, game_zone](){
         for(int i = 0; i < my_level.enemy_list.size(); i++){
             if(my_level.enemy_list[i].tick != tick_lcd->intValue()){
-               pic_enemy[i]->hide();
+               game_zone->get_enemy(i)->hide();
             }
             else{
-                pic_enemy[i]->show();
+                game_zone->get_enemy(i)->show();
             }
         }
         for(int i = 0; i < my_level.obs_list.size(); i++){
             if(my_level.obs_list[i].tick != tick_lcd->intValue()){
-                pic_obstacle[i]->hide();
+                game_zone->get_obs(i)->hide();
             }
             else{
-                pic_obstacle[i]->show();
+                game_zone->get_obs(i)->show();
             }
         }
        
