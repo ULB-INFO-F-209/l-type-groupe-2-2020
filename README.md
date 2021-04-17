@@ -7,7 +7,7 @@
 
 ## Compilation :
 1. ```make run_server```
-2. ``` make run_client ```
+2. ``` make run_client_gui ``` or ``` make run_client_terminal ```
 
 ## Controls :
 #### Player 1 :
