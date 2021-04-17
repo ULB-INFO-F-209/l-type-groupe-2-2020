@@ -5,9 +5,9 @@
     <id>UMLClass</id>
     <coordinates>
       <x>360</x>
-      <y>100</y>
-      <w>340</w>
-      <h>500</h>
+      <y>20</y>
+      <w>380</w>
+      <h>640</h>
     </coordinates>
     <panel_attributes>MapHandler
 --
@@ -27,20 +27,28 @@
 -projectilesEnemySet[]: Projectile
 -playerShipsSet[]: PlayerShip
 -enemyShipsSet[]: EnemyShip
+-enemyShips2Set[]: EnemyShip2
 -bonusesSet[]: Bonus
+-customGame: bool
 --
-+update(type, int): void
++update_server(type, int): void
 +erase(size_t, type): void
 +spawnProjectile(x, y, damage, type, hp, player): void
-+checkCollision(tick, firendlyFire): void
++checkCollision_server(tick, firendlyFire): void
 +field_bounds: rect
 +playerInit(p1,p2): void
 +updateBounds(): void
-+enemyShoot(tick): void
-+bossShoot(tick): void
++enemyShoot_server(tick): void
++bossShoot_server(tick): void
 +explosion(): void
 +spawnBonuses(x, y): void
++spawnBonuses(x, y,bonus): void
 +changeLevel(): void
++spawnObstacle(posx): void
++spawnEnemy(posx,tick): void
++spawnBoss(tick): void
++add_object_server(type, i): void
++add_object_server(typ, t,enemy_list,obs_list): void
 </panel_attributes>
     <additional_attributes/>
   </element>
