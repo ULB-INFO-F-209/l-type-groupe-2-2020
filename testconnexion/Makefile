@@ -44,7 +44,7 @@ client.o: Client.hpp Client.cpp Constante.hpp
 	g++  -c Client.cpp $(flag) -o client.o 
 	
 
-Label.cpp: Label.hpp
+Label.cpp: Label.hpp # compile le Label.hpp en fichier cpp avec le compliteur de Qt car les signaux sont géreés par Qt
 	moc $< -o $@
 label.o: Label.cpp
 	g++ Label.cpp -c $(qt_flag) $(qt_exec_flag) -o label.o

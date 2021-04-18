@@ -52,7 +52,7 @@ public:
     ~Server(){_db.dbSave();std::cout << "\n\n *   BYE BYE   *\n\n"<<std::endl;};
     static void close_me(int sig);
     bool static isServerActive() {return _is_active;}
-    static void error_pip(int sig){std::cerr << "\n***  [ERROR PIPE]  ***\n";}
+    static void inline error_pip(int sig){std::cerr << "\n***  [ERROR PIPE] "<< sig << " ***\n";}
 
 private:
 	//connections
