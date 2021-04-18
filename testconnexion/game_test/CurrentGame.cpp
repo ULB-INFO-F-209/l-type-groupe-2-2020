@@ -28,7 +28,7 @@ CurrentGame::CurrentGame(Parsing::Game_settings game_sett):twoPlayers(game_sett.
         
     }
 CurrentGame::CurrentGame(Parsing::Level level_sett, Parsing::Game_settings sett):twoPlayers(sett.nb_player ==2 ? true:false),friendlyFire(sett.ally_shot), dropRate(sett.drop_rate), dif(sett.diff),screen_area( {0, 0}, {80, 24}),game_area( {0, 0}, {78, 16}),map(dropRate,dif),
-        enemy_queue(level_sett.enemy_list),obstacles_queue(level_sett.obs_list),player1(),playership1(){
+        enemy_queue(level_sett.enemy_list),obstacles_queue(level_sett.obs_list),player1(),playership1(),boss(true){ //level_sett.player.boss
     playership1 = new PlayerShip(10, 5, { {9, 5 }, { 3, 2 } }, '0',level_sett.player.hp,0,100,0);
     player1 = new Player(sett.nb_lives); 
     listPlayer.push_back(player1);
@@ -41,6 +41,33 @@ CurrentGame::CurrentGame(Parsing::Level level_sett, Parsing::Game_settings sett)
     map.setBounds(game_area);
     enemy_queue=level_sett.enemy_list; 
     obstacles_queue=level_sett.obs_list;
+
+    if (level_sett.player.speed == 0) {
+        enemySpeed = 300;
+        enemy2Speed = 40;
+        obstacleSpeed = 100;
+    }
+    else if (level_sett.player.speed == 1) {
+        enemySpeed = 225;
+        enemy2Speed = 30;
+        obstacleSpeed = 75;
+    }
+    else if (level_sett.player.speed == 2) {
+        enemySpeed = 150;
+        enemy2Speed = 20;
+        obstacleSpeed = 50;
+    }
+    else if (level_sett.player.speed == 3) {
+        enemySpeed = 100;
+        enemy2Speed = 15;
+        obstacleSpeed = 35;
+    }
+    else if (level_sett.player.speed == 4) {
+        enemySpeed = 75;
+        enemy2Speed = 10;
+        obstacleSpeed = 25;
+    }
+
 }
 
 
@@ -265,15 +292,17 @@ std::string CurrentGame::run_server(int *move_to_exec,std::vector<Parsing::Enemy
     // mise à jour des positions des objets
     if(tick % 7 == 0)
         map.update_server(MapObject::projectile, tick);
-    if(tick > 100 && tick %50  == 0)
+    if(tick > 100 && tick %obstacleSpeed  == 0)
         map.update_server(MapObject::obstacle, tick);
-    if (tick > 100 && tick %150 ==0)
+    if (tick > 100 && tick %enemySpeed ==0)
         map.update_server(MapObject::enemyship, tick);
+    if (tick > 100 && tick %enemy2Speed ==0)
+        map.update_server(MapObject::enemyship2, tick);
     if(tick %50  == 0) {
         map.update_server(MapObject::bonus, tick);
     }
-
-    map.add_object_server(MapObject::enemyship,tick,&enemy_list,&obs_list);
+    if(tick%100==0)
+        map.add_object_server(MapObject::enemyship, tick, &enemy_list,&obs_list);
 
 
     for( PlayerShip* p : map.getListPlayer()){
@@ -284,8 +313,12 @@ std::string CurrentGame::run_server(int *move_to_exec,std::vector<Parsing::Enemy
     map.bossShoot_server(tick);
     map.updateBounds();
 
-    if(map.getEnemyCount() == int(enemy_list.size()) && map.getEnemy().size() == 0)
-        game_over = true;
+    if(map.getEnemyCount() == int(enemy_list.size()) && map.getEnemy().size() == 0 && !map.getBossSpawned() && map.getEnemy2().size()==0){
+        map.add_object_server(MapObject::boss, tick, &enemy_list, &obs_list);
+        map.setBossSpawned(true);
+    }
+    if(map.getBossSpawned() && map.getBoss().empty())
+        game_over=true;
 
     if(twoPlayers){
         if (player1->getnLives() < 1 && player2->getnLives() < 1)
@@ -305,6 +338,7 @@ std::string CurrentGame::run_server(int *move_to_exec,std::vector<Parsing::Enemy
 
     tick++;
     std::string to_ret = getPlayerState(map.getState(player1->getnLives(), player2 == nullptr?0:player2->getnLives(),tick));
+    
     if(game_over || exit_requested){
          return "END GAME";
     }

@@ -25,7 +25,9 @@ class CurrentGame {
     rect screen_area{}; // cadre comprenant l'entièreté de la fenêtre
     rect game_area; // cadre comprenant l'espace de jeu
     
-    
+    int enemySpeed{}; // update frequency : if enemySpeed = 30 -> 1 move every 30 tick
+    int enemy2Speed{};
+    int obstacleSpeed{};
     
     
 
@@ -58,6 +60,7 @@ class CurrentGame {
     void saveScore();
     void destroyPlayership();
     std::string getPlayerState(std::string state);
+    bool boss{};
     
 
 

@@ -127,6 +127,9 @@ std::vector<PlayerShip *> MapHandler::getListPlayer() const {
 std::vector<EnemyShip *> MapHandler::getEnemy() const {
     return enemy_ships_set;
 }
+std::vector<EnemyShip2 *> MapHandler::getEnemy2() const {
+    return enemy_ships2_set;
+}
 std::vector<Bonus*> MapHandler::getBonus() const {
     return bonuses_set;
 }
@@ -366,30 +369,30 @@ void MapHandler::add_object_server(MapObject::type typ,int t){
 void MapHandler::add_object_server(MapObject::type typ,int t,std::vector<Enemy_template> *enemy_list,std::vector<Obstacle_template> *obs_list){
     // spawn a new object
     
-    /*if(typ == MapObject::star )
-        stars_set.push_back(new Star(rand() % field_bounds.width(), 0));
-        */
+    
     for (size_t i = 0; i < obs_list->size(); i++)
     {
-        if((obs_list->at(i).tick)== t)
+        if((obs_list->at(i).tick*100)== t)
             obstacles_set.push_back(new Obstacle((obs_list->at(i).x+12.53)/12.53, 0, obs_list->at(i).damage,obs_list->at(i).hp));
 
     }
     
     for (size_t j = 0; j < enemy_list->size(); j++)
     {
-        if((enemy_list->at(j).tick)== t){
+        if((enemy_list->at(j).tick*100)== t){
             int enemy_tick = t + rand() % 100;
             //TODO changer le modulo et le tick
-            enemy_ships_set.push_back(new EnemyShip((enemy_list->at(j).x+ 12.53)/12.53, 0, {{10 - 1, 5},{3,2}}, '%', enemy_list->at(j).hp,enemy_tick, enemy_list->at(j).damage));
+            if(enemy_list->at(j).skin==0) //940 max, 16 hauteur ==> 58.75
+                enemy_ships_set.push_back(new EnemyShip((enemy_list->at(j).x+ 12.53)/12.53, 0, {{10 - 1, 5},{3,2}}, '%', enemy_list->at(j).hp,enemy_tick, enemy_list->at(j).damage, bonusType(enemy_list->at(j).bonus)));
+            else 
+                enemy_ships2_set.push_back(new EnemyShip2(0, (enemy_list->at(j).x+ 58.75)/58.75, {{10 - 1, 5},{3,2}}, '%', enemy_list->at(j).hp,enemy_tick, enemy_list->at(j).damage, bonusType(enemy_list->at(j).bonus)));
             enemyCount++;
         }
         std::cout<<"check "<<j<<" "<<enemy_list->at(j).x<<" "<<enemy_list->at(j).tick<<std::endl;
         
     }
-
-    // add horizontal enemies
-    
+    if(typ== MapObject::type::boss)
+        boss_set.push_back(new Boss(0,0,{{0, 0},{18,6}},'&',5000,t + 100, enemyStartProjectileDamage, 2));    
 
 }
 
@@ -623,7 +626,9 @@ void MapHandler::checkCollision_server(int t, bool friendlyFire) {
             if (rand()%100<=probaBonus){
                 int posx = enemy_ships_set.at(e)->getPos().x;
                 int posy = enemy_ships_set.at(e)->getPos().y;
-                spawnBonuses(posx, posy);
+                if(customGame)
+                    spawnBonuses(posx,posy,enemy_ships_set.at(e)->getBonusType());
+                else spawnBonuses(posx, posy);
             }
             enemy_ships_set.erase(enemy_ships_set.begin() + e);
             if(enemyCount == enemyLimit && changingLevel && enemy_ships_set.empty() && enemy_ships2_set.empty()){
@@ -641,6 +646,9 @@ void MapHandler::checkCollision_server(int t, bool friendlyFire) {
                 int posx = enemy_ships2_set.at(e)->getPos().x;
                 int posy = enemy_ships2_set.at(e)->getPos().y;
                 int rand_spawn_bonus = spawnBonuses(posx, posy);
+                if(customGame)
+                    spawnBonuses(posx,posy,enemy_ships2_set.at(e)->getBonusType());
+                else spawnBonuses(posx, posy);
             }
             enemy_ships2_set.erase(enemy_ships2_set.begin() + e);
             if(enemyCount == enemyLimit && changingLevel && enemy_ships2_set.empty() && enemy_ships_set.empty()){
