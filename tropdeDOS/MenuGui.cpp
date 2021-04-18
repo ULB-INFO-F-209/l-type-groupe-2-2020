@@ -1050,7 +1050,6 @@ void MenuGui::launch_game(int players, int drop_rate, int lives, std::string dif
         else{
             _client.playLevel(my_level,game_sett_char);
             std::cout << "level a jouer = "<<my_level<<std::endl;
-
         }
         std::cout << "settings lobby  = "<<game_sett_char<<std::endl;
         this->hide();
@@ -1171,7 +1170,6 @@ void MenuGui::level_editor(Parsing::Level my_level){
             custom_enemy(my_level, i);});
 
         connect(e, &ClickableLabel::changedPos, this,[this, my_level,i, game_zone](){
-            std::cout << "je fonctionne avant "<<std::endl;
             auto lev = my_level;
             lev.enemy_list[i].x = (game_zone->get_enemy(i))->posx();
             lev.enemy_list[i].y = (game_zone->get_enemy(i))->posy();
@@ -1558,7 +1556,6 @@ void MenuGui::custom_obstacle(Parsing::Level my_level, int idx){
 
     Dialog->show();
 }
-
 
 void MenuGui::custom_player(Parsing::Level my_level){
 	this->setStyleSheet(QStringLiteral("background-color:white;"));

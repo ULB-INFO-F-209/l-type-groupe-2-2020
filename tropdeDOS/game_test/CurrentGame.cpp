@@ -281,8 +281,9 @@ std::string CurrentGame::run_server(int *move_to_exec,Parsing::Player player,std
     map.bossShoot_server(tick);
     map.updateBounds();
 
-    if(map.getEnemyCount() == enemy_list.size() && map.getEnemy().size() == 0)
+    if(map.getEnemyCount() == enemy_list.size() && map.getEnemy().size() == 0){
         game_over = true;
+    }
 
     if(twoPlayers){
         if (player1->getnLives() < 1 && player2->getnLives() < 1)
