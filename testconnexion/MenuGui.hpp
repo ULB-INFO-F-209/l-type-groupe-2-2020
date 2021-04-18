@@ -6,10 +6,12 @@
 	Bugs:
 		verifier les entrée (user met une lettre dans int ..faut gérer)
 		LE BOUTONNNNN EXITTT  du programme
+
 	commentaire:
 		_Utiliser les thread evite de faire full stack. Sans thread y'aura trop 
 		d'appelle de MenuGui successive sur le stack, et même de la réentrance de code
 		_DECOMMENTER POUR UTILISER CLIENT
+
 */
 
 #ifndef Menu_HPP
@@ -111,17 +113,23 @@ private:
 	void level_editor(Parsing::Level my_level);
 	void launch_game();
 	void view_level();
+	void set_background(QWidget *centralwidget);
+	void set_title(QWidget *parent, std::string image);
+	QLabel *create_label(QWidget *parent, std::string value,QRect pos);
+	QPushButton *create_button(QWidget *parent,std::string image, int width, int height);
+	QPushButton *create_button(QWidget *parent,std::string image, int width, int height, QRect size);
+	QComboBox *create_box(QWidget *parent, std::vector<std::string> values, QRect pos);
+	QLineEdit *create_line(QWidget *parent,QRect rect, bool pswd);
 
 private slots:
 	void connexion(bool sign_in=true);
-	void check_data(bool sign_in=true);
+	void check_data( QLineEdit *pseudo_line, QLineEdit *pswd_line,bool sign_in=true);
 	void print_profile();
 	void print_leaderboard();
 	void add_del_friend(bool adding=true);
 	void verif_friend(QDialog*, bool adding=true);
 	void request_list(const QModelIndex &index);
 	void accept_friend();
-	void launch_game(int players, int drop_rate, int lives, std::string difficulty, bool ally_shot, std::string my_level="0",bool from_lead=false);
 	void save_level(Parsing::Level my_level);
 	void custom_enemy(Parsing::Level my_level, int idx);
 	void custom_obstacle(Parsing::Level my_level, int idx);

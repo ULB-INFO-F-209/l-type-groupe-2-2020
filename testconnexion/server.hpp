@@ -52,7 +52,7 @@ public:
     ~Server(){_db.dbSave();std::cout << "\n\n *   BYE BYE   *\n\n"<<std::endl;};
     static void close_me(int sig);
     bool static isServerActive() {return _is_active;}
-    static void error_pip(int sig){std::cerr << "\n***  [ERROR PIPE]  ***\n";}
+    static void inline error_pip(int sig){std::cerr << "\n***  [ERROR PIPE] "<< sig << " ***\n";}
 
 private:
 	//connections
@@ -89,7 +89,7 @@ private:
     std::string oneLevel(char*);
     void addVote(char *);
     void addLevel(char *);
-    Parsing::Level runLevel(char*, Parsing::Game_settings *);
+    Parsing::Level runLevel(char*, Parsing::Game_settings&);
 
     //server utils
     static void launch_db_save();

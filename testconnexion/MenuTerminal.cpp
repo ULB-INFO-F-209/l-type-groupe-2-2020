@@ -312,67 +312,26 @@ void MenuTerminal::get_players(Game_settings*set){
 
 void MenuTerminal::launch_game(Game_settings* game_option){
 	DisplayGame display_game;
-	display_game.init(); 
-	display_game.initGraphics();
-	sf::RenderWindow* window = display_game.getWindow();
-
+	display_game.init();
     bool gameOn = true;
-    std::vector<int> inp;
+    int inp = -1;
 	std::string string_game_to_display;
-	std::string string_previous_game_to_display;
 
+    while(gameOn){
 
-    while(gameOn && window->isOpen()){ 
-
-		sf::Event event;
-        while (window->pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window->close();
-			if (event.type == sf::Event::KeyPressed)
-				display_game.getInputWindow(&inp);
-        }
-	
-		window->clear();
-		_client.send_game_input(inp);
-		inp.clear();
-
-		inp.push_back(-1);
-		string_game_to_display = _client.read_game_pipe();
-		if (string_game_to_display != Constante::GAME_END)
-			string_previous_game_to_display = string_game_to_display;
-		if (string_game_to_display == Constante::GAME_END)
+        inp = display_game.getInput();
 		
-			break;
-			//gameOn = false;
+		_client.send_game_input(inp);
+		string_game_to_display = _client.read_game_pipe();
+		if (string_game_to_display == Constante::GAME_END) break;
 		display_game.parse_instruction(string_game_to_display);
-		//drawGrid(*window,18,80);
-		window->display();
+		
 
     }
-	
-	//Last background
-	display_game.parse_instruction(string_previous_game_to_display);
-	window->display();
-
-	//Final Score
 	string_game_to_display = _client.read_game_pipe();
+	std::cout << string_game_to_display;
 	display_game.drawEndGame(string_game_to_display);
-	window->display();
-	sf::Event event;
-	
-	while(true){
-		char in_char = -1;
-		while (window->pollEvent(event))
-        {
-			if (event.type == sf::Event::KeyPressed)
-				in_char = display_game.getInputWindow(&inp);
-        }
-        if(in_char == 'p')break;
-    }
-
     display_game.close();
-	window->close();
 }
 
 

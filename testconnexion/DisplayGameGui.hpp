@@ -79,16 +79,9 @@ class DisplayGameGui
 	sf::RectangleShape line{sf::Vector2f(990, 2)};
 	sf::RectangleShape bossLifeBar;
 
-	//utilities
-	void parse_affichage(std::string instruction);
-	void parse_etat(std::string instruction);
-
 public:
 	//Constructor
 	DisplayGameGui()=default;
-	DisplayGameGui& operator=(const DisplayGameGui&)=default;
-	DisplayGameGui(DisplayGameGui const&) = default;
-
 	void initGraphics();
 	//Drawings 
 	void drawStar();
@@ -114,6 +107,9 @@ public:
 	// graphics
 	bool getIsOpen(){return window->isOpen();}
 	sf::RenderWindow* getWindow(){return window;}
-
+private:
+	//utilities
+	void parse_affichage(std::string instruction);
+	void parse_etat(std::string instruction);
 };
 #endif
