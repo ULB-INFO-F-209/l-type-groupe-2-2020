@@ -119,6 +119,7 @@ private:
 	QPushButton *create_button(QWidget *parent,std::string image, int width, int height);
 	QPushButton *create_button(QWidget *parent,std::string image, int width, int height, QRect size);
 	QComboBox *create_box(QWidget *parent, std::vector<std::string> values, QRect pos);
+	QLineEdit *MenuGui::create_line(QWidget *parent,QRect rect, bool pswd);
 
 private slots:
 	void connexion(bool sign_in=true);
@@ -129,7 +130,6 @@ private slots:
 	void verif_friend(QDialog*, bool adding=true);
 	void request_list(const QModelIndex &index);
 	void accept_friend();
-	void launch_game(int players, int drop_rate, int lives, std::string difficulty, bool ally_shot, std::string my_level="0",bool from_lead=false);
 	void save_level(Parsing::Level my_level);
 	void custom_enemy(Parsing::Level my_level, int idx);
 	void custom_obstacle(Parsing::Level my_level, int idx);
