@@ -70,20 +70,80 @@ void MenuGui::home(){
 
 }
 
-void MenuGui::check_data(QLineEdit *pseudo_line, QLineEdit *pswd_line, bool sign_in){
+QLabel * MenuGui::print_error(QWidget *parent, int error, QRect pos){
+    std::cout << " ERROR "<<error<<std::endl;
+    QLabel *error_label; 
+    switch(error){
+        case LEN_ERROR:
+            error_label = create_label(parent,SHORT_ALL , pos);
+            break;
+        case LEN_PSEUDO:
+            error_label = create_label(parent, SHORT_PSEUDO, pos);
+            break;
+        case LEN_PSWD:
+            error_label = create_label(parent, SHORT_PSWD, pos);
+            break;
+        case NO_USER_ERROR:
+            error_label = create_label(parent, NO_USER_MSG, pos);
+            break;
+        case TAKEN_PSEUDO:
+            error_label = create_label(parent, TAKEN_PSEUDO_MSG, pos);
+            break;
+        case FRIENDS_ALREADY:
+            error_label = create_label(parent,ALREADY_FRIENDS , pos);
+            break;
+        case FRIENDS_YET:
+            error_label = create_label(parent, NOT_FRIENDS, pos);
+            break;
+        case REQ_ALREADY:
+            error_label = create_label(parent, ALREADY_REQUESTED, pos);
+            break;
+        case YOURSELF_ERROR:
+            error_label = create_label(parent, YOURSEL_MSG, pos);
+            break;
+        case NO_ERROR:
+            error_label = create_label(parent, "", pos);
+            break;
+        default:
+            error_label = create_label(parent, DEFAULT_ERROR, pos);
+            break; 
+    }
+    error_label->setStyleSheet("QLabel { background-color : black; color : red; }");
+    error_label->show();
+    return error_label;
+}
+
+int MenuGui::check_data(QLineEdit *pseudo_line, QLineEdit *pswd_line, bool sign_in){
     std::string pseudo = (pseudo_line->text()).toUtf8().constData();
     std::string pswd = (pswd_line->text()).toUtf8().constData();
+    int error = NO_ERROR;
     int success;
+
+    if(pswd.size() < NB_MIN_CARA and pseudo.size() < NB_MIN_CARA)
+        return LEN_ERROR;
+    if(pseudo.size() < NB_MIN_CARA)
+        return LEN_PSEUDO;
+    if(pswd.size() < NB_MIN_CARA)
+        return LEN_PSWD;
+
+
     if(sign_in){
         success = _client.signIn(pseudo.c_str(), pswd.c_str());
         if(success)
             main_m();
+        else
+            error = NO_USER_ERROR;
+
     }
     else{
         success = _client.signUp(pseudo.c_str(), pswd.c_str());
         if(success)
             main_m();
+        else
+            error = TAKEN_PSEUDO;
     }
+
+    return error;
 }
 
 void MenuGui::set_background(QWidget *centralwidget){
@@ -205,25 +265,16 @@ void MenuGui::connexion(bool sign_in){
 
     QPushButton *cancel_button = create_button(horizontalLayoutWidget,"images/buttons/back", 150,150 );
     horizontalLayout->addWidget(cancel_button);
-    
-    /****************************DESIGN*****************************************************/
-    QLabel *title_label = new QLabel(centralWidget);
-    title_label->setGeometry(QRect(110, 50, 600, 150));
-    QPixmap pix_home_title = QPixmap();
-    title_label->setAlignment(Qt::AlignCenter);
-    title_label->setAttribute(Qt::WA_TranslucentBackground);
-    this->setStyleSheet(QStringLiteral("background-color:black;"));
 
     if(sign_in)
-        pix_home_title.load("images/titles/signIn");
+        set_title(centralWidget, "images/titles/signIn");
     else
-        pix_home_title.load("images/titles/signUp");
+        set_title(centralWidget, "images/titles/signUp");
 
-    /****************************CONNECTIONS*****************************************************/
-    pix_home_title = pix_home_title.scaled(title_label->size(),Qt::KeepAspectRatio);
-    title_label->setPixmap( pix_home_title);
-    connect(ok_button, &QPushButton::clicked, this, [this,sign_in,pseudo_line,pswd_line]() {
-            check_data(pseudo_line,pswd_line,sign_in);
+    connect(ok_button, &QPushButton::clicked, this, [this,sign_in,pseudo_line,pswd_line,centralWidget]() {
+           int error = check_data(pseudo_line,pswd_line,sign_in);
+           if(error != NO_ERROR)
+                print_error(centralWidget, error, QRect(230, 325, 400, 45));
     });
     connect(cancel_button, &QPushButton::clicked, this,&MenuGui::home);
 
@@ -499,13 +550,17 @@ void MenuGui::print_friends(){
         user_label->show();
         ok_button_a->show();
     });
-    connect(ok_button_a, &QPushButton::clicked, this,[this,pseudo_line, user_label,ok_button_a](){
+    connect(ok_button_a, &QPushButton::clicked, this,[this,pseudo_line, user_label,ok_button_a,centralwidget](){
         std::string pseudo = (pseudo_line->text()).toUtf8().constData();
-        std::string error = verif_friend(pseudo);
-        if(error == "null"){
+        int  error = verif_friend(pseudo);
+        if(error == NO_ERROR){
             pseudo_line->hide();
             user_label->hide();
             ok_button_a->hide();
+            print_error(centralwidget, error, QRect(220, 620, 441, 41));
+        }
+        else{
+            print_error(centralwidget, error, QRect(220, 620, 441, 41));
         }
     });
     connect(friends_table,&QAbstractItemView::clicked,this,[this,friendlist](const QModelIndex& idx){
@@ -520,7 +575,7 @@ void MenuGui::print_friends(){
         if(idx.column()==2){ //accept
             int i = idx.row();
             char* pseudo2 = const_cast<char*>(requestlist[i].pseudo);
-            _client.addFriend(pseudo2);
+           _client.addFriend(pseudo2);
         }
         else if(idx.column()==3){ //decline
             int i = idx.row();
@@ -533,34 +588,23 @@ void MenuGui::print_friends(){
     this->show();
 }
 
-std::string MenuGui::verif_friend(std::string pseudo, bool adding){
+int MenuGui::verif_friend(std::string pseudo){
     //Aissa: all error are already in screen ==> c'est pas écrit pour decorer :-)
     char* pseudo2 = const_cast<char*>(pseudo.c_str());
-    std::string error;
-    int success; 
-    if(adding){
-        success = _client.sendFriendRequest(pseudo2);
-        if(success==1)
-        error = ALREADY_REQUESTED;
-        else if (success==2)
-            error = ALREADY_FRIENDS;
-        else if(success==3)
-            error = NO_USER_MSG;
-        else if(success==4)
-            error = YOURSEL_MSG;
-        else
-            error = "null";
-    }
-    else
-        success = _client.delFriend(pseudo2);
-        if(success==1)
-            error = NOT_FRIENDS;
-        else if (success==2)
-           error = NO_USER_MSG;
-        else if(success==3)
-            error = YOURSEL_MSG;
-        else
-           error = "null";
+    int error = NO_ERROR;
+    int success = 0; 
+    if(pseudo.size() < NB_MIN_CARA)
+        return LEN_PSEUDO;
+
+    success = _client.sendFriendRequest(pseudo2);
+    if(success==1)
+        error = REQ_ALREADY;
+    else if (success==2)
+        error = FRIENDS_ALREADY;
+    else if(success==3)
+        error = NO_USER_ERROR;
+    else if(success==4)
+        error = YOURSELF_ERROR;
 
     return error;
 }
@@ -633,7 +677,7 @@ void MenuGui::lobby(std::string my_level, bool from_lead){
     label[pass]->hide();
     label[user]->hide();
 
-    connect(players_combo, QOverload<int>::of(&QComboBox::currentIndexChanged),[this,pseudo_lineEdit,password_lineEdit,pass,user,label](int idx){
+    connect(players_combo, QOverload<int>::of(&QComboBox::currentIndexChanged),[this,pseudo_lineEdit,password_lineEdit,pass,user,label,centralwidget](int idx){
          if(idx==1){
             pseudo_lineEdit->show();
             password_lineEdit->show();
@@ -645,6 +689,7 @@ void MenuGui::lobby(std::string my_level, bool from_lead){
             password_lineEdit->hide();
             label[pass]->hide();
             label[user]->hide();
+            print_error(centralwidget,NO_ERROR, QRect(160, 400, 341, 41));
         }
     });
     //connections
@@ -656,7 +701,7 @@ void MenuGui::lobby(std::string my_level, bool from_lead){
         else
             view_level(from_lead);
     });
-    connect(play_button, &QPushButton::clicked, this,[this, players_combo, lives_spin, ally_combo, droprate_spin, difficulty_combo, my_level,from_lead,pseudo_lineEdit,password_lineEdit](){
+    connect(play_button, &QPushButton::clicked, this,[this, players_combo, lives_spin, ally_combo, droprate_spin, difficulty_combo, my_level,from_lead,pseudo_lineEdit,password_lineEdit,centralwidget](){
         Parsing::Game_settings setting; 
         _client.get_pseudo(setting.pseudo_hote);
         
@@ -673,13 +718,33 @@ void MenuGui::lobby(std::string my_level, bool from_lead){
         if(setting.nb_player==2){
             std::string pseudo = (password_lineEdit->text()).toUtf8().constData();
             std::string pswd = (pseudo_lineEdit->text()).toUtf8().constData();
+                if(pswd.size() < NB_MIN_CARA and pseudo.size() < NB_MIN_CARA){
+                    print_error(centralwidget,LEN_ERROR, QRect(160, 400, 341, 41));
+                    return;
+                }
+                if(pseudo.size() < NB_MIN_CARA){
+                    print_error(centralwidget,LEN_PSEUDO, QRect(160, 400, 341, 41));
+                    return ;
+                }
+                if(pswd.size() < NB_MIN_CARA){
+                    print_error(centralwidget,LEN_PSWD, QRect(160, 400, 341, 41));
+                    return ;
+                }
+            
             bool success =0;
     
-            if(pseudo.compare(std::string(setting.pseudo_hote)) != 0)
-                success = _client.signIn(pseudo.c_str(), pswd.c_str(), false);
-
-            if(not success)
+            if(pseudo.compare(std::string(setting.pseudo_hote)) == 0){
+                print_error(centralwidget,YOURSELF_ERROR, QRect(160, 400, 341, 41));
                 return;
+            }
+            else{
+                success = _client.signIn(pseudo.c_str(), pswd.c_str(), false);
+                if(not success){
+                    print_error(centralwidget,NO_USER_ERROR, QRect(160, 400, 341, 41));
+                    return;
+                }
+            }
+                
         }
 
         Parsing::create_game_to_str(game_sett_char,&setting);
@@ -687,9 +752,7 @@ void MenuGui::lobby(std::string my_level, bool from_lead){
             _client.createGame(game_sett_char);
         else
             _client.playLevel(my_level,game_sett_char);
-
-        std::cout << "level a jouer = "<<my_level<<std::endl;
-        std::cout << "settings lobby  = "<<game_sett_char<<std::endl;
+        
         launch_game();
        
     });
@@ -1429,25 +1492,8 @@ void MenuGui::view_level(bool mine){
             item->setIcon(icon);
             item->setTextAlignment(Qt::AlignCenter);
             item->setSizeHint(QSize(100, 100));
-            //connect(tableWidget->item(i, 3), &QTableWidget::itemClicked, this, &Menu::main_m);
-            /*connect(tableWidget->item(i, 3), &QTableWidget::itemSelectionChanged,this, [this, creator_list, i](){
-                _client.voteLevel(creator_list[i].name, std::string(creator_list[i].pseudo));
-
-            });*/
         }
     }
-
-    /****** DESIGN SECTION ****************************/
-    /*this->setStyleSheet("background-color:rgb(8, 82, 40);");
-
-    QLabel *title_label = new QLabel(centralWidget);
-    title_label->setGeometry(QRect(110, 30, 600, 150));
-    QPixmap pix_home_title("images/titles/friends");
-    title_label->setPixmap( pix_home_title);
-    title_label->setAlignment(Qt::AlignCenter);
-    pix_home_title = pix_home_title.scaled(title_label->size(),Qt::KeepAspectRatio);*/
-    /*********END DESIGN SECTION*****************************************/
-
 
     this->setCentralWidget(centralWidget);
     this->show();
@@ -1457,7 +1503,6 @@ void MenuGui::view_level(bool mine){
 void MenuGui::launch_game(){
 	DisplayGameGui display_game;
 	display_game.initGraphics();
-    std::cout << "on est la bg"<< std::endl;
 	sf::RenderWindow* window = display_game.getWindow();
 
     bool gameOn = true;
