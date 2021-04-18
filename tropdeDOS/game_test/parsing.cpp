@@ -109,10 +109,11 @@ void Parsing::profile_from_str(char *buffer, Profile *prof){
 	prof->score = atoi((cpp_str_buffer.substr(idx+1,cpp_str_buffer.size()).c_str()));
 }
 
-void Parsing::create_game_from_str(char *buffer, Game_settings * settings){
+Game_settings Parsing::create_game_from_str(char *buffer){
 	//buffer -> "P&nb_player&pseudo_hote&other_pseudo&drop_rate&ally_shot&nb_lives&difficulty&pid"
 	// P&1&vinove44&Null&100&0&1&easy&723
-
+	Game_settings settings{};
+	std::cout << "le mierda que je dois print : " << buffer << std::endl;
 	std::string cpp_str_buffer(buffer);
 	const char delimiteur_score = '&';
 
@@ -126,7 +127,7 @@ void Parsing::create_game_from_str(char *buffer, Game_settings * settings){
 	//nb player
 	std::string option = cpp_str_buffer.substr(0,index);
 	cpp_str_buffer = cpp_str_buffer.substr(index+1,cpp_str_buffer.size());
-	settings->nb_player = atoi(option.c_str());
+	settings.nb_player = atoi(option.c_str());
 	//option = option.substr(index, option.length());
 
 	//vinove44&Null&100&0&1&easy&723
@@ -135,7 +136,7 @@ void Parsing::create_game_from_str(char *buffer, Game_settings * settings){
 	index = cpp_str_buffer.find(delimiteur_score);
 	option = cpp_str_buffer.substr(0,index);
 	cpp_str_buffer = cpp_str_buffer.substr(index+1,cpp_str_buffer.size());
-	strcpy(settings->pseudo_hote, option.c_str());
+	strcpy(settings.pseudo_hote, option.c_str());
 
 	//Null&100&0&1&easy&723
 	//buffer -> "other_pseudo&drop_rate&ally_shot&nb_lives&difficulty&pid""
@@ -144,7 +145,7 @@ void Parsing::create_game_from_str(char *buffer, Game_settings * settings){
 	//option = cpp_str_buffer.substr(index, cpp_str_buffer.length());
 	option = cpp_str_buffer.substr(0,index);
 	cpp_str_buffer = cpp_str_buffer.substr(index+1,cpp_str_buffer.size());
-	strcpy(settings->pseudo_other, option.c_str());
+	strcpy(settings.pseudo_other, option.c_str());
 
 	//100&0&1&easy&723
 	//buffer -> "drop_rate&ally_shot&nb_lives&difficulty&pid""
@@ -153,7 +154,7 @@ void Parsing::create_game_from_str(char *buffer, Game_settings * settings){
 	//option = option.substr(index, option.length());
 	option = cpp_str_buffer.substr(0,index);
 	cpp_str_buffer = cpp_str_buffer.substr(index+1,cpp_str_buffer.size());
-	settings->drop_rate = atoi(option.c_str()); // TODO drop_rate est un float trouvé un equivalente de atoi pour float
+	settings.drop_rate = atoi(option.c_str()); // TODO drop_rate est un float trouvé un equivalente de atoi pour float
 
 	// 0&1&easy&723
 	//buffer -> "ally_shot&nb_lives&difficulty&pid""
@@ -162,7 +163,7 @@ void Parsing::create_game_from_str(char *buffer, Game_settings * settings){
 	//option = option.substr(index, option.length());
 	option = cpp_str_buffer.substr(0,index);
 	cpp_str_buffer = cpp_str_buffer.substr(index+1,cpp_str_buffer.size());
-	settings->ally_shot = atoi(option.c_str()); //TODO changer le false en un nb 0 ou 1 plus simple pour la convertion
+	settings.ally_shot = atoi(option.c_str()); //TODO changer le false en un nb 0 ou 1 plus simple pour la convertion
 
 	// 1&easy&723
 	//buffer -> "nb_lives&difficulty&pid""
@@ -171,7 +172,7 @@ void Parsing::create_game_from_str(char *buffer, Game_settings * settings){
 	//option = option.substr(index, option.length());
 	option = cpp_str_buffer.substr(0,index);
 	cpp_str_buffer = cpp_str_buffer.substr(index+1,cpp_str_buffer.size());
-	settings->nb_lives = atoi(option.c_str());
+	settings.nb_lives = atoi(option.c_str());
 	
 	//easy&723
 	//buffer -> "difficulty&pid""
@@ -179,14 +180,14 @@ void Parsing::create_game_from_str(char *buffer, Game_settings * settings){
 	index = cpp_str_buffer.find(delimiteur_score);
 	option = cpp_str_buffer.substr(0,index);
 	cpp_str_buffer = cpp_str_buffer.substr(index+1,cpp_str_buffer.size());
-	settings->diff = !strcmp(option.c_str(), "easy")? difficulty::easy: !strcmp(option.c_str(), "medium")? difficulty::medium: difficulty::hard;
+	settings.diff = !strcmp(option.c_str(), "easy")? difficulty::easy: !strcmp(option.c_str(), "medium")? difficulty::medium: difficulty::hard;
 	
 	//pid
-	strcpy(settings->pid,cpp_str_buffer.c_str());
+	strcpy(settings.pid,cpp_str_buffer.c_str());
 	//cpp_str_buffer = cpp_str_buffer.substr(index+1,cpp_str_buffer.size());
 
 	
-
+	return settings;
 
 }
 

@@ -7,7 +7,7 @@
 #include "game_test/MapHandler.hpp"
 #include <unistd.h>
 
-class DisplayGame
+class DisplayGame 
 {
 	//Game's windows
 	WINDOW* main_wnd;
@@ -21,7 +21,9 @@ class DisplayGame
 	int tickStar;
 public:
 	//Constructor
-	DisplayGame()=default;
+	DisplayGame() =default;
+	DisplayGame(DisplayGame const&) = default;
+	DisplayGame& operator=(const DisplayGame&)=default;
 	int init();
 	//Drawings 
 	void drawStar();
