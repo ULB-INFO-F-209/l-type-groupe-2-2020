@@ -844,7 +844,7 @@ void Server::launch_custom_game(Parsing::Level level_sett,Parsing::Game_settings
             std::cout << game_settings.pid << " A LA PROCHAINE "<<std::endl;
             return;
         }
-        resp = game.run_server(inp, level_sett.player, level_sett.enemy_list,level_sett.obs_list);                                                        //  le jeu du server
+        resp = game.run_server(inp, level_sett.enemy_list,level_sett.obs_list);                                                        //  le jeu du server
         if(resp == Constante::GAME_END){  // if game over
             gameOn=false;
         }
