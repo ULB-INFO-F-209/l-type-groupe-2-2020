@@ -20,8 +20,14 @@ void Database::add(Request request){
 
 void Database::add(std::string pseudo, std::string level, std::string nameLevel, int vote){
     std::ptrdiff_t idx = find(pseudo.c_str());
-    if (idx != -1)
-        _data[idx]._levels_vector.push_back(DatabaseLevel{pseudo, level, nameLevel, vote});
+    if (idx != -1){
+        DatabaseLevel lvl = {pseudo, level, nameLevel, vote};
+        int idx_level = _data[idx].findLevel(nameLevel);
+        if (idx_level != -1)
+            _data[idx]._levels_vector.at(idx_level) = lvl;
+        else
+            _data[idx]._levels_vector.push_back(lvl);
+    }
     else
         std::cout << "[ERROR DATABASE] PSEUDO NOT FOUND : "<< pseudo <<std::endl;
 }

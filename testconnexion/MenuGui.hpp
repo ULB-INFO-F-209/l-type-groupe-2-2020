@@ -120,16 +120,16 @@ private:
 	QPushButton *create_button(QWidget *parent,std::string image, int width, int height, QRect size);
 	QComboBox *create_box(QWidget *parent, std::vector<std::string> values, QRect pos);
 	QLineEdit *create_line(QWidget *parent,QRect rect, bool pswd);
+	QTableWidget * create_table_widget(QWidget *parent,int col, int row,std::string title[],QRect rect);
 
 private slots:
 	void connexion(bool sign_in=true);
 	void check_data( QLineEdit *pseudo_line, QLineEdit *pswd_line,bool sign_in=true);
 	void print_profile();
 	void print_leaderboard();
-	void add_del_friend(bool adding=true);
-	void verif_friend(QDialog*, bool adding=true);
-	void request_list(const QModelIndex &index);
-	void accept_friend();
+	//void add_del_friend(bool adding=true);
+	std::string verif_friend(std::string pseudo, bool adding=true);
+	//void request_list(const QModelIndex &index);
 	void save_level(Parsing::Level my_level);
 	void custom_enemy(Parsing::Level my_level, int idx);
 	void custom_obstacle(Parsing::Level my_level, int idx);
