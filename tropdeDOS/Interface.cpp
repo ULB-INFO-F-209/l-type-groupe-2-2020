@@ -412,7 +412,7 @@ int Interface::range(int n, Game_settings *set, bool percent){
 
 
 //PRIVATE METHODES 
-void Interface::set_screen(std::string *title,std::string *saying1, std::string *saying2){
+void Interface::set_screen(const std::string *title,const std::string *saying1, const std::string *saying2){
 	clear(); wclear(_main_win);
 	wclear(_pseudo_win); wclear(_pass_win); wclear(_saying_win);
 	resize_win(); //maybe do the resize only if terminal change
@@ -703,7 +703,7 @@ void Interface::set_settings(Game_settings *set){
 	wattroff(_settings_win2, COLOR_PAIR(2));
 }
 
-void Interface::print_message(std::string *msg1, bool up ){
+void Interface::print_message(const std::string *msg1, bool up ){
 	int x=WIN_WIDTH/2, y=9*WIN_HEIGHT/10;;
 	if(up)
 		y = 4*WIN_HEIGHT/10;

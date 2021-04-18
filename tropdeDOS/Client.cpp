@@ -230,5 +230,7 @@ void Client::send_game_input(std::vector<int> inp){
 }
 
 void Client::send_game_input(int& inp){
-	// TODO
+	int fd =  open(_pipe_input_game, O_WRONLY); 
+	write(fd, &inp, sizeof(int)); //sending query
+	close(fd);
 }
