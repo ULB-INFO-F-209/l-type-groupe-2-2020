@@ -119,7 +119,7 @@ private:
 	QPushButton *create_button(QWidget *parent,std::string image, int width, int height);
 	QPushButton *create_button(QWidget *parent,std::string image, int width, int height, QRect size);
 	QComboBox *create_box(QWidget *parent, std::vector<std::string> values, QRect pos);
-	QLineEdit *MenuGui::create_line(QWidget *parent,QRect rect, bool pswd);
+	QLineEdit *create_line(QWidget *parent,QRect rect, bool pswd);
 
 private slots:
 	void connexion(bool sign_in=true);

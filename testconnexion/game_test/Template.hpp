@@ -12,7 +12,7 @@ namespace Template{
 }
 struct Template::Enemy_template{
 	int x = 0;
-	int y=0;
+	int y =0 ;
 	int tick = 0;
 	int skin = 0; // skin 1, skin2, skin3
 	int hp = 70;
@@ -29,7 +29,7 @@ struct Template::Enemy_template{
 
 struct Template::Obstacle_template{
 	int x = 0; 
-	int y=0;
+	int y = 0;
 	int tick = 0;
 	int skin = 0; //planete, soleil, lune, etoiles
 	int hp = 70;
@@ -52,7 +52,7 @@ struct Template::Player_template{
 };
 
 struct Template::Level{
-	Player_template player;
+	Player_template player{};
 
 	//Enemy session
 	std::vector<Enemy_template> enemy_list{};

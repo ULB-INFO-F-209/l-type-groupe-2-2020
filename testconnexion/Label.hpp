@@ -30,21 +30,6 @@ signals:
     void clicked();
     void changedPos();
 
-/*protected:
-    void mouseReleaseEvent(QMouseEvent* event)override{
-        if(event->button() == Qt::RightButton){
-            std::cout << " Clique sur le bouton droit"<<std::endl;
-            emit clicked(); 
-        }
-
-       } 
-        else if(event->button() == Qt::LeftButton){
-        	childAt(event->pos())->mousePressEvent(event);
-        	std::cout << " Clique sur le bouton gauche"<<std::endl;
-        	par->mousePressEvent(event);
-        }
-}*/
-
 
 };
 

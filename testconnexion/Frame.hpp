@@ -106,9 +106,7 @@ public:
 			return;
 		int idx = child->index();
 		int type = child->get_type();
-		std::cout << " index avant "<<idx<<" type avant "<<type<<std::endl;
 		if(event->button() == Qt::LeftButton){
-			std::cout << " Bouton gauche "<<std::endl;
 			QPixmap pixmap = *(child->pixmap());
 			QByteArray itemData;
 			QDataStream dataStream(&itemData, QIODevice::WriteOnly);
@@ -123,14 +121,6 @@ public:
 			drag->setPixmap(pixmap);
 			drag->setHotSpot(event->pos() - child->pos());
 
-			/*QPixmap tempPixmap = pixmap;
-			QPainter painter;
-			painter.begin(&tempPixmap);
-			painter.fillRect(pixmap.rect(), QColor(127, 127, 127, 127));
-			painter.end();
-
-			child->setPixmap(tempPixmap);*/
-
 			if (drag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction) == Qt::MoveAction) {
 			} else {
 				child->show();
@@ -138,7 +128,6 @@ public:
 			
 		}
 		else if(event->button() == Qt::RightButton){
-            std::cout << " Bouton droit "<<std::endl;
             if(type==0)
             	enemy[idx]->click();
             else

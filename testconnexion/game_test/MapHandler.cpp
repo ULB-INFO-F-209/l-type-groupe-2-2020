@@ -384,7 +384,6 @@ void MapHandler::add_object_server(MapObject::type typ,int t,std::vector<Enemy_t
             enemy_ships_set.push_back(new EnemyShip((enemy_list->at(j).x+ 12.53)/12.53, 0, {{10 - 1, 5},{3,2}}, '%', enemy_list->at(j).hp,enemy_tick, enemy_list->at(j).damage));
             enemyCount++;
         }
-        std::cout<<"check "<<j<<" "<<enemy_list->at(j).x<<" "<<enemy_list->at(j).tick<<std::endl;
         
     }
 

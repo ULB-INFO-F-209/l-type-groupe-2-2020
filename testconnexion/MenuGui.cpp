@@ -901,11 +901,12 @@ void MenuGui::level_editor(Parsing::Level my_level){
         connect(e, &ClickableLabel::clicked, this,[this, my_level,i](){
             custom_enemy(my_level, i);});
 
-        Enemy_template * p = &my_level.enemy_list[i];
-        connect(e, &ClickableLabel::changedPos, this,[this, p,i, game_zone](){
-            std::cout << "je fonctionne "<<std::endl;
-            p->x = (game_zone->get_enemy(i))->posx();
-            p->y = (game_zone->get_enemy(i))->posy();
+        connect(e, &ClickableLabel::changedPos, this,[this, my_level,i, game_zone](){
+            auto lev = my_level;
+            lev.enemy_list[i].x = (game_zone->get_enemy(i))->posx();
+            lev.enemy_list[i].y = (game_zone->get_enemy(i))->posy();
+
+            level_editor(lev);
 
         });
     }
@@ -924,12 +925,15 @@ void MenuGui::level_editor(Parsing::Level my_level){
             custom_obstacle(my_level, i);
         });
 
-       /* Obstacle_template * p = &my_level.obs_list[i];
-        connect(e, &ClickableLabel::changedPos, this,[this, p,i, game_zone](){
-            p->x = (game_zone->get_obs(i))->posx();
-            p->y = (game_zone->get_obs(i))->posy();
+        connect(e, &ClickableLabel::changedPos, this,[this, my_level,i, game_zone](){
+            std::cout << "je fonctionne avant "<<std::endl;
+            auto lev = my_level;
+            lev.obs_list[i].x = (game_zone->get_obs(i))->posx();
+            lev.obs_list[i].y = (game_zone->get_obs(i))->posy();
+            level_editor(lev);
+            
 
-        });*/
+        });
     }
 
     //connect section

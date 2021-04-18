@@ -138,8 +138,7 @@ void Server::catchInput(char* input) {
 		}		
 	} 
     else if (input[0] == Constante::GAME_SETTINGS){
-        Parsing::Game_settings game_sett;
-        get_game_settings(input,&game_sett); 
+        Parsing::Game_settings game_sett = Parsing::create_game_from_str(input);
         resClient(&processId,Constante::GAME_CAN_BE_LAUNCH);
 
         mtx_game.lock();
@@ -180,12 +179,14 @@ void Server::catchInput(char* input) {
                 break;
             
             case Constante::RUN_LEVEL:{
-                Parsing::Game_settings game_settings;
-                Parsing::Level level_to_play = runLevel(input, &game_settings);
-                std::cout << "pid 2 "<<game_settings.pid<<std::endl;
+                Parsing::Game_settings game_settings{};
+                Parsing::Level level_to_play = runLevel(input, game_settings);
+                
                 processId = processId.substr(processId.rfind("#")+1);
                 strcpy(game_settings.pid,processId.c_str());
+
                 resClient(&processId,Constante::GAME_CAN_BE_LAUNCH);
+                mtx_game.lock();
                 for(auto p: _pipe_running){ // mettre l'état du jeu pour le pid à true
                     if(processId == p->pid){
                         p->in_game=true;
@@ -193,8 +194,7 @@ void Server::catchInput(char* input) {
                     }
                 }
                 mtx_game.unlock(); 
-                std::cout << "le pid pour de vrai " <<game_settings.pid <<std::endl;
-                std::thread t5(&Server::launch_custom_game,this,&level_to_play, &game_settings); // thread du jeu
+                std::thread t5(&Server::launch_custom_game,this,level_to_play, game_settings); // thread du jeu
                 t5.detach();
                 break;
             }
@@ -359,6 +359,7 @@ bool Server::delFriendRequest(char* val){
     mtx.unlock();
     return ret_val;
 }
+
 void Server::addLevel(char * input){
     std::string level_input(input);
     size_t idx = level_input.find("_");
@@ -438,7 +439,7 @@ void Server::addVote(char *input){
 
 }
 
-Parsing::Level Server::runLevel(char* input,Parsing::Game_settings * game_settings){
+Parsing::Level Server::runLevel(char* input,Parsing::Game_settings &game_settings){
     //LR&level&game_sett&pid
     std::string input_str(input);
 
@@ -457,15 +458,13 @@ Parsing::Level Server::runLevel(char* input,Parsing::Game_settings * game_settin
     std::cout << "PID = "<<pid<<std::endl;
     std::cout << "level reçu =  "<<level<<std::endl;
     std::cout << "settings level  =  "<<game_str<<std::endl;
-    sprintf(game_settings->pid, "%s",pid.c_str());
-    //strcpy(game_settings->pid,pid.c_str());
-    std::cout << "PID = "<<game_settings->pid<<std::endl;
+    sprintf(game_settings.pid, "%s",pid.c_str());
 
     char buffer[Constante::CHAR_SIZE];
-    sprintf(buffer, "%s", game_str.c_str()); 
+    sprintf(buffer, "P&%s&%s", game_str.c_str(),pid.c_str()); 
 
-    Parsing::create_game_from_str(buffer, game_settings);
-    std::cout << "je suis la pret a sortir "<<std::endl;
+    game_settings = Parsing::create_game_from_str(buffer);
+
     return Parsing::level_from_str(level);
 }
 
@@ -526,6 +525,7 @@ void Server::resClient(std::string* processId, int res) {
     close(fd);
     std::cout <<std::endl;
 }
+
 void Server::resClient(std::string processId, std::string res){
     char message[Constante::CHAR_SIZE];int fd;
     sprintf(message, "%s", res.c_str());
@@ -619,25 +619,6 @@ void Server::remove_pipe(std::string the_pipe){
     else{
         std::cout << the_pipe << " supprimer avec succes "<<std::endl;
     }
-}
-
-
-/**
- * @brief recoit les paramètres de jeu et lance un thread avec le jeu
- * 
- * @param input les paramètres non parser
- */
-void Server::get_game_settings(char* input, Parsing::Game_settings* game_sett){
-	
-	Parsing::create_game_from_str(input, game_sett);
-    #ifdef DEBUG_GAME
-	std::cout <<std::endl<< game_sett->nb_player << "-" << game_sett->pseudo_hote << "-"
-			  << game_sett->pseudo_other    << "-" << game_sett->drop_rate << "-"
-			  << game_sett->ally_shot << "-" << game_sett->nb_lives << "-"
-			  << game_sett->difficulty_str <<"-"<< game_sett->pid <<std::endl;
-    sleep(5);
-    #endif
-
 }
 
 /**
@@ -809,29 +790,28 @@ void Server::close_me(int sig){
     }
 }// handle CTRL + C signal ==> save db
 
-
-
-void Server::launch_custom_game(Parsing::Level* level_sett,Parsing::Game_settings* game_settings){
+void Server::launch_custom_game(Parsing::Level level_sett,Parsing::Game_settings game_settings){
     char input_pipe[Constante::CHAR_SIZE],send_response_pipe[Constante::CHAR_SIZE];
     bool gameOn=true;int inp[11]{};
     
     // mise en place des pipes
-    sprintf(input_pipe,"%s%s%s",Constante::PIPE_PATH,Constante::BASE_INPUT_PIPE,game_settings->pid);
-    sprintf(send_response_pipe,"%s%s%s",Constante::PIPE_PATH,Constante::BASE_GAME_PIPE,game_settings->pid);
+    sprintf(input_pipe,"%s%s%s",Constante::PIPE_PATH,Constante::BASE_INPUT_PIPE,game_settings.pid);
+    sprintf(send_response_pipe,"%s%s%s",Constante::PIPE_PATH,Constante::BASE_GAME_PIPE,game_settings.pid);
     
 
 
-    CurrentGame game{*level_sett,*game_settings}; //TODO
+    CurrentGame game{level_sett,game_settings};
     std::string resp;
-
     while(gameOn){
         int state = read_game_input(input_pipe, inp);  
+
+        // Le client est parti ou alors le pipe a été supprimer 
         if(state == Constante::ERROR_PIPE_GAME || state == Constante::CLIENT_LEAVE_GAME){
-            // Le client est parti ou alors le pipe a été supprimer 
-            std::cout << game_settings->pid << " A LA PROCHAINE "<<std::endl;
+            std::cout << game_settings.pid << " A LA PROCHAINE "<<std::endl;
             return;
         }
-        resp = game.run_server(inp, level_sett->player, level_sett->enemy_list,level_sett->obs_list);                                                        //  le jeu du server
+        
+        resp = game.run_server(inp, level_sett.player, level_sett.enemy_list,level_sett.obs_list);                                                        //  le jeu du server
         if(resp == Constante::GAME_END){  // if game over
             gameOn=false;
         }
@@ -852,9 +832,9 @@ void Server::launch_custom_game(Parsing::Level* level_sett,Parsing::Game_setting
     #endif
 
     //sauvegarde du score
-   save_score(game_settings->pseudo_hote,game.getScore());
-   if (game_settings->nb_player == 2){
-       save_score(game_settings->pseudo_other,game.getScore());
+   save_score(game_settings.pseudo_hote,game.getScore());
+   if (game_settings.nb_player == 2){
+       save_score(game_settings.pseudo_other,game.getScore());
    }
 
     std::cout << " score : " << game.getScore() << std::endl;
@@ -862,7 +842,7 @@ void Server::launch_custom_game(Parsing::Level* level_sett,Parsing::Game_setting
     // mettre l'etat du jeu pour ce client a false pour qu'il puisse lancer un autre jeu
     mtx_game.lock();
     for(size_t i =0; i < _pipe_running.size(); i++){
-        if(strcmp(_pipe_running.at(i)->pid,game_settings->pid)== 0){
+        if(strcmp(_pipe_running.at(i)->pid,game_settings.pid)== 0){
             // mettre le jeu a false pour lancer une autre partie
            _pipe_running.at(i)->in_game = false; break; 
         }
