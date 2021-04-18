@@ -64,11 +64,10 @@ void DisplayGame::parse_affichage(std::string instruction){
 	else if(objet=="PJ")		//projectile joueur
 		drawProjectile(x,y,false,true);
 	else if(objet=="E"){			//Vaisseau ennemie
-		int explo,tick;
+		int explo;
 		idx = instruction.find(delimiteur_parametre);
 		explo = std::stoi(instruction.substr(0,idx));
-		tick = std::stoi(instruction.substr(idx+1,instruction.size()));
-		drawEnemy(x,y,tick,explo);
+		drawEnemy(x,y,explo);
 	}
 	else if(objet=="1"){		//Vaisseau joueur 1     A_1_x_y_explosion_tick
 		int explo,tick;
@@ -142,13 +141,13 @@ void DisplayGame::starHandler(){
     for(size_t i = 0; i < stars.size(); i++) {
             stars.at(i)->y += 1;
             if(stars.at(i)->y > game_area.bot() + 1)
-                stars.erase(stars.begin() + i);
+                stars.erase(stars.begin() + static_cast<std::vector<vec2i*>::difference_type>(i));
 
         }
 }
 void DisplayGame::drawStar() {
     for(auto s : stars){
-        mvwaddch(game_wnd, s->y-1, s->x, '.');
+        mvwaddch(game_wnd, static_cast<int>(s->y)-1, static_cast<int>(s->x), '.');
     }
 
 }
@@ -161,7 +160,6 @@ void DisplayGame::drawNewLevel(int tick,int levelTick,int currentLevel) {
 
 int DisplayGame::init() {
 
-    srand(time(0)); // ??????
 
     main_wnd = initscr();
     cbreak();
@@ -184,15 +182,15 @@ int DisplayGame::init() {
 
     // initialize window areas
     int infopanel_height = 4;
-    game_wnd = newwin( screen_area.height() - infopanel_height - 2,
-                       screen_area.width() - 2,
-                       screen_area.top() + 1,
-                       screen_area.left() + 1);
+    game_wnd = newwin( static_cast<int>(screen_area.height()) - infopanel_height - 2,
+                       static_cast<int>(screen_area.width() - 2),
+                       static_cast<int>(screen_area.top() + 1),
+                       static_cast<int>(screen_area.left() + 1));
 
-    main_wnd = newwin(screen_area.height(), screen_area.width(), 0, 0);
+    main_wnd = newwin(static_cast<int>(screen_area.height()), static_cast<int>(screen_area.width()), 0, 0);
     
     // define area for movement
-    game_area = { {0, 0}, {static_cast<uint_fast16_t>(screen_area.width() - 2), static_cast<uint_fast16_t>(screen_area.height() - infopanel_height - 4)}};
+    game_area = { {0, 0}, {static_cast<uint_fast16_t>(screen_area.width() - 2), screen_area.height() - static_cast<uint_fast16_t>(infopanel_height - 4)}};
 
     init_pair(1, COLOR_WHITE, COLOR_BLACK);
     init_pair(2, COLOR_GREEN, COLOR_BLACK);
@@ -220,8 +218,8 @@ int DisplayGame::init() {
     wattroff(main_wnd, A_BOLD);
 
     // horizontal diving line
-    wmove(main_wnd, game_area.bot() + 3, 1);
-    whline(main_wnd, '-', screen_area.width()- 2);
+    wmove(main_wnd, static_cast<int>(game_area.bot() + 3), 1);
+    whline(main_wnd, '-', static_cast<int>(screen_area.width()- 2));
 
     // initial draw
 
@@ -236,7 +234,7 @@ void DisplayGame::drawObstacle(int x, int y) {
 	wattroff(game_wnd, COLOR_PAIR(1));
   
 }
-void DisplayGame::drawEnemy(int x, int y, int tick, bool isBlinking) {
+void DisplayGame::drawEnemy(int x, int y, bool isBlinking) {
     
 	wattron(game_wnd, COLOR_PAIR(4));
 	mvwaddch(game_wnd, y, x, '%');
@@ -299,7 +297,7 @@ void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinkin
 			player_char= '0';
 		}
         wattron(game_wnd, COLOR_PAIR(player_color));
-        mvwaddch(game_wnd, y, x, player_char);
+        mvwaddch(game_wnd, y, x, static_cast<chtype>(player_char));
         wattroff(game_wnd, COLOR_PAIR(player_color));
 
         wattron(game_wnd, A_ALTCHARSET);
@@ -460,7 +458,7 @@ void DisplayGame::drawEndGame(std::string score){
     mvwprintw(game_wnd,12, 32,"press p to quit");
     refreshWnd();
     while(true){
-        char in_char = wgetch(main_wnd);
+        char in_char = static_cast<char>(wgetch(main_wnd));
         if(in_char == 'p')break;
     }
 }
