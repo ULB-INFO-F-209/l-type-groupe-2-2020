@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.3.0">
-  <zoom_level>9</zoom_level>
+  <zoom_level>7</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>828</x>
-      <y>0</y>
-      <w>387</w>
-      <h>378</h>
+      <x>686</x>
+      <y>77</y>
+      <w>301</w>
+      <h>294</h>
     </coordinates>
     <panel_attributes>Client
 --
@@ -41,10 +41,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>423</x>
-      <y>189</y>
-      <w>189</w>
-      <h>54</h>
+      <x>371</x>
+      <y>224</y>
+      <w>147</w>
+      <h>42</h>
     </coordinates>
     <panel_attributes>Server
 --
@@ -54,10 +54,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>603</x>
-      <y>180</y>
-      <w>243</w>
-      <h>45</h>
+      <x>511</x>
+      <y>217</y>
+      <w>189</w>
+      <h>35</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -69,10 +69,10 @@ send Informations &gt;
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>603</x>
-      <y>216</y>
-      <w>243</w>
-      <h>45</h>
+      <x>511</x>
+      <y>245</y>
+      <w>189</w>
+      <h>35</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -84,10 +84,10 @@ m2=1..*
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>828</x>
-      <y>459</y>
-      <w>396</w>
-      <h>342</h>
+      <x>686</x>
+      <y>434</y>
+      <w>308</w>
+      <h>266</h>
     </coordinates>
     <panel_attributes>Menu
 --
@@ -117,10 +117,10 @@ m2=1..*
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1440</x>
-      <y>405</y>
-      <w>486</w>
-      <h>405</h>
+      <x>1162</x>
+      <y>392</y>
+      <w>378</w>
+      <h>315</h>
     </coordinates>
     <panel_attributes>Interface
 --
@@ -155,10 +155,10 @@ m2=1..*
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1215</x>
-      <y>612</y>
-      <w>243</w>
-      <h>45</h>
+      <x>987</x>
+      <y>553</y>
+      <w>189</w>
+      <h>35</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -169,10 +169,10 @@ communicates &gt;</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1008</x>
-      <y>369</y>
-      <w>90</w>
-      <h>108</h>
+      <x>826</x>
+      <y>364</y>
+      <w>56</w>
+      <h>84</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -183,12 +183,12 @@ m2=1
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>153</x>
-      <y>459</y>
-      <w>450</w>
-      <h>315</h>
+      <x>161</x>
+      <y>434</y>
+      <w>350</w>
+      <h>259</h>
     </coordinates>
-    <panel_attributes>Interface_Game
+    <panel_attributes>DisplayGame
 --
 -main_wnd: WINDOW
 -game_wnd: WINDOW
@@ -202,80 +202,76 @@ m2=1
 +drawProjectile(Map)
 +drawPlayer(Map, tick,listPlayer)
 +drawUI(Map,PlayersInfo,tick)
++drawEnergyBar(hp)
 +drawBonus(Map)
 +drawBoss(Map)
 +drawNewLevel(Map, tick)
 +drawGameOver(score)
 +refresh_wnd()
-+drawEnergyBar(hp)</panel_attributes>
++drawEnergyBar(hp)
++close()
++parse_instruction()</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>594</x>
-      <y>612</y>
-      <w>252</w>
-      <h>45</h>
+      <x>504</x>
+      <y>553</y>
+      <w>196</w>
+      <h>35</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
 m2=1
-&lt; communicates </panel_attributes>
+&lt; uses</panel_attributes>
     <additional_attributes>10.0;20.0;260.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>117</x>
-      <y>909</y>
-      <w>189</w>
-      <h>54</h>
+      <x>658</x>
+      <y>889</y>
+      <w>350</w>
+      <h>259</h>
     </coordinates>
-    <panel_attributes>MapHandler
+    <panel_attributes>DisplayGameGui
 --
-</panel_attributes>
+-main_wnd: WINDOW
+-game_wnd: WINDOW
+-music: Music
+-laserSound: Sound
+--
++init()
++initialDraw()
++display(settingArray)
++drawStar(Map)
++drawObstacle(Map)
++drawEnemy(Map, tick, listPlayer)
++drawProjectile(Map)
++drawPlayer(Map, tick,listPlayer)
++drawUI(Map,PlayersInfo,tick)
++drawBonus(Map)
++drawBoss(Map)
++drawNewLevel(Map, tick)
++drawEndGame(score)
++refresh_wnd()
++drawEnergyBar(hp)
++close()
++parse_instruction()</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
+    <id>UMLNote</id>
     <coordinates>
-      <x>450</x>
-      <y>909</y>
-      <w>189</w>
-      <h>54</h>
+      <x>1015</x>
+      <y>910</y>
+      <w>133</w>
+      <h>49</h>
     </coordinates>
-    <panel_attributes>MapObject
---
-</panel_attributes>
+    <panel_attributes>Les attributs tel sound, 
+music, sprite, texture, etc 
+ne sont pas repris ici</panel_attributes>
     <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>180</x>
-      <y>765</y>
-      <w>81</w>
-      <h>162</h>
-    </coordinates>
-    <panel_attributes>lt=-
-m1=1
-m2=1
- use v</panel_attributes>
-    <additional_attributes>10.0;160.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>531</x>
-      <y>765</y>
-      <w>90</w>
-      <h>162</h>
-    </coordinates>
-    <panel_attributes>lt=-
-m1= 1..*
-m2= 1
- use  v</panel_attributes>
-    <additional_attributes>10.0;160.0;10.0;10.0</additional_attributes>
   </element>
 </diagram>
