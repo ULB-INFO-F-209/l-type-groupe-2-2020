@@ -38,7 +38,6 @@ if (_fd_send_query != -1){
 						std::cout << " [ERROR] " <<_pid << "n'a pas reussit a lire"<<std::endl;
 				}
 				else if(res == 0){// le pipe a deja ete lu bg
-					std::cout<<"LECTURE EN BOUCLE"<<std::endl;
 					continue;
 				}
 				else{ // message recu 
