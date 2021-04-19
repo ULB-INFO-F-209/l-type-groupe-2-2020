@@ -813,8 +813,6 @@ std::string MapHandler::getState(int nlives_j1,int nlives_j2,int tick){
         state.append(y);
         state.append("_");
         state.append(std::to_string(enemy_explosion));
-        state.append("_");
-        state.append(std::to_string(tick));
         state.append("&");
     }
     //enemy2
@@ -828,8 +826,6 @@ std::string MapHandler::getState(int nlives_j1,int nlives_j2,int tick){
         state.append(y);
         state.append("_");
         state.append(std::to_string(enemy_explosion));
-        state.append("_");
-        state.append(std::to_string(tick));
         state.append("&");
     }
 
