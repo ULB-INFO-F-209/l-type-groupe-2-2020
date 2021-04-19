@@ -61,6 +61,8 @@ class CurrentGame {
     void destroyPlayership();
     std::string getPlayerState(std::string state);
     bool boss{};
+    int playershipStartHp{};
+    //int playership2StartHp{};
     
 
 
