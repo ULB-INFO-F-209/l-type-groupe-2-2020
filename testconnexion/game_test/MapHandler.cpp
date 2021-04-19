@@ -381,18 +381,17 @@ void MapHandler::add_object_server(MapObject::type typ,int t,std::vector<Enemy_t
     {
         if((enemy_list->at(j).tick*100)== t){
             int enemy_tick = t + rand() % 100;
-            //TODO changer le modulo et le tick
-            if(enemy_list->at(j).skin==0) //940 max, 16 hauteur ==> 58.75
+            
+            if(enemy_list->at(j).skin==0) 
                 enemy_ships_set.push_back(new EnemyShip((enemy_list->at(j).x+ 12.53)/12.53, 0, {{10 - 1, 5},{3,2}}, '%', enemy_list->at(j).hp,enemy_tick, enemy_list->at(j).damage, bonusType(enemy_list->at(j).bonus)));
             else 
                 enemy_ships2_set.push_back(new EnemyShip2(0, (enemy_list->at(j).x+ 58.75)/58.75, {{10 - 1, 5},{3,2}}, '%', enemy_list->at(j).hp,enemy_tick, enemy_list->at(j).damage, bonusType(enemy_list->at(j).bonus)));
             enemyCount++;
         }
-        //std::cout<<"check "<<j<<" "<<enemy_list->at(j).x<<" "<<enemy_list->at(j).tick<<std::endl;
         
     }
     if(typ== MapObject::type::boss)
-        boss_set.push_back(new Boss(0,0,{{0, 0},{18,6}},'&',5000,t + 100, enemyStartProjectileDamage, 2));    
+        boss_set.push_back(new Boss(0,0,{{0, 0},{18,6}},'&',10000,t + 100, enemyStartProjectileDamage, 2));    
 
 }
 
