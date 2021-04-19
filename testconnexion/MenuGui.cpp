@@ -520,6 +520,7 @@ void MenuGui::print_friends(){
         std::string pseudo = (pseudo_line->text()).toUtf8().constData();
         int  error = verif_friend(pseudo);
         if(error == NO_ERROR){
+            pseudo_line->setText("");
             pseudo_line->hide();
             user_label->hide();
             ok_button_a->hide();
@@ -937,7 +938,8 @@ void MenuGui::save_level(Parsing::Level my_level){
     horizontalLayoutWidget_2->setGeometry(QRect(40, 120, 361, 81));
     QHBoxLayout *horizontalLayout_2 = new QHBoxLayout(horizontalLayoutWidget_2);
     QLabel *name_label = new QLabel("Name : ",horizontalLayoutWidget_2);
-    QLineEdit *name_edit = new QLineEdit(horizontalLayoutWidget_2);
+    //QLineEdit *name_edit = new QLineEdit(horizontalLayoutWidget_2);
+    QLineEdit *name_edit = create_line(Dialog,QRect(230, 270, 400, 45),false);
     name_edit->setMaxLength(15);
     horizontalLayout_2->addWidget(name_label);
     horizontalLayout_2->addWidget(name_edit);
@@ -953,11 +955,12 @@ void MenuGui::save_level(Parsing::Level my_level){
         _client.createLevel(string_level.c_str());
         Dialog->hide();
         this->setFixedSize(800,600);
-        level_menu();
+        level_editor(my_level);
     });
-    connect(cancel, &QPushButton::clicked, this, [this, Dialog](){
+    connect(cancel, &QPushButton::clicked, this, [this, Dialog, my_level](){
         Dialog->hide();
-        level_menu();
+        this->setFixedSize(800,600);
+        level_editor(my_level);
     });
 
     Dialog->show();
