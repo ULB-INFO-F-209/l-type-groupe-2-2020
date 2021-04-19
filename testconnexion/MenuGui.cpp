@@ -585,7 +585,7 @@ void MenuGui::lobby(std::string my_level, bool from_lead){
     QPushButton *cancel_button;
     std::vector<std::string> players_str{"1", "2"};
     std::vector<std::string> ally_str{"YES", "NO"};
-    std::vector<std::string> difficulty_str{"EASY", "NORMAL", "HARD"};
+    std::vector<std::string> difficulty_str{"EASY", "MEDIUM", "HARD"};
 
     QLabel *label[7];
 
@@ -666,9 +666,14 @@ void MenuGui::lobby(std::string my_level, bool from_lead){
         _client.get_pseudo(setting.pseudo_hote);
         
         std::string difficulty = (difficulty_combo->currentText()).toStdString();
+
+        std::for_each(difficulty.begin(), difficulty.end(), [](char & c){
+            c = ::tolower(c);
+        });
         strcpy(setting.difficulty_str, difficulty.c_str());
 
         setting.diff = !strcmp(setting.difficulty_str,"easy")? easy: !strcmp(setting.difficulty_str,"medium")? medium :hard;
+        std::cout << "la diff : " << setting.difficulty_str << std::endl;
         setting.drop_rate =  droprate_spin->value();
         setting.nb_lives = lives_spin->value();
         setting.ally_shot = ally_combo->currentIndex() == 0? 1:0;
@@ -980,12 +985,12 @@ void MenuGui::custom_enemy(Parsing::Level my_level, int idx){
     QWidget *formLayoutWidget = new QWidget(Dialog);
     formLayoutWidget->setGeometry(QRect(590, 160, 258, 275));
      QFormLayout *formLayout = new QFormLayout(formLayoutWidget);
-    int position = 0,tick=2; 
-    std::string legende[] = {"POSITION :","HP :","TIME :","DAMAGE :"};
-    QLabel *label[4];
-    int spin_value[4]; my_level.enemy_list[idx].get_values(spin_value);
-    QSpinBox * spin_box[4];
-    for (int i = 0; i < 4; ++i){
+    int tick=1; 
+    std::string legende[] = {"HP :","TIME :","DAMAGE :"};
+    QLabel *label[3];
+    int spin_value[3]; my_level.enemy_list[idx].get_values(spin_value);
+    QSpinBox * spin_box[3];
+    for (int i = 0; i < 3; ++i){
         //legende
         label[i] = new QLabel(legende[i].c_str(), formLayoutWidget);
         formLayout->setWidget(i, QFormLayout::LabelRole, label[i] );
@@ -1000,8 +1005,6 @@ void MenuGui::custom_enemy(Parsing::Level my_level, int idx){
         spin_box[i]->setValue(spin_value[i]);
         formLayout->setWidget(i, QFormLayout::FieldRole, spin_box[i]);
     }
-    spin_box[position]->setMaximum(X_MAX);
-    spin_box[position]->setValue(spin_value[position]);
     spin_box[tick]->setMaximum(3000);
     spin_box[tick]->setSingleStep(1);
     spin_box[tick]->setValue(spin_value[tick]);
@@ -1083,10 +1086,10 @@ void MenuGui::custom_enemy(Parsing::Level my_level, int idx){
     /***************CONNECTION********************/
     connect(button[ok], &QPushButton::clicked, this, [this, my_level,Dialog, spin_box, idx, bonus, skin](){
         Parsing::Level copy_level = my_level;
-        copy_level.enemy_list[idx].x = spin_box[0]->value();
-        copy_level.enemy_list[idx].hp = spin_box[1]->value();
-        copy_level.enemy_list[idx].tick = spin_box[2]->value();
-        copy_level.enemy_list[idx].damage = spin_box[3]->value();
+        //copy_level.enemy_list[idx].x = spin_box[0]->value();
+        copy_level.enemy_list[idx].hp = spin_box[0]->value();
+        copy_level.enemy_list[idx].tick = spin_box[1]->value();
+        copy_level.enemy_list[idx].damage = spin_box[2]->value();
         for (int i = 0; i < 4; ++i){
             if(bonus[i]->isChecked())
                 copy_level.enemy_list[idx].bonus = i;
@@ -1191,17 +1194,17 @@ void MenuGui::custom_obstacle(Parsing::Level my_level, int idx){
 void MenuGui::custom_player(Parsing::Level my_level){
 	this->setStyleSheet(QStringLiteral("background-color:white;"));
     QDialog * Dialog = new QDialog(this);
-    Dialog->resize(859, 665);
+    Dialog->resize(548, 480);
     Dialog->setModal(true);
 
     QLabel * title_label = new QLabel("CUSTOM PLAYER", Dialog);
-    title_label->setGeometry(QRect(70, 20, 701, 71));
+    title_label->setGeometry(QRect(180, 20, 181, 51));
     title_label->setFrameShape(QFrame::WinPanel);
     title_label->setAlignment(Qt::AlignCenter);
 
     /*************SPIN AND THEIR LEGENDE ZONE********************/
     QWidget *formLayoutWidget = new QWidget(Dialog);
-    formLayoutWidget->setGeometry(QRect(590, 160, 258, 275));
+    formLayoutWidget->setGeometry(QRect(150, 99, 251, 251));
     QFormLayout *formLayout = new QFormLayout(formLayoutWidget);
     std::string legende[] = {"HP :","DAMAGE :"};
     QLabel *label[2];
@@ -1258,7 +1261,7 @@ void MenuGui::custom_player(Parsing::Level my_level){
 
     /*************BUTTON_ZONE********************/
     QWidget *horizontalLayoutWidget = new QWidget(Dialog);
-    horizontalLayoutWidget->setGeometry(QRect(40, 540, 771, 80));
+    horizontalLayoutWidget->setGeometry(QRect(100, 360, 371, 50));
     QHBoxLayout* horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
     horizontalLayout->setContentsMargins(0, 0, 0, 0);
 
@@ -1271,7 +1274,6 @@ void MenuGui::custom_player(Parsing::Level my_level){
         button[i]->setMaximumSize(QSize(100, 45));
         horizontalLayout->addWidget( button[i]);
     }
-
     /***************CONNECTION********************/
     connect(button[ok], &QPushButton::clicked, this, [this, my_level,Dialog, spin_box/*, skin_player1, skin_player2,*/, speed_box,boss_box](){
         Parsing::Level copy_level = my_level;
@@ -1279,16 +1281,6 @@ void MenuGui::custom_player(Parsing::Level my_level){
         copy_level.player.hp = spin_box[0]->value();
         copy_level.player.damage = spin_box[1]->value();
         copy_level.player.boss = boss_box->currentIndex();
-        // for (int i = 0; i < 3; ++i){
-        //     if(skin_player1[i]->isChecked())
-        //         copy_level.player.skin = i;
-        // }
-
-        // for (int i = 0; i < 3; ++i){
-        //     if(skin_player2[i]->isChecked())
-        //         copy_level.player.skin2 = i;
-        // }
-
         Dialog->hide();
         level_editor(copy_level);
     });
@@ -1297,9 +1289,7 @@ void MenuGui::custom_player(Parsing::Level my_level){
         Parsing::Level copy_level = my_level;
         level_editor(copy_level);
     });
-
     Dialog->show();
-
 }
 
 void MenuGui::view_level(bool mine){
@@ -1386,7 +1376,6 @@ void MenuGui::view_level(bool mine){
             item->setSizeHint(QSize(100, 100));
         }
     }
-
     this->setCentralWidget(centralWidget);
     this->show();
 }
@@ -1402,10 +1391,8 @@ void MenuGui::launch_game(){
 	std::string string_previous_game_to_display;
 
     while(gameOn && window->isOpen()){ 
-
 		sf::Event event; 
-        while (window->pollEvent(event))
-        {
+        while (window->pollEvent(event)){
             if (event.type == sf::Event::Closed){
                 window->close();
                 return;
@@ -1413,7 +1400,6 @@ void MenuGui::launch_game(){
 			if (event.type == sf::Event::KeyPressed)
 				display_game.getInputWindow(&inp);
         }
-	
 		window->clear();
 		_client.send_game_input(inp);
 		inp.clear();
@@ -1422,13 +1408,10 @@ void MenuGui::launch_game(){
 		if (string_game_to_display != Constante::GAME_END)
 			string_previous_game_to_display = string_game_to_display;
 		if (string_game_to_display == Constante::GAME_END)
-		
 			break;
 		display_game.parse_instruction(string_game_to_display);
 		window->display();
-
     }
-	
 	//Last background
 	display_game.parse_instruction(string_previous_game_to_display);
 	window->display();
@@ -1441,13 +1424,11 @@ void MenuGui::launch_game(){
 	
 	while(true){ 
 		char in_char = -1;
-		while (window->pollEvent(event))
-        {
+		while (window->pollEvent(event)){
 			if (event.type == sf::Event::KeyPressed)
 				in_char = display_game.getInputWindow(&inp);
         }
         if(in_char == 'p')break;
     }
-
 	window->close();
 }

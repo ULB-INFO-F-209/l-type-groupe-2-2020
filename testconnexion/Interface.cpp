@@ -264,9 +264,9 @@ bool Interface::print_profile(std::vector<Profile> *vect, int type, int *answer)
 		focus = 0; int nb_elem = 8, //on peut afficher que 8 personnes à la fois
 		idx_min = 0, idx_max;
 	
-	bool TEST = vect->size() <= static_cast<size_t>(nb_elem);
+	bool test = vect->size() <= static_cast<size_t>(nb_elem);
 
-	if(TEST)
+	if(test)
 		idx_max = MAX; //no scroll
 	else
 		idx_max = idx_min + nb_elem -1;
@@ -278,7 +278,7 @@ bool Interface::print_profile(std::vector<Profile> *vect, int type, int *answer)
 		switch(choice){
 			case KEY_UP:
 				if(focus > MIN){
-					if(focus == idx_min and not TEST){
+					if(focus == idx_min and not test){
 						idx_min --;
 						idx_max--;
 					}
@@ -287,7 +287,7 @@ bool Interface::print_profile(std::vector<Profile> *vect, int type, int *answer)
 				break;
 			case KEY_DOWN:
 				if(focus < MAX){
-					if(focus == idx_max and not TEST){
+					if(focus == idx_max and not test){
 						idx_min++;
 						idx_max++;
 					}
@@ -611,10 +611,10 @@ void Interface::print_users(std::vector<Profile> *vect, int highlight, int min, 
 	print_cara(_main_win, pseudo_title,caption_x,caption_y);
 	print_cara(_main_win, score_title, _error_x,caption_y);
 	
-	for (size_t i = static_cast<size_t>(min); i <= static_cast<size_t>(max); ++i){ 
-		sprintf(score, "%d",vect->at(i).score);
-		sprintf(pseudo, "%s", vect->at(i).pseudo);
-		if(i == static_cast<size_t>(highlight))
+	for (int i = (min); i <= (max); ++i){ 
+		sprintf(score, "%d",vect->at(size_t(i)).score);
+		sprintf(pseudo, "%s", vect->at(size_t(i)).pseudo);
+		if(i == (highlight))
 		{
 			wattron(_main_win, A_REVERSE);
 			print_cara(_main_win,pseudo,x,y);
