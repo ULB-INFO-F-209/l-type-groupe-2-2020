@@ -98,7 +98,7 @@ private:
 	void set_title(QWidget *parent, std::string image);
 	QLabel *create_label(QWidget *parent, std::string value,QRect pos);
 	QPushButton *create_button(QWidget *parent,std::string image, int width, int height);
-	QPushButton *create_button(QWidget *parent,std::string image, int width, int height, QRect size);
+	QPushButton *create_button(QWidget *parent,std::string image, QRect size);
 	QComboBox *create_box(QWidget *parent, std::vector<std::string> values, QRect pos);
 	QLineEdit *create_line(QWidget *parent,QRect rect, bool pswd);
 	QTableWidget * create_table_widget(QWidget *parent,int col, int row,std::string title[],QRect rect);
