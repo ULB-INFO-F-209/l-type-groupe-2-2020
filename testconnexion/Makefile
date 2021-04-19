@@ -1,4 +1,4 @@
-all : run_server run_client compile
+all : compile
 
 flag = -std=c++17 -lncurses -fconcepts -pthread \
 		-fopenacc -fopenmp -ggdb3 -Wpedantic -Wall -Wextra -Wconversion \
@@ -44,7 +44,7 @@ client.o: Client.hpp Client.cpp Constante.hpp
 	g++  -c Client.cpp $(flag) -o client.o 
 	
 
-Label.cpp: Label.hpp # compile le Label.hpp en fichier cpp avec le compliteur de Qt car les signaux sont géreés par Qt
+Label.cpp: Label.hpp
 	moc $< -o $@
 label.o: Label.cpp
 	g++ Label.cpp -c $(qt_flag) $(qt_exec_flag) -o label.o
@@ -71,21 +71,19 @@ MapHandler.o: game_test/MapHandler.cpp game_test/MapHandler.hpp game_test/Rect.h
 Player.o: game_test/Player.cpp game_test/Player.hpp
 	g++ -g -c -o Player.o Player.cpp $(flag)
 
-compile:
-	make server
-	make client_terminal
+compile: server client_gui
 
 install:
-	echo "ecrire les commandes pour installer ncursus, sfml et qt5 -_- "
+	echo "ecrire les commandes pour installer ncurses, sfml et qt5 -_- "
 
-run_server:
-	make server && ./process_server
+run_server:	server
+	./process_server
 
-run_client_terminal:
-	make client_terminal && ./process_client_terminal
+run_client_terminal: client_terminal
+	./process_client_terminal
 
-run_client_gui:
-	make client_gui && ./process_client_gui
+run_client_gui: client_gui
+	./process_client_gui
 
 clean:
 	rm *.o
