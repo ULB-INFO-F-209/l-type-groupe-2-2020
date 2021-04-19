@@ -642,8 +642,7 @@ void Server::launchGame(Parsing::Game_settings* sett_game){
         DisplayGame interface_game;
 	    interface_game.init();
     #endif
-
-    std::cout << "je suis ici bg de la street" << std::endl;
+    std::cout<< " la diffi : " << sett_game->diff << " le str diff " << sett_game->difficulty_str <<std::endl;
     CurrentGame game{*sett_game};
     std::string resp;
 

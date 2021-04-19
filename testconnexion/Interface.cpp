@@ -264,9 +264,9 @@ bool Interface::print_profile(std::vector<Profile> *vect, int type, int *answer)
 		focus = 0; int nb_elem = 8, //on peut afficher que 8 personnes à la fois
 		idx_min = 0, idx_max;
 	
-	bool TEST = vect->size() <= static_cast<size_t>(nb_elem);
+	bool test = vect->size() <= static_cast<size_t>(nb_elem);
 
-	if(TEST)
+	if(test)
 		idx_max = MAX; //no scroll
 	else
 		idx_max = idx_min + nb_elem -1;
@@ -278,7 +278,7 @@ bool Interface::print_profile(std::vector<Profile> *vect, int type, int *answer)
 		switch(choice){
 			case KEY_UP:
 				if(focus > MIN){
-					if(focus == idx_min and not TEST){
+					if(focus == idx_min and not test){
 						idx_min --;
 						idx_max--;
 					}
@@ -287,7 +287,7 @@ bool Interface::print_profile(std::vector<Profile> *vect, int type, int *answer)
 				break;
 			case KEY_DOWN:
 				if(focus < MAX){
-					if(focus == idx_max and not TEST){
+					if(focus == idx_max and not test){
 						idx_min++;
 						idx_max++;
 					}

@@ -592,7 +592,7 @@ void MenuGui::lobby(std::string my_level, bool from_lead){
     QPushButton *cancel_button;
     std::vector<std::string> players_str{"1", "2"};
     std::vector<std::string> ally_str{"YES", "NO"};
-    std::vector<std::string> difficulty_str{"EASY", "NORMAL", "HARD"};
+    std::vector<std::string> difficulty_str{"EASY", "MEDIUM", "HARD"};
 
     QLabel *label[7];
 
@@ -669,9 +669,14 @@ void MenuGui::lobby(std::string my_level, bool from_lead){
         _client.get_pseudo(setting.pseudo_hote);
         
         std::string difficulty = (difficulty_combo->currentText()).toStdString();
+
+        std::for_each(difficulty.begin(), difficulty.end(), [](char & c){
+            c = ::tolower(c);
+        });
         strcpy(setting.difficulty_str, difficulty.c_str());
 
         setting.diff = !strcmp(setting.difficulty_str,"easy")? easy: !strcmp(setting.difficulty_str,"medium")? medium :hard;
+        std::cout << "la diff : " << setting.difficulty_str << std::endl;
         setting.drop_rate =  droprate_spin->value();
         setting.nb_lives = lives_spin->value();
         setting.ally_shot = ally_combo->currentIndex() == 0? 1:0;
