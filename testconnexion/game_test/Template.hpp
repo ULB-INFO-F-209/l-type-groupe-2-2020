@@ -49,6 +49,7 @@ struct Template::Player_template{
 	int hp = 70;
 	int damage=30;
 	int speed = 2; //SLUG, TURTLE, HUMAN, HORSE,CHEETAHs
+	bool is_boss_active = false;
 };
 
 struct Template::Level{

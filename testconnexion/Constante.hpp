@@ -42,7 +42,7 @@ namespace Constante{
     const size_t SIZE_pipe = 64;
 
     //server
-    const unsigned SERVER_SAVE_TIME = 90;
+    const unsigned SERVER_SAVE_TIME = 9000;
     const bool GAME_CAN_BE_LAUNCH = true;
     const int ERROR_PIPE_GAME = -100;
     const int CLIENT_END_GAME = -101;
