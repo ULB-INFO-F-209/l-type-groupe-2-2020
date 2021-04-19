@@ -27,6 +27,7 @@
 \usepackage{xspace}
 \usepackage{epstopdf}
 \usepackage{tabularx}
+\usepackage{hyperref}
 
 % -----------------------------------------------------
 \begin{document}
@@ -72,7 +73,7 @@ En dehors du jeu, un utilisateur a la capacité de gérer sa liste d'amis et de 
 Le jeu ne sera exécutable que sous le système d'exploitation Linux.
 
 \subsection{Historique}
-\begin{tabularx}{15cm}{|c|c|X|}
+\begin{tabularx}{16cm}{|c|c|X|}
 	\hline
 		Dates & Sujets & Noms \\
 	\hline
@@ -99,7 +100,7 @@ Le jeu ne sera exécutable que sous le système d'exploitation Linux.
 \end{tabularx}
 
 
-\begin{tabularx}{15cm}{|c|c|X|}
+\begin{tabularx}{16cm}{|c|c|X|}
 	\hline
 	    03/02/21 & Modifications concernant le SRD & Helin, Mario, Salim, Aissa,
 		Alexandre, Jeremy, Martin, Kokou, Camelia\\
@@ -110,6 +111,12 @@ Le jeu ne sera exécutable que sous le système d'exploitation Linux.
 	    jeu, client et serveur & Aissa, Jeremy, Helin, Camelia, Martin\\
 	\hline
 	    10/03/21 & Dernières vérifications & Kokou\\
+	\hline
+	    01/04/21 & Explication de l'éditeur de niveaux & Aissa, Helin, Kokou, Salim\\
+	\hline
+	    5/04/21 & Mise à jour du déroulement du jeu en gui & Alexandre, Camelia, Jeremy, Mario, Martin\\
+	\hline
+	    20/04/21 & Ajout de screenshots + explication de jeu gui & Alexandre, Camelia, Jeremy, Mario, Martin\\
 	\hline
 
 \end{tabularx}
@@ -158,6 +165,18 @@ La partie est lancée quand l'hôte appuie sur play.\\
 - Profile:
 
 Dans le menu profile, l'utilisateur peut consulter ses informations de compte s'il le souhaite. A savoir, son pseudo et son score.
+
+
+\begin{figure}[hbtp]
+    \centering
+    \includegraphics[scale=0.5]{SRD/images/menuGui.png}
+    \caption{Menu version graphique }
+    
+    \includegraphics[scale=0.5]{SRD/images/menuTerm.png}
+    \caption{Menu version terminale }
+\end{figure}
+
+\newpage
 
 \subsubsection{Création de partie}
 La création d'une partie est une option qui envoie l'utilisateur dans un lobby permettant de modifier les paramètres du jeu.
@@ -208,6 +227,12 @@ augmentera son score à chaque tir atteignant sa cible. Sa quantité de points d
 lorsqu’il subit des dégâts. S’il n’a plus de points de vie, le joueur perd une vie. Lorsque le 
 joueur n’a plus de vie, son vaisseau est détruit et si plus aucun joueur n’a de vie, la partie se 
 termine. Elle peut également s’arrêter en cas de déconnexion d’un utilisateur, ou lorsque celui-ci a éliminé tous les ennemis.\\
+\\
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{SRD/images/launch_game_sequence_diagram.jpg}
+\caption{Diagramme de lancement d'une partie}
+\end{figure}
 
 
 - Niveau (par défaut):\\ \\
@@ -221,43 +246,20 @@ Les parties personnalisées sont constituées d'un seul niveau complètement mod
 Parmi les entités apparaissant à l’écran et pouvant se déplacer, il y a les vaisseaux, les bonus, 
 les projectiles et les obstacles.\\ \\
 \begin{itemize}
-    \item[$\bullet$ Ship:]Dans ce jeu, il existe 4 types de ships : les PlayerShip, les EnemyShip (type 1 et 2) et les Boss. Tous ces vaisseaux peuvent subir et infliger des dégâts. Les PlayerShip sont les vaisseaux alliés, ce sont ceux que les joueurs contrôlent. Ils peuvent se déplacer dans toutes les directions (verticales, horizontales, diagonales).\\ Les EnemyShip peuvent lâcher un bonus en se détruisant, la probabilité de lâcher ce bonus est déterminée par l’utilisateur avant de lancer la partie. Le premier type peut uniquement se déplacer de manière verticale, alors que le second uniquement de manière horizontale.\\ Le Boss est l’ennemi final à affronter pour finir les niveaux. Le premier boss est un vaisseau beaucoup plus volumineux et résistant que les EnemyShip. Il a la capacité de se déplacer horizontalement de gauche à droite et de droite à gauche, et également de tirer 2 projectiles à la fois. Le second détient les mêmes caractéristiques, tout en ayant la capacité de tirer 4 projectiles à la fois au lieu de 2.\\ 
+    \item[$\bullet$ Ship:]Dans ce jeu, il existe 4 types de ships : les PlayerShip, les EnemyShip (type 1 et 2) et les Boss. Tous ces vaisseaux peuvent subir et infliger des dégâts. 
+    \begin{itemize}
+        \item Les PlayerShip sont les vaisseaux alliés, ce sont ceux que les joueurs contrôlent. Ils peuvent se déplacer dans toutes les directions (verticales, horizontales, diagonales).
+        \item Les EnemyShip peuvent lâcher un bonus en se détruisant, la probabilité de lâcher ce bonus est déterminée par l’utilisateur avant de lancer la partie. Le premier type peut uniquement se déplacer de manière verticale, alors que le second uniquement de manière horizontale.
+        \item Le Boss est l’ennemi final à affronter pour finir les niveaux. Le premier boss est un vaisseau beaucoup plus volumineux et résistant que les EnemyShip. Il a la capacité de se déplacer horizontalement de gauche à droite et de droite à gauche, et également de tirer 2 projectiles à la fois. Le second détient les mêmes caractéristiques, tout en ayant la capacité de tirer 4 projectiles à la fois au lieu de 2.\\
+    \end{itemize}
 
     \item[$\bullet$ Projectiles:]Les projectiles sont créés lorsque les vaisseaux tirent. Ils peuvent sortir de l’écran, s’annuler en rencontrant d’autres projectiles ou causer des dégâts en atteignant leur cible.\\
 
-    \item[$\bullet$ Bonus:]Les bonus sont de plusieurs types et peuvent rapporter des améliorations d’armes et de santé au joueur qui réussit à l'attraper.
+    \item[$\bullet$ Bonus:]Les bonus sont de plusieurs types et peuvent rapporter des améliorations d’armes et de santé au joueur qui réussit à l'attraper (voir Création de Partie).
 \end{itemize}
 \newpage
-\begin{figure}[hbtp]
-\centering
-\includegraphics[scale=0.5]{images/add_friend.jpg}
-\caption{Diagramme de séquence pour l'ajout d'un ami }
-\end{figure}
-
-\begin{figure}[hbtp]
-\centering
-\includegraphics[scale=0.5]{images/del_friend.jpg}
-\caption{Diagramme de séquence pour la suppression d'un ami }
-\end{figure}
 
 
-\begin{figure}[hbtp]
-\centering
-\includegraphics[scale=0.3]{images/newGameClassDiagram.jpg}
-\caption{Diagramme de classe du jeu}
-\end{figure}
-
-\begin{figure}[hbtp]
-\centering
-\includegraphics[scale=0.3]{images/mapHandlerDiagram.jpg}
-\caption{classe MapHandler}
-\end{figure}
-
-\begin{figure}[hbtp]
-\centering
-\includegraphics[scale=0.3, angle=90]{images/newClientClassDiagram.jpg}
-\caption{Diagramme de classe côté client}
-\end{figure}
 
 \newpage
 
@@ -294,9 +296,30 @@ Dés lors, le seul rôle du programme utilisateur est d'écouter les instruction
 
 Une fois qu'une partie est terminée, le serveur se charge de mettre à jour le score des joueurs. Le score final est commun et est la somme des scores de chaque joueur.
 
-- Terminaison : \\
+- Déconnexion du jeu : \\
 Lorsqu'une session cliente est terminée, le serveur est mis au courant et se charge donc de supprimer les tubes de communications. S'il y a une partie en cours, elle est arrêtée. 
 Dans le cas où le serveur est arrêté, tous les programmes utilisateurs ainsi que les parties lancées sont stoppées et la base de données est sauvegardée. \\
+\begin{figure}
+\centering
+\includegraphics[scale=0.21]{SRD/images/ingameGui.png}
+\caption{Jeu version graphique}
+
+\includegraphics[scale=0.34]{SRD/images/ingameTerm.png}
+\caption{Jeu version terminale}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.3]{images/newGameClassDiagram.jpg}
+\caption{Diagramme de classe du jeu}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.3]{images/mapHandlerDiagram.jpg}
+\caption{classe MapHandler}
+\end{figure}
+\newpage
 
 \subsubsection{DataBase}
 
@@ -314,8 +337,16 @@ Toutes les fonctionnalités décrites dans la section 2.1 sont possibles. A savo
     \item Créer une partie
     \item Consulter le classement
     \item Gérer ses amis
-    \item Consulter son profile
+    \item Consulter son \\
 \end{itemize}
+Le rôle principal du client consiste en l'affichage du jeu pour l'utilisateur. Tout au long de la partie, il se chargera de l'aspect audiovisuel (musique, effets sonores, arrière-plan, etc). 
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.3, angle=90]{images/newClientClassDiagram.jpg}
+\caption{Diagramme de classe côté client}
+\end{figure}
+\newpage
 
 
 \subsubsection{Gestion des comptes}
@@ -349,23 +380,36 @@ La partie ne peut pas commencer tant que le second joueur ne réussit pas à se 
 Après chaque partie, le serveur met à jour le score de chaque joueur si celui-ci est supérieur à son score actuel. 
 Ce qui permet de garder le classement tous le temps à jour. 
 
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{images/add_friend.jpg}
+\caption{Diagramme de séquence pour l'ajout d'un ami }
+\end{figure}
+
+\newpage
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{images/del_friend.jpg}
+\caption{Diagramme de séquence pour la suppression d'un ami }
+\end{figure}
+
 \subsection{Besoins non fonctionnels}
+\begin{itemize}
+    \item Le lancement du programme nécessite un environnement Linux possédant un dossier nommé "tmp" à la racine, afin de pouvoir stocker et supprimer les tubes créés par le serveur
+    \item Par souci de sécurité, toutes les requêtes d'un client doivent passer par le serveur
+    \item Pour des raisons esthétiques, la taille du terminal doit être de 80x24
+    \item La librairie open source "ncurses" est indispensable pour la version terminale
+    \itme La librairie open source "Qt" est indispensable pour la version graphique
+    
+\end{itemize}
 
-- Le lancement du programme nécessite un environnement Linux possédant un dossier nommé "tmp" à la racine, afin de pouvoir stocker et supprimer les tubes créés par le serveur.\\
-- Par souci de sécurité, toutes les requêtes d'un client doivent passer par le serveur.\\
-- Pour des raisons esthétiques, la taille du terminal doit être de 80x24.
-- La librairie open source "ncurses" est indispensable.
-
-
-\\
-\\\\
-\begin{figure}[hbtp]
+\begin{figure}
 \centering
 \includegraphics[scale=0.3]{images/sequence_diagram_StartGame}
 \caption{Diagramme de séquence de lancement du jeu}
 \end{figure}
 
-\begin{figure}[hbtp]
+\begin{figure}
 \centering
 \includegraphics[scale=0.3]{images/player_shooting.jpg}
 \caption{Diagramme de séquence d'un tir de joueur}
@@ -379,8 +423,8 @@ Ce qui permet de garder le classement tous le temps à jour.
 \end{figure}
 
 \newpage
-\section{Annexes}
-\subsection{ Description du diagramme use case utilisateur}
+\appendix
+\section{ Annexe: Description du diagramme use case utilisateur}
 
 \begin{center}
 \begin{longtable}{|p{1,5cm}||p{3,5cm}|p{3,5cm}|p{3,5cm}|p{3,5cm}|}
