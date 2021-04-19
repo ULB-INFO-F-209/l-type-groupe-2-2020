@@ -92,7 +92,6 @@ private:
 	void lobby(std::string my_level="0",bool from_lead=false);
 	void level_editor(Parsing::Level my_level);
 	void launch_game();
-	void view_level();
 	void set_background(QWidget *centralwidget);
 	void set_title(QWidget *parent, std::string image);
 	QLabel *create_label(QWidget *parent, std::string value,QRect pos);
@@ -103,7 +102,6 @@ private:
 	QTableWidget * create_table_widget(QWidget *parent,int col, int row,std::string title[],QRect rect);
 	QLabel *print_error(QWidget *parent, int error, QRect pos);
 
-private slots:
 	void connexion(bool sign_in=true);
 	int check_data( QLineEdit *pseudo_line, QLineEdit *pswd_line,bool sign_in=true);
 	void print_profile();
