@@ -184,6 +184,7 @@ MapHandler::MapHandler(int p, difficulty d): probaBonus(p),dif(d), boss_set(), s
         enemyStartProjectileDamage = 10;
         obstacleStartHp = 10;
         obstacleStartDamage = 10;
+        customMultiplier = 1;
     }
     else if(d==medium){
         enemyLimit=10;
@@ -191,6 +192,8 @@ MapHandler::MapHandler(int p, difficulty d): probaBonus(p),dif(d), boss_set(), s
         enemyStartProjectileDamage = 15;
         obstacleStartHp = 15;
         obstacleStartDamage = 15;
+        customMultiplier = 2;
+
     }
     else{
         enemyLimit=20;
@@ -198,6 +201,8 @@ MapHandler::MapHandler(int p, difficulty d): probaBonus(p),dif(d), boss_set(), s
         enemyStartProjectileDamage = 25;
         obstacleStartHp = 25;
         obstacleStartDamage = 25;
+        customMultiplier = 3;
+
     }
 }
 
@@ -373,7 +378,7 @@ void MapHandler::add_object_server(MapObject::type typ,int t,std::vector<Enemy_t
     for (size_t i = 0; i < obs_list->size(); i++)
     {
         if((obs_list->at(i).tick*100)== t)
-            obstacles_set.push_back(new Obstacle(static_cast<uint_fast16_t>((obs_list->at(i).x+12.53)/12.53), 0, obs_list->at(i).damage,obs_list->at(i).hp));
+            obstacles_set.push_back(new Obstacle(static_cast<uint_fast16_t>((obs_list->at(i).x+12.53)/12.53), 0, obs_list->at(i).damage*customMultiplier,obs_list->at(i).hp*customMultiplier));
 
     }
     
@@ -383,9 +388,9 @@ void MapHandler::add_object_server(MapObject::type typ,int t,std::vector<Enemy_t
             int enemy_tick = t + rand() % 100;
             
             if(enemy_list->at(j).skin==0) 
-                enemy_ships_set.push_back(new EnemyShip(static_cast<uint_fast16_t>((enemy_list->at(j).x+ 12.53)/12.53), 0, {{10 - 1, 5},{3,2}}, '%', enemy_list->at(j).hp,enemy_tick, enemy_list->at(j).damage, bonusType(enemy_list->at(j).bonus)));
+                enemy_ships_set.push_back(new EnemyShip(static_cast<uint_fast16_t>((enemy_list->at(j).x+ 12.53)/12.53), 0, {{10 - 1, 5},{3,2}}, '%', enemy_list->at(j).hp*customMultiplier,enemy_tick, enemy_list->at(j).damage*customMultiplier, bonusType(enemy_list->at(j).bonus)));
             else 
-                enemy_ships2_set.push_back(new EnemyShip2(0, static_cast<uint_fast16_t>((enemy_list->at(j).x+ 58.75)/58.75), {{10 - 1, 5},{3,2}}, '%', enemy_list->at(j).hp,enemy_tick, enemy_list->at(j).damage, bonusType(enemy_list->at(j).bonus)));
+                enemy_ships2_set.push_back(new EnemyShip2(0, static_cast<uint_fast16_t>((enemy_list->at(j).x+ 58.75)/58.75), {{10 - 1, 5},{3,2}}, '%', enemy_list->at(j).hp*customMultiplier,enemy_tick, enemy_list->at(j).damage*customMultiplier, bonusType(enemy_list->at(j).bonus)));
             enemyCount++;
         }
         
@@ -629,7 +634,7 @@ void MapHandler::checkCollision_server(int t, bool friendlyFire) {
                     spawnBonuses(posx,posy,enemy_ships_set.at(e)->getBonusType());
                 else spawnBonuses(posx, posy);
             }
-            enemy_ships_set.erase(enemy_ships_set.begin() + e);
+            enemy_ships_set.erase(enemy_ships_set.begin() + static_cast<std::vector<vec2i*>::difference_type>(e));
             if(enemyCount == enemyLimit && changingLevel && enemy_ships_set.empty() && enemy_ships2_set.empty()){
                 levelTick = t;
                 enemyCount = 0;
@@ -648,7 +653,7 @@ void MapHandler::checkCollision_server(int t, bool friendlyFire) {
                     spawnBonuses(posx,posy,enemy_ships2_set.at(e)->getBonusType());
                 else spawnBonuses(posx, posy);
             }
-            enemy_ships2_set.erase(enemy_ships2_set.begin() + e);
+            enemy_ships2_set.erase(enemy_ships2_set.begin() + static_cast<std::vector<vec2i*>::difference_type>(e));
             if(enemyCount == enemyLimit && changingLevel && enemy_ships2_set.empty() && enemy_ships_set.empty()){
                 levelTick = t;
                 enemyCount = 0;
@@ -659,7 +664,7 @@ void MapHandler::checkCollision_server(int t, bool friendlyFire) {
     //erase boss
     for(size_t e = 0; e < boss_set.size(); e++){
         if(boss_set.at(e)->getHp() <= 0){
-            boss_set.erase(boss_set.begin() + e);
+            boss_set.erase(boss_set.begin() + static_cast<std::vector<vec2i*>::difference_type>(e));
         
             levelTick = t;
             enemyCount = 0;
@@ -671,22 +676,22 @@ void MapHandler::checkCollision_server(int t, bool friendlyFire) {
     }
     // erase bonus
     for(size_t bon = 0; bon < bonuses_set.size(); bon++){
-        if(bonuses_set.at(bon)->getHp() <= 0)bonuses_set.erase(bonuses_set.begin() + bon);
+        if(bonuses_set.at(bon)->getHp() <= 0)bonuses_set.erase(bonuses_set.begin() + static_cast<std::vector<vec2i*>::difference_type>(bon));
     }
 
     //erase obstacle
     for(size_t obs = 0; obs < obstacles_set.size(); obs++) {
         if (obstacles_set.at(obs)->getHp() <= 0)
-            obstacles_set.erase(obstacles_set.begin() + obs);
+            obstacles_set.erase(obstacles_set.begin() + static_cast<std::vector<vec2i*>::difference_type>(obs));
     }
     //erase projectiles
     for(size_t proj = 0; proj < projectiles_set.size(); proj++){
-        if(projectiles_set.at(proj)->getHp() <= 0)projectiles_set.erase(projectiles_set.begin() + proj);
+        if(projectiles_set.at(proj)->getHp() <= 0)projectiles_set.erase(projectiles_set.begin() + static_cast<std::vector<vec2i*>::difference_type>(proj));
     }
 
     //erase enemy projectiles
     for(size_t projE = 0; projE < projectilesEnemy_set.size(); projE++){
-        if(projectilesEnemy_set.at(projE)->getHp() <= 0)projectilesEnemy_set.erase(projectilesEnemy_set.begin() + projE);
+        if(projectilesEnemy_set.at(projE)->getHp() <= 0)projectilesEnemy_set.erase(projectilesEnemy_set.begin() + static_cast<std::vector<vec2i*>::difference_type>(projE));
     }
 }
 
@@ -782,9 +787,9 @@ std::string MapHandler::getState(int nlives_j1,int nlives_j2,int tick){
             // show player looses a life
 
             if(player->getHp()<=0 && tick < player->getKillTime()+300){
-                state.append(std::to_string(true));
+                state.append(std::to_string(1));
             }
-            else state.append(std::to_string(false));
+            else state.append(std::to_string(0));
         }
         state.append("_");
         state.append(std::to_string(tick));
@@ -812,7 +817,7 @@ std::string MapHandler::getState(int nlives_j1,int nlives_j2,int tick){
         state.append("_");
         state.append(y);
         state.append("_");
-        state.append(std::to_string(enemy_explosion));
+        state.append(std::to_string(static_cast<int>(enemy_explosion)));
         state.append("&");
     }
     //enemy2
@@ -825,7 +830,7 @@ std::string MapHandler::getState(int nlives_j1,int nlives_j2,int tick){
         state.append("_");
         state.append(y);
         state.append("_");
-        state.append(std::to_string(enemy_explosion));
+        state.append(std::to_string(static_cast<int>(enemy_explosion)));
         state.append("&");
     }
 
@@ -853,7 +858,7 @@ std::string MapHandler::getState(int nlives_j1,int nlives_j2,int tick){
         state.append("_");
         state.append(y);
         state.append("_");
-        state.append(std::to_string(bonus->getBonusType()));
+        state.append(std::to_string(static_cast<int>(bonus->getBonusType())));
         state.append("&");
     }
     //E_3_tick_levelTick_currentLevel

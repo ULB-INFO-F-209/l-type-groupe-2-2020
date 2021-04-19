@@ -10,15 +10,15 @@
 class DisplayGame
 {
 	//Game's windows
-	WINDOW* main_wnd;
-    WINDOW* game_wnd;
-	rect game_area;
-    rect screen_area;
+	WINDOW* main_wnd=nullptr;
+    WINDOW* game_wnd=nullptr;
+	rect game_area={{},{}};
+    rect screen_area={{},{}};
 	//utilities attribut
 	const char delimiteur_instruction = '&';
 	const char delimiteur_parametre	  = '_';
-	std::vector<vec2i*> stars;
-	int tickStar;
+	std::vector<vec2i*> stars{};
+	int tickStar=0;
 public:
 	//Constructor
 	DisplayGame()=default;

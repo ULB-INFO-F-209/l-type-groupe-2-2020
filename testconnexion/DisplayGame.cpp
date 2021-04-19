@@ -197,7 +197,7 @@ int DisplayGame::init() {
     main_wnd = newwin(static_cast<int>(screen_area.height()), static_cast<int>(screen_area.width()), 0, 0);
     
     // define area for movement
-    game_area = { {0, 0}, {static_cast<uint_fast16_t>(screen_area.width() - 2), screen_area.height() - static_cast<uint_fast16_t>(infopanel_height - 4)}};
+    game_area = {{0, 0}, {78, 16}};
 
     init_pair(1, COLOR_WHITE, COLOR_BLACK);
     init_pair(2, COLOR_GREEN, COLOR_BLACK);
@@ -224,7 +224,7 @@ int DisplayGame::init() {
     box(main_wnd, 0, 0);
     wattroff(main_wnd, A_BOLD);
 
-    // horizontal diving line
+    // horizontal line
     wmove(main_wnd, static_cast<int>(game_area.bot() + 3), 1);
     whline(main_wnd, '-', static_cast<int>(screen_area.width()- 2));
 

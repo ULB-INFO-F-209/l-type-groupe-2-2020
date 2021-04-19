@@ -190,6 +190,7 @@ class MapHandler final{
     int obstacleStartDamage = 10;
     bool customGame = false;
     difficulty dif{};
+    int customMultiplier = 0;
 
     // Vecteur d'objets de la map
     std::vector<Boss*> boss_set;
