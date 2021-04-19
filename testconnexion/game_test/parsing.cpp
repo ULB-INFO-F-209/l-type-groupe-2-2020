@@ -39,7 +39,7 @@ std::string Parsing::level_to_str(Level *my_level, const std::string name){
 
 	//player info
 	Player p = (my_level->player);
-	buffer += std::to_string(p.skin) +"_" + std::to_string(p.skin2) + "_" + std::to_string(p.hp) + "_" + std::to_string(p.damage)+ "_" + std::to_string(p.speed)+"_"+std::to_string(p.is_boss_active);
+	buffer += std::to_string(p.skin) +"_" + std::to_string(p.skin2) + "_" + std::to_string(p.hp) + "_" + std::to_string(p.damage)+ "_" + std::to_string(p.speed)+"_"+std::to_string(p.boss);
 
 	//enemy
 	buffer += "|";
@@ -227,7 +227,7 @@ Parsing::Level Parsing::level_from_str(std::string buffer){
 	player_zone = player_zone.substr(idx+1, player_zone.size());
 
 	idx = player_zone.find(delim_attr);
-	my_level.player.is_boss_active = std::stoi(player_zone.substr(0,idx)); // general speed
+	my_level.player.boss = std::stoi(player_zone.substr(0,idx)); // general speed
 	player_zone = player_zone.substr(idx+1, player_zone.size());
 
 	//enemy zone

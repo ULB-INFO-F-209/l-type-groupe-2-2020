@@ -86,7 +86,7 @@ class Projectile final: public MapObject{
 public:
     Projectile()=default;
     void move() override;
-    Projectile(uint_fast16_t nx, uint_fast16_t ny,int dam,bool ship_t, int h, int p) {pos.x = nx; pos.y = ny; damage=dam; shipType=ship_t;typ=projectile; hp = h; player = p;}
+    Projectile(int nx, int ny,int dam,bool ship_t, int h, int p) {pos.x = static_cast<uint_fast16_t>(nx); pos.y = static_cast<uint_fast16_t>(ny); damage=dam; shipType=ship_t;typ=projectile; hp = h; player = p;}
     int getDamage() const{return damage;}
     bool getShipType() const{return shipType;}
     int getPlayer() const{return player;}
@@ -97,7 +97,7 @@ class Bonus final: public MapObject{
     bonusType bonustype{};
 public:
     Bonus(){hp=20;};
-    Bonus(uint_fast16_t nx, uint_fast16_t ny,bonusType bonus_t) :bonustype(bonus_t)  {pos.x = nx; pos.y = ny; hp=10;};
+    Bonus(int nx, int ny,bonusType bonus_t) :bonustype(bonus_t)  {pos.x = static_cast<uint_fast16_t>(nx); pos.y = static_cast<uint_fast16_t>(ny); hp=10;};
     bonusType getBonusType() const {return bonustype;}
     ~Bonus(){};
 
@@ -131,18 +131,20 @@ public:
 class EnemyShip : public Ship{
 protected:
     int shootTime{};
+    bonusType bonus{};
 public:
     EnemyShip()=default;
-    EnemyShip(uint_fast16_t x, uint_fast16_t y, rect b, char c,int h, int t, int shootDam){pos.x = x; pos.y = y; setBounds(b); setHp(h); setChar(c); setDammage(10); shootTime=t; shootDamage = shootDam; projectileHp = 10;}
+    EnemyShip(uint_fast16_t x, uint_fast16_t y, rect b, char c,int h, int t, int shootDam, bonusType bon=noBonus){pos.x = x; pos.y = y; setBounds(b); setHp(h); setChar(c); setDammage(10); shootTime=t; shootDamage = shootDam; projectileHp = 10; bonus=bon;}
     void setShootTime(int t){shootTime=t;}
     int getShootTime() const{return shootTime;}
+    bonusType getBonusType() const{return bonus;}
     ~EnemyShip(){};
 };
 
 class EnemyShip2 : public EnemyShip{
     public:
     EnemyShip2()=default;
-    EnemyShip2(uint_fast16_t x, uint_fast16_t y, rect b, char c,int h, int t, int shootDam){pos.x = x; pos.y = y; setBounds(b); setHp(h); setChar(c); setDammage(10); shootTime=t; shootDamage = shootDam; projectileHp = 10;}
+    EnemyShip2(uint_fast16_t x, uint_fast16_t y, rect b, char c,int h, int t, int shootDam, bonusType bon=noBonus){pos.x = x; pos.y = y; setBounds(b); setHp(h); setChar(c); setDammage(10); shootTime=t; shootDamage = shootDam; projectileHp = 10; bonus=bon;}
     void move() override {pos.x += 1;}
 };
 
@@ -223,6 +225,7 @@ public:
     std::vector<PlayerShip*>  getListPlayer()const;
 
     bool getBossSpawned() const{return bossSpawned;}
+    void setBossSpawned(bool b){bossSpawned=b;}
     int getEnemyCount() const{return enemyCount;}
     void setBounds(rect);
     void spawnProjectile(int x, int y, int damage, bool type, int hp, int player);

@@ -11,7 +11,8 @@
  */
 #include "CurrentGame.hpp"
 
-CurrentGame::CurrentGame(Parsing::Game_settings game_sett):twoPlayers(game_sett.nb_player == 2? true:false),friendlyFire(game_sett.ally_shot), dropRate(game_sett.drop_rate),dif(game_sett.diff),screen_area( {0, 0}, {80, 24}),game_area( {0, 0}, {78, 16}),map(dropRate,dif) {
+CurrentGame::CurrentGame(Parsing::Game_settings game_sett):twoPlayers(game_sett.nb_player == 2? true:false),friendlyFire(game_sett.ally_shot), dropRate(game_sett.drop_rate),dif(game_sett.diff),screen_area( {0, 0}, {80, 24}),game_area( {0, 0}, {78, 16}),map(dropRate,dif),
+            enemy_queue(),obstacles_queue(),player1(),playership1() {
         
         playership1 = new PlayerShip(10, 5, { {9, 5 }, { 3, 2 } }, '0',100, 0,100,0);
         player1 = new Player(game_sett.nb_lives);
@@ -26,7 +27,8 @@ CurrentGame::CurrentGame(Parsing::Game_settings game_sett):twoPlayers(game_sett.
         map.setBounds(game_area);
         
     }
-CurrentGame::CurrentGame(Parsing::Level level_sett, Parsing::Game_settings sett):twoPlayers(sett.nb_player ==2 ? true:false),friendlyFire(sett.ally_shot), dropRate(sett.drop_rate), dif(sett.diff),screen_area( {0, 0}, {80, 24}),game_area( {0, 0}, {78, 16}),map(dropRate,dif){
+CurrentGame::CurrentGame(Parsing::Level level_sett, Parsing::Game_settings sett):twoPlayers(sett.nb_player ==2 ? true:false),friendlyFire(sett.ally_shot), dropRate(sett.drop_rate), dif(sett.diff),screen_area( {0, 0}, {80, 24}),game_area( {0, 0}, {78, 16}),map(dropRate,dif),
+        enemy_queue(level_sett.enemy_list),obstacles_queue(level_sett.obs_list),player1(),playership1(),boss(level_sett.player.boss){ 
     playership1 = new PlayerShip(10, 5, { {9, 5 }, { 3, 2 } }, '0',level_sett.player.hp,0,100,0);
     player1 = new Player(sett.nb_lives); 
     listPlayer.push_back(player1);
@@ -39,6 +41,33 @@ CurrentGame::CurrentGame(Parsing::Level level_sett, Parsing::Game_settings sett)
     map.setBounds(game_area);
     enemy_queue=level_sett.enemy_list; 
     obstacles_queue=level_sett.obs_list;
+
+    if (level_sett.player.speed == 0) {
+        enemySpeed = 300;
+        enemy2Speed = 40;
+        obstacleSpeed = 100;
+    }
+    else if (level_sett.player.speed == 1) {
+        enemySpeed = 225;
+        enemy2Speed = 30;
+        obstacleSpeed = 75;
+    }
+    else if (level_sett.player.speed == 2) {
+        enemySpeed = 150;
+        enemy2Speed = 20;
+        obstacleSpeed = 50;
+    }
+    else if (level_sett.player.speed == 3) {
+        enemySpeed = 100;
+        enemy2Speed = 15;
+        obstacleSpeed = 35;
+    }
+    else if (level_sett.player.speed == 4) {
+        enemySpeed = 75;
+        enemy2Speed = 10;
+        obstacleSpeed = 25;
+    }
+
 }
 
 
@@ -84,7 +113,7 @@ void CurrentGame::execInput(int* inChar, uint_fast16_t x1, uint_fast16_t y1, boo
                     break;
                 case ' ':
                     if(playership1->getHp()>0 && playership1->getCurrentBonus()!=minigun)
-                        map.spawnProjectile(playership1->getPos().x, playership1->getPos().y, playership1->getShootDamage(), true, 10, 1);
+                        map.spawnProjectile(int(playership1->getPos().x), int(playership1->getPos().y), playership1->getShootDamage(), true, 10, 1);
                     break;
                 default:
                 break;
@@ -128,7 +157,7 @@ void CurrentGame::execInput(int* inChar, uint_fast16_t x1, uint_fast16_t y1, boo
                     break;
                 case 'm':
                     if(playership2->getHp()>0 && playership2->getCurrentBonus()!=minigun)
-                        map.spawnProjectile(playership2->getPos().x, playership2->getPos().y, playership1->getShootDamage(), true, 10, 2);
+                        map.spawnProjectile(int(playership2->getPos().x), int(playership2->getPos().y), playership1->getShootDamage(), true, 10, 2);
                     break;
                 default:
                     break;
@@ -140,14 +169,15 @@ void CurrentGame::execInput(int* inChar, uint_fast16_t x1, uint_fast16_t y1, boo
 
 void CurrentGame::heal() {
     for( PlayerShip* p : map.getListPlayer()){
-        if(listPlayer.at(p->getPlayerNb())->getnLives() > 0){
+    
+        if(listPlayer.at(std::vector<Player*>::size_type (p->getPlayerNb()))->getnLives() > 0){
 
             // si hp à 0, PlayerShip clignote et crée une explosion
             if(p->getHp()<=0 && p->getIsAlive()){
                 map.explosion();
                 p->setisAlive(false);
                 p->setKillTime(tick);
-                listPlayer.at(p->getPlayerNb())->setnLives(listPlayer.at(p->getPlayerNb())->getnLives() - 1);
+                listPlayer.at(std::vector<Player*>::size_type(p->getPlayerNb()))->setnLives(listPlayer.at(std::vector<Player*>::size_type(p->getPlayerNb()))->getnLives() - 1);
 
             }
             // réanime PlayerShip après 3 sec
@@ -169,9 +199,9 @@ void CurrentGame::saveScore(){
 
 void CurrentGame::destroyPlayership(){
     for( PlayerShip* p : map.getListPlayer()){
-        if(listPlayer.at(p->getPlayerNb())->getnLives() < 1){
+        if(listPlayer.at(std::vector<Player*>::size_type(p->getPlayerNb()))->getnLives() < 1){
             if (map.getListPlayer().size() == 2) {
-                map.erase(p->getPlayerNb(), MapObject::playership);
+                map.erase(std::vector<Player*>::size_type(p->getPlayerNb()), MapObject::playership);
             }
             else {
                 map.erase(0, MapObject::playership);
@@ -207,7 +237,7 @@ std::string CurrentGame::run_server(int *move_to_exec){
 
     for( PlayerShip* p : map.getListPlayer()){
         if (p->getCurrentBonus()==minigun && p->getHp()>0 && tick % 7 == 0)
-            map.spawnProjectile(p->getPos().x, p->getPos().y, p->getShootDamage(), true, 10, p->getPlayerNb()+1);
+            map.spawnProjectile(int(p->getPos().x), int(p->getPos().y), p->getShootDamage(), true, 10, p->getPlayerNb()+1);
     }
     map.enemyShoot_server(tick);
     map.bossShoot_server(tick);
@@ -251,9 +281,9 @@ std::string CurrentGame::run_server(int *move_to_exec){
     }
 
     return to_ret;
-};
+}
 
-std::string CurrentGame::run_server(int *move_to_exec,Parsing::Player player,std::vector<Parsing::Enemy_template> enemy_list,std::vector<Parsing::Obstacle_template> obs_list){
+std::string CurrentGame::run_server(int *move_to_exec,std::vector<Parsing::Enemy_template> enemy_list,std::vector<Parsing::Obstacle_template> obs_list){
     execInput(move_to_exec, playership1->getPos().x, playership1->getPos().y, true);
     if(twoPlayers){
         execInput(move_to_exec, playership2->getPos().x, playership2->getPos().y, false);
@@ -262,28 +292,37 @@ std::string CurrentGame::run_server(int *move_to_exec,Parsing::Player player,std
     // mise à jour des positions des objets
     if(tick % 7 == 0)
         map.update_server(MapObject::projectile, tick);
-    if(tick > 100 && tick %50  == 0)
+    if(tick > 100 && tick %obstacleSpeed  == 0)
         map.update_server(MapObject::obstacle, tick);
-    if (tick > 100 && tick %150 ==0)
+    if (tick > 100 && tick %enemySpeed ==0)
         map.update_server(MapObject::enemyship, tick);
+    if (tick > 100 && tick %enemy2Speed ==0)
+        map.update_server(MapObject::enemyship2, tick);
     if(tick %50  == 0) {
         map.update_server(MapObject::bonus, tick);
     }
-
-    map.add_object_server(MapObject::enemyship,tick,&enemy_list,&obs_list);
+    if(tick%100==0)
+        map.add_object_server(MapObject::enemyship, tick, &enemy_list,&obs_list);
 
 
     for( PlayerShip* p : map.getListPlayer()){
         if (p->getCurrentBonus()==minigun && p->getHp()>0 && tick % 7 == 0)
-            map.spawnProjectile(p->getPos().x, p->getPos().y, p->getShootDamage(), true, 10, p->getPlayerNb()+1);
+            map.spawnProjectile(int(p->getPos().x), int(p->getPos().y), p->getShootDamage(), true, 10, p->getPlayerNb()+1);
     }
     map.enemyShoot_server(tick);
     map.bossShoot_server(tick);
     map.updateBounds();
 
-    if(map.getEnemyCount() == enemy_list.size() && map.getEnemy().size() == 0){
+    if(boss&&map.getEnemyCount() == int(enemy_list.size()) && map.getEnemy().size() == 0 && !map.getBossSpawned() && map.getEnemy2().size()==0){
+        map.add_object_server(MapObject::boss, tick, &enemy_list, &obs_list);
+        map.setBossSpawned(true);
+    }
+    // il faut stoper le jeu s'il n'y pas de boss et s'il n'y a pas d'ennemie :)
+    if(map.getEnemyCount() == int(enemy_list.size()) && map.getEnemy().size() == 0){
         game_over = true;
     }
+    if(map.getBossSpawned() && map.getBoss().empty())
+        game_over=true;
 
     if(twoPlayers){
         if (player1->getnLives() < 1 && player2->getnLives() < 1)
@@ -303,6 +342,7 @@ std::string CurrentGame::run_server(int *move_to_exec,Parsing::Player player,std
 
     tick++;
     std::string to_ret = getPlayerState(map.getState(player1->getnLives(), player2 == nullptr?0:player2->getnLives(),tick));
+    
     if(game_over || exit_requested){
          return "END GAME";
     }
@@ -325,7 +365,7 @@ std::string CurrentGame::getPlayerState(std::string state){
     state.append("_");
     state.append(std::to_string(playership1->getScore()));
     state.append("_");
-    state.append(std::to_string(playership1->getCurrentBonus()));
+    state.append(std::to_string(static_cast<long unsigned int>(playership1->getCurrentBonus())));
     state.append("_");
     state.append(std::to_string(map.getCurrentLevel()));
     state.append("_");
@@ -342,7 +382,7 @@ std::string CurrentGame::getPlayerState(std::string state){
         state.append("_");
         state.append(std::to_string(playership2->getScore()));
         state.append("_");
-        state.append(std::to_string(playership2->getCurrentBonus()));
+        state.append(std::to_string(static_cast<long unsigned int>(playership2->getCurrentBonus())));
         state.append("_");
         state.append(std::to_string(map.getCurrentLevel()));
         state.append("_");

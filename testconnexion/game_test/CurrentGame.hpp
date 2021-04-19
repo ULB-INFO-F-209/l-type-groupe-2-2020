@@ -18,12 +18,18 @@
 
 class CurrentGame {
     // lance et gère la partie sur base des inputs du serveur
-    rect game_area; // cadre comprenant l'espace de jeu
-    rect screen_area; // cadre comprenant l'entièreté de la fenêtre
     bool twoPlayers;
     bool friendlyFire;
     int dropRate;
     difficulty dif{};
+    rect screen_area{}; // cadre comprenant l'entièreté de la fenêtre
+    rect game_area; // cadre comprenant l'espace de jeu
+    
+    int enemySpeed{}; // update frequency : if enemySpeed = 30 -> 1 move every 30 tick
+    int enemy2Speed{};
+    int obstacleSpeed{};
+    
+    
 
     MapHandler map;
 
@@ -31,9 +37,13 @@ class CurrentGame {
     int tickGameOver = -1;
     int finalScore1{};
     int finalScore2{};
-
-    PlayerShip* playership1;
-    Player* player1;
+    // vecteur pour level editor
+    std::vector<Parsing::Enemy_template> enemy_queue;
+    std::vector<Parsing::Obstacle_template> obstacles_queue;
+    
+    Player* player1=nullptr;
+    PlayerShip* playership1=nullptr;
+    
 
     PlayerShip* playership2 = nullptr;
     Player* player2 = nullptr;
@@ -50,19 +60,20 @@ class CurrentGame {
     void saveScore();
     void destroyPlayership();
     std::string getPlayerState(std::string state);
-    // vecteur pour level editor
-    std::vector<Parsing::Obstacle_template> obstacles_queue;
-    std::vector<Parsing::Enemy_template> enemy_queue;
+    bool boss{};
+    
 
 
 public:
-    CurrentGame()=default;
+    
     int getScore(){return finalScore1+finalScore2;}
     CurrentGame(Parsing::Game_settings);
     CurrentGame(Parsing::Level, Parsing::Game_settings);
-    
+    CurrentGame& operator=(const CurrentGame&)=default;
+    CurrentGame(CurrentGame const&) = default;
+
     std::string run_server(int *move_to_exec);
-    std::string run_server(int *move_to_exec,Parsing::Player player,std::vector<Parsing::Enemy_template> enemy_list,std::vector<Parsing::Obstacle_template> obs_list);
+    std::string run_server(int *move_to_exec,std::vector<Parsing::Enemy_template> enemy_list,std::vector<Parsing::Obstacle_template> obs_list);
 };
 
 

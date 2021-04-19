@@ -7,16 +7,16 @@
 
 void MapHandler::erase(size_t i, MapObject::type typ) { //1ier elem=index(0)
     if (typ == MapObject::star) {
-        stars_set.erase(stars_set.begin() + i);
+        stars_set.erase(stars_set.begin() + static_cast<long int>(i));
     }
     else if (typ == MapObject::obstacle) {
-        obstacles_set.erase(obstacles_set.begin() + i);
+        obstacles_set.erase(obstacles_set.begin() + static_cast<long int>(i));
     }
     else if(typ==MapObject::playership){
-        player_ships_set.erase(player_ships_set.begin()+i);
+        player_ships_set.erase(player_ships_set.begin() + static_cast<long int>(i));
     }
     else if(typ==MapObject::enemyship){
-        enemy_ships_set.erase(enemy_ships_set.begin()+i);
+        enemy_ships_set.erase(enemy_ships_set.begin() + static_cast<long int>(i));
     }
 
 }
@@ -57,23 +57,23 @@ void MapHandler::spawnProjectile(int x, int y, int damage, bool type, int hp, in
         }*/
         if(player!=0) {
             if (player_ships_set.size() == 2) {
-                if (player_ships_set.at(player - 1)->getCurrentBonus() == tripleShot) {
+                if (player_ships_set.at(static_cast<long unsigned int>(player - 1))->getCurrentBonus() == tripleShot) {
                     projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
                     projectiles_set.push_back(new Projectile(x - 1, y - 1, damage, type, hp, player));
                     projectiles_set.push_back(new Projectile(x + 1, y - 1, damage, type, hp, player));
 
-                } else if (player_ships_set.at(player - 1)->getCurrentBonus() == lifeSteal) {
+                } else if (player_ships_set.at(static_cast<long unsigned int>(player - 1))->getCurrentBonus() == lifeSteal) {
                     projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
                 }
-                else if (player_ships_set.at(player - 1)->getCurrentBonus() == minigun) {
+                else if (player_ships_set.at(static_cast<long unsigned int>(player - 1))->getCurrentBonus() == minigun) {
                     projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
                 }
-                else if (player_ships_set.at(player - 1)->getCurrentBonus() == noBonus) {
+                else if (player_ships_set.at(static_cast<long unsigned int>(player - 1))->getCurrentBonus() == noBonus) {
                     projectiles_set.push_back(new Projectile(x, y - 1, damage, type, hp, player));
                 }
-                else if (player_ships_set.at(player - 1)->getCurrentBonus() == damageUp) {
+                else if (player_ships_set.at(static_cast<long unsigned int>(player - 1))->getCurrentBonus() == damageUp) {
                     projectiles_set.push_back(
-                            new Projectile(x, y - 1, player_ships_set.at(player - 1)->getShootDamage()+40, type, hp, player));
+                            new Projectile(x, y - 1, player_ships_set.at(static_cast<long unsigned int>(player - 1))->getShootDamage()+40, type, hp, player));
                 }
             }
             else {
@@ -127,6 +127,9 @@ std::vector<PlayerShip *> MapHandler::getListPlayer() const {
 std::vector<EnemyShip *> MapHandler::getEnemy() const {
     return enemy_ships_set;
 }
+std::vector<EnemyShip2 *> MapHandler::getEnemy2() const {
+    return enemy_ships2_set;
+}
 std::vector<Bonus*> MapHandler::getBonus() const {
     return bonuses_set;
 }
@@ -174,7 +177,7 @@ std::vector<Boss *> MapHandler::getBoss() const {
     return boss_set;
 }
 
-MapHandler::MapHandler(int p, difficulty d): probaBonus(p),dif(d){
+MapHandler::MapHandler(int p, difficulty d): probaBonus(p),dif(d), boss_set(), stars_set(), obstacles_set(), projectiles_set(), projectilesEnemy_set(), player_ships_set(), enemy_ships_set(), enemy_ships2_set(), bonuses_set(), field_bounds(){
     if(d==easy){
         enemyLimit=5;
         enemyStartHp = 30;
@@ -208,14 +211,14 @@ void MapHandler::update_server(MapObject::type typ,int t){
     if (typ == MapObject::star) {
         for(size_t i = 0; i < stars_set.size(); i++) {
             if(stars_set.at(i)->getPos().y > field_bounds.bot() + 1)
-                stars_set.erase(stars_set.begin() + i);
+                stars_set.erase(stars_set.begin() + static_cast<long int>(i));
 
         }
     }
     else if (typ == MapObject::obstacle) {
         for(size_t i = 0; i < obstacles_set.size(); i++) {
             if(obstacles_set.at(i)->getPos().y > field_bounds.bot() + 1)
-                obstacles_set.erase(obstacles_set.begin() + i);
+                obstacles_set.erase(obstacles_set.begin() + static_cast<long int>(i));
 
         }
     }
@@ -223,7 +226,7 @@ void MapHandler::update_server(MapObject::type typ,int t){
 else if (typ == MapObject::enemyship) {
         for(size_t i = 0; i < enemy_ships_set.size(); i++) {
             if(enemy_ships_set.at(i)->getPos().y > field_bounds.bot() + 1){
-                enemy_ships_set.erase(enemy_ships_set.begin() + i);
+                enemy_ships_set.erase(enemy_ships_set.begin() + static_cast<long int>(i));
                 if(enemyCount == enemyLimit && changingLevel && enemy_ships_set.empty() && enemy_ships2_set.empty() ){
                 levelTick = t;
                 enemyCount = 0;
@@ -237,7 +240,7 @@ else if (typ == MapObject::enemyship) {
     else if (typ == MapObject::enemyship2) {
         for(size_t i = 0; i < enemy_ships2_set.size(); i++) {
             if(enemy_ships2_set.at(i)->getPos().x > field_bounds.right() + 1){
-                enemy_ships2_set.erase(enemy_ships2_set.begin() + i);
+                enemy_ships2_set.erase(enemy_ships2_set.begin() + static_cast<long int>(i));
                 if(enemyCount == enemyLimit && changingLevel && enemy_ships2_set.empty() && enemy_ships_set.empty()){
                 levelTick = t;
                 enemyCount = 0;
@@ -250,7 +253,7 @@ else if (typ == MapObject::enemyship) {
     }else if (typ == MapObject::bonus) {
         for(size_t i = 0; i < bonuses_set.size(); i++) {
             if(bonuses_set.at(i)->getPos().y > field_bounds.bot() + 1)
-                bonuses_set.erase(bonuses_set.begin() + i);
+                bonuses_set.erase(bonuses_set.begin() + static_cast<long int>(i));
 
         }
     }
@@ -259,7 +262,7 @@ else if (typ == MapObject::enemyship) {
         for(size_t i = 0; i < stars_set.size(); i++) {
             stars_set.at(i)->move();
             if(stars_set.at(i)->getPos().y > field_bounds.bot() + 1)
-                stars_set.erase(stars_set.begin() + i);
+                stars_set.erase(stars_set.begin() + static_cast<long int>(i));
 
         }
     }
@@ -290,13 +293,13 @@ else if (typ == MapObject::enemyship) {
 
         for(size_t i = 0; i < projectiles_set.size(); ) {
             if(projectiles_set.at(i)->getPos().y > field_bounds.bot() + 1)
-                projectiles_set.erase(projectiles_set.begin() + i);
+                projectiles_set.erase(projectiles_set.begin() + static_cast<long int>(i));
             else
                 ++i;
         }
         for(size_t e = 0; e < projectilesEnemy_set.size();) {
             if(projectilesEnemy_set.at(e)->getPos().y > field_bounds.bot() + 1)
-                projectilesEnemy_set.erase(projectilesEnemy_set.begin() + e);
+                projectilesEnemy_set.erase(projectilesEnemy_set.begin() + static_cast<long int>(e));
             else ++e;
         }
     }
@@ -366,29 +369,30 @@ void MapHandler::add_object_server(MapObject::type typ,int t){
 void MapHandler::add_object_server(MapObject::type typ,int t,std::vector<Enemy_template> *enemy_list,std::vector<Obstacle_template> *obs_list){
     // spawn a new object
     
-    /*if(typ == MapObject::star )
-        stars_set.push_back(new Star(rand() % field_bounds.width(), 0));
-        */
+    
     for (size_t i = 0; i < obs_list->size(); i++)
     {
-        if((obs_list->at(i).tick)== t)
+        if((obs_list->at(i).tick*100)== t)
             obstacles_set.push_back(new Obstacle((obs_list->at(i).x+12.53)/12.53, 0, obs_list->at(i).damage,obs_list->at(i).hp));
 
     }
     
     for (size_t j = 0; j < enemy_list->size(); j++)
     {
-        if((enemy_list->at(j).tick)== t){
+        if((enemy_list->at(j).tick*100)== t){
             int enemy_tick = t + rand() % 100;
             //TODO changer le modulo et le tick
-            enemy_ships_set.push_back(new EnemyShip((enemy_list->at(j).x+ 12.53)/12.53, 0, {{10 - 1, 5},{3,2}}, '%', enemy_list->at(j).hp,enemy_tick, enemy_list->at(j).damage));
+            if(enemy_list->at(j).skin==0) //940 max, 16 hauteur ==> 58.75
+                enemy_ships_set.push_back(new EnemyShip((enemy_list->at(j).x+ 12.53)/12.53, 0, {{10 - 1, 5},{3,2}}, '%', enemy_list->at(j).hp,enemy_tick, enemy_list->at(j).damage, bonusType(enemy_list->at(j).bonus)));
+            else 
+                enemy_ships2_set.push_back(new EnemyShip2(0, (enemy_list->at(j).x+ 58.75)/58.75, {{10 - 1, 5},{3,2}}, '%', enemy_list->at(j).hp,enemy_tick, enemy_list->at(j).damage, bonusType(enemy_list->at(j).bonus)));
             enemyCount++;
         }
+        //std::cout<<"check "<<j<<" "<<enemy_list->at(j).x<<" "<<enemy_list->at(j).tick<<std::endl;
         
     }
-
-    // add horizontal enemies
-    
+    if(typ== MapObject::type::boss)
+        boss_set.push_back(new Boss(0,0,{{0, 0},{18,6}},'&',5000,t + 100, enemyStartProjectileDamage, 2));    
 
 }
 
@@ -622,7 +626,9 @@ void MapHandler::checkCollision_server(int t, bool friendlyFire) {
             if (rand()%100<=probaBonus){
                 int posx = enemy_ships_set.at(e)->getPos().x;
                 int posy = enemy_ships_set.at(e)->getPos().y;
-                spawnBonuses(posx, posy);
+                if(customGame)
+                    spawnBonuses(posx,posy,enemy_ships_set.at(e)->getBonusType());
+                else spawnBonuses(posx, posy);
             }
             enemy_ships_set.erase(enemy_ships_set.begin() + e);
             if(enemyCount == enemyLimit && changingLevel && enemy_ships_set.empty() && enemy_ships2_set.empty()){
@@ -640,6 +646,9 @@ void MapHandler::checkCollision_server(int t, bool friendlyFire) {
                 int posx = enemy_ships2_set.at(e)->getPos().x;
                 int posy = enemy_ships2_set.at(e)->getPos().y;
                 int rand_spawn_bonus = spawnBonuses(posx, posy);
+                if(customGame)
+                    spawnBonuses(posx,posy,enemy_ships2_set.at(e)->getBonusType());
+                else spawnBonuses(posx, posy);
             }
             enemy_ships2_set.erase(enemy_ships2_set.begin() + e);
             if(enemyCount == enemyLimit && changingLevel && enemy_ships2_set.empty() && enemy_ships_set.empty()){

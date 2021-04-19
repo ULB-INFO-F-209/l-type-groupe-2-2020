@@ -778,17 +778,21 @@ void Server::saveScore(char* pseudo, int score){
     _db.updateScore(score,pseudo);
 }
 
+/**
+ * @brief gère CTRL + C signal et save la db
+ * 
+ * @param sig le signale
+ */
 void Server::closeMe(int sig){
     if(_is_active){
         _is_active = false;
         for(size_t i=0;i < _pipe_running.size();i++){
             kill(atoi(_pipe_running.at(i)->pid),SIGINT);
         }
-        std::cout <<"\n -----------------------|    FERMETURE EN COURS    |-----------------------\n\n " << std::endl;
-        sleep(2);
-
+        std::cout <<"\n ----------------|    FERMETURE EN COURS    |-----------------\n\n " << std::endl;
+        sleep(1);
     }
-}// handle CTRL + C signal ==> save db
+}
 
 void Server::launchCustomGame(Parsing::Level level_sett,Parsing::Game_settings game_settings){
     char input_pipe[Constante::CHAR_SIZE],send_response_pipe[Constante::CHAR_SIZE];
@@ -798,8 +802,6 @@ void Server::launchCustomGame(Parsing::Level level_sett,Parsing::Game_settings g
     sprintf(input_pipe,"%s%s%s",Constante::PIPE_PATH,Constante::BASE_INPUT_PIPE,game_settings.pid);
     sprintf(send_response_pipe,"%s%s%s",Constante::PIPE_PATH,Constante::BASE_GAME_PIPE,game_settings.pid);
     
-
-
     CurrentGame game{level_sett,game_settings};
     std::string resp;
     while(gameOn){
@@ -807,11 +809,11 @@ void Server::launchCustomGame(Parsing::Level level_sett,Parsing::Game_settings g
 
         // Le client est parti ou alors le pipe a été supprimer 
         if(state == Constante::ERROR_PIPE_GAME || state == Constante::CLIENT_LEAVE_GAME){
-            std::cout << game_settings.pid << " A LA PROCHAINE "<<std::endl;
+            std::cout << game_settings.pid << " Bon vent :) "<<std::endl;
             return;
         }
         
-        resp = game.run_server(inp, level_sett.player, level_sett.enemy_list,level_sett.obs_list);                                                        //  le jeu du server
+        resp = game.run_server(inp, level_sett.enemy_list,level_sett.obs_list);                                                        //  le jeu du server
         if(resp == Constante::GAME_END){  // if game over
             gameOn=false;
         }
@@ -831,13 +833,7 @@ void Server::launchCustomGame(Parsing::Level level_sett,Parsing::Game_settings g
         interface_game.close();
     #endif
 
-    //sauvegarde du score
-   saveScore(game_settings.pseudo_hote,game.getScore());
-   if (game_settings.nb_player == 2){
-       saveScore(game_settings.pseudo_other,game.getScore());
-   }
-
-    std::cout << " score : " << game.getScore() << std::endl;
+   std::cout << "FIN DE JEU POUR " << game_settings.pid << std::endl;
 
     // mettre l'etat du jeu pour ce client a false pour qu'il puisse lancer un autre jeu
     mtx_game.lock();

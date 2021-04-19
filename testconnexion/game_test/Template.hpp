@@ -14,7 +14,7 @@ struct Template::Enemy_template{
 	int x = 0;
 	int y =0 ;
 	int tick = 0;
-	int skin = 0; // skin 1, skin2, skin3
+	int skin = 0; // 0=vertical, 1=horizontal
 	int hp = 70;
 	int damage=30;
 	int bonus = 0;
@@ -31,9 +31,9 @@ struct Template::Obstacle_template{
 	int x = 0; 
 	int y = 0;
 	int tick = 0;
-	int skin = 0; //planete, soleil, lune, etoiles
 	int hp = 70;
 	int damage=30;
+	int skin = 0;
 
 	void get_values(int *res){
 		res[0] = x;
@@ -49,7 +49,7 @@ struct Template::Player_template{
 	int hp = 70;
 	int damage=30;
 	int speed = 2; //SLUG, TURTLE, HUMAN, HORSE,CHEETAHs
-	bool is_boss_active = false;
+	bool boss = false;
 };
 
 struct Template::Level{

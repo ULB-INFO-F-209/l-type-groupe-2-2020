@@ -45,8 +45,7 @@
 
 PlayerAttributes|Enemy1Attributes&Enemy2Attributes&....|ObstacleAttributes&Obstacle|
 
-LS_name_skin1_skin2_hp_damage_speed|x_tick_skin_hp_damage_bonus_speed&x1_tick1_skin1_hp1_bonus1_speed1&......|x_tick_skin_hp_damage_speed&x1_tick1_skin1_hp1
-
+LS_name_skin1_skin2_hp_damage_speed_boss|x_tick_skin_hp_damage_bonus_speed&x1_tick1_skin1_hp1_bonus1_speed1&......|x_tick_skin_hp_damage_speed&x1_tick1_skin1_hp1
 
 get_levels ranking:
 		client : LG&pid

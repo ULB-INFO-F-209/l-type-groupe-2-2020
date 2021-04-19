@@ -1259,7 +1259,7 @@ void MenuGui::custom_player(Parsing::Level my_level){
     for(auto val :box_value2){
         boss_box->addItem(QString::fromStdString(val));
     }
-    boss_box->setCurrentIndex(my_level.player.is_boss_active);
+    boss_box->setCurrentIndex(my_level.player.boss);
 
     /*************BUTTON_ZONE********************/
     QWidget *horizontalLayoutWidget = new QWidget(Dialog);
@@ -1349,7 +1349,7 @@ void MenuGui::custom_player(Parsing::Level my_level){
         copy_level.player.speed = speed_box->currentIndex();
         copy_level.player.hp = spin_box[0]->value();
         copy_level.player.damage = spin_box[1]->value();
-        copy_level.player.is_boss_active = boss_box->currentIndex();
+        copy_level.player.boss = boss_box->currentIndex();
         // for (int i = 0; i < 3; ++i){
         //     if(skin_player1[i]->isChecked())
         //         copy_level.player.skin = i;
