@@ -133,18 +133,16 @@ void DisplayGameGui::parse_affichage(std::string instruction){
 	else if(objet=="PJ2")		//projectile joueur
 		drawProjectile(x,y,false,false);
 	else if(objet=="E"){			//Vaisseau ennemi
-		int explo,tick;
+		int explo;
 		idx = instruction.find(delimiteur_parametre);
 		explo = std::stoi(instruction.substr(0,idx));
-		tick = std::stoi(instruction.substr(idx+1,instruction.size()));
-		drawEnemy(x,y,tick,explo, 1);
+		drawEnemy(x,y,explo, 1);
 	}
 	else if(objet=="E2"){			//Vaisseau ennemie
-		int explo,tick;
+		int explo;
 		idx = instruction.find(delimiteur_parametre);
 		explo = std::stoi(instruction.substr(0,idx));
-		tick = std::stoi(instruction.substr(idx+1,instruction.size()));
-		drawEnemy(x,y,tick,explo, 2);
+		drawEnemy(x,y,explo, 2);
 	}
 	else if(objet=="1"){		//Vaisseau joueur 1     A_1_x_y_explosion_tick
 		int explo,tick;
@@ -189,7 +187,7 @@ void DisplayGameGui::parse_affichage(std::string instruction){
 void DisplayGameGui::parse_etat(std::string instruction){
 	//E_2_HP2_Vies_Score_bonus_level_tick
 	size_t idx;
-	int player,hp, life, score,level,tick,bonustype;
+	int player,hp, life, score,level,bonustype;
 
 	idx = instruction.find(delimiteur_parametre); 				//on va voir le premier param de l instruction
 	player = std::stoi(instruction.substr(0,idx)); 		//on recupère le premier param de l instruction
@@ -214,24 +212,21 @@ void DisplayGameGui::parse_etat(std::string instruction){
 	idx = instruction.find(delimiteur_parametre);
 	level = std::stoi(instruction.substr(0,idx));
 
-	instruction = instruction.substr(idx+1,instruction.size());
-	idx = instruction.find(delimiteur_parametre);
-	tick = std::stoi(instruction.substr(0,idx));
-	drawUi(player,hp, score, life,bonustype,level,tick);
+	drawUi(player,hp, score, life,bonustype,level);
 }
 void DisplayGameGui::starHandler(){
 
-    stars.push_back(new vec2i{rand() % window->getSize().x, 0});
+    stars.push_back(new vec2i{static_cast<uint_fast16_t>(rand()) % window->getSize().x, 0});
     for(size_t i = 0; i < stars.size(); i++) {
             stars.at(i)->y += 20;
             if(stars.at(i)->y > 370)
-                stars.erase(stars.begin() + i);
+                stars.erase(stars.begin() + static_cast<std::vector<vec2i*>::difference_type>(i));
         }
 }
 void DisplayGameGui::drawStar() {
     for(auto s : stars){
 		sf::CircleShape shape(2.f);
-		shape.setPosition(sf::Vector2f(s->x, s->y));
+		shape.setPosition(sf::Vector2f(static_cast<float>(s->x), static_cast<float>(s->y)));
 		shape.setFillColor(sf::Color::White);
 		window->draw(shape);
     }
@@ -241,7 +236,7 @@ void DisplayGameGui::drawStar() {
 void DisplayGameGui::drawNewLevel(int tick,int levelTick,int currentLevel) {
     if(levelTick != 0 && tick <= levelTick + 600 && tick > levelTick+100){
 		guiText.setString("Level " + std::to_string(currentLevel));
-		guiText.setColor(sf::Color::White);
+		guiText.setFillColor(sf::Color::White);
 		guiText.setCharacterSize(22);
 		guiText.setPosition(sf::Vector2f(35*12.5, 8*20));
 		window->draw(guiText);
@@ -332,66 +327,66 @@ void DisplayGameGui::initGraphics(){
 		// erreur...
 	}
 
-	heartSprite.setScale(sf::Vector2f(0.03,0.03));
+	heartSprite.setScale(sf::Vector2f(static_cast<float>(0.03),static_cast<float>(0.03)));
 	heartSprite.setTexture(heart);
 
-	health_bar.setScale(sf::Vector2f(0.22,0.22));
+	health_bar.setScale(sf::Vector2f(static_cast<float>(0.22),static_cast<float>(0.22)));
 	health_bar.setTexture(texture);
 
-	health_bar2.setScale(sf::Vector2f(0.22,0.22));
+	health_bar2.setScale(sf::Vector2f(static_cast<float>(0.22),static_cast<float>(0.22)));
 	health_bar2.setTexture(texture);
 
-	asteroidSprite.setScale(sf::Vector2f(0.14, 0.16));
+	asteroidSprite.setScale(sf::Vector2f(static_cast<float>(0.14), static_cast<float>(0.16)));
 	asteroidSprite.setTexture(asteroid);
 
-	ship1Sprite.setScale(sf::Vector2f(0.22,0.30));
+	ship1Sprite.setScale(sf::Vector2f(static_cast<float>(0.22),static_cast<float>(0.30)));
 	ship1Sprite.setTexture(ship1);
 
-	ship2Sprite.setScale(sf::Vector2f(0.22,0.30));
+	ship2Sprite.setScale(sf::Vector2f(static_cast<float>(0.22),static_cast<float>(0.30)));
 	ship2Sprite.setTexture(ship2);
 
-	laserSprite.setScale(sf::Vector2f(0.06,0.04));
+	laserSprite.setScale(sf::Vector2f(static_cast<float>(0.06),static_cast<float>(0.04)));
 	laserSprite.setRotation(1.5);
 	laserSprite.setTexture(laser);
 
-	laser1Sprite.setScale(sf::Vector2f(0.06,0.04));
+	laser1Sprite.setScale(sf::Vector2f(static_cast<float>(0.06),static_cast<float>(0.04)));
 	laser1Sprite.setRotation(1.5);
 	laser1Sprite.setTexture(laser1);
 
-	laser2Sprite.setScale(sf::Vector2f(0.06,0.04));
+	laser2Sprite.setScale(sf::Vector2f(static_cast<float>(0.06),static_cast<float>(0.04)));
 	laser2Sprite.setRotation(1.5);
 	laser2Sprite.setTexture(laser2);
 
-	tripleshotSprite.setScale(sf::Vector2f(0.07,0.07));
+	tripleshotSprite.setScale(sf::Vector2f(static_cast<float>(0.07),static_cast<float>(0.07)));
 	tripleshotSprite.setTexture(tripleshotTex);
 
-	damageupSprite.setScale(sf::Vector2f(0.07,0.07));
+	damageupSprite.setScale(sf::Vector2f(static_cast<float>(0.07),static_cast<float>(0.07)));
 	damageupSprite.setTexture(damageupTex);
 
-	lifestealSprite.setScale(sf::Vector2f(0.12,0.12));
+	lifestealSprite.setScale(sf::Vector2f(static_cast<float>(0.12),static_cast<float>(0.12)));
 	lifestealSprite.setTexture(lifestealTex);
 
-	minigunSprite.setScale(sf::Vector2f(0.07,0.07));
+	minigunSprite.setScale(sf::Vector2f(static_cast<float>(0.07),static_cast<float>(0.07)));
 	minigunSprite.setTexture(minigunTex);
 
-	enemySprite.setScale(sf::Vector2f(0.16,0.22));
+	enemySprite.setScale(sf::Vector2f(static_cast<float>(0.16),static_cast<float>(0.22)));
 	enemySprite.setRotation(180);
 	enemySprite.setTexture(enemy);
 
-	bossSprite.setScale(sf::Vector2f(0.9,0.8));
+	bossSprite.setScale(sf::Vector2f(static_cast<float>(0.9),static_cast<float>(0.8)));
 	bossSprite.setRotation(180);
 	bossSprite.setTexture(boss);
 
-	enemyHSprite.setScale(sf::Vector2f(0.16,0.22));
+	enemyHSprite.setScale(sf::Vector2f(static_cast<float>(0.16),static_cast<float>(0.22)));
 	enemyHSprite.setRotation(180);
 	enemyHSprite.setTexture(enemyH);
 
-	boss2Sprite.setScale(sf::Vector2f(0.9,0.8));
+	boss2Sprite.setScale(sf::Vector2f(static_cast<float>(0.9),static_cast<float>(0.8)));
 	boss2Sprite.setRotation(180);
 	boss2Sprite.setTexture(boss2);
 	
 	line.setFillColor(sf::Color::Magenta);
-	line.setPosition(sf::Vector2f(5, 370));
+	line.setPosition(sf::Vector2f(static_cast<float>(5),static_cast<float>(370)));
 
 	explosionSprite1.setTexture(explosionTex);
 	explosionSprite1.setTextureRect(rectSourceSprite1);
@@ -434,7 +429,7 @@ void DisplayGameGui::initGraphics(){
 
 void DisplayGameGui::drawObstacle(int x, int y) {
 	
-	asteroidSprite.setPosition(sf::Vector2f((x+1)*12.5-4.5,y*20));
+	asteroidSprite.setPosition(sf::Vector2f(static_cast<float>((x+1)*12.5-4.5),static_cast<float>(y*20)));
 	//sf::RectangleShape asteroidShape(sf::Vector2f(12.5*1.5,20*1.5));
 	//asteroidShape.setFillColor(sf::Color(102,51,0));
 	//asteroidShape.setPosition(sf::Vector2f((x+1)*12.5-3,y*20));
@@ -443,7 +438,7 @@ void DisplayGameGui::drawObstacle(int x, int y) {
 		window->draw(asteroidSprite);
 
 }
-void DisplayGameGui::drawEnemy(int x, int y, int tick, bool isBlinking, int type) {
+void DisplayGameGui::drawEnemy(int x, int y, bool isBlinking, int type) {
 
 	if(type == 1){
 		if(isBlinking){
@@ -458,7 +453,7 @@ void DisplayGameGui::drawEnemy(int x, int y, int tick, bool isBlinking, int type
 		//sf::RectangleShape enemyShape(sf::Vector2f(12.5*3,20));
 		//enemyShape.setFillColor(sf::Color::Red);
 		//enemyShape.setPosition(sf::Vector2f(x*12.5,5 + y*20));
-		enemySprite.setPosition(sf::Vector2f(x*12.5+ 60 ,5 + y*20 + 60));
+		enemySprite.setPosition(sf::Vector2f(static_cast<float>(x*12.5+ 60),static_cast<float>(5 + y*20 + 60)));
 		if(y*20 < 350){
 			//window->draw(enemyShape);
 			window->draw(enemySprite);
@@ -477,7 +472,7 @@ void DisplayGameGui::drawEnemy(int x, int y, int tick, bool isBlinking, int type
 		//sf::RectangleShape enemyShape(sf::Vector2f(12.5*3,20));
 		//enemyShape.setFillColor(sf::Color::Red);
 		//enemyShape.setPosition(sf::Vector2f(x*12.5,5 + y*20));
-		enemyHSprite.setPosition(sf::Vector2f(x*12.5+ 60 ,5 + y*20 + 60));
+		enemyHSprite.setPosition(sf::Vector2f(static_cast<float>(x*12.5+ 60), static_cast<float>(5 + y*20 + 60)));
 		if(y*20 < 350){
 			//window->draw(enemyShape);
 			window->draw(enemyHSprite);
@@ -493,20 +488,20 @@ void DisplayGameGui::drawProjectile(int x, int y, bool enemy, bool player1){
 
 	if(enemy){
 		//projectileShape.setFillColor(sf::Color::Red);
-		laserSprite.setPosition(sf::Vector2f((x+1)*12.5+1,y*20+5));
+		laserSprite.setPosition(sf::Vector2f(static_cast<float>((x+1)*12.5+1), static_cast<float>(y*20+5)));
 		window->draw(laserSprite);
 
 	}
 	else if (player1) {
 		//projectileShape.setFillColor(sf::Color::Blue);
 
-		laser1Sprite.setPosition(sf::Vector2f((x+1)*12.5+1,y*20+5));
+		laser1Sprite.setPosition(sf::Vector2f(static_cast<float>((x+1)*12.5+1), static_cast<float>(y*20+5)));
 		window->draw(laser1Sprite);
 
 	}
 	else{
 		//projectileShape.setFillColor(sf::Color::Green);
-		laser2Sprite.setPosition(sf::Vector2f((x+1)*12.5+1,y*20+5));
+		laser2Sprite.setPosition(sf::Vector2f(static_cast<float>((x+1)*12.5+1),static_cast<float>(y*20+5)));
 		window->draw(laser2Sprite);
 
 	}
@@ -539,9 +534,9 @@ void DisplayGameGui::drawPlayer(int player, int x , int y, int tick, bool isBlin
 					clock1.restart();
 				}
 				if(!exploded1){
-					if (!explo1PosSaved)
-						explosionSprite1.setPosition(sf::Vector2f(x*12.5-125,5 + y*20-110));
-						explo1PosSaved=true;
+					if (!explo1PosSaved){
+						explosionSprite1.setPosition(sf::Vector2f(static_cast<float>(x*12.5-125),static_cast<float>(5 + y*20-110)));
+						explo1PosSaved=true;}
 					if(!soundExploded1){
 						explosionSound.play();
 						soundExploded1=true;
@@ -572,9 +567,9 @@ void DisplayGameGui::drawPlayer(int player, int x , int y, int tick, bool isBlin
 					clock2.restart();
 				}
 				if(!exploded2){
-					if (!explo2PosSaved)
-						explosionSprite2.setPosition(sf::Vector2f(x*12.5-125,5 + y*20-110));
-						explo2PosSaved=true;
+					if (!explo2PosSaved){
+						explosionSprite2.setPosition(sf::Vector2f(static_cast<float>(x*12.5-125),static_cast<float>(5 + y*20-110)));
+						explo2PosSaved=true;}
 					if(!soundExploded2){
 						explosionSound.play();
 						soundExploded2=true;
@@ -607,21 +602,21 @@ void DisplayGameGui::drawPlayer(int player, int x , int y, int tick, bool isBlin
         //window->draw(playerShipShape);
 		if (player==1 && !isBlinking){
             //playerShipShape.setFillColor(sf::Color::Blue);
-			ship1Sprite.setPosition(sf::Vector2f(x*12.5-36.5,5 + y*20-55));
+			ship1Sprite.setPosition(sf::Vector2f(static_cast<float>(x*12.5-36.5),static_cast<float>(5 + y*20-55)));
 			window->draw(ship1Sprite);
         }
 		else if (player==1 && isBlinking && tick % 80 < 40 && exploded1){
-			ship1Sprite.setPosition(sf::Vector2f(x*12.5-36.5,5 + y*20-55));
+			ship1Sprite.setPosition(sf::Vector2f(static_cast<float>(x*12.5-36.5),static_cast<float>(5 + y*20-55)));
 			window->draw(ship1Sprite);
 		}
 
         else if (player==2 && !isBlinking){
 			//playerShipShape.setFillColor(sf::Color::Green);
-			ship2Sprite.setPosition(sf::Vector2f(x*12.5-36.5,5 + y*20-55));
+			ship2Sprite.setPosition(sf::Vector2f(static_cast<float>(x*12.5-36.5),static_cast<float>(5 + y*20-55)));
 			window->draw(ship2Sprite);
 		}
 		else if (player==2 && isBlinking && tick % 80 < 40 && exploded2){
-			ship2Sprite.setPosition(sf::Vector2f(x*12.5-36.5,5 + y*20-55));
+			ship2Sprite.setPosition(sf::Vector2f(static_cast<float>(x*12.5-36.5),static_cast<float>(5 + y*20-55)));
 			window->draw(ship2Sprite);
 		}
 
@@ -636,19 +631,19 @@ void DisplayGameGui::drawBonus(int type, int x, int y){
 	if(y*20 < 350){
 		// window->draw(bonusShape);
 		if(type==lifeSteal){
-			lifestealSprite.setPosition(sf::Vector2f((x+1)*12.5-11,y*20-15));
+			lifestealSprite.setPosition(sf::Vector2f(static_cast<float>((x+1)*12.5-11),static_cast<float>(y*20-15)));
 			window->draw(lifestealSprite);
 		}
 		else if(type==minigun){
-			minigunSprite.setPosition(sf::Vector2f((x+1)*12.5-12,y*20-15));
+			minigunSprite.setPosition(sf::Vector2f(static_cast<float>((x+1)*12.5-12),static_cast<float>(y*20-15)));
 			window->draw(minigunSprite);
 		}
 		else if(type==damageUp){
-			damageupSprite.setPosition(sf::Vector2f((x+1)*12.5-12,y*20-15));
+			damageupSprite.setPosition(sf::Vector2f(static_cast<float>((x+1)*12.5-12),static_cast<float>(y*20-15)));
 			window->draw(damageupSprite);
 		}
 		else if(type==tripleShot){
-			tripleshotSprite.setPosition(sf::Vector2f((x+1)*12.5-12,y*20-15));
+			tripleshotSprite.setPosition(sf::Vector2f(static_cast<float>((x+1)*12.5-12),static_cast<float>(y*20-15)));
 			window->draw(tripleshotSprite);
 		}
 	}
@@ -659,19 +654,19 @@ void DisplayGameGui::drawBoss(int x, int y, int type, int bossHp){
 		//bossShape.setFillColor(sf::Color::Red);
 		//bossShape.setPosition(sf::Vector2f(x*12.5+7,5 + y*20));
 		if(type == 1){
-			bossSprite.setPosition(sf::Vector2f(x*12.5+7 +340,5 + y*20 + 260));
+			bossSprite.setPosition(sf::Vector2f(static_cast<float>(x*12.5+7 +340),static_cast<float>(5 + y*20 + 260)));
 			//window->draw(bossShape);
 			window->draw(bossSprite);
 
 			//maxHp de boss1 = 5000
-			bossLifeBar.setSize(sf::Vector2f(200.f/5000.f*bossHp, 10));
+			bossLifeBar.setSize(sf::Vector2f(200.f/5000.f*static_cast<float>(bossHp), static_cast<float>(10)));
 		}else{
-			boss2Sprite.setPosition(sf::Vector2f(x*12.5+7 +340,5 + y*20 + 260));
+			boss2Sprite.setPosition(sf::Vector2f(static_cast<float>(x*12.5+7 +340),static_cast<float>(5 + y*20 + 260)));
 			//window->draw(bossShape);
 			window->draw(boss2Sprite);
 
 			//maxHp de boss1 = 10000
-			bossLifeBar.setSize(sf::Vector2f(200.f/10000.f*bossHp, 10));
+			bossLifeBar.setSize(sf::Vector2f(200.f/10000.f*static_cast<float>(bossHp), static_cast<float>(10)));
 		}
 		//bossText.setString(std::to_string(bossHp)); //Debug: voir les hp du boss
 		window->draw(bossText);
@@ -679,7 +674,7 @@ void DisplayGameGui::drawBoss(int x, int y, int type, int bossHp){
 		
 		window->draw(bossLifeBar);
 }
-void DisplayGameGui::drawUi(int player, int hp, int score, int lives, int bonusType, int level, int tick){
+void DisplayGameGui::drawUi(int player, int hp, int score, int lives, int bonusType, int level){
 		
 		/*
 		sf::RectangleShape cadre(sf::Vector2f(990, 470));
@@ -696,24 +691,24 @@ void DisplayGameGui::drawUi(int player, int hp, int score, int lives, int bonusT
 		//healthbar
 		health_bar.setPosition(sf::Vector2f(3,380));
 		window->draw(health_bar);
-		sf::IntRect rect (0,0,200+((texture.getSize().x-200)/100)*hp,texture.getSize().y); //200=0
+		sf::IntRect rect (0,0,200+((static_cast<int>(texture.getSize().x)-200)/100)*hp,static_cast<int>(texture.getSize().y)); //200=0
 		health_bar.setTextureRect(rect);
 		//score
 		guiText.setString("Score: "+std::to_string(score));
 		guiText.setCharacterSize(20);
-		guiText.setColor(sf::Color::White);
+		guiText.setFillColor(sf::Color::White);
 		guiText.setPosition(sf::Vector2f(13,440));
 		window->draw(guiText);
 		//life
 		guiText.setString(std::to_string(hp)+"%");
 		guiText.setCharacterSize(18); // exprimée en pixels, pas en points !
-		guiText.setColor(sf::Color::White);
+		guiText.setFillColor(sf::Color::White);
 		guiText.setPosition(sf::Vector2f(83,386));
 		window->draw(guiText);
 		//n lives
 		guiText.setString("P1");
 		guiText.setCharacterSize(19); // exprimée en pixels, pas en points !
-		guiText.setColor(sf::Color::White);
+		guiText.setFillColor(sf::Color::White);
 		guiText.setPosition(sf::Vector2f(15,387));
 		window->draw(guiText);
 		//Bonus
@@ -728,7 +723,7 @@ void DisplayGameGui::drawUi(int player, int hp, int score, int lives, int bonusT
 		else if (bonusType == noBonus)
 			guiText.setString("  B"+std::to_string(player+1)+": ");
 		guiText.setCharacterSize(20); // exprimée en pixels, pas en points !
-		guiText.setColor(sf::Color::White);
+		guiText.setFillColor(sf::Color::White);
 		guiText.setPosition(sf::Vector2f(100,418));
 		window->draw(guiText);
 		// hearts
@@ -757,25 +752,25 @@ void DisplayGameGui::drawUi(int player, int hp, int score, int lives, int bonusT
 		//healthbar
 		health_bar2.setPosition(sf::Vector2f(460+325,380));
 		window->draw(health_bar2);
-		sf::IntRect rect (0,0,200+((texture.getSize().x-200)/100)*hp,texture.getSize().y); //200=0
+		sf::IntRect rect (0,0,200+((static_cast<int>(texture.getSize().x)-200)/100)*hp,static_cast<int>(texture.getSize().y)); //200=0
 		health_bar2.setTextureRect(rect);
 
 		//score
 		guiText.setString("Score: "+std::to_string(score));
 		guiText.setCharacterSize(20); // exprimée en pixels, pas en points !
-		guiText.setColor(sf::Color::White);
+		guiText.setFillColor(sf::Color::White);
 		guiText.setPosition(sf::Vector2f(470+325,440));
 		window->draw(guiText);
 		//life
 		guiText.setString(std::to_string(hp)+"%");
 		guiText.setCharacterSize(18); // exprimée en pixels, pas en points !
-		guiText.setColor(sf::Color::White);
+		guiText.setFillColor(sf::Color::White);
 		guiText.setPosition(sf::Vector2f(546+325,386));
 		window->draw(guiText);
 		//n lives
 		guiText.setString("P2");
 		guiText.setCharacterSize(18); // exprimée en pixels, pas en points !
-		guiText.setColor(sf::Color::White);
+		guiText.setFillColor(sf::Color::White);
 		guiText.setPosition(sf::Vector2f(468+325,387));
 		window->draw(guiText);
 		//Bonus
@@ -790,7 +785,7 @@ void DisplayGameGui::drawUi(int player, int hp, int score, int lives, int bonusT
 		else if (bonusType == noBonus)
 			guiText.setString("  B"+std::to_string(player+1)+": ");
 		guiText.setCharacterSize(20); // exprimée en pixels, pas en points !
-		guiText.setColor(sf::Color::White);
+		guiText.setFillColor(sf::Color::White);
 		guiText.setPosition(sf::Vector2f(557+325,418));
 		window->draw(guiText);
 		// hearts
@@ -815,7 +810,7 @@ void DisplayGameGui::drawUi(int player, int hp, int score, int lives, int bonusT
     //level
 	guiText.setString("Level "+std::to_string(level));
 	guiText.setCharacterSize(20);
-	guiText.setColor(sf::Color::White);
+	guiText.setFillColor(sf::Color::White);
 	guiText.setPosition(sf::Vector2f(450,380));
 	window->draw(guiText);
 
@@ -826,7 +821,7 @@ void DisplayGameGui::drawUi(int player, int hp, int score, int lives, int bonusT
 void DisplayGameGui::drawEndGame(std::string score){
 	guiText.setString("GAME OVER");
 	guiText.setCharacterSize(20);
-	guiText.setColor(sf::Color::White);
+	guiText.setFillColor(sf::Color::White);
 	guiText.setPosition(sf::Vector2f(35*12.5, 8*20));
 	window->draw(guiText);
 
@@ -838,7 +833,7 @@ void DisplayGameGui::drawEndGame(std::string score){
 
 
 	guiText.setString("press p to quit");
-	guiText.setColor(sf::Color::White);
+	guiText.setFillColor(sf::Color::White);
 	guiText.setPosition(sf::Vector2f(32*12.5, 12*20));
 	window->draw(guiText);
 

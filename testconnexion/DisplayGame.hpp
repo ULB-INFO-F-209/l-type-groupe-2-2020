@@ -27,7 +27,7 @@ public:
 	void drawStar();
 	void starHandler();
     void drawObstacle(int x, int y);
-    void drawEnemy(int x, int y, int tick, bool isBlinking, int type);
+    void drawEnemy(int x, int y, bool isBlinking, int type);
     void drawProjectile(int x, int y, bool enemy, bool player1);
     void drawPlayer(int player, int x , int y, int tick, bool isBlinking);
     void drawBonus(int type, int x, int y);
