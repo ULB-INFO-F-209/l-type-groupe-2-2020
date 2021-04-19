@@ -43,6 +43,9 @@ public:
 	~DisplayGame()=default;
 	void close();
 
+	DisplayGame(const DisplayGame&)=delete;
+	DisplayGame& operator=(const DisplayGame&)=delete;
+
 	//parsing
 	void parse_instruction(std::string);
 

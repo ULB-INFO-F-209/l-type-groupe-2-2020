@@ -98,6 +98,8 @@ public:
 	//...
 	int getInputWindow(std::vector<int>* inp);
     
+	DisplayGameGui(const DisplayGameGui&)=delete;
+	DisplayGameGui& operator=(const DisplayGameGui&)=delete;
 	//Destructor
 	~DisplayGameGui()=default;
 	void close();

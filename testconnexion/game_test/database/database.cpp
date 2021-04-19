@@ -8,25 +8,25 @@ void Database::add(Account account){
 void Database::add(Friend frnd){
     std::ptrdiff_t idx = find(frnd._pseudo);
     if (idx != -1){
-        _data[idx]._friends_vector.push_back(frnd._friend);
+        _data[size_t(idx)]._friends_vector.push_back(frnd._friend);
     }
 }
 
 void Database::add(Request request){
     std::ptrdiff_t idx = find(request._pseudo);
     if (idx != -1)
-        _data[idx]._requests_vector.push_back(request._request);
+        _data[size_t(idx)]._requests_vector.push_back(request._request);
 }
 
 void Database::add(std::string pseudo, std::string level, std::string nameLevel, int vote){
     std::ptrdiff_t idx = find(pseudo.c_str());
     if (idx != -1){
         DatabaseLevel lvl = {pseudo, level, nameLevel, vote};
-        int idx_level = _data[idx].findLevel(nameLevel);
+        int idx_level = _data[size_t(idx)].findLevel(nameLevel);
         if (idx_level != -1)
-            _data[idx]._levels_vector.at(idx_level) = lvl;
+            _data[size_t(idx)]._levels_vector.at(size_t(idx_level)) = lvl;
         else
-            _data[idx]._levels_vector.push_back(lvl);
+            _data[size_t(idx)]._levels_vector.push_back(lvl);
     }
     else
         std::cout << "[ERROR DATABASE] PSEUDO NOT FOUND : "<< pseudo <<std::endl;
@@ -38,8 +38,8 @@ void Database::add(std::string pseudo, std::string level, std::string nameLevel,
 std::ptrdiff_t Database::find(const char* pseudo){
     std::ptrdiff_t idx = 0;
 	bool continuer = true;
-	while(idx < _data.size() && continuer){
-		continuer = !(strcmp(pseudo, _data[idx].acc._pseudo) == 0);
+	while(size_t(idx) < _data.size() && continuer){
+		continuer = !(strcmp(pseudo, _data[size_t(idx)].acc._pseudo) == 0);
         if (continuer){idx++;}
 	}
  	return !continuer ? idx : -1;
@@ -51,7 +51,7 @@ bool Database::verifyLogin(char* pseudo, char* pswd){
     if (idx == -1){
         std::cout << pseudo << " does not exist" << std::endl;
     } else{
-        res = strcmp(pseudo, _data[idx].acc._pseudo) == 0 && strcmp(pswd, _data[idx].acc._pswd) == 0;
+        res = strcmp(pseudo, _data[size_t(idx)].acc._pseudo) == 0 && strcmp(pswd, _data[size_t(idx)].acc._pswd) == 0;
     }
     return res;
 }
@@ -63,7 +63,7 @@ Profile Database::getProfile(char* pseudo){
     if (idx == -1){
         std::cout << pseudo << " does not exist" << std::endl;
     } else{
-        Profile ret_val{_data[idx].acc};
+        Profile ret_val{_data[size_t(idx)].acc};
         res = ret_val;
     }
     return res;
@@ -76,9 +76,9 @@ std::vector<Profile> Database::getFriendRequest(char* pseudo){
     if (idx == -1){
         std::cout << pseudo << " does not exist" << std::endl;
     } else{
-        for (auto req : _data[idx]._requests_vector){
+        for (auto req : _data[size_t(idx)]._requests_vector){
             idx = find(req.c_str());
-            Profile prof{_data[idx].acc};
+            Profile prof{_data[size_t(idx)].acc};
             requests.push_back(prof);
         }
     }
@@ -92,10 +92,10 @@ std::vector<Profile> Database::getFriendList(char* pseudo){
     if (idx == -1){
         std::cout << pseudo << " does not exist" << std::endl;
     } else{ 
-        for (auto frnd : _data[idx]._friends_vector){
+        for (auto frnd : _data[size_t(idx)]._friends_vector){
             if (frnd[0] != '\0'){
                 idx = find(frnd.c_str());
-                Profile f{_data[idx].acc};
+                Profile f{_data[size_t(idx)].acc};
                 friends.push_back(f);
             }
         }
@@ -146,15 +146,15 @@ std::vector<DatabaseLevel> Database::checkMyLevels(std::string pseudo){
     std::vector<DatabaseLevel> myLevels;
     std::ptrdiff_t idx = find(pseudo.c_str());
     if (idx != -1)
-        myLevels.assign(_data[idx]._levels_vector.begin(), _data[idx]._levels_vector.end());
+        myLevels.assign(_data[size_t(idx)]._levels_vector.begin(), _data[size_t(idx)]._levels_vector.end());
     return myLevels;
 }
 
 DatabaseLevel Database::checkALevel(std::string pseudo, std::string levelName){
-    DatabaseLevel res;
+    DatabaseLevel res{};
     std::ptrdiff_t idx = find(pseudo.c_str());
     if (idx != -1)
-        res = _data[idx].getLevel(levelName);
+        res = _data[size_t(idx)].getLevel(levelName);
     return res;
 }
 
@@ -178,7 +178,7 @@ bool Database::updateScore(int score, char* pseudo){
     if (idx == -1){
         std::cout << pseudo << " does not exist" << std::endl;
     } else{
-        _data[idx].acc.setScore(score);
+        _data[size_t(idx)].acc.setScore(score);
         res = true;
     }
     return res;
@@ -189,14 +189,14 @@ int Database::friendRequest(char* pseudoSrc, char* pseudoDest){
     std::ptrdiff_t idxSrc = find(pseudoSrc);
     std::ptrdiff_t idxDest = find(pseudoDest);
     if (idxSrc != -1 && idxDest != -1 && idxSrc != idxDest){
-        int already_req = _data[idxSrc].findRequest(pseudoDest);
+        int already_req = _data[size_t(idxSrc)].findRequest(pseudoDest);
         if (already_req == -1){
-            res = _data[idxDest].addRequest(pseudoSrc);     // res=0 if request is sent, res=1 if already requested
+            res = _data[size_t(idxDest)].addRequest(pseudoSrc);     // res=0 if request is sent, res=1 if already requested
         }
         else{
-            _data[idxSrc].addFriend(pseudoDest);
-            _data[idxDest].addFriend(pseudoSrc);
-            _data[idxSrc]._requests_vector.erase(_data[idxSrc]._requests_vector.begin()+already_req);
+            _data[size_t(idxSrc)].addFriend(pseudoDest);
+            _data[size_t(idxDest)].addFriend(pseudoSrc);
+            _data[size_t(idxSrc)]._requests_vector.erase(_data[size_t(idxSrc)]._requests_vector.begin()+already_req);
             res = 0;
         }
     }                                                   // res=2 if already friends
@@ -211,9 +211,9 @@ bool Database::addFriend(char* pseudo1, char* pseudo2){
     std::ptrdiff_t idx2 = find(pseudo2);
     bool res = false;
     if (idx1 != -1 && idx2 != -1){
-        _data[idx1].addFriend(pseudo2);
-        _data[idx2].addFriend(pseudo1);
-        _data[idx1].removeRequest(pseudo2);             // supprimer la requete de la liste
+        _data[size_t(idx1)].addFriend(pseudo2);
+        _data[size_t(idx2)].addFriend(pseudo1);
+        _data[size_t(idx1)].removeRequest(pseudo2);             // supprimer la requete de la liste
         res = true;
     }
     if (idx1 == -1){std::cout << pseudo1 << " does not exist" << std::endl;}
@@ -227,7 +227,7 @@ bool Database::delFriendRequest(char *pseudo1, char *pseudo2){
     std::ptrdiff_t idx2 = find(pseudo2);
     bool res = false;
     if (idx1 != -1 && idx2 != -1){
-        _data[idx1].removeRequest(pseudo2);
+        _data[size_t(idx1)].removeRequest(pseudo2);
         res = true;
     }
     if (idx1 == -1){std::cout << pseudo1 << " does not exist" << std::endl;}
@@ -240,9 +240,9 @@ int Database::removeFriend(char* pseudo1, char* pseudo2){
     std::ptrdiff_t idx2 = find(pseudo2);
     int res = 2; //already friend
     if (idx1 != -1 && idx2 != -1){
-        if(_data[idx1].findFriend(pseudo2) != -1){
-            _data[idx1].removeFriend(pseudo2);
-            _data[idx2].removeFriend(pseudo1);
+        if(_data[size_t(idx1)].findFriend(pseudo2) != -1){
+            _data[size_t(idx1)].removeFriend(pseudo2);
+            _data[size_t(idx2)].removeFriend(pseudo1);
             res = 0; //bien supprimé
         }
         else
@@ -257,7 +257,7 @@ int Database::removeFriend(char* pseudo1, char* pseudo2){
 void Database::incrementVote(std::string pseudo, std::string level){
     std::ptrdiff_t idx = find(pseudo.c_str());
     if (idx != -1)
-        _data[idx].incVote(level);         
+        _data[size_t(idx)].incVote(level);         
 }
 
 // File management
@@ -341,19 +341,19 @@ void Database::dbLoad(){
         while (levels.read(&read_size1, sizeof(size1))){        
             std::string read_pseudo, read_level, read_name;
 
-            size1 = read_size1;
+            size1 = size_t(read_size1);
             read_pseudo.resize(size1);
-            levels.read(&read_pseudo[0], size1);
+            levels.read(&read_pseudo[0],std::streamsize(size1));
 
             levels.read(&read_size2, sizeof(size2));
-            size2 = read_size2;
+            size2 = size_t(read_size2);
             read_level.resize(size2);
-            levels.read(&read_level[0], size2);
+            levels.read(&read_level[0],std::streamsize(size2));
 
             levels.read(&read_size3, sizeof(size3));
-            size3 = read_size3;
+            size3 = size_t(read_size3);
             read_name.resize(size3);
-            levels.read(&read_name[0], size3);
+            levels.read(&read_name[0],std::streamsize(size3));
 
             int vote;
 	        levels.read(reinterpret_cast<char *>(&vote), sizeof(vote));
@@ -399,17 +399,17 @@ void Database::dbSave(){
                 size_t size = str.size();
                 char char_size = char(size);
                 levels.write(&char_size,sizeof(size));
-                levels.write(&str[0],size);
+                levels.write(&str[0],std::streamsize(size));
 
                 size_t size2 = lev.level.size();
                 char char_size2 = char(size2);
                 levels.write(&char_size2,sizeof(size2));
-                levels.write(&lev.level[0],size2);
+                levels.write(&lev.level[0],std::streamsize(size2));
 
                 size_t size3=lev.name.size();
                 char char_size3 = char(size3);
                 levels.write(&char_size3,sizeof(size3));
-                levels.write(&lev.name[0],size3);
+                levels.write(&lev.name[0],std::streamsize(size3));
 
                 int vote = lev.vote;
                 levels.write(reinterpret_cast<const char *>(&vote), sizeof(vote));
@@ -429,7 +429,7 @@ void Database::display(){
         std::cout << "pas d'element \n";
         return;
     }
-    for (int i = 0; i < _data.size(); i++){
+    for (size_t i = 0; i < _data.size(); i++){
         std::cout << _data[i].acc;
 
         std::cout << "\nfriends : [";
