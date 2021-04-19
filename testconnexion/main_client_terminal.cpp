@@ -1,7 +1,7 @@
 #include "MenuTerminal.hpp"
 
 
-int main(int argc, char const *argv[])
+int main()
 {
 	MenuTerminal client{};
 	client.start_session();

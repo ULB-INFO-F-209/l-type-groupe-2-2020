@@ -117,8 +117,8 @@ int Interface::print_menu(size_t size, std::string *choices, int type, Game_sett
 bool Interface::get_connexion(char pseudo[20], char pswd[20], int error, int type){
 	bool res = false; 
 	char cara; int choice = 1,  focus=0;
-	int py = _ps_caption_y, px = _ps_caption_x + PSEUDO_ZONE.size()+1,
-		my=_pa_caption_y, mx=_ps_caption_x + PSWD_ZONE.size()+1;
+	int py = _ps_caption_y, px = _ps_caption_x + static_cast<int>(PSEUDO_ZONE.size())+1,
+		my=_pa_caption_y, mx=_ps_caption_x + static_cast<int>(PSWD_ZONE.size())+1;
 	int idx_ps = 0, idx_pa=0; 
 
 	keypad(stdscr, true);
@@ -260,7 +260,7 @@ bool Interface::print_profile(std::vector<Profile> *vect, int type, int *answer)
 	keypad(stdscr,TRUE);
 	bool res=false;
 	int choice = 1, accepted=-1,
-		MIN = 0,  MAX = vect->size() -1,
+		MIN = 0,  MAX = static_cast<int>(vect->size()) -1,
 		focus = 0; int nb_elem = 8, //on peut afficher que 8 personnes à la fois
 		idx_min = 0, idx_max;
 	
@@ -296,7 +296,7 @@ bool Interface::print_profile(std::vector<Profile> *vect, int type, int *answer)
 				break;
 			case 10:
 				if(type==REQ and vect->size() != 0){
-					accepted = print_profile(&vect->at(focus), REQ);
+					accepted = print_profile(&vect->at(static_cast<size_t>(focus)), REQ);
 					if(accepted==0){
 						answer[0] = focus;
 						answer[1] = 1; //accepted friends
@@ -324,7 +324,7 @@ bool Interface::print_profile(std::vector<Profile> *vect, int type, int *answer)
 }
 
 int Interface::get_pseudo(char *res, int error,int type){
-	int ret=0; int py = _ps_caption_y, px =  _ps_caption_x + PSEUDO_ZONE.size() +1;
+	int ret=0; int py = _ps_caption_y, px =  _ps_caption_x + static_cast<int>(PSEUDO_ZONE.size()) +1;
 	char cara; int choice=1, idx=0;
 	if(type == ADD)
 		set_screen(&ADD_FRIEND,&ADD_SAYING, &ADD_SAYING2);
@@ -341,11 +341,13 @@ int Interface::get_pseudo(char *res, int error,int type){
 		choice = getch();
 		switch(choice){
 			case 10: //enter
-				if(idx + 1 < NB_MIN_CARA)
+				if(idx + 1 < NB_MIN_CARA){
 					print_error(LEN_PSEUDO);
-				else
+				}
+				else{
 					choice = 0;
 					res[idx] = '\0'; //fin de ligne	
+				}
 				break;
 			case KEY_LEFT: //retour 
 				choice = 0; 
@@ -385,7 +387,7 @@ int Interface::range(int n, Game_settings *set, bool percent){
 			s += " percent";
 		else
 			s += " lives";
-		print_cara(_main_win, s.c_str(), x-(s.size()/2),y);
+		print_cara(_main_win, s.c_str(), x-(static_cast<int>(s.size())/2),y);
 		print_message(&RANGE, false);
 		choice = getch();
 		switch(choice){
@@ -421,7 +423,7 @@ void Interface::set_screen(const std::string *title,const std::string *saying1, 
     refresh();
 	wrefresh(_main_win);
 	wrefresh(_saying_win);
-	int t_x =_title_x - (title->size() / 2);
+	int t_x =_title_x - (static_cast<int>(title->size()) / 2);
 	int s_x;
 	start_color(); 
 	init_pair(3,COLOR_RED, COLOR_BLACK);
@@ -431,11 +433,11 @@ void Interface::set_screen(const std::string *title,const std::string *saying1, 
 
  
 	if(saying1 != nullptr){
-		s_x = _saying_x - (saying1->size()/2);
+		s_x = _saying_x - (static_cast<int>(saying1->size())/2);
 		print_cara(_saying_win, saying1->c_str(),s_x, _saying_y);
 	}
 	if(saying2 != nullptr){
-		s_x = _saying_x - (saying2->size()/2);
+		s_x = _saying_x - (static_cast<int>(saying2->size())/2);
 		print_cara(_saying_win, saying2->c_str(), s_x, _saying_y+1);
 	}
 }
@@ -488,12 +490,12 @@ void Interface::update_menu(size_t size,  std::string *choices, int highlight, i
 	else if(type==LOBBY)
 		set_screen(&LOBBY_TITLE,&LOBBY_SAYING, &LOBBY_SAYING2);
 
-	int x = WIN_WIDTH/2, y= (WIN_HEIGHT/2) - (size+2)/2;
+	int x = WIN_WIDTH/2, y= (WIN_HEIGHT/2) - (static_cast<int>(size)+2)/2;
 	int x_courant;
 	start_color(); 
 	init_pair(1,COLOR_WHITE, COLOR_RED);
 	for(size_t i = 0; i < size; ++i){
-		x_courant = x- (choices[i] .size()/2);
+		x_courant = x- (static_cast<int>(choices[i].size())/2);
 		if(i  == static_cast<size_t>(highlight)){
 			wattron(_main_win, COLOR_PAIR(1));
 			print_cara(_main_win,choices[i].c_str(), x_courant, y);
@@ -609,10 +611,10 @@ void Interface::print_users(std::vector<Profile> *vect, int highlight, int min, 
 	print_cara(_main_win, pseudo_title,caption_x,caption_y);
 	print_cara(_main_win, score_title, _error_x,caption_y);
 	
-	for (int i = min; i <= max; ++i){ 
+	for (size_t i = static_cast<size_t>(min); i <= static_cast<size_t>(max); ++i){ 
 		sprintf(score, "%d",vect->at(i).score);
 		sprintf(pseudo, "%s", vect->at(i).pseudo);
-		if(i == highlight)
+		if(i == static_cast<size_t>(highlight))
 		{
 			wattron(_main_win, A_REVERSE);
 			print_cara(_main_win,pseudo,x,y);
@@ -661,24 +663,24 @@ void Interface::set_settings(Game_settings *set){
 	wattron(_settings_win1, COLOR_PAIR(2));
 	wattron(_settings_win2, COLOR_PAIR(2));
 	buffer = caption[0] + std::to_string(set->nb_player);
-	x_courant = x - buffer.size()/2;
+	x_courant = x - static_cast<int>(buffer.size())/2;
 	print_cara(_settings_win1,buffer.c_str(), x_courant, y_courant);
 	y_courant += 2;
 
 	buffer = caption[1] + std::string(set->pseudo_hote);
-	x_courant = x - buffer.size()/2;
+	x_courant = x - static_cast<int>(buffer.size())/2;
 	print_cara(_settings_win1,buffer.c_str(), x_courant, y_courant);
 	y_courant += 2;
 
 	if(set->nb_player ==2){
 		buffer = caption[2] + std::string(set->pseudo_other);
-		x_courant = x - buffer.size()/2;
+		x_courant = x - static_cast<int>(buffer.size())/2;
 		print_cara(_settings_win1,buffer.c_str(), x_courant, y_courant);
 		y_courant += 2;
 	}
 
 	buffer = caption[5] + ally;
-	x_courant = x - buffer.size()/2;
+	x_courant = x - static_cast<int>(buffer.size())/2;
 	print_cara(_settings_win1,buffer.c_str(), x_courant, y_courant);
 	y_courant += 2;
 
@@ -686,17 +688,17 @@ void Interface::set_settings(Game_settings *set){
 
 	y_courant = y;
 	buffer = caption[4] + set->difficulty_str;
-	x_courant = x - buffer.size()/2;
+	x_courant = x - static_cast<int>(buffer.size())/2;
 	print_cara(_settings_win2,buffer.c_str(), x_courant, y_courant);
 	y_courant += 2;
 
 	buffer = caption[6] + std::to_string(set->nb_lives) + " lives";
-	x_courant = x - buffer.size()/2;
+	x_courant = x - static_cast<int>(buffer.size())/2;
 	print_cara(_settings_win2,buffer.c_str(), x_courant, y_courant);
 	y_courant += 2;
 
 	buffer = caption[3] + std::to_string(set->drop_rate) + " percent";
-	x_courant = x - buffer.size()/2;
+	x_courant = x - static_cast<int>(buffer.size())/2;
 	print_cara(_settings_win2,buffer.c_str(), x_courant, y_courant);
 
 	wattroff(_settings_win1, COLOR_PAIR(2));
@@ -707,7 +709,7 @@ void Interface::print_message(const std::string *msg1, bool up ){
 	int x=WIN_WIDTH/2, y=9*WIN_HEIGHT/10;;
 	if(up)
 		y = 4*WIN_HEIGHT/10;
-	print_cara(_main_win, msg1->c_str(), x-msg1->size()/2, y);
+	print_cara(_main_win, msg1->c_str(), x-static_cast<int>(msg1->size())/2, y);
 }
 
 

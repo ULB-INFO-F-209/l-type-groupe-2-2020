@@ -33,8 +33,8 @@ class Client{
     char _pipe_game_sett[Constante::SIZE_pipe];
 
     //files descriptors
-    int _fd_send_query;
-    int _fd_get_query;
+    int _fd_send_query=-1;
+    int _fd_get_query=-1;
     
 
 public:

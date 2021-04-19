@@ -83,7 +83,7 @@ private:
 
 	//Game utilities
 	void get_players(Game_settings *set);
-	void launch_game(Game_settings *);
+	void launch_game();
 
 	static void handle_SIGINT(int sig);
 

@@ -3,24 +3,24 @@
 void drawGrid(sf::RenderWindow& win, int rows, int cols){
     // initialize values
     int numLines = rows+cols-2;
-    sf::VertexArray grid(sf::Lines, 2*(numLines));
+    sf::VertexArray grid(sf::Lines, static_cast<size_t>(2*(numLines)));
     win.setView(win.getDefaultView());
     auto size = win.getView().getSize();
-    float rowH = 370/rows;
-    float colW = size.x/cols;
+    float rowH = 370/static_cast<float>(rows);
+    float colW = size.x/static_cast<float>(cols);
     // row separators
     for(int i=0; i < rows-1; i++){
         int r = i+1;
-        float rowY = rowH*r;
-        grid[i*2].position = {0, 5 + rowY};
-        grid[i*2+1].position = {size.x, 5 +rowY};
+        float rowY = rowH*static_cast<float>(r);
+        grid[static_cast<size_t>(i*2)].position = {0, 5 + rowY};
+        grid[static_cast<size_t>(i*2+1)].position = {size.x, 5 +rowY};
     }
     // column separators
     for(int i=rows-1; i < numLines; i++){
         int c = i-rows+2;
-        float colX = colW*c;
-        grid[i*2].position = {colX, 0};
-        grid[i*2+1].position = {colX, size.y};
+        float colX = colW*static_cast<float>(c);
+        grid[static_cast<size_t>(i*2)].position = {colX, 0};
+        grid[static_cast<size_t>(i*2+1)].position = {colX, size.y};
     }
     // draw it
     win.draw(grid);
@@ -167,7 +167,7 @@ int MenuTerminal::lobby(){
 			case 5: 	//play
 				create_game_to_str(buffer,&setting);
 				_client.createGame(buffer);
-				launch_game(&setting);
+				launch_game();
 				break;
 			default: // - 1 ==> quit 
 				res = MAIN;
@@ -230,9 +230,9 @@ void MenuTerminal::request_management(){
 		int idx = answer[0];
 		int accepted = answer[1];
 		if(accepted and ret)
-			_client.addFriend(vect[idx].pseudo);
+			_client.addFriend(vect[static_cast<size_t>(idx)].pseudo);
 		else if (ret)
-			_client.delFriendRequest(vect[idx].pseudo);	
+			_client.delFriendRequest(vect[static_cast<size_t>(idx)].pseudo);	
 	}
 }
 
@@ -310,7 +310,7 @@ void MenuTerminal::get_players(Game_settings*set){
 		set->nb_player = 1;
 }
 
-void MenuTerminal::launch_game(Game_settings* game_option){
+void MenuTerminal::launch_game(){
 	DisplayGame display_game;
 	display_game.init();
     bool gameOn = true;
@@ -344,6 +344,7 @@ void MenuTerminal::handle_SIGINT(int sig){
 	write(fd, buffer, Constante::CHAR_SIZE);
 	close(fd);
 	std::cout << "Bye Bye"<< std::endl;
+	std::cout << "Exit with "<< sig << std::endl;
 	window.erase_win();
 	exit(EXIT_SUCCESS);
 }

@@ -31,12 +31,12 @@ class Interface final{
 	int _ps_caption_x{}, _ps_caption_y{}, _pa_caption_y{};
 
 	//different window
-	WINDOW * _main_win;
-	WINDOW* _pseudo_win;
-	WINDOW*_pass_win;
-	WINDOW*_saying_win;
-	WINDOW* _settings_win1;
-	WINDOW* _settings_win2;
+	WINDOW * _main_win=nullptr;
+	WINDOW* _pseudo_win=nullptr;
+	WINDOW*_pass_win=nullptr;
+	WINDOW*_saying_win=nullptr;
+	WINDOW* _settings_win1=nullptr;
+	WINDOW* _settings_win2=nullptr;
 public:
 	//constructor
 	Interface();
@@ -52,6 +52,11 @@ public:
 	inline void erase_win(){endwin();}
 	//destructor
 	~Interface();
+
+	//other
+	Interface(const Interface&)=default;
+	Interface& operator=(const Interface&)=default;
+
 private:
 	void set_screen(const std::string *title,const std::string *saying1,const std::string *saying2);
 	void update_menu(size_t size,  std::string *choices, int highlight, int type);

@@ -9,14 +9,14 @@
 #include <iostream>
 
 class ClickableLabel : public QLabel{ 
-    int idx;
-    int type;
+    int idx=0;
+    int type=0;
     int x = 10;
     int y = 10;
     Q_OBJECT 
 
 public:
-    explicit ClickableLabel(int i=0,int t=0, QWidget* parent = Q_NULLPTR, Qt::WindowFlags f = Qt::WindowFlags()): idx{i},type(t),QLabel(parent){}
+    explicit ClickableLabel(int i=0,int t=0, QWidget* parent = Q_NULLPTR): QLabel(parent), idx(i),type(t){}
     ~ClickableLabel(){};
     int index(){return idx;}
     int get_type(){return type;}

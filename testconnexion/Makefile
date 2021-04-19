@@ -31,9 +31,6 @@ menugui.o: MenuGui.hpp MenuGui.cpp
 menuterminal.o: MenuTerminal.hpp MenuTerminal.cpp
 	g++  -c MenuTerminal.cpp $(flag) $(sfml_flag) -o menuterminal.o
 
-screen.o:screen.hpp screen.cpp
-	g++  -c screen.cpp $(flag) -o screen.o
-
 displaygame.o: DisplayGame.cpp DisplayGame.hpp
 	g++  -c DisplayGame.cpp $(flag) -o displaygame.o
 

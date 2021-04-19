@@ -20,7 +20,6 @@ void MenuGui::start_session(){
 	this->show();
 }
 
-
 void MenuGui::home(){	
     QWidget *centralWidget = new QWidget(this);
     set_background(centralWidget);
@@ -230,8 +229,9 @@ void MenuGui::connexion(bool sign_in){
     QLineEdit *pseudo_line = create_line(centralWidget,QRect(230, 270, 400, 45),false);
     QLineEdit *pswd_line = create_line(centralWidget,QRect(230, 370, 400, 45),true);
 
-    QLabel *pseudo_label = create_label(centralWidget, "Username : ", QRect(140, 270, 91, 45));
-    QLabel *pswd_label = create_label(centralWidget, "Password : ", QRect(130, 370, 101, 45));
+    create_label(centralWidget, "Username : ", QRect(140, 270, 91, 45));
+    create_label(centralWidget, "Password : ", QRect(130, 370, 101, 45));
+
 
     QWidget *horizontalLayoutWidget = new QWidget(centralWidget);
     horizontalLayoutWidget->setGeometry(QRect(110, 440, 680, 200));
@@ -581,14 +581,10 @@ void MenuGui::lobby(std::string my_level, bool from_lead){
     set_background(centralwidget);
     set_title(centralwidget, "images/titles/lobby");
 
-    QLabel *players_label;
+    
     QComboBox *players_combo;
-    QLabel *ally_label;
     QComboBox *ally_combo;
-    QLabel *difficulty_label;
     QComboBox *difficulty_combo;
-    QLabel *lives_label;
-    QLabel *droprate_label;
     QSpinBox *lives_spin;
     QSpinBox *droprate_spin;
     QPushButton *play_button;
@@ -600,7 +596,7 @@ void MenuGui::lobby(std::string my_level, bool from_lead){
     QLabel *label[7];
 
     std::string legende[7] = {"Username", "Password","players", "Ally shot", "Difficulty","Lives","Droprate"};
-    int user=0, pass=1, player=2, ally=3, diff=4, live=5, drop=6;
+    int user=0, pass=1;
 
     int posx[7]= {40, 40,40, 310,550,550,550};
     int posy[7]={290,370,200,200,200,290,380};
@@ -818,8 +814,8 @@ void MenuGui::level_editor(Parsing::Level my_level){
     horizontalLayout->addWidget(tick_lcd);
 
     //placer sur la frame:
-    for(int i = 0; i < my_level.enemy_list.size(); i++){
-        ClickableLabel * e = new ClickableLabel(i,0,game_zone);
+    for(size_t i = 0; i < my_level.enemy_list.size(); i++){
+        ClickableLabel * e = new ClickableLabel(static_cast<int>(i),0,game_zone);
         QPixmap pix1("images/custom/e1.png");
         pix1 = pix1.scaled(QSize(button_size,button_size));
         QPixmap pix2("images/custom/e2.png");
@@ -844,8 +840,8 @@ void MenuGui::level_editor(Parsing::Level my_level){
         });
     }
 
-    for(int i = 0; i < my_level.obs_list.size(); i++){
-        ClickableLabel * e = new ClickableLabel(i,1,game_zone);
+    for(size_t i = 0; i < my_level.obs_list.size(); i++){
+        ClickableLabel * e = new ClickableLabel(static_cast<int>(i),1,game_zone);
         QPixmap pix("images/custom/o2");
         pix = pix.scaled(QSize(button_size,button_size));
         e->setPixmap(pix);
@@ -892,7 +888,7 @@ void MenuGui::level_editor(Parsing::Level my_level){
         });
     connect(tick_slider, SIGNAL(valueChanged(int)),tick_lcd, SLOT(display(int)));
     connect(tick_slider, &QSlider::valueChanged,this, [this,tick_lcd, my_level, game_zone](){
-        for(int i = 0; i < my_level.enemy_list.size(); i++){
+        for(size_t i = 0; i < my_level.enemy_list.size(); i++){
             if(my_level.enemy_list[i].tick != tick_lcd->intValue()){
                game_zone->get_enemy(i)->hide();
             }
@@ -900,7 +896,7 @@ void MenuGui::level_editor(Parsing::Level my_level){
                 game_zone->get_enemy(i)->show();
             }
         }
-        for(int i = 0; i < my_level.obs_list.size(); i++){
+        for(size_t i = 0; i < my_level.obs_list.size(); i++){
             if(my_level.obs_list[i].tick != tick_lcd->intValue()){
                 game_zone->get_obs(i)->hide();
             }
@@ -984,7 +980,7 @@ void MenuGui::custom_enemy(Parsing::Level my_level, int idx){
     QWidget *formLayoutWidget = new QWidget(Dialog);
     formLayoutWidget->setGeometry(QRect(590, 160, 258, 275));
      QFormLayout *formLayout = new QFormLayout(formLayoutWidget);
-    int position = 0, hp=1, tick=2, damage=3; 
+    int position = 0,tick=2; 
     std::string legende[] = {"POSITION :","HP :","TIME :","DAMAGE :"};
     QLabel *label[4];
     int spin_value[4]; my_level.enemy_list[idx].get_values(spin_value);
@@ -1129,7 +1125,7 @@ void MenuGui::custom_obstacle(Parsing::Level my_level, int idx){
     QWidget *formLayoutWidget = new QWidget(Dialog);
     formLayoutWidget->setGeometry(QRect(150, 99, 251, 251));
      QFormLayout *formLayout = new QFormLayout(formLayoutWidget);
-    int position = 0, hp=1, tick=2, damage=3; 
+    int position = 0,tick=2; 
     std::string legende[] = {"POSITION :","HP :","TIME :","DAMAGE :"};
     QLabel *label[4];
     int spin_value[4]; my_level.obs_list[idx].get_values(spin_value);
@@ -1207,7 +1203,6 @@ void MenuGui::custom_player(Parsing::Level my_level){
     QWidget *formLayoutWidget = new QWidget(Dialog);
     formLayoutWidget->setGeometry(QRect(590, 160, 258, 275));
     QFormLayout *formLayout = new QFormLayout(formLayoutWidget);
-    int hp=0, damage=1, drop=2; 
     std::string legende[] = {"HP :","DAMAGE :"};
     QLabel *label[2];
     int spin_value[2] = {my_level.player.hp, my_level.player.damage};

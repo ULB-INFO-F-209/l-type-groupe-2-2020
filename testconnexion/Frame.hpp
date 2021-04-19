@@ -28,10 +28,10 @@ public:
     void add_enemy(ClickableLabel* e){enemy.push_back(e);}
     void add_obs(ClickableLabel* o){obs.push_back(o);}
     ClickableLabel* get_enemy(int i){
-    	return enemy[i];
+    	return enemy[static_cast<size_t>(i)];
     }
     ClickableLabel* get_obs(int i){
-    	return obs[i];
+    	return obs[static_cast<size_t>(i)];
     }
 
 
@@ -70,11 +70,11 @@ protected:
 	        QByteArray itemData = event->mimeData()->data("application/x-dnditemdata");
 	        QDataStream dataStream(&itemData, QIODevice::ReadOnly);
 
-	        int idx, type;
+	        int i, type;
 	        QPoint offset;
-	        dataStream >> idx >> type >> offset;
-	        std::cout << "index "<<idx <<" type "<<type<<std::endl;
+	        dataStream >> i >> type >> offset;
 	        QPoint pos(event->pos() - offset);
+	        size_t idx = static_cast<size_t>(i);
 	        if(type==0){
 	        	enemy[idx]->move(pos);
 	        	enemy[idx]->setPos(pos.rx(), pos.ry());
@@ -129,9 +129,9 @@ public:
 		}
 		else if(event->button() == Qt::RightButton){
             if(type==0)
-            	enemy[idx]->click();
+            	enemy[static_cast<size_t>(idx)]->click();
             else
-            	obs[idx]->click();
+            	obs[static_cast<size_t>(idx)]->click();
         }
 
 	}

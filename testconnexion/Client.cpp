@@ -24,16 +24,17 @@ Client::Client():_pid(getpid()){
 //utilities
 void Client::communication(char *buffer){
 	_fd_send_query =  open(_pipe_to_server, O_WRONLY); 
+	ssize_t res;
 	if (_fd_send_query != -1){
-			int res = write(_fd_send_query, buffer, Constante::CHAR_SIZE); //sending query
+			res = write(_fd_send_query, buffer, Constante::CHAR_SIZE); //sending query
 			close(_fd_send_query);
 
 			_fd_get_query = open(_pipe_from_server, O_RDONLY|O_NONBLOCK); // lecture du pipe en non bloquant pour eviter l'attente de l'autre process
-			if(_fd_get_query != -1){ // aucun probleme
+			if(_fd_get_query !=-1){ // aucun probleme
 				while(true){ 
-					int res = read(_fd_get_query , buffer, Constante::CHAR_SIZE);
+					res = read(_fd_get_query , buffer, Constante::CHAR_SIZE);
 
-					if (res == -1){
+					if (res ==  static_cast<ssize_t>(-1)){
 						if(errno != EAGAIN && errno != EWOULDBLOCK) //erreur le pipe est non bloquant 
 							std::cout << " [ERROR] " <<_pid << "n'a pas reussit a lire"<<std::endl;
 					}
@@ -151,6 +152,7 @@ int  Client::createGame(char *game_info){
 	char buffer[Constante::CHAR_SIZE];
 	sprintf(buffer, "P&%s&%d", game_info,_pid);
 	communication(buffer);
+	return atoi(buffer);
 }
 
 //destructor
@@ -159,13 +161,13 @@ Client::~Client(){
 }
 
 std::string Client::read_game_pipe(){
-	int fd;
+	int fd; ssize_t res;
 	char buffer[Constante::CHAR_SIZE];
 	fd = open(_pipe_game_sett, O_RDONLY);
 	if (fd != -1){
 		while(true){
-			int res = read(fd , buffer, Constante::CHAR_SIZE);
-			if (res == -1){}
+			res = read(fd , buffer, Constante::CHAR_SIZE);
+			if (res == static_cast<ssize_t>(-1)){}
             else{
             	break;
 			}
@@ -217,7 +219,7 @@ void Client::voteLevel(std::string name, std::string author){
 
 void Client::send_game_input(std::vector<int> inp){
 	int res[11];
-	for(int i = 0; i <11; i++){
+	for(size_t i = 0; i <11; i++){
 		if(i >= inp.size())
 			res[i] = -2;
 		else
