@@ -4,8 +4,8 @@
 int AccountAndVectors::findFriend(char pseudo[20]){
     int index = 0;
     bool found = false;
-    while (index < _friends_vector.size() && !found){
-        found = (strcmp(pseudo, _friends_vector.at(index).c_str()) == 0);
+    while (size_t(index) < _friends_vector.size() && !found){
+        found = (strcmp(pseudo, _friends_vector.at(size_t(index)).c_str()) == 0);
         if (!found){index++;}
     }
     return found ? index : -1;
@@ -15,8 +15,8 @@ int AccountAndVectors::findFriend(char pseudo[20]){
 int AccountAndVectors::findRequest(char pseudo[20]){
     int index = 0;
     bool found = false;
-    while (index < _requests_vector.size() && !found){
-        found = (strcmp(pseudo, _requests_vector.at(index).c_str()) == 0);
+    while (size_t(index) < _requests_vector.size() && !found){
+        found = (strcmp(pseudo, _requests_vector.at(size_t(index)).c_str()) == 0);
         if (!found){index++;}
     }
     return found ? index : -1;
@@ -25,8 +25,8 @@ int AccountAndVectors::findRequest(char pseudo[20]){
 int AccountAndVectors::findLevel(std::string levelName){
     int index = 0;
     bool found = false;
-    while (index < _levels_vector.size() && !found){
-        found = (levelName == (_levels_vector.at(index)).name);
+    while (size_t(index) < _levels_vector.size() && !found){
+        found = (levelName == (_levels_vector.at(size_t(index))).name);
         if (!found){index++;}
     }
     return found ? index : -1;
@@ -70,13 +70,13 @@ void AccountAndVectors::removeFriend(char pseudo[20]){
 void AccountAndVectors::incVote(std::string level){
     int idx = findLevel(level);
     if (idx != -1)
-        _levels_vector.at(idx).vote++;
+        _levels_vector.at(size_t(idx)).vote++;
 }
 
 DatabaseLevel AccountAndVectors::getLevel(std::string levelName){
-    DatabaseLevel res;
+    DatabaseLevel res{};
     int idx = findLevel(levelName);
     if (idx != -1)
-        res = _levels_vector.at(idx);
+        res = _levels_vector.at(size_t(idx));
     return res;
 }

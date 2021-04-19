@@ -107,8 +107,9 @@ int DisplayGameGui::getInputWindow(std::vector<int> *inp){
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::P))
 	{
 		inp->push_back('p');
-		return('p');
+		return 'p';
 	}
+	return 'v';
 	
 }
 void DisplayGameGui::parse_affichage(std::string instruction){

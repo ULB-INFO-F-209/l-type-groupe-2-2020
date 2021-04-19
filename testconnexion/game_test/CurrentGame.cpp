@@ -28,7 +28,7 @@ CurrentGame::CurrentGame(Parsing::Game_settings game_sett):twoPlayers(game_sett.
         
     }
 CurrentGame::CurrentGame(Parsing::Level level_sett, Parsing::Game_settings sett):twoPlayers(sett.nb_player ==2 ? true:false),friendlyFire(sett.ally_shot), dropRate(sett.drop_rate), dif(sett.diff),screen_area( {0, 0}, {80, 24}),game_area( {0, 0}, {78, 16}),map(dropRate,dif),
-        enemy_queue(level_sett.enemy_list),obstacles_queue(level_sett.obs_list),player1(),playership1(),boss(true){ //level_sett.player.boss
+        enemy_queue(level_sett.enemy_list),obstacles_queue(level_sett.obs_list),player1(),playership1(),boss(level_sett.player.boss){ 
     playership1 = new PlayerShip(10, 5, { {9, 5 }, { 3, 2 } }, '0',level_sett.player.hp,0,100,0);
     player1 = new Player(sett.nb_lives); 
     listPlayer.push_back(player1);
@@ -313,9 +313,13 @@ std::string CurrentGame::run_server(int *move_to_exec,std::vector<Parsing::Enemy
     map.bossShoot_server(tick);
     map.updateBounds();
 
-    if(map.getEnemyCount() == int(enemy_list.size()) && map.getEnemy().size() == 0 && !map.getBossSpawned() && map.getEnemy2().size()==0){
+    if(boss&&map.getEnemyCount() == int(enemy_list.size()) && map.getEnemy().size() == 0 && !map.getBossSpawned() && map.getEnemy2().size()==0){
         map.add_object_server(MapObject::boss, tick, &enemy_list, &obs_list);
         map.setBossSpawned(true);
+    }
+    // il faut stoper le jeu s'il n'y pas de boss et s'il n'y a pas d'ennemie :)
+    if(map.getEnemyCount() == int(enemy_list.size()) && map.getEnemy().size() == 0){
+        game_over = true;
     }
     if(map.getBossSpawned() && map.getBoss().empty())
         game_over=true;

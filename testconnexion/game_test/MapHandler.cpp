@@ -388,7 +388,7 @@ void MapHandler::add_object_server(MapObject::type typ,int t,std::vector<Enemy_t
                 enemy_ships2_set.push_back(new EnemyShip2(0, (enemy_list->at(j).x+ 58.75)/58.75, {{10 - 1, 5},{3,2}}, '%', enemy_list->at(j).hp,enemy_tick, enemy_list->at(j).damage, bonusType(enemy_list->at(j).bonus)));
             enemyCount++;
         }
-        std::cout<<"check "<<j<<" "<<enemy_list->at(j).x<<" "<<enemy_list->at(j).tick<<std::endl;
+        //std::cout<<"check "<<j<<" "<<enemy_list->at(j).x<<" "<<enemy_list->at(j).tick<<std::endl;
         
     }
     if(typ== MapObject::type::boss)

@@ -22,9 +22,9 @@ void MenuGui::start_session(){
 
 
 void MenuGui::home(){	
-    this->setStyleSheet(QStringLiteral("background-color:black;"));
     QWidget *centralWidget = new QWidget(this);
     set_background(centralWidget);
+    set_title(centralWidget, "images/titles/home");
 
     //layout box
     QWidget *verticalLayoutWidget = new QWidget(centralWidget);
@@ -36,18 +36,11 @@ void MenuGui::home(){
     //home button
     QPushButton *home_button[SIZE_HOME];
     int signIn = 0, signUp = 1, quit = 2;
-    QPixmap pix_home_button[SIZE_HOME] = {QPixmap("images/buttons/signIn"),QPixmap("images/buttons/signUp"),QPixmap("images/buttons/quit")};
-    QIcon icon_home[SIZE_HOME];
+    std::string home_buttons[SIZE_HOME] = {"images/buttons/signIn", "images/buttons/signUp", "images/buttons/quit"};
     for (size_t i = 0; i < SIZE_HOME; ++i){
-       home_button[i] = new QPushButton(verticalLayoutWidget);
-       home_button[i]->setMinimumSize(QSize(200, 200));
-       icon_home[i] = QIcon(pix_home_button[i]);
-       home_button[i]->setIcon(icon_home[i]);
-       home_button[i]->setIconSize(QSize(200, 200));
-       home_button[i]->setFlat(true);
+       home_button[i] = create_button(verticalLayoutWidget, home_buttons[i], 200, 200);
        button_v_layout->addWidget(home_button[i]);
    }
-   /*************************CONNECTIONS***********************************/
     connect(home_button[signIn], &QPushButton::clicked, this, [this]() {
        connexion(true);
    });
@@ -56,37 +49,85 @@ void MenuGui::home(){
    });
     connect(home_button[quit], &QPushButton::clicked, this,  &MenuGui::close);
 
-
-    /************************DESIGN SECTION *****************************/
-    QLabel *title_label = new QLabel(centralWidget);
-    title_label->setGeometry(QRect(110, 50, 600, 150));
-    QPixmap pix_home_title("images/titles/home");
-    title_label->setPixmap( pix_home_title);
-    title_label->setAlignment(Qt::AlignCenter);
-    pix_home_title = pix_home_title.scaled(title_label->size(),Qt::KeepAspectRatio);
-
-
     this->setCentralWidget(centralWidget);
-
 }
 
-void MenuGui::check_data(QLineEdit *pseudo_line, QLineEdit *pswd_line, bool sign_in){
+QLabel * MenuGui::print_error(QWidget *parent, int error, QRect pos){
+    std::cout << " ERROR "<<error<<std::endl;
+    QLabel *error_label; 
+    switch(error){
+        case LEN_ERROR:
+            error_label = create_label(parent,SHORT_ALL , pos);
+            break;
+        case LEN_PSEUDO:
+            error_label = create_label(parent, SHORT_PSEUDO, pos);
+            break;
+        case LEN_PSWD:
+            error_label = create_label(parent, SHORT_PSWD, pos);
+            break;
+        case NO_USER_ERROR:
+            error_label = create_label(parent, NO_USER_MSG, pos);
+            break;
+        case TAKEN_PSEUDO:
+            error_label = create_label(parent, TAKEN_PSEUDO_MSG, pos);
+            break;
+        case FRIENDS_ALREADY:
+            error_label = create_label(parent,ALREADY_FRIENDS , pos);
+            break;
+        case FRIENDS_YET:
+            error_label = create_label(parent, NOT_FRIENDS, pos);
+            break;
+        case REQ_ALREADY:
+            error_label = create_label(parent, ALREADY_REQUESTED, pos);
+            break;
+        case YOURSELF_ERROR:
+            error_label = create_label(parent, YOURSEL_MSG, pos);
+            break;
+        case NO_ERROR:
+            error_label = create_label(parent, "", pos);
+            break;
+        default:
+            error_label = create_label(parent, DEFAULT_ERROR, pos);
+            break; 
+    }
+    error_label->setStyleSheet("QLabel { background-color : black; color : red; }");
+    error_label->show();
+    return error_label;
+}
+
+int MenuGui::check_data(QLineEdit *pseudo_line, QLineEdit *pswd_line, bool sign_in){
     std::string pseudo = (pseudo_line->text()).toUtf8().constData();
     std::string pswd = (pswd_line->text()).toUtf8().constData();
+    int error = NO_ERROR;
     int success;
+
+    if(pswd.size() < NB_MIN_CARA and pseudo.size() < NB_MIN_CARA)
+        return LEN_ERROR;
+    if(pseudo.size() < NB_MIN_CARA)
+        return LEN_PSEUDO;
+    if(pswd.size() < NB_MIN_CARA)
+        return LEN_PSWD;
+
     if(sign_in){
         success = _client.signIn(pseudo.c_str(), pswd.c_str());
         if(success)
             main_m();
+        else
+            error = NO_USER_ERROR;
     }
     else{
         success = _client.signUp(pseudo.c_str(), pswd.c_str());
         if(success)
             main_m();
+        else
+            error = TAKEN_PSEUDO;
     }
+
+    return error;
 }
 
 void MenuGui::set_background(QWidget *centralwidget){
+    centralwidget->setStyleSheet(QStringLiteral("background-color:black;"));
     QLabel *lbl = new QLabel(centralwidget);
     QMovie *mv = new QMovie("images/background/ciel.gif");
     mv->setScaledSize(QSize(800,600));
@@ -124,14 +165,14 @@ QPushButton *MenuGui::create_button(QWidget *parent,std::string image, int width
     return button;
 }
 
-QPushButton *MenuGui::create_button(QWidget *parent,std::string image, int width, int height, QRect size){
+QPushButton *MenuGui::create_button(QWidget *parent,std::string image, QRect size){
     QPushButton * button = new QPushButton(parent);
     button->setGeometry(size);
     QPixmap pix(QString::fromStdString(image));
     pix = pix.scaled(button->size(),Qt::KeepAspectRatio);
     QIcon icon(pix);
     button->setIcon(icon);
-    button->setIconSize(QSize(width, height));
+    button->setIconSize(QSize(size.width(), size.height()));
     button->setFlat(true);
     return button;
 }
@@ -162,6 +203,26 @@ QLineEdit *MenuGui::create_line(QWidget *parent,QRect rect, bool pswd){
     return line;
 }
 
+QTableWidget * MenuGui::create_table_widget(QWidget *parent,int col, int row,std::string title[],QRect rect){
+
+    QTableWidget *table = new QTableWidget(parent);
+    table->setColumnCount(col);
+    table->setRowCount(row);
+    table->setGeometry(rect);
+
+    for(int i=0; i < col; i++){
+        QTableWidgetItem *__qtablewidgetitem = new QTableWidgetItem(QString::fromStdString(title[i]));
+        __qtablewidgetitem->setBackground(QColor(255, 255, 255));
+        table->setHorizontalHeaderItem(i, __qtablewidgetitem);
+    }
+    table->setStyleSheet(QStringLiteral("background-color:white;"));
+    table->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    table->setSelectionBehavior(QAbstractItemView::SelectItems);
+    table->setSelectionMode(QAbstractItemView::SingleSelection);
+    
+    return table;
+}
+
 void MenuGui::connexion(bool sign_in){
     QWidget *centralWidget = new QWidget(this);
     set_background(centralWidget);
@@ -185,25 +246,16 @@ void MenuGui::connexion(bool sign_in){
 
     QPushButton *cancel_button = create_button(horizontalLayoutWidget,"images/buttons/back", 150,150 );
     horizontalLayout->addWidget(cancel_button);
-    
-    /****************************DESIGN*****************************************************/
-    QLabel *title_label = new QLabel(centralWidget);
-    title_label->setGeometry(QRect(110, 50, 600, 150));
-    QPixmap pix_home_title = QPixmap();
-    title_label->setAlignment(Qt::AlignCenter);
-    title_label->setAttribute(Qt::WA_TranslucentBackground);
-    this->setStyleSheet(QStringLiteral("background-color:black;"));
 
     if(sign_in)
-        pix_home_title.load("images/titles/signIn");
+        set_title(centralWidget, "images/titles/signIn");
     else
-        pix_home_title.load("images/titles/signUp");
+        set_title(centralWidget, "images/titles/signUp");
 
-    /****************************CONNECTIONS*****************************************************/
-    pix_home_title = pix_home_title.scaled(title_label->size(),Qt::KeepAspectRatio);
-    title_label->setPixmap( pix_home_title);
-    connect(ok_button, &QPushButton::clicked, this, [this,sign_in,pseudo_line,pswd_line]() {
-            check_data(pseudo_line,pswd_line,sign_in);
+    connect(ok_button, &QPushButton::clicked, this, [this,sign_in,pseudo_line,pswd_line,centralWidget]() {
+           int error = check_data(pseudo_line,pswd_line,sign_in);
+           if(error != NO_ERROR)
+                print_error(centralWidget, error, QRect(230, 325, 400, 45));
     });
     connect(cancel_button, &QPushButton::clicked, this,&MenuGui::home);
 
@@ -224,8 +276,7 @@ void MenuGui::main_m(){
     QRect rects[SIZE_MAIN_MENU] = {QRect(280, 280, 241, 100), QRect(540, 370, 241, 100), QRect(20, 190, 241, 100), QRect(540, 190, 241, 100), QRect(20, 370, 241, 100), QRect(280, 470, 241, 100)};
 
     for (size_t i = 0; i < SIZE_MAIN_MENU; ++i){
-       button[i] = create_button(centralWidget,pix_main[i],241,100, rects[i]);
-       button[i]->setStyleSheet(QString::fromUtf8("border-radius:20;"));
+       button[i] = create_button(centralWidget,pix_main[i],rects[i]);
     }
 
     connect(button[friends], &QPushButton::clicked, this, &MenuGui::print_friends);
@@ -248,6 +299,7 @@ void MenuGui::print_profile(){
 
     QWidget *centralWidget = new QWidget(this);
     set_background(centralWidget);
+    set_title(centralWidget, "images/titles/profile");
 
     QLabel *username = create_label(centralWidget, "USERNAME :", QRect(40, 250, 150, 21));
     username->setStyleSheet("QLabel { background-color : black; color : white; }");
@@ -262,7 +314,7 @@ void MenuGui::print_profile(){
     username->setFont(font1);
     score_l->setFont(font1);
 
-    QPushButton* back = create_button(centralWidget, "images/buttons/back2", 270, 470, QRect(270, 470, 261, 61));
+    QPushButton* back = create_button(centralWidget, "images/buttons/back2", QRect(270, 470, 261, 61));
     connect(back, &QPushButton::clicked, this,&MenuGui::main_m);
 
     QFont font2;
@@ -277,16 +329,6 @@ void MenuGui::print_profile(){
     score_label->setFont(font2);
     score_label->setStyleSheet("QLabel { background-color : black; color : white; }");
 
-    /****** DESIGN SECTION ****************************/
-    QLabel *title_label = new QLabel(centralWidget);
-    title_label->setGeometry(QRect(110, 30, 600, 150));
-    QPixmap pix_home_title("images/titles/profile");
-    pix_home_title = pix_home_title.scaled(title_label->size(),Qt::KeepAspectRatio);
-    title_label->setPixmap( pix_home_title);
-    title_label->setAlignment(Qt::AlignCenter);
-    title_label->setAttribute(Qt::WA_TranslucentBackground);
-    /*********END DESIGN SECTION*****************************************/
-
     this->setCentralWidget(centralWidget);
     //this->update();
     this->show();
@@ -300,31 +342,25 @@ void MenuGui::print_leaderboard(){
 
     QWidget *centralWidget = new QWidget(this);
     set_background(centralWidget);
+    set_title(centralWidget, "images/titles/leaderboard");
 
-    QTableWidget* tableWidget = new QTableWidget(centralWidget);
-    tableWidget->setGeometry(QRect(300, 190, 201, 211));
-    tableWidget->setColumnCount(2);
-    tableWidget->setMaximumSize(QSize(300, 200));
-    tableWidget->setRowCount(profile_list.size());
-
-
-    QPushButton* back = create_button(centralWidget, "images/buttons/back2", 270, 470, QRect(270, 470, 261, 61));
-    connect(back, &QPushButton::clicked, this,&MenuGui::main_m);
-
-    QTableWidgetItem *__qtablewidgetitem = new QTableWidgetItem("Pseudo");
-    __qtablewidgetitem->setBackground(QColor(255, 255, 255));
-    tableWidget->setHorizontalHeaderItem(0, __qtablewidgetitem);
-
-     QTableWidgetItem *__qtablewidgetitem2 = new QTableWidgetItem("Score");
-    __qtablewidgetitem2->setBackground(QColor(255, 255, 255));
-    tableWidget->setHorizontalHeaderItem(1, __qtablewidgetitem2);
-
+    std::string titles[] = {"USERNAME", "SCORE"};
+    QTableWidget *tableWidget = create_table_widget(centralWidget, 2, profile_list.size(), titles, QRect(300, 190, 201, 211));
+    
+    tableWidget->horizontalHeader()->setMinimumSectionSize(92);
+    tableWidget->horizontalHeader()->setMaximumSectionSize(92);
+    tableWidget->horizontalHeader()->setDefaultSectionSize(92);
     tableWidget->verticalHeader()->setVisible(false);
     tableWidget->setShowGrid(false);
     tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
     tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
     tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
     tableWidget->setShowGrid(false);
+    tableWidget->setStyleSheet(QStringLiteral("background-color:white;"));
+
+    QPushButton* back = create_button(centralWidget, "images/buttons/back2", QRect(270, 470, 261, 61));
+    connect(back, &QPushButton::clicked, this,&MenuGui::main_m);
+
     for (size_t i = 0; i < profile_list.size(); i++){
         tableWidget->setItem(i, 0, new QTableWidgetItem(profile_list[i].pseudo));
         int score = profile_list[i].score;
@@ -333,57 +369,24 @@ void MenuGui::print_leaderboard(){
         tableWidget->setItem(i, 1, new QTableWidgetItem(buff));
     }
 
-    tableWidget->setStyleSheet(QStringLiteral("background-color:white;"));
-    /****** DESIGN SECTION ****************************/
-    //this->setStyleSheet("background-color:rgb(148, 62, 8);");
-    QLabel *title_label = new QLabel(centralWidget);
-    title_label->setGeometry(QRect(170, 30, 500, 100));
-    QPixmap pix_home_title("images/titles/leaderboard");
-    title_label->setPixmap( pix_home_title);
-    title_label->setAlignment(Qt::AlignCenter);
-    pix_home_title = pix_home_title.scaled(title_label->size(),Qt::KeepAspectRatio);
-    /*********END DESIGN SECTION*****************************************/
-
     this->setCentralWidget(centralWidget);
-    //this->update();
     this->show();
 }
 
 void MenuGui::level_menu(){
-    QWidget *centralwidget = new QWidget(this);
-    //exageration
-    QLabel *lbl = new QLabel(centralwidget);
-    QMovie *mv = new QMovie("images/background/ciel.gif");
-    mv->setScaledSize(QSize(800,600));
-    lbl->setGeometry(QRect(0, 0, 800, 600));
-    mv->start();
-    lbl->setAttribute(Qt::WA_TranslucentBackground);
-    lbl->setMovie(mv);
-
-
-    QLabel *title_label = new QLabel(centralwidget);
-    title_label->setGeometry(QRect(90, 20, 631, 71));
-    QPixmap pix_title("images/titles/levelEditor");
-    pix_title = pix_title.scaled(title_label->size(),Qt::KeepAspectRatio);
-    title_label->setPixmap( pix_title);
-    title_label->setAlignment(Qt::AlignCenter);
-    title_label->setAttribute(Qt::WA_TranslucentBackground);
-    QWidget *verticalLayoutWidget = new QWidget(centralwidget);
-    verticalLayoutWidget->setGeometry(QRect(300, 190, 241, 301));
-    QVBoxLayout *verticalLayout = new QVBoxLayout(verticalLayoutWidget);
-    verticalLayout->setContentsMargins(10, 0, 10, 0);
+QWidget *centralwidget = new QWidget(this);
+    set_background(centralwidget);
+    set_title(centralwidget,"images/titles/levelEditor");
 
     QPushButton * button[4]; 
     int create = 0, ranking=1, my_levels = 2, back=3;
-    std::string name[4] = {"Create level", "Level ranking", "My levels", "Back"};
+    std::string path = "images/buttons/editor/";
+    std::string pathIcon[] = { path+"create_level", path+"level_ranking", path+"my_levels", path+"back"};
+    QRect rects[] = {QRect(30, 260, 180, 150), QRect(300, 260, 180, 150), QRect(560, 260, 180, 150), QRect(310, 460, 150,150)};
+   
     for( int i = 0; i < 4; i++){
-        button[i] = new QPushButton(QString::fromStdString(name[i]),verticalLayoutWidget);
-        button[i]->setMinimumSize(QSize(150, 45));
-        button[i]->setMaximumSize(QSize(200, 45));
-        verticalLayout->addWidget( button[i]);
-
+        button[i] = create_button(centralwidget, pathIcon[i], rects[i]);
     }
-
     connect(button[create], &QPushButton::clicked, this, [this](){
         Parsing::Level my_level;
         level_editor(my_level);
@@ -396,279 +399,180 @@ void MenuGui::level_menu(){
     });
     connect(button[back], &QPushButton::clicked, this, &MenuGui::main_m);
 
-
-
     this->setCentralWidget(centralwidget);
     this->show();
-
 }
 
 void MenuGui::print_friends(){
+    //friends 
 	char buffer[Constante::CHAR_SIZE];
 	std::vector<Profile> friendlist;
 	_client.getFriendList(buffer);
 	Parsing::profile_list_from_str(buffer, &friendlist);
-
+    //requetes
     char buffer2[Constante::CHAR_SIZE];
 	std::vector<Profile> requestlist;
 	_client.getFriendRequest(buffer2);
 	Parsing::profile_list_from_str(buffer2, &requestlist);
+   
+    this->setFixedSize(923, 758);
 
-    QWidget *centralWidget = new QWidget(this);    
-    set_background(centralWidget);
+    QWidget *centralwidget = new QWidget(this);
+    centralwidget->setStyleSheet(QStringLiteral("background-color:black;"));
 
-    QGridLayout *gridLayout = new QGridLayout(centralWidget);
-    gridLayout->setContentsMargins(0, 0, 0, 0);
+    QLabel *lbl = new QLabel(centralwidget);
+    QMovie *mv = new QMovie("images/background/ciel.gif");
+    mv->setScaledSize(QSize(923, 758));
+    lbl->setGeometry(QRect(0, 0, 923, 758));
+    mv->start();
+    lbl->setAttribute(Qt::WA_TranslucentBackground);
+    lbl->setMovie(mv);
+
+    QLabel *title_label = new QLabel(centralwidget);
+    title_label->setGeometry(QRect(161, 0, 600, 150));
+    QPixmap pix_home_title(QString::fromStdString("images/titles/friends"));
+    pix_home_title = pix_home_title.scaled(title_label->size(),Qt::KeepAspectRatio);
+    title_label->setPixmap( pix_home_title);
+    title_label->setAlignment(Qt::AlignCenter);
+
+    QPushButton *ok_button_a = new QPushButton("OK",centralwidget); //add
+    ok_button_a->setGeometry(QRect(690, 580, 91, 41));
+    ok_button_a->setStyleSheet("color: black; background-color: white");
+
+    QLineEdit *pseudo_line = create_line(centralwidget,QRect(220, 580, 441, 41),false);
+    QLabel *user_label = create_label(centralwidget, "USERNAME",QRect(100, 580, 101, 41));
     
-    QPushButton *add_button = new QPushButton((QString::fromStdString("Add Friend")), centralWidget);
-    add_button->setMinimumSize(QSize(90, 25));
-    add_button->setMaximumSize(QSize(90, 25));
-    connect(add_button, &QPushButton::clicked, this, [this]() {
-           add_del_friend(true);});
-    gridLayout->addWidget(add_button, 0, 0, 1, 1);
+    pseudo_line->hide();
+    user_label->hide();
+    ok_button_a->hide();
+
+    QPushButton *back_button = create_button(centralwidget, "images/buttons/editor/back", QRect(380, 620, 180, 150));
+
+    std::string titles_friends[] = {"USERNAME", "SCORE", "DELETE"};
+    std::string titles_request[] = {"USERNAME", "SCORE", "ACCEPT", "DECLINE"};
+    QTableWidget *friends_table = create_table_widget(centralwidget,3,friendlist.size(), titles_friends,QRect(0, 170, 402, 371));
+    QTableWidget *request_table = create_table_widget(centralwidget,4,requestlist.size(), titles_request,QRect(530, 170, 392, 371));
     
-    QTableWidget *tableWidget = new QTableWidget(centralWidget);
-    tableWidget->setColumnCount(2);
-    tableWidget->setRowCount(friendlist.size());
-    tableWidget->setMinimumSize(QSize(250, 245));
-    tableWidget->setMaximumSize(QSize(250, 245));
-    QStringList m_TableHeader;
-    m_TableHeader <<"Pseudo"<<"Score";
-    tableWidget->setHorizontalHeaderLabels(m_TableHeader);
-    tableWidget->verticalHeader()->setVisible(false);
-    tableWidget->setShowGrid(false);
-    tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
-    tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
-    tableWidget->setShowGrid(false);
-    gridLayout->addWidget(tableWidget, 0, 1, 1, 1);
+    friends_table->horizontalHeader()->setMinimumSectionSize(133);
+    friends_table->horizontalHeader()->setMaximumSectionSize(133);
+    friends_table->horizontalHeader()->setDefaultSectionSize(133);
+
+    request_table->horizontalHeader()->setMinimumSectionSize(97);
+    request_table->horizontalHeader()->setMaximumSectionSize(97);
+    request_table->horizontalHeader()->setDefaultSectionSize(97);
+
+    QPushButton *add_button = new QPushButton("ADD",centralwidget);
+    add_button->setGeometry(QRect(410, 300, 111, 41));
+    add_button->setStyleSheet("color: black; background-color: white");
     
-    QListWidget *listWidget = new QListWidget(centralWidget);
-    QVBoxLayout *friend_verticalLayout = new QVBoxLayout(centralWidget);
-    QLabel *friends_label = new QLabel(centralWidget);
-    friends_label->setText(QString::fromUtf8("Friends"));
-    friends_label->setMinimumSize(QSize(250, 20));
-    friends_label->setMaximumSize(QSize(250, 20));
-    friends_label->setAutoFillBackground(true);
-    friends_label->setAlignment(Qt::AlignCenter);
-    listWidget->setMinimumSize(QSize(250, 245));
-    listWidget->setMaximumSize(QSize(250, 245));
-    friend_verticalLayout->addWidget(friends_label);
-    friend_verticalLayout->addWidget(listWidget);
-    gridLayout->addLayout(friend_verticalLayout, 0, 2, 1, 1);
-    
-    QPushButton *del_button = new QPushButton((QString::fromStdString("Del Friend")), centralWidget);
-    del_button->setMinimumSize(QSize(90, 25));
-    del_button->setMaximumSize(QSize(90, 25));
-    gridLayout->addWidget(del_button, 0, 3, 1, 1);
-    
-    QPushButton *back = new QPushButton((QString::fromStdString("Back")), centralWidget);
-    back->setGeometry(QRect(150, 440, 470, 40));
-    back->setMinimumSize(QSize(470, 40));
-    back->setMaximumSize(QSize(470, 40));
-    connect(back, &QPushButton::clicked, this, &MenuGui::main_m);
-    gridLayout->addWidget(back, 1, 1, 1, 2);
+    QLabel *friends_title =  create_label(centralwidget,"FRIENDS", QRect(30, 120, 321, 41));
+    friends_title->setFrameShape(QFrame::WinPanel);
+    friends_title->setAlignment(Qt::AlignCenter);
+    QLabel *request_label = create_label(centralwidget,"REQUESTS",QRect(560, 120, 321, 41) );
+    request_label->setFrameShape(QFrame::WinPanel);
+    request_label->setAlignment(Qt::AlignCenter);
 
     for (size_t i = 0; i < friendlist.size(); i++){
         QTableWidgetItem *item;
-        tableWidget->setItem(i, 0, new QTableWidgetItem(friendlist[i].pseudo));
-        item = tableWidget->item(i, 0);
+        friends_table->setItem(i, 0, new QTableWidgetItem(friendlist[i].pseudo)); //pseudo
+        item = friends_table->item(i, 0);
         item->setTextAlignment(Qt::AlignCenter);
+
         int score = friendlist[i].score;
-        char buff[20];
-        sprintf(buff, "%d", score);
-        tableWidget->setItem(i, 1, new QTableWidgetItem(buff));
-        item = tableWidget->item(i, 1);
+        friends_table->setItem(i, 1, new QTableWidgetItem(std::to_string(score).c_str())); //score
+        item = friends_table->item(i, 1);
+        item->setTextAlignment(Qt::AlignCenter);
+
+        friends_table->setItem(i, 2, new QTableWidgetItem("DEL")); //delete
+        item = friends_table->item(i, 2);
         item->setTextAlignment(Qt::AlignCenter);
     }
     for (size_t i = 0; i < requestlist.size(); i++){
-        listWidget->addItem(requestlist[i].pseudo);
-        QListWidgetItem *item;
-        item = listWidget->item(i);      
+        QTableWidgetItem *item;
+        request_table->setItem(i, 0, new QTableWidgetItem(requestlist[i].pseudo)); //pseudo
+        item = request_table->item(i, 0);
+        item->setTextAlignment(Qt::AlignCenter);
+
+        int score = requestlist[i].score;
+        request_table->setItem(i, 1, new QTableWidgetItem(std::to_string(score).c_str())); //score
+        item = request_table->item(i, 1);
+        item->setTextAlignment(Qt::AlignCenter);
+
+        request_table->setItem(i, 2, new QTableWidgetItem("ACCEPT")); //delete
+        item = request_table->item(i, 2);
+        item->setTextAlignment(Qt::AlignCenter);
+
+        request_table->setItem(i, 3, new QTableWidgetItem("DECLINE")); //delete
+        item = request_table->item(i, 3);
         item->setTextAlignment(Qt::AlignCenter);
     }
-    QFont font;
-    font.setPointSize(13);
-    listWidget->setFont(font);
-    connect(listWidget,&QAbstractItemView::doubleClicked,this,&MenuGui::request_list);
-
-    this->setCentralWidget(centralWidget);
+    //connections
+    connect(back_button,  &QPushButton::clicked, this, [this](){
+        this->setFixedSize(800, 600);
+        main_m();
+    });
+    connect(add_button,  &QPushButton::clicked, this,[this,pseudo_line, user_label,ok_button_a](){
+        pseudo_line->show();
+        user_label->show();
+        ok_button_a->show();
+    });
+    connect(ok_button_a, &QPushButton::clicked, this,[this,pseudo_line, user_label,ok_button_a,centralwidget](){
+        std::string pseudo = (pseudo_line->text()).toUtf8().constData();
+        int  error = verif_friend(pseudo);
+        if(error == NO_ERROR){
+            pseudo_line->hide();
+            user_label->hide();
+            ok_button_a->hide();
+            print_error(centralwidget, error, QRect(220, 620, 441, 41));
+        }
+        else{
+            print_error(centralwidget, error, QRect(220, 620, 441, 41));
+        }
+    });
+    connect(friends_table,&QAbstractItemView::clicked,this,[this,friendlist](const QModelIndex& idx){
+        if(idx.column()==2){ //del
+            int i = idx.row();
+            char* pseudo2 = const_cast<char*>(friendlist[i].pseudo);
+            _client.delFriend(pseudo2);
+            print_friends();
+        }
+    });
+    connect(request_table,&QAbstractItemView::clicked,this,[this,requestlist](const QModelIndex& idx){
+        if(idx.column()==2){ //accept
+            int i = idx.row();
+            char* pseudo2 = const_cast<char*>(requestlist[i].pseudo);
+           _client.addFriend(pseudo2);
+        }
+        else if(idx.column()==3){ //decline
+            int i = idx.row();
+            char* pseudo2 = const_cast<char*>(requestlist[i].pseudo);
+           _client.delFriendRequest(pseudo2);
+        }
+        print_friends();
+    });
+    this->setCentralWidget(centralwidget);
     this->show();
 }
 
-void MenuGui::request_list(const QModelIndex &index){
-    //this->setStyleSheet(QStringLiteral("background-color:grey;"));
-    QWidget *horizontalLayoutWidget;
-    QHBoxLayout *horizontalLayout;
-    QVBoxLayout *verticalLayout;
-    QLabel *pseudo;
-    QLabel *score;
-    QDialogButtonBox *action_button;
-    QDialog *Dialog;
-
-    char buffer2[Constante::CHAR_SIZE]; // Peut etre a modifier ...
-	std::vector<Profile> requestlist;
-	_client.getFriendRequest(buffer2);
-	Parsing::profile_list_from_str(buffer2, &requestlist);
-
-    Dialog = new QDialog;
-    Dialog->setModal(true);
-    Dialog->resize(400, 300);
-    horizontalLayoutWidget = new QWidget(Dialog);
-    horizontalLayoutWidget->setGeometry(QRect(38, 26, 351, 251));
-    horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
-    horizontalLayout->setContentsMargins(0, 0, 0, 0);
-    verticalLayout = new QVBoxLayout();
-
-    QFont font1;
-    font1.setPointSize(13);
-
-    char pseudo_char[25];
-    char pseudo_char2[25];
-    strcpy(pseudo_char2,requestlist.at(index.row()).pseudo); //to use later
-    sprintf(pseudo_char,"Pseudo : %s",requestlist.at(index.row()).pseudo);
-    pseudo = new QLabel(QString::fromStdString(pseudo_char),horizontalLayoutWidget);
-    pseudo->setFont(font1);
-    verticalLayout->addWidget(pseudo);
-
-
-    char score_char[25];
-    sprintf(score_char,"Score   : %d",requestlist.at(index.row()).score);
-    score = new QLabel(QString::fromStdString(score_char),horizontalLayoutWidget);
-    
-    score->setFont(font1);
-    verticalLayout->addWidget(score);
-
-
-    horizontalLayout->addLayout(verticalLayout);
-
-    action_button = new QDialogButtonBox(horizontalLayoutWidget);
-    QFont font;
-    font.setPointSize(12);
-    action_button->setFont(font);
-    action_button->setOrientation(Qt::Vertical);
-    action_button->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::No|QDialogButtonBox::Yes);
-
-    action_button->setCenterButtons(true);
-
-    //connect(action_button, SIGNAL(rejected()), Dialog, SLOT(reject()));
-    connect(action_button, SIGNAL(rejected()), Dialog, SLOT(reject()));
-    connect(action_button, &QDialogButtonBox::accepted,this, [this,pseudo_char2,action_button]{
-        char* pseudo2 = const_cast<char*>(pseudo_char2);
-        _client.addFriend(pseudo2); 
-        action_button->rejected();
-        print_friends();
-    });
-
-    QPushButton *okButton =  action_button->button(QDialogButtonBox::No);
-    connect(okButton, &QPushButton::clicked, this, [this,pseudo_char2, action_button]{
-        char* pseudo2 = const_cast<char*>(pseudo_char2);
-        _client.delFriendRequest(pseudo2); 
-        action_button->rejected();
-        print_friends();
-    });
-
-    horizontalLayout->addWidget(action_button);
-    Dialog->show();
-}
-
-
-void MenuGui::add_del_friend(bool adding){
-    this->setStyleSheet(QStringLiteral("background-color:grey;"));
-    QDialog *Dialog = new QDialog(this);
-    QWidget *verticalLayoutWidget;
-    QVBoxLayout *verticalLayout;
-    QLabel *label;
-    QDialogButtonBox *buttonBox;
-
-    Dialog->resize(400, 300);
-    Dialog->setModal(true);
-    verticalLayoutWidget = new QWidget(Dialog);
-    verticalLayoutWidget->setGeometry(QRect(20, 20, 361, 261));
-    verticalLayout = new QVBoxLayout(verticalLayoutWidget);
-    verticalLayout->setContentsMargins(0, 0, 0, 0);
-    if(adding)
-        label = new QLabel(QString::fromStdString("ADD YOUR FRIEND"),verticalLayoutWidget);
-    else
-        label = new QLabel(QString::fromStdString("DEL A FRIEND"),verticalLayoutWidget);
-
-    QFont font;
-    font.setPointSize(17);
-    font.setBold(true);
-    font.setItalic(false);
-    font.setUnderline(false);
-    font.setWeight(75);
-    label->setFont(font);
-    label->setAlignment(Qt::AlignCenter);
-    verticalLayout->addWidget(label);
-
-    pseudo_line = new QLineEdit(verticalLayoutWidget);
-
-    verticalLayout->addWidget(pseudo_line);
-
-    error = new QLabel(QString::fromStdString(""),verticalLayoutWidget);
-    QFont font1;
-    font1.setPointSize(11);
-    font1.setBold(true);
-    font1.setWeight(75);
-    error->setFont(font1);
-    error->setStyleSheet(QString::fromUtf8("color: rgb(239, 41, 41);"));
-    error->setAlignment(Qt::AlignCenter);
-
-    verticalLayout->addWidget(error);
-
-    buttonBox = new QDialogButtonBox(verticalLayoutWidget);
-    buttonBox->setOrientation(Qt::Horizontal);
-    buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
-
-
-    connect(buttonBox, SIGNAL(rejected()), Dialog, SLOT(reject()));
-    if(adding)
-        connect(buttonBox, &QDialogButtonBox::accepted,this, [this,Dialog]{
-            verif_friend(Dialog);});
-    else
-        connect(buttonBox, &QDialogButtonBox::accepted,this, [this,Dialog]{
-            verif_friend(Dialog,false);});
-
-    verticalLayout->addWidget(buttonBox);
-    Dialog->show();
-
-}
-
-
-void MenuGui::verif_friend(QDialog* dialog, bool adding){
+int MenuGui::verif_friend(std::string pseudo){
     //Aissa: all error are already in screen ==> c'est pas écrit pour decorer :-)
-    const char* pseudo = (pseudo_line->text()).toUtf8().constData(); 
-    char* pseudo2 = const_cast<char*>(pseudo);
+    char* pseudo2 = const_cast<char*>(pseudo.c_str());
+    int error = NO_ERROR;
+    int success = 0; 
+    if(pseudo.size() < NB_MIN_CARA)
+        return LEN_PSEUDO;
 
-	int success; 
-    if(adding){
-        success = _client.sendFriendRequest(pseudo2);
-        if(success==1)
-        error->setText(QString::fromStdString(ALREADY_REQUESTED));
-        else if (success==2)
-            error->setText(QString::fromStdString(ALREADY_FRIENDS));
-        else if(success==3)
-            error->setText(QString::fromStdString(NO_USER_MSG));
-        else if(success==4)
-            error->setText(QString::fromStdString(YOURSEL_MSG));
-        else
-            dialog->hide();
-    }
-    else
-        success = _client.delFriend(pseudo2);
-        if(success==1)
-        error->setText(QString::fromStdString(NOT_FRIENDS));
-        else if (success==2)
-            error->setText(QString::fromStdString(NO_USER_MSG));
-        else if(success==3)
-            error->setText(QString::fromStdString(YOURSEL_MSG));
-        else{
-            dialog->hide();
-            print_friends();
-        }
+    success = _client.sendFriendRequest(pseudo2);
+    if(success==1)
+        error = REQ_ALREADY;
+    else if (success==2)
+        error = FRIENDS_ALREADY;
+    else if(success==3)
+        error = NO_USER_ERROR;
+    else if(success==4)
+        error = YOURSELF_ERROR;
 
-
+    return error;
 }
 
 
@@ -677,10 +581,6 @@ void MenuGui::lobby(std::string my_level, bool from_lead){
     set_background(centralwidget);
     set_title(centralwidget, "images/titles/lobby");
 
-    QLineEdit *pseudo_lineEdit;
-    QLineEdit *password_lineEdit;
-    QLabel *pseudo_label;
-    QLabel *password_label;
     QLabel *players_label;
     QComboBox *players_combo;
     QLabel *ally_label;
@@ -697,57 +597,65 @@ void MenuGui::lobby(std::string my_level, bool from_lead){
     std::vector<std::string> ally_str{"YES", "NO"};
     std::vector<std::string> difficulty_str{"EASY", "NORMAL", "HARD"};
 
-    pseudo_lineEdit = create_line(centralwidget,QRect(160, 270, 341, 41),false);
-    password_lineEdit = create_line(centralwidget,QRect(160, 360, 341, 41),true);
+    QLabel *label[7];
 
-    pseudo_label = create_label(centralwidget, "Username ", QRect(40, 290, 71, 17));
-    password_label = create_label(centralwidget, "Password ", QRect(40, 370, 67, 17));
+    std::string legende[7] = {"Username", "Password","players", "Ally shot", "Difficulty","Lives","Droprate"};
+    int user=0, pass=1, player=2, ally=3, diff=4, live=5, drop=6;
 
-    players_label = create_label(centralwidget, "Nb of players ", QRect(40, 200, 91, 17));
+    int posx[7]= {40, 40,40, 310,550,550,550};
+    int posy[7]={290,370,200,200,200,290,380};
+    int width = 91 , height = 17;
+
+    for (int i = 0; i < 7; ++i){
+        label[i] = create_label(centralwidget,legende[i], QRect(posx[i], posy[i], width, height));
+    }
+
+    QLineEdit *pseudo_lineEdit = create_line(centralwidget,QRect(160, 270, 341, 41),false);
+
+    QLineEdit *password_lineEdit = create_line(centralwidget,QRect(160, 360, 341, 41),true);
+    //password_lineEdit->setStyleSheet("color: black; background-color: white");
     players_combo = create_box(centralwidget, players_str, QRect(160, 200, 111, 21));
     players_combo->setStyleSheet("color: black; background-color: white");
 
-    ally_label = create_label(centralwidget, "Ally shot ", QRect(310, 200, 67, 17));
     ally_combo = create_box(centralwidget, ally_str, QRect(390, 200, 111, 21));
     ally_combo->setStyleSheet("color: black; background-color: white");
     
-    difficulty_label = create_label(centralwidget, "Difficulty ", QRect(550, 200, 67, 17));
     difficulty_combo = create_box(centralwidget, difficulty_str, QRect(660, 200, 111, 21));
     difficulty_combo->setStyleSheet("color: black; background-color: white");
     
-    lives_label = create_label(centralwidget, "Lives ", QRect(550, 290, 41, 17));
     lives_spin = new QSpinBox(centralwidget);
     lives_spin->setGeometry(QRect(660, 280, 111, 26));
     lives_spin->setMaximum(3); 
     lives_spin->setMinimum(1);
     lives_spin->setStyleSheet("color: black; background-color: white");
     
-    droprate_label = create_label(centralwidget, "Droprate ", QRect(550, 380, 71, 17));
     droprate_spin = new QSpinBox(centralwidget);
     droprate_spin->setGeometry(QRect(660, 370, 111, 26));
     droprate_spin->setMaximum(100); 
     droprate_spin->setSuffix(" %"); //fait pas att à la surbrillance : juste une fail
     droprate_spin->setStyleSheet("color: black; background-color: white");
 
-    play_button = create_button(centralwidget, "images/buttons/play", 140, 470, QRect(140, 470, 201, 51));
-    cancel_button = create_button(centralwidget, "images/buttons/back2", 480, 470, QRect(480, 470, 201, 51));
+    play_button = create_button(centralwidget, "images/buttons/play", QRect(140, 470, 201, 51));
+    cancel_button = create_button(centralwidget, "images/buttons/back2", QRect(480, 470, 201, 51));
+
     pseudo_lineEdit->hide();
     password_lineEdit->hide();
-    password_label->hide();
-    pseudo_label->hide();
+    label[pass]->hide();
+    label[user]->hide();
 
-    connect(players_combo, QOverload<int>::of(&QComboBox::currentIndexChanged),[this,pseudo_lineEdit,password_lineEdit,password_label, pseudo_label](int idx){
+    connect(players_combo, QOverload<int>::of(&QComboBox::currentIndexChanged),[this,pseudo_lineEdit,password_lineEdit,pass,user,label,centralwidget](int idx){
          if(idx==1){
             pseudo_lineEdit->show();
             password_lineEdit->show();
-            pseudo_label->show();
-            password_label->show();
+            label[user]->show();
+            label[pass]->show();
         }
         else{
             pseudo_lineEdit->hide();
             password_lineEdit->hide();
-            password_label->hide();
-            pseudo_label->hide();
+            label[pass]->hide();
+            label[user]->hide();
+            print_error(centralwidget,NO_ERROR, QRect(160, 400, 341, 41));
         }
     });
     //connections
@@ -759,7 +667,7 @@ void MenuGui::lobby(std::string my_level, bool from_lead){
         else
             view_level(from_lead);
     });
-    connect(play_button, &QPushButton::clicked, this,[this, players_combo, lives_spin, ally_combo, droprate_spin, difficulty_combo, my_level,from_lead,pseudo_lineEdit,password_lineEdit](){
+    connect(play_button, &QPushButton::clicked, this,[this, players_combo, lives_spin, ally_combo, droprate_spin, difficulty_combo, my_level,from_lead,pseudo_lineEdit,password_lineEdit,centralwidget](){
         Parsing::Game_settings setting; 
         _client.get_pseudo(setting.pseudo_hote);
         
@@ -769,20 +677,44 @@ void MenuGui::lobby(std::string my_level, bool from_lead){
         setting.diff = !strcmp(setting.difficulty_str,"easy")? easy: !strcmp(setting.difficulty_str,"medium")? medium :hard;
         setting.drop_rate =  droprate_spin->value();
         setting.nb_lives = lives_spin->value();
-        setting.ally_shot = ((ally_combo->currentText()).toStdString()).compare("Yes") == 0;
+        setting.ally_shot = ally_combo->currentIndex() == 0? 1:0;
         setting.nb_player = (players_combo->currentText()).toInt();
 
         char game_sett_char[Constante::CHAR_SIZE];
         if(setting.nb_player==2){
             std::string pseudo = (password_lineEdit->text()).toUtf8().constData();
             std::string pswd = (pseudo_lineEdit->text()).toUtf8().constData();
+                if(pswd.size() < NB_MIN_CARA and pseudo.size() < NB_MIN_CARA){
+                    print_error(centralwidget,LEN_ERROR, QRect(160, 400, 341, 41));
+                    return;
+                }
+                if(pseudo.size() < NB_MIN_CARA){
+                    print_error(centralwidget,LEN_PSEUDO, QRect(160, 400, 341, 41));
+                    return ;
+                }
+                if(pswd.size() < NB_MIN_CARA){
+                    print_error(centralwidget,LEN_PSWD, QRect(160, 400, 341, 41));
+                    return ;
+                }
+            
             bool success =0;
     
-            if(pseudo.compare(std::string(setting.pseudo_hote)) != 0)
-                success = _client.signIn(pseudo.c_str(), pswd.c_str(), false);
-
-            if(not success)
+            if(pseudo.compare(std::string(setting.pseudo_hote)) == 0){
+                print_error(centralwidget,YOURSELF_ERROR, QRect(160, 400, 341, 41));
                 return;
+            }
+            else{
+                success = _client.signIn(pseudo.c_str(), pswd.c_str(), false);
+                if(not success){
+                    print_error(centralwidget,NO_USER_ERROR, QRect(160, 400, 341, 41));
+                    return;
+                }
+                else{
+                    strcpy(setting.pseudo_other,pseudo.c_str());
+
+                }
+            }
+                
         }
 
         Parsing::create_game_to_str(game_sett_char,&setting);
@@ -790,16 +722,15 @@ void MenuGui::lobby(std::string my_level, bool from_lead){
             _client.createGame(game_sett_char);
         else
             _client.playLevel(my_level,game_sett_char);
-
-        std::cout << "level a jouer = "<<my_level<<std::endl;
-        std::cout << "settings lobby  = "<<game_sett_char<<std::endl;
+        this->hide();
         launch_game();
+        this->show();
+        std::cout << "i'm back bg"<<std::endl;
        
     });
     
     this->setCentralWidget(centralwidget);
     this->show();
-
 }
 
 
@@ -807,7 +738,6 @@ void MenuGui::level_editor(Parsing::Level my_level){
 
     this->setStyleSheet(QStringLiteral("background-color:white;"));
     this->setFixedSize(1500,800);
-
 
     QWidget *centralwidget = new QWidget(this);
 
@@ -870,10 +800,10 @@ void MenuGui::level_editor(Parsing::Level my_level){
     tick_slider->setPageStep(1);
     tick_slider->setOrientation(Qt::Horizontal);
     tick_slider->setTickPosition(QSlider::TicksBothSides);
-    tick_slider->setTickInterval(150);
-    tick_slider->setMaximum(3000);
-    tick_slider->setSingleStep(150);
-    tick_slider->setPageStep(300);
+    tick_slider->setTickInterval(10);
+    tick_slider->setMaximum(200);
+    tick_slider->setSingleStep(1);
+    tick_slider->setPageStep(1);
     tick_slider->setStyleSheet("color: black; background-color: white");
     tick_slider->setAttribute(Qt::WA_TranslucentBackground);
     QLCDNumber *tick_lcd = new QLCDNumber(horizontalLayoutWidget);
@@ -890,9 +820,12 @@ void MenuGui::level_editor(Parsing::Level my_level){
     //placer sur la frame:
     for(int i = 0; i < my_level.enemy_list.size(); i++){
         ClickableLabel * e = new ClickableLabel(i,0,game_zone);
-        QPixmap pix("images/custom/e1");
-        pix = pix.scaled(QSize(button_size,button_size));
-        e->setPixmap(pix);
+        QPixmap pix1("images/custom/e1.png");
+        pix1 = pix1.scaled(QSize(button_size,button_size));
+        QPixmap pix2("images/custom/e2.png");
+        pix2 = pix2.scaled(QSize(button_size,button_size));
+        my_level.enemy_list[i].skin == 0 ? e->setPixmap(pix1): e->setPixmap(pix2);
+        
         e->setGeometry(QRect(X_MIN + my_level.enemy_list[i].x , my_level.enemy_list[i].y, button_size, button_size));
         game_zone->add_enemy(e);
         if(my_level.enemy_list[i].tick != tick_lcd->intValue())
@@ -926,7 +859,6 @@ void MenuGui::level_editor(Parsing::Level my_level){
         });
 
         connect(e, &ClickableLabel::changedPos, this,[this, my_level,i, game_zone](){
-            std::cout << "je fonctionne avant "<<std::endl;
             auto lev = my_level;
             lev.obs_list[i].x = (game_zone->get_obs(i))->posx();
             lev.obs_list[i].y = (game_zone->get_obs(i))->posy();
@@ -1053,7 +985,7 @@ void MenuGui::custom_enemy(Parsing::Level my_level, int idx){
     formLayoutWidget->setGeometry(QRect(590, 160, 258, 275));
      QFormLayout *formLayout = new QFormLayout(formLayoutWidget);
     int position = 0, hp=1, tick=2, damage=3; 
-    std::string legende[] = {"POSITION :","HP :","TICK :","DAMAGE :"};
+    std::string legende[] = {"POSITION :","HP :","TIME :","DAMAGE :"};
     QLabel *label[4];
     int spin_value[4]; my_level.enemy_list[idx].get_values(spin_value);
     QSpinBox * spin_box[4];
@@ -1075,9 +1007,9 @@ void MenuGui::custom_enemy(Parsing::Level my_level, int idx){
     spin_box[position]->setMaximum(X_MAX);
     spin_box[position]->setValue(spin_value[position]);
     spin_box[tick]->setMaximum(3000);
-    spin_box[tick]->setSingleStep(150);
+    spin_box[tick]->setSingleStep(1);
     spin_box[tick]->setValue(spin_value[tick]);
-    spin_box[tick]->findChild<QLineEdit*>()->setReadOnly(true);
+    //spin_box[tick]->findChild<QLineEdit*>()->setReadOnly(true);
 
     /*************BUTTON_ZONE********************/
     QWidget *horizontalLayoutWidget = new QWidget(Dialog);
@@ -1104,17 +1036,22 @@ void MenuGui::custom_enemy(Parsing::Level my_level, int idx){
     QLabel * skin_label = new QLabel("SKIN", widget);
     verticalLayout->addWidget(skin_label);
 
-    std::string skin_name[] = {"skin1","skin2", "skin3"};
-    QRadioButton * skin[3];
-
-    for (int i = 0; i < 3; ++i){
-        skin[i] = new QRadioButton(skin_name[i].c_str(), widget);
-        skin[i]->setMinimumSize(QSize(100, 45));
-        skin[i]->setMaximumSize(QSize(100, 45));
+    QRadioButton * skin[2];
+    for (int i = 0; i < 2; ++i){
+        skin[i] = new QRadioButton( widget);
+        skin[i]->setMinimumSize(QSize(100, 100));
+        skin[i]->setMaximumSize(QSize(100, 100));
         if(i == my_level.enemy_list[idx].skin)
              skin[i]->setChecked(true);
         verticalLayout->addWidget(skin[i]);
     }
+    QIcon icon;
+    icon.addFile(QString::fromUtf8("enemy.png"), QSize(), QIcon::Normal, QIcon::On);
+    skin[0]->setIcon(icon);
+    skin[0]->setIconSize(QSize(100, 100));
+    icon.addFile(QString::fromUtf8("enemy2.png"), QSize(), QIcon::Normal, QIcon::On);
+    skin[1]->setIcon(icon);
+    skin[1]->setIconSize(QSize(100, 100));
 
 
     /*************BONUS_ZONE********************/
@@ -1159,7 +1096,7 @@ void MenuGui::custom_enemy(Parsing::Level my_level, int idx){
                 copy_level.enemy_list[idx].bonus = i;
         }
 
-        for (int i = 0; i < 3; ++i){
+        for (int i = 0; i < 2; ++i){
             if(skin[i]->isChecked())
                 copy_level.enemy_list[idx].skin = i;
         }
@@ -1180,20 +1117,20 @@ void MenuGui::custom_enemy(Parsing::Level my_level, int idx){
 void MenuGui::custom_obstacle(Parsing::Level my_level, int idx){
 	this->setStyleSheet(QStringLiteral("background-color:white;"));
     QDialog * Dialog = new QDialog(this);
-    Dialog->resize(859, 665);
+    Dialog->resize(548, 480);
     Dialog->setModal(true);
 
     QLabel * title_label = new QLabel("CUSTOM OBSTACLE", Dialog);
-    title_label->setGeometry(QRect(70, 20, 701, 71));
+    title_label->setGeometry(QRect(160, 20, 181, 51));
     title_label->setFrameShape(QFrame::WinPanel);
     title_label->setAlignment(Qt::AlignCenter);
 
     /*************SPIN AND THEIR LEGENDE ZONE********************/
     QWidget *formLayoutWidget = new QWidget(Dialog);
-    formLayoutWidget->setGeometry(QRect(590, 160, 258, 275));
+    formLayoutWidget->setGeometry(QRect(150, 99, 251, 251));
      QFormLayout *formLayout = new QFormLayout(formLayoutWidget);
     int position = 0, hp=1, tick=2, damage=3; 
-    std::string legende[] = {"POSITION :","HP :","TICK :","DAMAGE :"};
+    std::string legende[] = {"POSITION :","HP :","TIME :","DAMAGE :"};
     QLabel *label[4];
     int spin_value[4]; my_level.obs_list[idx].get_values(spin_value);
     QSpinBox * spin_box[4];
@@ -1215,13 +1152,12 @@ void MenuGui::custom_obstacle(Parsing::Level my_level, int idx){
     spin_box[position]->setMaximum(X_MAX);
     spin_box[position]->setValue(spin_value[position]);
     spin_box[tick]->setMaximum(3000);
-    spin_box[tick]->setSingleStep(150);
+    spin_box[tick]->setSingleStep(1);
     spin_box[tick]->setValue(spin_value[tick]);
-    spin_box[tick]->findChild<QLineEdit*>()->setReadOnly(true);
 
     /*************BUTTON_ZONE********************/
     QWidget *horizontalLayoutWidget = new QWidget(Dialog);
-    horizontalLayoutWidget->setGeometry(QRect(40, 540, 771, 80));
+    horizontalLayoutWidget->setGeometry(QRect(100, 360, 371, 50));
     QHBoxLayout* horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
     horizontalLayout->setContentsMargins(0, 0, 0, 0);
 
@@ -1235,46 +1171,13 @@ void MenuGui::custom_obstacle(Parsing::Level my_level, int idx){
         horizontalLayout->addWidget( button[i]);
     }
 
-    /*************SKIN_ZONE********************/
-    QWidget * widget = new QWidget(Dialog);
-    widget->setGeometry(QRect(60, 150, 181, 281));
-    QVBoxLayout *verticalLayout = new QVBoxLayout(widget);
-    verticalLayout->setContentsMargins(0, 0, 0, 0);
-
-    QLabel * skin_label = new QLabel("SKIN", widget);
-    verticalLayout->addWidget(skin_label);
-
-    std::string skin_name[] = {"skin1","skin2", "skin3"};
-    QRadioButton * skin[3];
-
-    for (int i = 0; i < 3; ++i){
-        skin[i] = new QRadioButton(skin_name[i].c_str(), widget);
-        skin[i]->setMinimumSize(QSize(100, 45));
-        skin[i]->setMaximumSize(QSize(100, 45));
-        if(i == my_level.obs_list[idx].skin)
-             skin[i]->setChecked(true);
-        verticalLayout->addWidget(skin[i]);
-    }
-
-    /*************SKIN LABEL********************/
-    skin_label->setMinimumSize(QSize(100, 45));
-    skin_label->setMaximumSize(QSize(100, 45));
-    skin_label->setAlignment(Qt::AlignCenter);
-    skin_label->setFrameShape(QFrame::WinPanel);
-    skin_label->setLineWidth(3);
-
     /***************CONNECTION********************/
-    connect(button[ok], &QPushButton::clicked, this, [this, my_level,Dialog, spin_box, idx,skin](){
+    connect(button[ok], &QPushButton::clicked, this, [this, my_level,Dialog, spin_box, idx](){
         Parsing::Level copy_level = my_level;
         copy_level.obs_list[idx].x = spin_box[0]->value();
         copy_level.obs_list[idx].hp = spin_box[1]->value();
         copy_level.obs_list[idx].tick = spin_box[2]->value();
         copy_level.obs_list[idx].damage = spin_box[3]->value();
-
-        for (int i = 0; i < 3; ++i){
-            if(skin[i]->isChecked())
-                copy_level.obs_list[idx].skin = i;
-        }
 
         Dialog->hide();
         level_editor(copy_level);
@@ -1288,7 +1191,6 @@ void MenuGui::custom_obstacle(Parsing::Level my_level, int idx){
 
     Dialog->show();
 }
-
 
 void MenuGui::custom_player(Parsing::Level my_level){
 	this->setStyleSheet(QStringLiteral("background-color:white;"));
@@ -1342,6 +1244,23 @@ void MenuGui::custom_player(Parsing::Level my_level){
         speed_box->addItem(QString::fromStdString(val));
     }
     speed_box->setCurrentIndex(my_level.player.speed);
+    //boss actif ?
+    QComboBox *boss_box = new QComboBox(formLayoutWidget);
+    boss_box->setMinimumSize(QSize(100, 45));
+    boss_box->setMaximumSize(QSize(100, 45));
+    formLayout->setWidget(4, QFormLayout::FieldRole, boss_box);
+    boss_box->clear();
+    QLabel *boss_label = new QLabel("BOSS :");
+    formLayout->setWidget(4, QFormLayout::LabelRole, boss_label );
+    boss_label->setMinimumSize(QSize(100, 45));
+    boss_label->setMaximumSize(QSize(100, 45));
+    boss_label->setAlignment(Qt::AlignCenter);
+    std::string box_value2[] = {"Disable","Enable"};
+    for(auto val :box_value2){
+        boss_box->addItem(QString::fromStdString(val));
+    }
+    boss_box->setCurrentIndex(my_level.player.boss);
+
     /*************BUTTON_ZONE********************/
     QWidget *horizontalLayoutWidget = new QWidget(Dialog);
     horizontalLayoutWidget->setGeometry(QRect(40, 540, 771, 80));
@@ -1359,71 +1278,87 @@ void MenuGui::custom_player(Parsing::Level my_level){
     }
 
     /*************PLAYER1_ZONE********************/
-    QWidget * widget = new QWidget(Dialog);
-    widget->setGeometry(QRect(60, 150, 181, 281));
-    QVBoxLayout *verticalLayout = new QVBoxLayout(widget);
+    // QWidget * widget = new QWidget(Dialog);
+    // widget->setGeometry(QRect(60, 150, 181, 281));
+    // QVBoxLayout *verticalLayout = new QVBoxLayout(widget);
 
-    QLabel * player1_label = new QLabel("PLAYER 1", widget);
-    verticalLayout->addWidget(player1_label);
+    // QLabel * player1_label = new QLabel("PLAYER 1", widget);
+    // verticalLayout->addWidget(player1_label);
 
-    std::string skin_name[] = {"skin1","skin2", "skin3"};
-    QRadioButton * skin_player1[3];
+    // QRadioButton * skin_player1[3];
 
-    for (int i = 0; i < 3; ++i){
-        skin_player1[i] = new QRadioButton(skin_name[i].c_str(), widget);
-        skin_player1[i]->setMinimumSize(QSize(100, 45));
-        skin_player1[i]->setMaximumSize(QSize(100, 45));
-        if(i == my_level.player.skin)
-             skin_player1[i]->setChecked(true);
-        verticalLayout->addWidget(skin_player1[i]);
-    }
+    // for (int i = 0; i < 3; ++i){
+    //     skin_player1[i] = new QRadioButton(widget);
+    //     skin_player1[i]->setMinimumSize(QSize(100, 100));
+    //     skin_player1[i]->setMaximumSize(QSize(100, 100));
+    //     if(i == my_level.player.skin)
+    //          skin_player1[i]->setChecked(true);
+    //     verticalLayout->addWidget(skin_player1[i]);
+    // }
+    
 
+    // /*************PLAYER2_ZONE********************/
+    // QWidget *widget1 = new QWidget(Dialog);
+    // widget1->setGeometry(QRect(330, 140, 191, 291));
+    // QVBoxLayout *verticalLayout_2 = new QVBoxLayout(widget1);
+    // verticalLayout_2->setContentsMargins(0, 0, 0, 0);
 
-    /*************PLAYER2_ZONE********************/
-    QWidget *widget1 = new QWidget(Dialog);
-    widget1->setGeometry(QRect(330, 140, 191, 291));
-    QVBoxLayout *verticalLayout_2 = new QVBoxLayout(widget1);
-    verticalLayout_2->setContentsMargins(0, 0, 0, 0);
+    // QLabel * player2_label = new QLabel("PLAYER 2", widget);
+    // verticalLayout_2->addWidget(player2_label);
 
-    QLabel * player2_label = new QLabel("PLAYER 2", widget);
-    verticalLayout_2->addWidget(player2_label);
+    // QRadioButton * skin_player2[3];
 
-    QRadioButton * skin_player2[3];
-
-    for (int i = 0; i < 3; ++i){
-        skin_player2[i] = new QRadioButton(skin_name[i].c_str(), widget1);
-        skin_player2[i]->setMinimumSize(QSize(100, 45));
-        skin_player2[i]->setMaximumSize(QSize(100, 45));
-        if(i == my_level.player.skin2)
-             skin_player2[i]->setChecked(true);
-        verticalLayout_2->addWidget(skin_player2[i]);
-    }
+    // for (int i = 0; i < 3; ++i){
+    //     skin_player2[i] = new QRadioButton(widget1);
+    //     skin_player2[i]->setMinimumSize(QSize(100, 100));
+    //     skin_player2[i]->setMaximumSize(QSize(100, 100));
+    //     if(i == my_level.player.skin2)
+    //          skin_player2[i]->setChecked(true);
+    //     verticalLayout_2->addWidget(skin_player2[i]);
+    // }
+    // QIcon icon;
+    // icon.addFile(QString::fromUtf8("player1.png"), QSize(), QIcon::Normal, QIcon::On);
+    // skin_player1[0]->setIcon(icon);
+    // skin_player1[0]->setIconSize(QSize(100, 100));
+    // skin_player2[0]->setIcon(icon);
+    // skin_player2[0]->setIconSize(QSize(100, 100));
+    // icon.addFile(QString::fromUtf8("player2.png"), QSize(), QIcon::Normal, QIcon::On);
+    // skin_player1[1]->setIcon(icon);
+    // skin_player1[1]->setIconSize(QSize(100, 100));
+    // skin_player2[1]->setIcon(icon);
+    // skin_player2[1]->setIconSize(QSize(100, 100));
+    // icon.addFile(QString::fromUtf8("player3.png"), QSize(), QIcon::Normal, QIcon::On);
+    // skin_player1[2]->setIcon(icon);
+    // skin_player1[2]->setIconSize(QSize(100, 100));
+    // skin_player2[2]->setIcon(icon);
+    // skin_player2[2]->setIconSize(QSize(100, 100));
 
     /*************SAME SIZE LABEL********************/
-    QLabel * label_legend[] ={player1_label,player2_label};
-    for(auto lbl : label_legend){
-        lbl->setMinimumSize(QSize(100, 45));
-        lbl->setMaximumSize(QSize(100, 45));
-        lbl->setAlignment(Qt::AlignCenter);
-        lbl->setFrameShape(QFrame::WinPanel);
-        lbl->setLineWidth(3);
-    }
+    // QLabel * label_legend[] ={player1_label,player2_label};
+    // for(auto lbl : label_legend){
+    //     lbl->setMinimumSize(QSize(100, 45));
+    //     lbl->setMaximumSize(QSize(100, 45));
+    //     lbl->setAlignment(Qt::AlignCenter);
+    //     lbl->setFrameShape(QFrame::WinPanel);
+    //     lbl->setLineWidth(3);
+    // }
 
     /***************CONNECTION********************/
-    connect(button[ok], &QPushButton::clicked, this, [this, my_level,Dialog, spin_box, skin_player1, skin_player2, speed_box](){
+    connect(button[ok], &QPushButton::clicked, this, [this, my_level,Dialog, spin_box/*, skin_player1, skin_player2,*/, speed_box,boss_box](){
         Parsing::Level copy_level = my_level;
         copy_level.player.speed = speed_box->currentIndex();
         copy_level.player.hp = spin_box[0]->value();
         copy_level.player.damage = spin_box[1]->value();
-        for (int i = 0; i < 3; ++i){
-            if(skin_player1[i]->isChecked())
-                copy_level.player.skin = i;
-        }
+        copy_level.player.boss = boss_box->currentIndex();
+        // for (int i = 0; i < 3; ++i){
+        //     if(skin_player1[i]->isChecked())
+        //         copy_level.player.skin = i;
+        // }
 
-        for (int i = 0; i < 3; ++i){
-            if(skin_player2[i]->isChecked())
-                copy_level.player.skin2 = i;
-        }
+        // for (int i = 0; i < 3; ++i){
+        //     if(skin_player2[i]->isChecked())
+        //         copy_level.player.skin2 = i;
+        // }
 
         Dialog->hide();
         level_editor(copy_level);
@@ -1533,25 +1468,8 @@ void MenuGui::view_level(bool mine){
             item->setIcon(icon);
             item->setTextAlignment(Qt::AlignCenter);
             item->setSizeHint(QSize(100, 100));
-            //connect(tableWidget->item(i, 3), &QTableWidget::itemClicked, this, &Menu::main_m);
-            /*connect(tableWidget->item(i, 3), &QTableWidget::itemSelectionChanged,this, [this, creator_list, i](){
-                _client.voteLevel(creator_list[i].name, std::string(creator_list[i].pseudo));
-
-            });*/
         }
     }
-
-    /****** DESIGN SECTION ****************************/
-    /*this->setStyleSheet("background-color:rgb(8, 82, 40);");
-
-    QLabel *title_label = new QLabel(centralWidget);
-    title_label->setGeometry(QRect(110, 30, 600, 150));
-    QPixmap pix_home_title("images/titles/friends");
-    title_label->setPixmap( pix_home_title);
-    title_label->setAlignment(Qt::AlignCenter);
-    pix_home_title = pix_home_title.scaled(title_label->size(),Qt::KeepAspectRatio);*/
-    /*********END DESIGN SECTION*****************************************/
-
 
     this->setCentralWidget(centralWidget);
     this->show();
@@ -1561,7 +1479,6 @@ void MenuGui::view_level(bool mine){
 void MenuGui::launch_game(){
 	DisplayGameGui display_game;
 	display_game.initGraphics();
-    std::cout << "on est la bg"<< std::endl;
 	sf::RenderWindow* window = display_game.getWindow();
 
     bool gameOn = true;
@@ -1571,11 +1488,13 @@ void MenuGui::launch_game(){
 
     while(gameOn && window->isOpen()){ 
 
-		sf::Event event; // TODO PQ TT CA C'EST PAS DANS GET INPUT WINDOW !!!!!!
+		sf::Event event; 
         while (window->pollEvent(event))
         {
-            if (event.type == sf::Event::Closed)
+            if (event.type == sf::Event::Closed){
                 window->close();
+                return;
+            }
 			if (event.type == sf::Event::KeyPressed)
 				display_game.getInputWindow(&inp);
         }
@@ -1605,7 +1524,7 @@ void MenuGui::launch_game(){
 	window->display();
 	sf::Event event;
 	
-	while(true){ // CELA N'A RIEN A FAIRE LA TODO
+	while(true){ 
 		char in_char = -1;
 		while (window->pollEvent(event))
         {

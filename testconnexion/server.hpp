@@ -50,15 +50,15 @@ private:
 public:
     Server();
     ~Server(){_db.dbSave();std::cout << "\n\n *   BYE BYE   *\n\n"<<std::endl;};
-    static void close_me(int sig);
+    static void closeMe(int sig);
     bool static isServerActive() {return _is_active;}
-    static void inline error_pip(int sig){std::cerr << "\n***  [ERROR PIPE] "<< sig << " ***\n";}
+    static void inline errorPipe(int sig){std::cerr << "\n***  [ERROR PIPE] "<< sig << " ***\n";}
 
 private:
 	//connections
     void initConnexions();
     void createPipe(const char*);
-    void remove_pipe(std::string);
+    void removePipe(std::string);
 
     //response
     void resClient(std::string* processId, char* res);
@@ -70,8 +70,8 @@ private:
     //inputs
     void handleIncommingMessages();
     void catchInput(char *); 
-    int read_game_input(char * pipe, int* char_tab);
-    void launch_custom_game(Parsing::Level, Parsing::Game_settings);
+    int readGameInput(char * pipe, int* char_tab);
+    void launchCustomGame(Parsing::Level, Parsing::Game_settings);
 
     //queries
     bool signIn(char* );
@@ -90,14 +90,13 @@ private:
     void addVote(char *);
     void addLevel(char *);
     Parsing::Level runLevel(char*, Parsing::Game_settings&);
+    void launchGame(Parsing::Game_settings* sett_game);
 
     //server utils
-    static void launch_db_save();
-    void save_score(char* pseudo1, int score);
-    void get_game_settings(char* input, Parsing::Game_settings* game_sett);
-    void launch_game(Parsing::Game_settings* sett_game);
-    void client_exit(std::string* pid);
-    void kill_process(const char* pipe);
+    static void launchDBSave();
+    void saveScore(char* pseudo1, int score);
+    void clientExit(std::string* pid);
+    void killProcess(const char* pipe);
 };
 
 #endif //Server

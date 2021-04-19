@@ -39,7 +39,7 @@ std::string Parsing::level_to_str(Level *my_level, const std::string name){
 
 	//player info
 	Player p = (my_level->player);
-	buffer += std::to_string(p.skin) +"_" + std::to_string(p.skin2) + "_" + std::to_string(p.hp) + "_" + std::to_string(p.damage)+ "_" + std::to_string(p.speed);
+	buffer += std::to_string(p.skin) +"_" + std::to_string(p.skin2) + "_" + std::to_string(p.hp) + "_" + std::to_string(p.damage)+ "_" + std::to_string(p.speed)+"_"+std::to_string(int(p.boss));
 
 	//enemy
 	buffer += "|";
@@ -226,6 +226,10 @@ Parsing::Level Parsing::level_from_str(std::string buffer){
 	my_level.player.speed = std::stoi(player_zone.substr(0,idx)); // general speed
 	player_zone = player_zone.substr(idx+1, player_zone.size());
 
+	idx = player_zone.find(delim_attr);
+	my_level.player.boss = std::stoi(player_zone.substr(0,idx)); // general speed
+	player_zone = player_zone.substr(idx+1, player_zone.size());
+
 	//enemy zone
 	idx = buffer.find(delim_zone);
 	std::string enemy_zone = buffer.substr(0,idx);
@@ -310,7 +314,7 @@ std::vector<Parsing::Creator> Parsing::creator_list_from_str(std::string buffer)
 	std::string delim = "&";
 
 	while(buffer.size() > 1){
-		Creator author;
+		Creator author{};
 		std::string to_parse;
 		idx = buffer.find(delim);
 		to_parse = buffer.substr(0,idx);
@@ -323,7 +327,7 @@ std::vector<Parsing::Creator> Parsing::creator_list_from_str(std::string buffer)
 }
 Parsing::Creator Parsing::creator_from_str(std::string buffer){
 	std::string delim = "_";
-	Creator author;
+	Creator author{};
 	std::size_t idx = buffer.find(delim);
 	author.name = buffer.substr(0,idx);
 	buffer = buffer.substr(idx+1, buffer.size()); 
@@ -336,7 +340,7 @@ Parsing::Creator Parsing::creator_from_str(std::string buffer){
 	author.vote = std::stoi(buffer.substr(0,idx));
 	
 	return author;
-};
+}
 
 ///parsing to withdraw the user's info
 void Parsing::parsing(char* str, char* token1, char* token2) {

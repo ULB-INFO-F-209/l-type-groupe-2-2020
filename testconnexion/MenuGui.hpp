@@ -73,25 +73,6 @@ class MenuGui : public QMainWindow{
 	static const size_t SIZE_MAIN_MENU = 6;				// ajout de LEVEL EDITOR
 	static const size_t SIZE_SETTINGS = 7;
 
-	//choices
-	std::string connexion_menu[SIZE_HOME] = {"Sign in", "Sign up", "Quit"};
-	std::string friends_menu[SIZE_FRIENDS_MENU] = {"Friends list", "Friends requests", "Add friend",
-								   "Remove friend", "Back"};
-	std::string main_menu[SIZE_MAIN_MENU] = {"New game", "Friends", "Leaderboard",
-								   "Profile", "Level Editor", "Log out"};
-	std::string settings_menu[SIZE_SETTINGS] = {"Players", "Drop rate","Ally shot",\
-									 "Lives", "Difficulty", "Play", "Quit lobby"};	
-	//Q_OBJECT;
-	QLineEdit *pseudo_line;
-	QLineEdit *pswd_line;
-	QLabel *error;
-
-    QListWidget* list_of_all_modif = nullptr;
-    QListWidget* list_setup_level = nullptr;
-
-    QAction* m_pActAdd = nullptr;
-    QAction* m_pActRemove = nullptr;
-
 	int button_size = 60;
 
 	//game area
@@ -117,19 +98,18 @@ private:
 	void set_title(QWidget *parent, std::string image);
 	QLabel *create_label(QWidget *parent, std::string value,QRect pos);
 	QPushButton *create_button(QWidget *parent,std::string image, int width, int height);
-	QPushButton *create_button(QWidget *parent,std::string image, int width, int height, QRect size);
+	QPushButton *create_button(QWidget *parent,std::string image, QRect size);
 	QComboBox *create_box(QWidget *parent, std::vector<std::string> values, QRect pos);
 	QLineEdit *create_line(QWidget *parent,QRect rect, bool pswd);
+	QTableWidget * create_table_widget(QWidget *parent,int col, int row,std::string title[],QRect rect);
+	QLabel *print_error(QWidget *parent, int error, QRect pos);
 
 private slots:
 	void connexion(bool sign_in=true);
-	void check_data( QLineEdit *pseudo_line, QLineEdit *pswd_line,bool sign_in=true);
+	int check_data( QLineEdit *pseudo_line, QLineEdit *pswd_line,bool sign_in=true);
 	void print_profile();
 	void print_leaderboard();
-	void add_del_friend(bool adding=true);
-	void verif_friend(QDialog*, bool adding=true);
-	void request_list(const QModelIndex &index);
-	void accept_friend();
+	int verif_friend(std::string pseudo);
 	void save_level(Parsing::Level my_level);
 	void custom_enemy(Parsing::Level my_level, int idx);
 	void custom_obstacle(Parsing::Level my_level, int idx);

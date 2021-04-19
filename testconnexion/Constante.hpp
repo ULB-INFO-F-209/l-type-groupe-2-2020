@@ -42,7 +42,7 @@ namespace Constante{
     const size_t SIZE_pipe = 64;
 
     //server
-    const unsigned SERVER_SAVE_TIME = 9000;
+    const unsigned SERVER_SAVE_TIME = 100;
     const bool GAME_CAN_BE_LAUNCH = true;
     const int ERROR_PIPE_GAME = -100;
     const int CLIENT_END_GAME = -101;
@@ -63,28 +63,6 @@ namespace Constante{
     constexpr char CLIENT_EXIT = 'j';
     constexpr char DEL_FRIEND_REQUEST = 'k';
 
-    //J1
-    constexpr char KEY_J1_LEFT = 'q';
-    constexpr char KEY_GAME_QUIT = 'p';
-    constexpr char KEY_J1_UP = 'z';
-    constexpr char KEY_J1_DOWN = 's';
-    constexpr char KEY_J1_RIGHT = 'd';
-    constexpr char KEY_J1_DIAG_UP_LEFT = 'z';
-    constexpr char KEY_J1_DIAG_UP_RIGHT = 'e';
-    constexpr char KEY_J1_DIAG_DOWN_RIGHT = 'c';
-    constexpr char KEY_J1_DIAG_DOWN_LEFT = 'w';
-    constexpr char KEY_J1_SHOOT = ' ';
-
-    //J2
-    constexpr char KEY_J2_LEFT = 'f';
-    constexpr char KEY_J2_UP = 't';
-    constexpr char KEY_J2_DOWN = 'g';
-    constexpr char KEY_J2_RIGHT = 'h';
-    constexpr char KEY_J2_DIAG_UP_LEFT = 'r';
-    constexpr char KEY_J2_DIAG_UP_RIGHT = 'y';
-    constexpr char KEY_J2_DIAG_DOWN_RIGHT = 'n';
-    constexpr char KEY_J2_DIAG_DOWN_LEFT = 'v';
-    constexpr char KEY_J2_SHOOT = 'm';
 }
 
 #endif // CONSTANTE_HPP

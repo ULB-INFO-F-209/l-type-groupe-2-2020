@@ -16,8 +16,8 @@ std::vector<Server::PIDinGame*> Server::_pipe_running{};
  */
 Server::Server(){
 
-    signal(SIGINT,close_me); // gestion du CTRL + C ==> save db 
-    //signal(SIGPIPE, error_pip); // redirection du signal SIGPIPE vers SIG_IGN pour l'ignorer 
+    signal(SIGINT,closeMe); // gestion du CTRL + C ==> save db 
+    signal(SIGPIPE, errorPipe); // redirection du signal SIGPIPE vers SIG_IGN pour l'ignorer 
     //TODO decommente au dessus
     if (!isServerActive()){ // pas actif
         _is_active = true; 
@@ -30,7 +30,7 @@ Server::Server(){
         t1.detach();
         std::thread t2(&Server::handleIncommingMessages,this); // thread d'ecoute des requetes (deamon)
         t2.detach();
-        std::thread t3 (&Server::launch_db_save); // thread de sauvegarde (deamon)
+        std::thread t3 (&Server::launchDBSave); // thread de sauvegarde (deamon)
         t3.detach();
     }
     else{
@@ -133,7 +133,7 @@ void Server::catchInput(char* input) {
                 resClient(&processId,delFriendRequest(input));
                 break;
             case Constante::CLIENT_EXIT:
-                client_exit(&processId);
+                clientExit(&processId);
                 break;
 		}		
 	} 
@@ -149,7 +149,7 @@ void Server::catchInput(char* input) {
             }
         }
         mtx_game.unlock(); 
-        std::thread t5(&Server::launch_game,this,&game_sett); // thread du jeu
+        std::thread t5(&Server::launchGame,this,&game_sett); // thread du jeu
         t5.detach();
 
 	}
@@ -194,7 +194,7 @@ void Server::catchInput(char* input) {
                     }
                 }
                 mtx_game.unlock(); 
-                std::thread t5(&Server::launch_custom_game,this,level_to_play, game_settings); // thread du jeu
+                std::thread t5(&Server::launchCustomGame,this,level_to_play, game_settings); // thread du jeu
                 t5.detach();
                 break;
             }
@@ -546,8 +546,8 @@ void Server::resClient(std::string processId, std::string res){
  * @brief (deamons) lance une sauvergarde periodique (90 sec en theorie) de la database
  * 
  */
-void Server::launch_db_save(){
-    while(true){
+void Server::launchDBSave(){
+    while(_is_active){
         std::this_thread::sleep_for(std::chrono::seconds(Constante::SERVER_SAVE_TIME));
         mtx.lock();
         _db.dbSave(); 
@@ -560,7 +560,7 @@ void Server::launch_db_save(){
  * 
  * @param input : le pid du client pour pouvoir supprimer les pipes
  */
-void Server::client_exit(std::string *pid){
+void Server::clientExit(std::string *pid){
     std::cout << "\n\nDEPART DU CLIENT :" <<*pid << std::endl<<std::endl;
     std::string processId(*pid); 
     std::string game_pipe = *pid;
@@ -577,7 +577,7 @@ void Server::client_exit(std::string *pid){
         //le client qui part est-il en jeu ?
         if(_pipe_running.at(i)->in_game && strcmp(_pipe_running.at(i)->pid, pid->c_str()) == 0 ){
             
-            kill_process(input_pipe.c_str()); // tuer le thread qui utilise ce pipe (le pipe de jeu)
+            killProcess(input_pipe.c_str()); // tuer le thread qui utilise ce pipe (le pipe de jeu)
             _pipe_running.erase(_pipe_running.cbegin()+i);
             break;
         }
@@ -585,9 +585,9 @@ void Server::client_exit(std::string *pid){
     mtx.unlock();
 
     // supp pipe
-    remove_pipe(processId);
-    remove_pipe(game_pipe);
-    remove_pipe(input_pipe);
+    removePipe(processId);
+    removePipe(game_pipe);
+    removePipe(input_pipe);
     
 }
 
@@ -598,7 +598,7 @@ void Server::client_exit(std::string *pid){
  * 
  * @param pipe : le nom du pipe
  */
-void Server::kill_process(const char* pipe){
+void Server::killProcess(const char* pipe){
     int fd = open(pipe,O_WRONLY);
     if (fd != -1) write(fd, &Constante::CLIENT_LEAVE_GAME, sizeof(int));
     else std::cerr << "[ERROR] KILL PROCESS " << std::endl;
@@ -611,7 +611,7 @@ void Server::kill_process(const char* pipe){
  * 
  * @param the_pipe : le pipe a supprimer
  */
-void Server::remove_pipe(std::string the_pipe){
+void Server::removePipe(std::string the_pipe){
 
     if(remove(the_pipe.c_str()) != 0){
         std::cerr << "[ERROR] suppresion du pipe : " << the_pipe << std::endl;
@@ -628,7 +628,7 @@ void Server::remove_pipe(std::string the_pipe){
  * 
  * @param sett_game : les settings du jeu
  */
-void Server::launch_game(Parsing::Game_settings* sett_game){
+void Server::launchGame(Parsing::Game_settings* sett_game){
 
     char input_pipe[Constante::CHAR_SIZE],send_response_pipe[Constante::CHAR_SIZE];
     bool gameOn=true;int inp[11];
@@ -648,7 +648,7 @@ void Server::launch_game(Parsing::Game_settings* sett_game){
     std::string resp;
 
     while(gameOn){
-        int state = read_game_input(input_pipe, inp);  
+        int state = readGameInput(input_pipe, inp);  
         if(state == Constante::ERROR_PIPE_GAME || state == Constante::CLIENT_LEAVE_GAME){
             // Le client est parti ou alors le pipe a été supprimer 
             std::cout << sett_game->pid << " A LA PROCHAINE "<<std::endl;
@@ -675,9 +675,9 @@ void Server::launch_game(Parsing::Game_settings* sett_game){
     #endif
 
     //sauvegarde du score
-   save_score(sett_game->pseudo_hote,game.getScore());
+   saveScore(sett_game->pseudo_hote,game.getScore());
    if (sett_game->nb_player == 2){
-       save_score(sett_game->pseudo_other,game.getScore());
+       saveScore(sett_game->pseudo_other,game.getScore());
    }
 
     std::cout << " score : " << game.getScore() << std::endl;
@@ -717,7 +717,7 @@ void Server::resClient(char* pipe, std::string* res){
  * @param pipe : le pipe à lire 
  * @return int : l'etat de lecture s'il y a eu une erreur ou pas
  */
-int Server::read_game_input(char * pipe, int *inp){
+int Server::readGameInput(char * pipe, int *inp){
     int message[11];
     
     int fd =open(pipe, O_RDONLY); //open pipe
@@ -774,23 +774,27 @@ int Server::read_game_input(char * pipe, int *inp){
  * @param pseudo1 
  * @param score 
  */
-void Server::save_score(char* pseudo, int score){
+void Server::saveScore(char* pseudo, int score){
     _db.updateScore(score,pseudo);
 }
 
-void Server::close_me(int sig){
+/**
+ * @brief gère CTRL + C signal et save la db
+ * 
+ * @param sig le signale
+ */
+void Server::closeMe(int sig){
     if(_is_active){
         _is_active = false;
         for(size_t i=0;i < _pipe_running.size();i++){
             kill(atoi(_pipe_running.at(i)->pid),SIGINT);
         }
-        std::cout <<"\n -----------------------|    FERMETURE EN COURS    |-----------------------\n\n " << std::endl;
-        sleep(2);
-
+        std::cout <<"\n ----------------|    FERMETURE EN COURS    |-----------------\n\n " << std::endl;
+        sleep(1);
     }
-}// handle CTRL + C signal ==> save db
+}
 
-void Server::launch_custom_game(Parsing::Level level_sett,Parsing::Game_settings game_settings){
+void Server::launchCustomGame(Parsing::Level level_sett,Parsing::Game_settings game_settings){
     char input_pipe[Constante::CHAR_SIZE],send_response_pipe[Constante::CHAR_SIZE];
     bool gameOn=true;int inp[11]{};
     
@@ -798,18 +802,17 @@ void Server::launch_custom_game(Parsing::Level level_sett,Parsing::Game_settings
     sprintf(input_pipe,"%s%s%s",Constante::PIPE_PATH,Constante::BASE_INPUT_PIPE,game_settings.pid);
     sprintf(send_response_pipe,"%s%s%s",Constante::PIPE_PATH,Constante::BASE_GAME_PIPE,game_settings.pid);
     
-
-
     CurrentGame game{level_sett,game_settings};
     std::string resp;
     while(gameOn){
-        int state = read_game_input(input_pipe, inp);  
+        int state = readGameInput(input_pipe, inp);  
 
         // Le client est parti ou alors le pipe a été supprimer 
         if(state == Constante::ERROR_PIPE_GAME || state == Constante::CLIENT_LEAVE_GAME){
-            std::cout << game_settings.pid << " A LA PROCHAINE "<<std::endl;
+            std::cout << game_settings.pid << " Bon vent :) "<<std::endl;
             return;
         }
+        
         resp = game.run_server(inp, level_sett.enemy_list,level_sett.obs_list);                                                        //  le jeu du server
         if(resp == Constante::GAME_END){  // if game over
             gameOn=false;
@@ -830,13 +833,7 @@ void Server::launch_custom_game(Parsing::Level level_sett,Parsing::Game_settings
         interface_game.close();
     #endif
 
-    //sauvegarde du score
-   save_score(game_settings.pseudo_hote,game.getScore());
-   if (game_settings.nb_player == 2){
-       save_score(game_settings.pseudo_other,game.getScore());
-   }
-
-    std::cout << " score : " << game.getScore() << std::endl;
+   std::cout << "FIN DE JEU POUR " << game_settings.pid << std::endl;
 
     // mettre l'etat du jeu pour ce client a false pour qu'il puisse lancer un autre jeu
     mtx_game.lock();

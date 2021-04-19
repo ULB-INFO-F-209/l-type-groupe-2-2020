@@ -49,7 +49,7 @@ struct Template::Player_template{
 	int hp = 70;
 	int damage=30;
 	int speed = 2; //SLUG, TURTLE, HUMAN, HORSE,CHEETAHs
-	bool boss = 1;
+	bool boss = false;
 };
 
 struct Template::Level{

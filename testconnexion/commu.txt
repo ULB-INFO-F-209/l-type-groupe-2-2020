@@ -68,7 +68,7 @@ ___________________SYNTAXE DES REQUÊTES____________________
 
 	Cree une partie:
 		Client : "P&nb_player&pseudo_hote&other_pseudo&drop_rate&
-		ally_shot&nb_lives&pid"
+		ally_shot&nb_lives&diff&pid"
 		Server :  
 
 	Action: TODO
