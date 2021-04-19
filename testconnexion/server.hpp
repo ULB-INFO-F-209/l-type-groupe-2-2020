@@ -37,9 +37,8 @@ private:
     struct PIDinGame{
         char pid[Constante::SIZE_pipe];
         bool in_game;
-        std::thread game_thread;
         PIDinGame()=default;
-        PIDinGame(char *p):in_game(false),game_thread(){strcpy(pid,p);std::cout << "my pid : " << pid << "  In game : "<< in_game <<std::endl; };
+        PIDinGame(char *p):in_game(false){strcpy(pid,p);};
         ~PIDinGame()=default;
     };
     static std::vector<PIDinGame*> _pipe_running;    

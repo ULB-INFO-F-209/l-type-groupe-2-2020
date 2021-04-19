@@ -983,12 +983,12 @@ void MenuGui::custom_enemy(Parsing::Level my_level, int idx){
     QWidget *formLayoutWidget = new QWidget(Dialog);
     formLayoutWidget->setGeometry(QRect(590, 160, 258, 275));
      QFormLayout *formLayout = new QFormLayout(formLayoutWidget);
-    int position = 0,tick=2; 
-    std::string legende[] = {"POSITION :","HP :","TIME :","DAMAGE :"};
-    QLabel *label[4];
-    int spin_value[4]; my_level.enemy_list[idx].get_values(spin_value);
-    QSpinBox * spin_box[4];
-    for (int i = 0; i < 4; ++i){
+    int tick=1; 
+    std::string legende[] = {"HP :","TIME :","DAMAGE :"};
+    QLabel *label[3];
+    int spin_value[3]; my_level.enemy_list[idx].get_values(spin_value);
+    QSpinBox * spin_box[3];
+    for (int i = 0; i < 3; ++i){
         //legende
         label[i] = new QLabel(legende[i].c_str(), formLayoutWidget);
         formLayout->setWidget(i, QFormLayout::LabelRole, label[i] );
@@ -1003,8 +1003,6 @@ void MenuGui::custom_enemy(Parsing::Level my_level, int idx){
         spin_box[i]->setValue(spin_value[i]);
         formLayout->setWidget(i, QFormLayout::FieldRole, spin_box[i]);
     }
-    spin_box[position]->setMaximum(X_MAX);
-    spin_box[position]->setValue(spin_value[position]);
     spin_box[tick]->setMaximum(3000);
     spin_box[tick]->setSingleStep(1);
     spin_box[tick]->setValue(spin_value[tick]);
@@ -1086,10 +1084,10 @@ void MenuGui::custom_enemy(Parsing::Level my_level, int idx){
     /***************CONNECTION********************/
     connect(button[ok], &QPushButton::clicked, this, [this, my_level,Dialog, spin_box, idx, bonus, skin](){
         Parsing::Level copy_level = my_level;
-        copy_level.enemy_list[idx].x = spin_box[0]->value();
-        copy_level.enemy_list[idx].hp = spin_box[1]->value();
-        copy_level.enemy_list[idx].tick = spin_box[2]->value();
-        copy_level.enemy_list[idx].damage = spin_box[3]->value();
+        //copy_level.enemy_list[idx].x = spin_box[0]->value();
+        copy_level.enemy_list[idx].hp = spin_box[0]->value();
+        copy_level.enemy_list[idx].tick = spin_box[1]->value();
+        copy_level.enemy_list[idx].damage = spin_box[2]->value();
         for (int i = 0; i < 4; ++i){
             if(bonus[i]->isChecked())
                 copy_level.enemy_list[idx].bonus = i;
@@ -1194,17 +1192,17 @@ void MenuGui::custom_obstacle(Parsing::Level my_level, int idx){
 void MenuGui::custom_player(Parsing::Level my_level){
 	this->setStyleSheet(QStringLiteral("background-color:white;"));
     QDialog * Dialog = new QDialog(this);
-    Dialog->resize(859, 665);
+    Dialog->resize(548, 480);
     Dialog->setModal(true);
 
     QLabel * title_label = new QLabel("CUSTOM PLAYER", Dialog);
-    title_label->setGeometry(QRect(70, 20, 701, 71));
+    title_label->setGeometry(QRect(180, 20, 181, 51));
     title_label->setFrameShape(QFrame::WinPanel);
     title_label->setAlignment(Qt::AlignCenter);
 
     /*************SPIN AND THEIR LEGENDE ZONE********************/
     QWidget *formLayoutWidget = new QWidget(Dialog);
-    formLayoutWidget->setGeometry(QRect(590, 160, 258, 275));
+    formLayoutWidget->setGeometry(QRect(150, 99, 251, 251));
     QFormLayout *formLayout = new QFormLayout(formLayoutWidget);
     std::string legende[] = {"HP :","DAMAGE :"};
     QLabel *label[2];
@@ -1261,7 +1259,7 @@ void MenuGui::custom_player(Parsing::Level my_level){
 
     /*************BUTTON_ZONE********************/
     QWidget *horizontalLayoutWidget = new QWidget(Dialog);
-    horizontalLayoutWidget->setGeometry(QRect(40, 540, 771, 80));
+    horizontalLayoutWidget->setGeometry(QRect(100, 360, 371, 50));
     QHBoxLayout* horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
     horizontalLayout->setContentsMargins(0, 0, 0, 0);
 
@@ -1275,71 +1273,7 @@ void MenuGui::custom_player(Parsing::Level my_level){
         horizontalLayout->addWidget( button[i]);
     }
 
-    /*************PLAYER1_ZONE********************/
-    // QWidget * widget = new QWidget(Dialog);
-    // widget->setGeometry(QRect(60, 150, 181, 281));
-    // QVBoxLayout *verticalLayout = new QVBoxLayout(widget);
-
-    // QLabel * player1_label = new QLabel("PLAYER 1", widget);
-    // verticalLayout->addWidget(player1_label);
-
-    // QRadioButton * skin_player1[3];
-
-    // for (int i = 0; i < 3; ++i){
-    //     skin_player1[i] = new QRadioButton(widget);
-    //     skin_player1[i]->setMinimumSize(QSize(100, 100));
-    //     skin_player1[i]->setMaximumSize(QSize(100, 100));
-    //     if(i == my_level.player.skin)
-    //          skin_player1[i]->setChecked(true);
-    //     verticalLayout->addWidget(skin_player1[i]);
-    // }
     
-
-    // /*************PLAYER2_ZONE********************/
-    // QWidget *widget1 = new QWidget(Dialog);
-    // widget1->setGeometry(QRect(330, 140, 191, 291));
-    // QVBoxLayout *verticalLayout_2 = new QVBoxLayout(widget1);
-    // verticalLayout_2->setContentsMargins(0, 0, 0, 0);
-
-    // QLabel * player2_label = new QLabel("PLAYER 2", widget);
-    // verticalLayout_2->addWidget(player2_label);
-
-    // QRadioButton * skin_player2[3];
-
-    // for (int i = 0; i < 3; ++i){
-    //     skin_player2[i] = new QRadioButton(widget1);
-    //     skin_player2[i]->setMinimumSize(QSize(100, 100));
-    //     skin_player2[i]->setMaximumSize(QSize(100, 100));
-    //     if(i == my_level.player.skin2)
-    //          skin_player2[i]->setChecked(true);
-    //     verticalLayout_2->addWidget(skin_player2[i]);
-    // }
-    // QIcon icon;
-    // icon.addFile(QString::fromUtf8("player1.png"), QSize(), QIcon::Normal, QIcon::On);
-    // skin_player1[0]->setIcon(icon);
-    // skin_player1[0]->setIconSize(QSize(100, 100));
-    // skin_player2[0]->setIcon(icon);
-    // skin_player2[0]->setIconSize(QSize(100, 100));
-    // icon.addFile(QString::fromUtf8("player2.png"), QSize(), QIcon::Normal, QIcon::On);
-    // skin_player1[1]->setIcon(icon);
-    // skin_player1[1]->setIconSize(QSize(100, 100));
-    // skin_player2[1]->setIcon(icon);
-    // skin_player2[1]->setIconSize(QSize(100, 100));
-    // icon.addFile(QString::fromUtf8("player3.png"), QSize(), QIcon::Normal, QIcon::On);
-    // skin_player1[2]->setIcon(icon);
-    // skin_player1[2]->setIconSize(QSize(100, 100));
-    // skin_player2[2]->setIcon(icon);
-    // skin_player2[2]->setIconSize(QSize(100, 100));
-
-    /*************SAME SIZE LABEL********************/
-    // QLabel * label_legend[] ={player1_label,player2_label};
-    // for(auto lbl : label_legend){
-    //     lbl->setMinimumSize(QSize(100, 45));
-    //     lbl->setMaximumSize(QSize(100, 45));
-    //     lbl->setAlignment(Qt::AlignCenter);
-    //     lbl->setFrameShape(QFrame::WinPanel);
-    //     lbl->setLineWidth(3);
-    // }
 
     /***************CONNECTION********************/
     connect(button[ok], &QPushButton::clicked, this, [this, my_level,Dialog, spin_box/*, skin_player1, skin_player2,*/, speed_box,boss_box](){
