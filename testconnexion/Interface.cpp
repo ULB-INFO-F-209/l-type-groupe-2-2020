@@ -611,10 +611,10 @@ void Interface::print_users(std::vector<Profile> *vect, int highlight, int min, 
 	print_cara(_main_win, pseudo_title,caption_x,caption_y);
 	print_cara(_main_win, score_title, _error_x,caption_y);
 	
-	for (size_t i = static_cast<size_t>(min); i <= static_cast<size_t>(max); ++i){ 
-		sprintf(score, "%d",vect->at(i).score);
-		sprintf(pseudo, "%s", vect->at(i).pseudo);
-		if(i == static_cast<size_t>(highlight))
+	for (int i = (min); i <= (max); ++i){ 
+		sprintf(score, "%d",vect->at(size_t(i)).score);
+		sprintf(pseudo, "%s", vect->at(size_t(i)).pseudo);
+		if(i == (highlight))
 		{
 			wattron(_main_win, A_REVERSE);
 			print_cara(_main_win,pseudo,x,y);
