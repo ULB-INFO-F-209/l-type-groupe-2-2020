@@ -67,7 +67,7 @@
 
 L’objectif de ce projet consiste en la réalisation d'un jeu d'action de style shoot 'em up en multijoueur. Dans ce jeu, un ou deux joueurs doivent parcourir plusieurs niveaux en détruisant les ennemis qui se présentent devant eux, tout en esquivant les tirs provoqués par ces derniers. Les vaisseaux dirigés par les joueurs peuvent récupérer des bonus d’armement lâchés par leurs nombreux adversaires, pour mieux les éliminer. L'objectif des joueurs étant de terminer tous les niveaux sans que leur compteur de vies ne se retrouve à 0. En effet, un joueur en possède un nombre déterminé. Si un projectile d'un joueur touche un ennemi, son score est augmenté. À la fin d'une partie, le score de chaque utilisateur est mis à jour si celui-ci est meilleur que son score actuel.
 
-En dehors du jeu, un utilisateur a la capacité de gérer sa liste d'amis et de consulter le classement général des joueurs.
+En dehors du jeu, un utilisateur a la capacité de gérer sa liste d'amis et de consulter le classement général des joueurs. De plus, il a la possibilité de créer, tester et évaluer des niveaux personnalisés de tous les joueurs enregistrés.
 
 Le jeu ne sera exécutable que sous le système d'exploitation Linux.
 
@@ -183,46 +183,50 @@ Le joueur aura donc le droit de choisir s'il souhaite que les projectiles de l'i
 Le choix du nombre de vies est limité à 3 pour l'utilisateur.  Il peut donc seulement la diminuer.\\
 
 - Bonus :
+Il existe différentes sortes de bonus:
+\begin{itemize}
+  \item DamageUp: augmente les dégâts des projectiles
+  \item Minigun: tir automatique à cadence élevée
+  \item TripleShot: tir de 3 projectiles en même temps
+  \item LifeSteal: chaque élimination redonne de la vie
+\end{itemize}
 
-Le joueur peut choisir la probabilité d'apparition des bonus. Ainsi il peut rendre le jeu plus ou moins difficile. 
+Le joueur peut choisir la probabilité d'apparition des bonus lorsqu'il tue un ennemi. 
+Ainsi il peut rendre le jeu plus ou moins difficile. 
 
 \subsubsection{Jeu}
 
 - Partie en cours:\\ \\
 Elle reçoit les actions effectuées par les joueurs ̀à travers le serveur et les applique au jeu. 
 Lors de sa création, elle possède les paramètres choisis par le joueur ainsi qu’un identifiant. 
-Ce dernier permet au serveur de déterminer à quelle partie il doit envoyer l’action d’un 
+Ce dernier permet au serveur de déterminer à quelle partie il doit envoyer l’action d’un 
 utilisateur.\\
 
-Le joueur commence chaque partie avec une à trois vies constituée(s) de 100 points de vie et
+Le joueur commence chaque partie avec une à trois vies constituée(s) de 100 points de vie (sauf en cas de partie personnalisée) et
 contrôle un vaisseau avec lequel il peut tirer des projectiles vers des ennemis, ce qui 
 augmentera son score à chaque tir atteignant sa cible. Sa quantité de points de vie est réduite
 lorsqu’il subit des dégâts. S’il n’a plus de points de vie, le joueur perd une vie. Lorsque le 
 joueur n’a plus de vie, son vaisseau est détruit et si plus aucun joueur n’a de vie, la partie se 
-termine. Elle peut également s’arrêter en cas de déconnexion d’un utilisateur.\\
+termine. Elle peut également s’arrêter en cas de déconnexion d’un utilisateur, ou lorsque celui-ci a éliminé tous les ennemis.\\
 
-- Niveau:\\ \\
-La partie est divisée en 5 niveaux de difficulté croissante. Après les 5 niveaux, le(s) joueur(s) 
-devra/ont faire face à un Boss pour terminer la partie. En passant au niveau suivant, la santé, 
-les dégâts et le nombre d’ennemis accroissent.\\ \\
+
+- Niveau (par défaut):\\ \\
+La partie est divisée en 4 niveaux de difficulté croissante. Au niveau 2 et 4, le(s) joueur(s) se retrouvera/ont face à un boss dont la difficulté dépendra du niveau. En passant au niveau suivant, le nombre, la santé et 
+les dégâts des ennemis accroissent.\\
+
+- Niveau (personnalisé):\\ \\
+Les parties personnalisées sont constituées d'un seul niveau complètement modulable d'une durée maximum de 200 secondes. Durant cette partie, l'utilisateur fera face aux ennemis positionnés selon ses désirs et devra affronter un boss s'il en a décidé ainsi.\\ \\
 
 - Entités à l’écran:\\ \\
 Parmi les entités apparaissant à l’écran et pouvant se déplacer, il y a les vaisseaux, les bonus, 
 les projectiles et les obstacles.\\ \\
-• Ship: Dans ce jeu, il existe 3 types de ships : les PlayerShip, les EnemyShip et les 
-Boss. Tous ces vaisseaux peuvent se déplacer dans toutes les directions, ainsi que 
-subir et infliger des dégâts. Les PlayerShip sont les vaisseaux alliés, ce sont ceux que 
-les joueurs contrôlent. Les EnemyShip peuvent lâcher un bonus en se détruisant, la 
-probabilité de lâcher ce bonus est déterminée par l’utilisateur avant de lancer la partie. 
-Le Boss est l’ennemi final à affronter pour finir les niveaux.\\ 
+\begin{itemize}
+    \item[$\bullet$ Ship:]Dans ce jeu, il existe 4 types de ships : les PlayerShip, les EnemyShip (type 1 et 2) et les Boss. Tous ces vaisseaux peuvent subir et infliger des dégâts. Les PlayerShip sont les vaisseaux alliés, ce sont ceux que les joueurs contrôlent. Ils peuvent se déplacer dans toutes les directions (verticales, horizontales, diagonales).\\ Les EnemyShip peuvent lâcher un bonus en se détruisant, la probabilité de lâcher ce bonus est déterminée par l’utilisateur avant de lancer la partie. Le premier type peut uniquement se déplacer de manière verticale, alors que le second uniquement de manière horizontale.\\ Le Boss est l’ennemi final à affronter pour finir les niveaux. Le premier boss est un vaisseau beaucoup plus volumineux et résistant que les EnemyShip. Il a la capacité de se déplacer horizontalement de gauche à droite et de droite à gauche, et également de tirer 2 projectiles à la fois. Le second détient les mêmes caractéristiques, tout en ayant la capacité de tirer 4 projectiles à la fois au lieu de 2.\\ 
 
-• Projectile: Les projectiles sont créés lorsque les vaisseaux tirent. Ils peuvent sortir de 
-l’écran, s’annuler en rencontrant d’autres projectiles ou causer des dégâts en atteignant 
-leur cible.\\
+    \item[$\bullet$ Projectiles:]Les projectiles sont créés lorsque les vaisseaux tirent. Ils peuvent sortir de l’écran, s’annuler en rencontrant d’autres projectiles ou causer des dégâts en atteignant leur cible.\\
 
-• Bonus: Les bonus sont de plusieurs types et peuvent rapporter des améliorations 
-d’armes et de santé au joueur qui réussit 
-
+    \item[$\bullet$ Bonus:]Les bonus sont de plusieurs types et peuvent rapporter des améliorations d’armes et de santé au joueur qui réussit à l'attraper.
+\end{itemize}
 \newpage
 \begin{figure}[hbtp]
 \centering
@@ -411,7 +415,6 @@ USE CASE   &\center{Pré-conditions}   & \hfill Post-conditions \hfill\null & Ca
 \hline
 \hline
 \textbf{Ship’s controls}  & Créer une partie  & Actualisation de l’état de jeu  & Se déplacer, tirer recevoir des bonus  & Néant\\
-\hlinehttps://fr.overleaf.com/project/6048c7f9f8c384f807254e17
 \hline
 \textbf{Leave party}      & Être en train de jouer   & Retour au menu principal  & Le joueur arrête la partie en cours.  & Néant\\
 \hline
