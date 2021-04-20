@@ -541,7 +541,7 @@ void Interface::print_error(int error){
 			print_cara(_main_win,ALREADY_REQUESTED.c_str(),_error_x, _error_y);
 			break;
 		case YOURSELF_ERROR:
-			print_cara(_main_win,YOURSEL_MSG.c_str(),_error_x, _error_y);
+			print_cara(_main_win,YOURSELF_MSG.c_str(),_error_x, _error_y);
 			break;
 		default:
 			print_cara(_main_win,DEFAULT_ERROR.c_str(),_error_x, _error_y);

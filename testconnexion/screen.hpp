@@ -63,7 +63,7 @@ namespace Screen{
 	const std::string ALREADY_FRIENDS = "You are already friends. check your friendlist";
 	const std::string NOT_FRIENDS =  "You are not friends yet";
 	const std::string ALREADY_REQUESTED =  "You had already sent a request!";
-	const std::string YOURSEL_MSG = "What is your username? And what did you enter?";
+	const std::string YOURSELF_MSG = "What is your username? And what did you enter?";
 	const std::string DEFAULT_ERROR = "There is an error. Try again !";
 	//CAPTION
 	const std::string PSEUDO_ZONE = "USERNAME :";
