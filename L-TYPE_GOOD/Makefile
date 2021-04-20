@@ -71,7 +71,9 @@ Player.o: game_test/Player.cpp game_test/Player.hpp
 compile: server client_gui client_terminal
 
 install:
-	echo "ecrire les commandes pour installer ncurses, sfml et qt5 -_- "
+	sudo apt-get install libncurses5-dev libncursesw5-dev
+	sudo apt-get install libsfml-dev
+	sudo apt-get install qt5-default
 
 run_server:	
 	./process_server
