@@ -1,0 +1,82 @@
+
+
+___________________SYNTAXE DES REQUÊTES____________________
+
+	1er connexion via le pipe "connexion"
+	les autres requêtes via le pipe publique "reponse"
+	les reponses du serveur reçu via le pipe privée "pipe_pid"
+
+-----------------
+	ALL MENU
+-----------------
+
+	Open: 
+		Client : "pid" via le pipe connexion
+
+	SignIn:
+		Client : "Ma&pseudo&mdp&pid"
+		Server : "0" ou "1" => User doesn't exist || Connected
+
+	SignUp: 
+		Client : "Mb&pseudo&mdp&pid" 
+		Server : "0" ou "1" => 0: pseudo already taked || new 							  account had been created
+
+	addFriend:
+		Client : "Mc&pseudo&PseudoF&pid" 
+		Server: "0" = No space || "1" = Friend added
+
+	delFriend:
+		Client : "Md&pseudo&pseudoF&pid" 
+		Server:  "0"=deleted || "1"=not friend yet || "2" =error 
+
+	sendFriendRequest:
+		Client : "Me&pseudo&pseudoF&pid" 
+		Server:  "0"=sent || "1"=already in request|| 
+					"2" = already Friend || "3"= error pseudo
+	getFriendRequest:
+		Client : "Mf&pseudo&pid" 
+		Server: pseudo1|score&pseudo2|score&pseudo3|score..." 
+
+	getFriendList:
+		Client : "Mg&pseudo&pid" 
+		Server: "pseudo1|score&pseudo2|score&pseudo3|score..." 
+
+	CheckleaderBoard: 
+		Client : "Mh&pid" 
+		Server: "pseudo1|score&pseudo2|score&pseudo|score...." 
+
+	View profile:
+		Client : "Mi&pseudo&pid" 
+		Server: "Pseudo&Score" 
+
+	Exit:
+		Client : "Mj&pid" 
+		Server: "0" 
+		
+	delFriendRequest:
+		Client : "Mk&pseudo&pseudoF&pid" 
+		Server:  "0"=deleted
+
+
+---------------
+	GAME
+---------------
+
+	CheckID:
+		Client : "Pf&pseudo&pswd&pid" ==> JE PENSE PAS QUE JE VAIS FAIRE CA DSL
+		server : "0" ou "1" => User doesn't exist || User exist
+
+	Cree une partie:
+		Client : "P&nb_player&pseudo_hote&other_pseudo&drop_rate&
+		ally_shot&nb_lives&diff&pid"
+		Server :  
+
+	Action: TODO
+		Client : "Action" 
+		Server : "Variable du jeu" 
+
+
+
+
+
+
