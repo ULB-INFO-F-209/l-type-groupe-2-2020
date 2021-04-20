@@ -1,15 +1,15 @@
 # L-type
-## Installation Instructions :
+## Installation Instructions 
 * ncurses (terminal version) : ``` sudo apt-get install libncurses5-dev libncursesw5-dev ```
 * sfml (graphical version) :``` sudo apt-get install libsfml-dev```
 * Qt (graphical version) : ```sudo apt-get install qt5-default```
 * Clone the repo 
 
-## Compilation :
+## Compilation 
 1. ```make run_server```
 2. ``` make run_client_gui ``` or ``` make run_client_terminal ```
 
-## Controls :
+## Controls 
 #### Player 1 :
 * **z** - move your spaceship up
 *  **q** - move your spaceship left
@@ -27,15 +27,15 @@
 
 
 
-## Authors :
-| GitHub ids | Nom & Prénom      |
-|------------|-------------------|
-| jbarber07  | Barber Jeremy     |
-| akinsoen   | Kinsoen Alexandre |
-| aiabdoul   | Abdoul Aziz Aïssa |
-| hdemirel01 | Demirel Helin     |
-| mvneste    | Vanneste Martin   |
-| koadegno   | Adegnon Kokou     |
-| slatoundj  | Latoundji Salim   |
-| mmassime   | Massimetti Mario  |
-| celkenze   | Elkenze Camelia   |
+## Authors 
+| GitHub ids | Nom & Prénom      | Groupe      |
+|------------|-------------------|-------------|
+| jbarber07  | Barber Jeremy     | Jeu         |
+| akinsoen   | Kinsoen Alexandre | Jeu         |
+| aiabdoul   | Abdoul Aziz Aïssa | Server & DB |
+| hdemirel01 | Demirel Helin     | Server & DB |
+| mvneste    | Vanneste Martin   | Jeu         |
+| koadegno   | Adegnon Kokou     | Server & DB |
+| slatoundj  | Latoundji Salim   | Server & DB |
+| mmassime   | Massimetti Mario  | Jeu         |
+| celkenze   | Elkenze Camelia   | Jeu         |
