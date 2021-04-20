@@ -1,13 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<diagram program="umlet" version="14.3.0">
-  <zoom_level>7</zoom_level>
+<?xml version="1.0" encoding="UTF-8"?><diagram program="umlet" version="13.3">
+  <zoom_level>6</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>686</x>
-      <y>77</y>
-      <w>301</w>
-      <h>294</h>
+      <x>582</x>
+      <y>204</y>
+      <w>258</w>
+      <h>318</h>
     </coordinates>
     <panel_attributes>Client
 --
@@ -20,7 +19,7 @@
 -_fd_send_query;
 -_fd_get_query
 --
-+signIn(pseudo, pswd, isVerification)
++signIn(pseudo, pswd, is_verification)
 +signUp(pseudo, pswd)
 +addFriend(pseudo)
 +delFriend(pseudo)
@@ -30,21 +29,27 @@
 +getFriendList(request_result)
 +checkLeaderboard(request_result)
 +get_profile(request_result)
-+read_game_pipe() : char
++read_game_pipe()
 +send_game_input(input)
 +createGame(game_info)
 +get_pseudo(request_result)
--communication(char *buffer);
++createLevel(level_info)
++viewLevels()
++myLevels()
++playLevel(level, game_sett)
++voteLevel(name, author)
++getLevel(level_name, author)
+-communication(to_send)
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>371</x>
-      <y>224</y>
-      <w>147</w>
-      <h>42</h>
+      <x>312</x>
+      <y>372</y>
+      <w>126</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>Server
 --
@@ -52,42 +57,12 @@
     <additional_attributes/>
   </element>
   <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>511</x>
-      <y>217</y>
-      <w>189</w>
-      <h>35</h>
-    </coordinates>
-    <panel_attributes>lt=-
-m1=1
-m2=1..*
-send Informations &gt;
-</panel_attributes>
-    <additional_attributes>10.0;20.0;250.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>511</x>
-      <y>245</y>
-      <w>189</w>
-      <h>35</h>
-    </coordinates>
-    <panel_attributes>lt=-
-m1=1
-m2=1..*
-&lt; send Input
-</panel_attributes>
-    <additional_attributes>10.0;20.0;250.0;20.0</additional_attributes>
-  </element>
-  <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>686</x>
-      <y>434</y>
-      <w>308</w>
-      <h>266</h>
+      <x>582</x>
+      <y>612</y>
+      <w>264</w>
+      <h>228</h>
     </coordinates>
     <panel_attributes>Menu
 --
@@ -108,7 +83,7 @@ m2=1..*
 -request_management()
 -add_del_friends(is_add=true)
 -get_players(Game_settings)
--launch_game(Game_settings )
+-launch_game(Game_settings)
 -handle_SIGINT(signal)
 
 </panel_attributes>
@@ -117,10 +92,10 @@ m2=1..*
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1162</x>
-      <y>392</y>
-      <w>378</w>
-      <h>315</h>
+      <x>1032</x>
+      <y>576</y>
+      <w>324</w>
+      <h>270</h>
     </coordinates>
     <panel_attributes>Interface
 --
@@ -155,38 +130,38 @@ m2=1..*
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>987</x>
-      <y>553</y>
-      <w>189</w>
-      <h>35</h>
+      <x>840</x>
+      <y>714</y>
+      <w>204</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
 m2=1
 communicates &gt;</panel_attributes>
-    <additional_attributes>10.0;20.0;250.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;320.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>826</x>
-      <y>364</y>
-      <w>56</w>
-      <h>84</h>
+      <x>702</x>
+      <y>516</y>
+      <w>42</w>
+      <h>108</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
 m2=1
  uses ^</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;160.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>161</x>
-      <y>434</y>
-      <w>350</w>
-      <h>259</h>
+      <x>96</x>
+      <y>612</y>
+      <w>300</w>
+      <h>222</h>
     </coordinates>
     <panel_attributes>DisplayGame
 --
@@ -216,62 +191,45 @@ m2=1
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>504</x>
-      <y>553</y>
-      <w>196</w>
-      <h>35</h>
+      <x>390</x>
+      <y>714</y>
+      <w>204</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
 m2=1
 &lt; uses</panel_attributes>
-    <additional_attributes>10.0;20.0;260.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;320.0;20.0</additional_attributes>
   </element>
   <element>
-    <id>UMLClass</id>
+    <id>Relation</id>
     <coordinates>
-      <x>658</x>
-      <y>889</y>
-      <w>350</w>
-      <h>259</h>
+      <x>432</x>
+      <y>390</y>
+      <w>162</w>
+      <h>30</h>
     </coordinates>
-    <panel_attributes>DisplayGameGui
---
--main_wnd: WINDOW
--game_wnd: WINDOW
--music: Music
--laserSound: Sound
---
-+init()
-+initialDraw()
-+display(settingArray)
-+drawStar(Map)
-+drawObstacle(Map)
-+drawEnemy(Map, tick, listPlayer)
-+drawProjectile(Map)
-+drawPlayer(Map, tick,listPlayer)
-+drawUI(Map,PlayersInfo,tick)
-+drawBonus(Map)
-+drawBoss(Map)
-+drawNewLevel(Map, tick)
-+drawEndGame(score)
-+refresh_wnd()
-+drawEnergyBar(hp)
-+close()
-+parse_instruction()</panel_attributes>
-    <additional_attributes/>
+    <panel_attributes>lt=-
+m1=1
+m2=1..*
+&lt; send Input
+</panel_attributes>
+    <additional_attributes>10.0;20.0;250.0;20.0</additional_attributes>
   </element>
   <element>
-    <id>UMLNote</id>
+    <id>Relation</id>
     <coordinates>
-      <x>1015</x>
-      <y>910</y>
-      <w>133</w>
-      <h>49</h>
+      <x>432</x>
+      <y>366</y>
+      <w>162</w>
+      <h>30</h>
     </coordinates>
-    <panel_attributes>Les attributs tel sound, 
-music, sprite, texture, etc 
-ne sont pas repris ici</panel_attributes>
-    <additional_attributes/>
+    <panel_attributes>lt=-
+m1=1
+m2=1..*
+send Informations &gt;
+</panel_attributes>
+    <additional_attributes>10.0;20.0;250.0;20.0</additional_attributes>
   </element>
 </diagram>

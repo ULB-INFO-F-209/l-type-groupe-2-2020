@@ -48,7 +48,7 @@
                 \end{minipage}
             \end{figure}
         
-            {\\[2 cm] \Huge\\INFO-F209 - Projets d'informatique 2 \\ \\ Software Requirements Document \\ [1 cm]
+            {\\[2 cm] \Huge\\INFO-F209 - Projets d'informatique 2 \\ Software Requirements Document \\ [1 cm]
             L-type\\[2 cm]}
             {ABDOUL-AZIZ Aïssa \\[0,2 cm] ADEGNON Kokou  \\[0,2 cm] BARBER Jeremy \\[0,2 cm] DEMIREL Helin \\[0,2 cm] ELKENZE Camelia  \\[0,2 cm] KINSOEN Alexandre  \\[0,2 cm] LATOUNDJI Salim  \\[0,2 cm] MASSIMETTI Mario  \\[0,2 cm] VANNESTE Martin  \\ [3 cm] Mars 2021}
 
@@ -110,6 +110,8 @@ Le jeu ne sera exécutable que sous le système d'exploitation Linux.
     	26/02/21 & Modification diagrammes de classe
 	    jeu, client et serveur & Aissa, Jeremy, Helin, Camelia, Martin\\
 	\hline
+	    10/03/21 & Mise à jour du tableau use case + diagramme use case &  Aissa, Helin, Kokou, Salim\\
+	\hline
 	    10/03/21 & Dernières vérifications & Kokou\\
 	\hline
 	    01/04/21 & Explication de l'éditeur de niveaux & Aissa, Helin, Kokou, Salim\\
@@ -118,7 +120,8 @@ Le jeu ne sera exécutable que sous le système d'exploitation Linux.
 	\hline
 	    20/04/21 & Ajout de screenshots + explication de jeu gui & Alexandre, Camelia, Jeremy, Mario, Martin\\
 	\hline
-
+		 20/04/21 & Modification des besoins systèmes &  Aissa, Helin, Kokou, Salim\\
+	\hline
 \end{tabularx}
 
 \newpage
@@ -131,7 +134,7 @@ Le jeu ne sera exécutable que sous le système d'exploitation Linux.
 
 \begin{figure}[h!]
 \centering
-\includegraphics[width=15cm]{images/UserUseCase.jpg}
+\includegraphics[width=15cm]{images/UserUseCase.png}
 \caption{Diagramme de use case côté utilisateur}
 \label{fig:UserUseCase}
 \end{figure}
@@ -169,10 +172,10 @@ Dans le menu profile, l'utilisateur peut consulter ses informations de compte s'
 
 \begin{figure}[hbtp]
     \centering
-    \includegraphics[scale=0.5]{SRD/images/menuGui.png}
+    \includegraphics[scale=0.5]{images/menuGui.png}
     \caption{Menu version graphique }
     
-    \includegraphics[scale=0.5]{SRD/images/menuTerm.png}
+    \includegraphics[scale=0.5]{images/menuTerm.png}
     \caption{Menu version terminale }
 \end{figure}
 
@@ -230,7 +233,7 @@ termine. Elle peut également s’arrêter en cas de déconnexion d’un utilisa
 \\
 \begin{figure}
 \centering
-\includegraphics[scale=0.5]{SRD/images/launch_game_sequence_diagram.jpg}
+\includegraphics[scale=0.5]{images/launch_game_sequence_diagram.jpg}
 \caption{Diagramme de lancement d'une partie}
 \end{figure}
 
@@ -257,6 +260,24 @@ les projectiles et les obstacles.\\ \\
 
     \item[$\bullet$ Bonus:]Les bonus sont de plusieurs types et peuvent rapporter des améliorations d’armes et de santé au joueur qui réussit à l'attraper (voir Création de Partie).
 \end{itemize}
+
+\subsubsection{Éditeur de niveau}
+
+Création d'un niveau : 
+
+l'éditeur de niveau est une option uniquement disponible dans la version gui du programme. Il permet aux utilisateurs de créer un niveau personnalisé.
+
+Le créateur pourra ajouter autant de vaisseaux ennemies qu'il désire et les customiser à sa convenance.
+En effet, il pourra décider de leurs moments d'apparition et choisir leurs types. Ce type aura un impact sur l'image du vaisseau et sur la direction de son mouvement (vertical ou horizontal). Il devra aussi décider du niveau de vie de l'ennemie, de la quantité de dégât que ce dernier pourra infliger à l'aide de ses projectiles ainsi que du bonus que ce vaisseau devra lâcher si la probabilité choisie le permet. Il est laissé libre choix à l'utilisateur de choisir la position d'apparition des vaisseaux avec un drag and drop directement sur l'écran de jeu. 
+
+Le créateur peut aussi mettre des obstacles customisables de la même manière que les ennemies hormis le choix du type et du bonus qui ne sont pas disponibles. 
+
+L'utilisateur peut à sa convenance décider de la vitesse du jeu, activer ou non l'apparition d'un boss, choisir le niveau de vie ainsi que la quantité de dégâts des vaisseaux joueurs. 
+
+Jouer un niveau: 
+
+les utilisateurs pourront jouer à leur propre niveau en choisissant les paramètres usuels du lobby ainsi qu'au niveau des autres. Ils pourront interagir en votant pour les niveaux qu'ils ont aimés autant de fois qu'il le souhaite et permettre à ceux-ci de monter en haut du classement. 
+
 \newpage
 
 
@@ -268,7 +289,7 @@ les projectiles et les obstacles.\\ \\
 
 \begin{figure}[h!]
 \centering
-\includegraphics[width=16cm]{images/newSystemClassDiagram.jpg}
+\includegraphics[width=16cm]{images/newSystemClassDiagram.png}
 \caption{Diagramme de classe du système}
 \label{fig:UerUseCase}
 \end{figure}
@@ -301,10 +322,10 @@ Lorsqu'une session cliente est terminée, le serveur est mis au courant et se ch
 Dans le cas où le serveur est arrêté, tous les programmes utilisateurs ainsi que les parties lancées sont stoppées et la base de données est sauvegardée. \\
 \begin{figure}
 \centering
-\includegraphics[scale=0.21]{SRD/images/ingameGui.png}
+\includegraphics[scale=0.21]{images/ingameGui.png}
 \caption{Jeu version graphique}
 
-\includegraphics[scale=0.34]{SRD/images/ingameTerm.png}
+\includegraphics[scale=0.34]{images/ingameTerm.png}
 \caption{Jeu version terminale}
 \end{figure}
 
@@ -324,9 +345,8 @@ Dans le cas où le serveur est arrêté, tous les programmes utilisateurs ainsi 
 \subsubsection{DataBase}
 
 La base de données a pour rôle de sauvegarder les informations relatives aux utilisateurs. \\
-Un certains nombre d'opérations lui sont applicable à travers le serveur. En effet, ce dernier permet le transfert d'informations
-entre les clients et la base de données. 
-Les informations contenues dans la base de données sont les pseudonymes, mots de passe et le meilleur score de chaque compte. 
+Un certains nombre d'opérations lui sont applicable à travers le serveur. En effet, ce dernier permet le transfert d'informations entre les clients et la base de données. 
+Les informations contenues dans la base de données sont les pseudonymes, mots de passe et le meilleur score de chaque utilisateurs. Elle contient aussi les niveau crée par les utilisateurs et leur nombre de votes ainsi que la liste d'amis et de demandes d'amis pour chaque compte. 
 
 \subsubsection{Client}
 La classe Client permet à l utilisateur de communiquer avec le serveur à travers diverses actions possibles affichées sur le menu.
@@ -335,23 +355,35 @@ Toutes les fonctionnalités décrites dans la section 2.1 sont possibles. A savo
     \item Se connecter
     \item S'inscrire
     \item Créer une partie
-    \item Consulter le classement
+    \item Consulter le classement des joueurs
     \item Gérer ses amis
-    \item Consulter son \\
+    \item Consulter son profile
+    \item Crée un niveau personnalisé
+    \item Jouer à ses niveaux
+    \item Jouer au niveaux crée par les autres
+    \item Voter pour ses niveaux favoris
+    \item Consulter le classement des niveaux\\
 \end{itemize}
 Le rôle principal du client consiste en l'affichage du jeu pour l'utilisateur. Tout au long de la partie, il se chargera de l'aspect audiovisuel (musique, effets sonores, arrière-plan, etc). 
 
 \begin{figure}
 \centering
 \includegraphics[scale=0.3, angle=90]{images/newClientClassDiagram.jpg}
-\caption{Diagramme de classe côté client}
+\caption{Diagramme de classe côté client version terminal}
+\end{figure}
+\begin{figure}
+\centering
+\includegraphics[scale=0.3, angle=90]{images/newClientGUIClassDiagram.png}
+\caption{Diagramme de classe côté client version Gui}
 \end{figure}
 \newpage
 
 
 \subsubsection{Gestion des comptes}
-Un objet Account contient toutes les informations relatives à un utilisateur (pseudo, mot de passe et score, sa liste d'amis et ses requêtes). 
-Ces informations sont stockées dans la base de données et les différentes demandes d'accès à celle-ci sont traitées par le serveur.
+Un utilisateur est représenté  par un objet AccountAndVectors
+qui contient sa liste d'amis, ses requêtes d'amis , les niveaux qu'il a crée et ses informations personnels (pseudo, mot de passe, score).
+
+Ces objets sont stockées dans la base de données et les différentes demandes d'accès à celle-ci sont traitées par le serveur.
 
 - Accès:
 
@@ -361,7 +393,7 @@ Lors de la connexion, c'est encore le serveur, à travers la base de données qu
 
 - Contenu d'un compte:
 
-Chaque compte possède des informations sur l'utilisateur auquel il appartient, notamment ses identifiants (pseudo, mot de passe), son score (pour qu'il apparaisse dans le classement général des joueurs), une liste d'amis et une liste d'invitations qu'il peut consulter à tout moment.
+Chaque compte possède des informations sur l'utilisateur auquel il appartient, notamment ses identifiants (pseudo, mot de passe), son score (pour qu'il apparaisse dans le classement général des joueurs), une liste d'amis, une liste d'invitations qu'il peut consulter à tout moment ainsi qu'une liste de ses niveaux crées et leurs nombre de votes.
 
 \subsubsection{Gestion d'une partie}
 
@@ -399,7 +431,8 @@ Ce qui permet de garder le classement tous le temps à jour.
     \item Par souci de sécurité, toutes les requêtes d'un client doivent passer par le serveur
     \item Pour des raisons esthétiques, la taille du terminal doit être de 80x24
     \item La librairie open source "ncurses" est indispensable pour la version terminale
-    \itme La librairie open source "Qt" est indispensable pour la version graphique
+    \item La librairie open source "Qt" est indispensable pour la version graphique
+    \item La librairie open source "SFML" est indispensable pour la version graphique
     
 \end{itemize}
 
@@ -466,6 +499,12 @@ USE CASE   &\center{Pré-conditions}   & \hfill Post-conditions \hfill\null & Ca
 \hline
 \hline
 \textbf{Leave game}      & Etre connecté   & Fermeture du jeu  & L'utilisateur est connecté et veut quitter le jeu  & L'utilisateur est connecté et force sa sortie du jeu (CTRL+C, ...)\\
+\hline
+\hline
+\textbf{Create Level}      & Etre connecté sur la version gui  &L'ouverture de l'éditeur & L'utilisateur est connecté et veut crée un niveau  & Neant\\
+\hline
+\hline
+\textbf{View Level}      & Etre connecté sur la version gui  &Classement de tous les niveaux ou classement de ses niveaux &L'utilisateur peut consulter les niveaux, voter pour n'importe lequel et jouer un niveau& Neant\\
 \hline
 \end{longtable}
 \end{center}

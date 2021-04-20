@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?><diagram program="umlet" version="13.3">
+  <zoom_level>4</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>412</x>
+      <y>84</y>
+      <w>172</w>
+      <h>196</h>
+    </coordinates>
+    <panel_attributes>Client
+--
+-_pseudo:string
+-_pid:int
+-_pipe_to_server:string
+-_pipe_from_server:string
+-_pipe_input_game:string
+-_pipe_game_sett:string
+-_fd_send_query;
+-_fd_get_query
+--
++signIn(pseudo, pswd, is_verification)
++signUp(pseudo, pswd)
++addFriend(pseudo)
++delFriend(pseudo)
++sendFriendRequest(pseudo)
++getFriendRequest(request_result)
++delFriendRequest(pseudo)
++getFriendList(request_result)
++checkLeaderboard(request_result)
++get_profile(request_result)
++read_game_pipe()
++send_game_input(input)
++createGame(game_info)
++get_pseudo(request_result)
++createLevel(level_info)
++viewLevels()
++myLevels()
++playLevel(level, game_sett)
++voteLevel(name, author)
++getLevel(level_name, author)
+-communication(to_send)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>232</x>
+      <y>196</y>
+      <w>84</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>Server
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>412</x>
+      <y>316</y>
+      <w>204</w>
+      <h>184</h>
+    </coordinates>
+    <panel_attributes>MenuGui
+--
+-client:Client
+--
++start_session()
+-home()
+-main_m()
+-level_menu()
+-print_friends()
+-lobby()
+-level_editor(my_level)
+-verify_pseudo_format(pseudo)
+-view_level()
+-verify_pswd_format(pswd)
+-verif_friend(pseudo)
+-connexion(is_sign_in)
+-launch_game()
+-handle_SIGINT(signal)
+-launch_level(my_level,from_lead)
+-save_level(my_level)
+-custom_enemy(my_level, enemy_idx)
+-custom_obstacle(my_level,obstacle_idx)
+-custom_player(my_level)
+-view_level(is_mine)
+-print_error(error, pos)
+-print_profile()
+-print_leaderboard() 
+-check_data(line_edit,is_sign_in)
+-create_button(image, width, height)
+-create_button(parent,picture, size)
+-create_box(parent, values, pos)
+-create_line(size,pos, pswd)
+-create_table_widget(col,row,title,pos,size)
+-create_label(text, pos)
+-set_title(picture)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>492</x>
+      <y>276</y>
+      <w>28</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=1
+ uses ^</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>312</x>
+      <y>208</y>
+      <w>108</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=1..*
+&lt; send Input
+</panel_attributes>
+    <additional_attributes>10.0;20.0;250.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>312</x>
+      <y>192</y>
+      <w>108</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=1..*
+send Informations &gt;
+</panel_attributes>
+    <additional_attributes>10.0;20.0;250.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>612</x>
+      <y>392</y>
+      <w>76</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;170.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>680</x>
+      <y>368</y>
+      <w>164</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>QMainWindow
+--
+
+--
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>80</x>
+      <y>332</y>
+      <w>200</w>
+      <h>148</h>
+    </coordinates>
+    <panel_attributes>DisplayGameGui
+--
+-main_wnd: WINDOW
+-game_wnd: WINDOW
+-music: Music
+-laserSound: Sound
+--
++init()
++initialDraw()
++display(settingArray)
++drawStar(Map)
++drawObstacle(Map)
++drawEnemy(Map, tick, listPlayer)
++drawProjectile(Map)
++drawPlayer(Map, tick,listPlayer)
++drawUI(Map,PlayersInfo,tick)
++drawBonus(Map)
++drawBoss(Map)
++drawNewLevel(Map, tick)
++drawEndGame(score)
++refresh_wnd()
++drawEnergyBar(hp)
++close()
++parse_instruction()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>276</x>
+      <y>408</y>
+      <w>144</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=1
+use &gt;
+</panel_attributes>
+    <additional_attributes>10.0;20.0;340.0;20.0</additional_attributes>
+  </element>
+</diagram>
