@@ -55,7 +55,6 @@ private:
 	void parse_etat(std::string instruction);
 	void refreshWnd();
 	void eraseWnd();
-
-
+	
 };
 #endif

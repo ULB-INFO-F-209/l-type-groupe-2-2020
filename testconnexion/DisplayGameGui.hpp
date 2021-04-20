@@ -12,6 +12,7 @@
 
 class DisplayGameGui
 {
+	//soud and music effects
 	sf::Music music;
 	sf::SoundBuffer buffer;
 	sf::SoundBuffer buffer1;
@@ -24,8 +25,10 @@ class DisplayGameGui
 	//utilities attribut
 	const char delimiteur_instruction = '&';
 	const char delimiteur_parametre	  = '_';
+
 	std::vector<vec2i*> stars;
 	int tickStar;
+
 	sf::Texture texture;	
 	sf::Texture heart;
 	sf::Texture asteroid;
@@ -39,26 +42,11 @@ class DisplayGameGui
 	sf::Texture lifestealTex;
 	sf::Texture minigunTex;
 	sf::Texture enemy;
+	sf::Texture enemyH; // horizontal enemies
 	sf::Texture boss;
-	sf::Texture enemyH;
 	sf::Texture boss2;
-	sf::IntRect rectSourceSprite1{0,0,256,256};
-	sf::Sprite explosionSprite1;
-	sf::Clock clock1;
 	sf::Texture	explosionTex;
-	sf::IntRect rectSourceSprite2{0,0,256,256};
-	sf::Sprite explosionSprite2;
-	sf::Clock clock2;
-	bool exploded1=false;
-	bool exploded2=false;
-	bool explo2PosSaved=false;
-	bool explo1PosSaved=false;
-	bool twoPlayer=false;
-	bool soundExploded1=false;
-	bool soundExploded2=false;
-	sf::Font font;
-	sf::Text guiText;
-	sf::Text bossText;
+
 	sf::Sprite heartSprite;
 	sf::Sprite health_bar;
 	sf::Sprite health_bar2;
@@ -73,17 +61,39 @@ class DisplayGameGui
 	sf::Sprite lifestealSprite;
 	sf::Sprite minigunSprite;
 	sf::Sprite enemySprite;
+	sf::Sprite enemyHSprite;
 	sf::Sprite bossSprite;
 	sf::Sprite boss2Sprite;
-	sf::Sprite enemyHSprite;
+	sf::Sprite explosionSprite1;
+	sf::Sprite explosionSprite2;
+
+	sf::IntRect rectSourceSprite1{0,0,256,256};
+	sf::IntRect rectSourceSprite2{0,0,256,256};
+
 	sf::RectangleShape line{sf::Vector2f(990, 2)};
 	sf::RectangleShape bossLifeBar;
+
+	sf::Clock clock1;
+	sf::Clock clock2;
+	
+	bool exploded1=false;
+	bool exploded2=false;
+	bool explo2PosSaved=false;
+	bool explo1PosSaved=false;
+	bool twoPlayer=false;
+	bool soundExploded1=false;
+	bool soundExploded2=false;
+
+	sf::Font font;
+	sf::Text guiText;
+	sf::Text bossText;
 
 public:
 	//Constructor
 	DisplayGameGui()=default;
-	void initGraphics();
+	
 	//Drawings 
+	void initGraphics();
 	void drawStar();
 	void starHandler();
     void drawObstacle(int x, int y);
@@ -96,17 +106,21 @@ public:
 	void drawEndGame(std::string score);
 	void drawNewLevel(int tick,int levelTick,int currentLevel);
 	//...
-	int getInputWindow(std::vector<int>* inp);
-    
-	DisplayGameGui(const DisplayGameGui&)=delete;
-	DisplayGameGui& operator=(const DisplayGameGui&)=delete;
+
+	int getInputWindow(std::vector<int>* inp); 
+
+	
 	//Destructor
 	~DisplayGameGui()=default;
+
 	void close();
+
+	DisplayGameGui(const DisplayGameGui&)=delete;
+	DisplayGameGui& operator=(const DisplayGameGui&)=delete;
 
 	//parsing
 	void parse_instruction(std::string);
-	// graphics
+	//graphics
 	bool getIsOpen(){return window->isOpen();}
 	sf::RenderWindow* getWindow(){return window;}
 private:
