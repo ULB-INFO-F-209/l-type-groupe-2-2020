@@ -20,9 +20,9 @@ struct Template::Enemy_template{
 	int bonus = 0;
 
 	void get_values(int *res){
-		res[1] = hp;
-		res[2] = tick;
-		res[3] = damage;
+		res[0] = hp;
+		res[1] = tick;
+		res[2] = damage;
 	}
 };
 

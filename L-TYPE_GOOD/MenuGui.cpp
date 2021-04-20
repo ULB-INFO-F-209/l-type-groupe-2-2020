@@ -1,13 +1,5 @@
 #include "MenuGui.hpp"
 
-/********************* TODO ********************************************
-        *  23/03 : Reunir sign in, sign up using lambda function
-        *  23/03 : Maybe mettre tous les widget important en attribut?
-        *  26/03 : Design fade like r-type or fun like neon?   
-        *
- ***********************************************************************/
-
-
 MenuGui::MenuGui(): QMainWindow(){
     this->setWindowTitle(QApplication::translate("L-Type", "L-Type", nullptr));
     this->resize(800, 600);
@@ -549,7 +541,6 @@ int MenuGui::verif_friend(std::string pseudo){
     return error;
 }
 
-
 void MenuGui::lobby(std::string my_level, bool from_lead){
     QWidget *centralwidget =  new QWidget(this);
     set_background(centralwidget);
@@ -705,7 +696,6 @@ void MenuGui::lobby(std::string my_level, bool from_lead){
     this->setCentralWidget(centralwidget);
     this->show();
 }
-
 
 void MenuGui::level_editor(Parsing::Level my_level,const int time){
 
@@ -1110,7 +1100,7 @@ void MenuGui::custom_obstacle(Parsing::Level my_level, int idx){
     int ok = 0, del=1;
     std::string button_name[] = {"OK","DELETE"};
     std::string button_image[] = {"images/custom/patrickdegeu","images/custom/bobdegeu"};
-    QRect button_zone[] = {QRect(270,470,100,100),QRect(470,470,100,100)};
+    QRect button_zone[] = {QRect(150,350,75,75),QRect(350,350,75,75)};
     QPushButton * button[2];
     for (int i = 0; i < 2; ++i){
         button[i] = create_button(Dialog,button_image[i],button_zone[i]);
