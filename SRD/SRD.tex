@@ -50,10 +50,8 @@
         
             {\\[2 cm] \Huge\\INFO-F209 - Projets d'informatique 2 \\ Software Requirements Document \\ [1 cm]
             L-type\\[2 cm]}
-            {ABDOUL-AZIZ Aïssa \\[0,2 cm] ADEGNON Kokou  \\[0,2 cm] BARBER Jeremy \\[0,2 cm] DEMIREL Helin \\[0,2 cm] ELKENZE Camelia  \\[0,2 cm] KINSOEN Alexandre  \\[0,2 cm] LATOUNDJI Salim  \\[0,2 cm] MASSIMETTI Mario  \\[0,2 cm] VANNESTE Martin  \\ [3 cm] Mars 2021}
-
+            {ABDOUL-AZIZ Aïssa \\[0,2 cm] ADEGNON Kokou  \\[0,2 cm] BARBER Jeremy \\[0,2 cm] DEMIREL Helin \\[0,2 cm] ELKENZE Camelia  \\[0,2 cm] KINSOEN Alexandre  \\[0,2 cm] LATOUNDJI Salim  \\[0,2 cm] MASSIMETTI Mario  \\[0,2 cm] VANNESTE Martin  \\ [2 cm] Mars 2021}
         \end{center}
-
     \end{titlepage}
 
 \newpage
@@ -77,7 +75,7 @@ Le jeu ne sera exécutable que sous le système d'exploitation Linux.
 	\hline
 		Dates & Sujets & Noms \\
 	\hline
-		13/11/20 & UseCase Utilisateur & Camelia, Jeremy, Salim \\
+		13/11/20 & Use case Utilisateur & Camelia, Jeremy, Salim \\
 	\hline
 		22/11/20 & Annexe & Jeremy, Camelia \\
 	\hline
@@ -85,7 +83,7 @@ Le jeu ne sera exécutable que sous le système d'exploitation Linux.
 	\hline
 		11/12/20 & Version finale diagramme de classe  & Jeremy, Martin, Salim, Alexandre\\
 	\hline
-		14/12/20 & Version final des diagrammes de sequence & Helin, Aissa, Martin, Kokou, Camelia, 
+		14/12/20 & Version final des diagrammes de séquence & Helin, Aissa, Martin, Kokou, Camelia, 
 		Mario, Alexandre, Jeremy, Salim\\
 	\hline
 		15/12/20 & Introduction du SRD & Helin, Aissa, Mario\\
@@ -116,9 +114,9 @@ Le jeu ne sera exécutable que sous le système d'exploitation Linux.
 	\hline
 	    01/04/21 & Explication de l'éditeur de niveaux & Aissa, Helin, Kokou, Salim\\
 	\hline
-	    5/04/21 & Mise à jour du déroulement du jeu en gui & Alexandre, Camelia, Jeremy, Mario, Martin\\
+	    5/04/21 & Mise à jour du déroulement du jeu graphique & Alexandre, Camelia, Jeremy, Mario, Martin\\
 	\hline
-	    20/04/21 & Ajout de screenshots + explication de jeu gui & Alexandre, Camelia, Jeremy, Mario, Martin\\
+	    20/04/21 & Ajout d'images + explication de jeu graphique & Alexandre, Camelia, Jeremy, Mario, Martin\\
 	\hline
 		 20/04/21 & Modification des besoins systèmes &  Aissa, Helin, Kokou, Salim\\
 	\hline
@@ -150,19 +148,19 @@ Dans les deux cas, une option de retour à la page d'accueil sera disponible.
 
 \subsubsection{Menu principal}
 
-- Gestion des amis:
+\\- Gestion des amis:
 
-Dans cette option, l'utilisateur peut consulter sa liste d'amis et voir le score de ces derniers. Il à la possibilité d'envoyer 
+Dans ce menu, l'utilisateur peut consulter sa liste d'amis et voir le score de ces derniers. Il a la possibilité d'envoyer 
 des demandes d'amitié, en accepter ou en refuser. L'utilisateur peut également supprimer des personnes de sa liste d'amis.\\
 
 - Consulter le classement:
 
-Le classement affiche tout les utilisateurs de l'application ainsi que leurs scores. La liste est trié du joueur ayant le plus haut score à celui avec le plus bas.  
-Cette option permet au client de prendre connaissance des pseudonymes des autres pour envoyer des demandes d'amitiés.\\
+Le classement affiche tous les utilisateurs de l'application ainsi que leur score. La liste est triée du joueur ayant le meilleur score au joueur ayant le moins bon.  
+Cette option permet au client de prendre connaissance des pseudonymes des autres pour envoyer des demandes d'amis.\\
 
 - Lancer une partie:
 
-Lorsque l'utilisateur souhaite créer une partie, il se trouve dans un lobby. Il peut y modifier les paramètres par défaut du jeu et inviter un second joueur.
+Lorsque l'utilisateur souhaite créer une partie, il se trouve dans un lobby (voir point 2.1.3). Il peut y modifier les paramètres par défaut du jeu et inviter un second joueur.
 La partie est lancée quand l'hôte appuie sur play.\\
 
 - Profile:
@@ -176,7 +174,7 @@ Dans le menu profile, l'utilisateur peut consulter ses informations de compte s'
     \caption{Menu version graphique }
     
     \includegraphics[scale=0.5]{images/menuTerm.png}
-    \caption{Menu version terminale }
+    \caption{Menu version terminal}
 \end{figure}
 
 \newpage
@@ -207,30 +205,25 @@ Le choix du nombre de vies est limité à 3 pour l'utilisateur.  Il peut donc se
 - Bonus :
 Il existe différentes sortes de bonus:
 \begin{itemize}
-  \item DamageUp: augmente les dégâts des projectiles
-  \item Minigun: tir automatique à cadence élevée
-  \item TripleShot: tir de 3 projectiles en même temps
-  \item LifeSteal: chaque élimination redonne de la vie
+  \item DamageUp : augmente les dégâts des projectiles
+  \item Minigun : tir automatique à cadence élevée
+  \item TripleShot : tir de 3 projectiles en même temps
+  \item LifeSteal : chaque élimination redonne de la vie
 \end{itemize}
 
-Le joueur peut choisir la probabilité d'apparition des bonus lorsqu'il tue un ennemi. 
-Ainsi il peut rendre le jeu plus ou moins difficile. 
+Le joueur peut choisir la probabilité d'apparition des bonus (bonus apparaissant lorsqu'il tue un ennemi).
+Ainsi, il peut rendre le jeu plus ou moins difficile. 
 
 \subsubsection{Jeu}
 
 - Partie en cours:\\ \\
-Elle reçoit les actions effectuées par les joueurs ̀à travers le serveur et les applique au jeu. 
-Lors de sa création, elle possède les paramètres choisis par le joueur ainsi qu’un identifiant. 
-Ce dernier permet au serveur de déterminer à quelle partie il doit envoyer l’action d’un 
-utilisateur.\\
-
 Le joueur commence chaque partie avec une à trois vies constituée(s) de 100 points de vie (sauf en cas de partie personnalisée) et
 contrôle un vaisseau avec lequel il peut tirer des projectiles vers des ennemis, ce qui 
 augmentera son score à chaque tir atteignant sa cible. Sa quantité de points de vie est réduite
 lorsqu’il subit des dégâts. S’il n’a plus de points de vie, le joueur perd une vie. Lorsque le 
 joueur n’a plus de vie, son vaisseau est détruit et si plus aucun joueur n’a de vie, la partie se 
 termine. Elle peut également s’arrêter en cas de déconnexion d’un utilisateur, ou lorsque celui-ci a éliminé tous les ennemis.\\
-\\
+
 \begin{figure}
 \centering
 \includegraphics[scale=0.5]{images/launch_game_sequence_diagram.jpg}
@@ -243,40 +236,41 @@ La partie est divisée en 4 niveaux de difficulté croissante. Au niveau 2 et 4,
 les dégâts des ennemis accroissent.\\
 
 - Niveau (personnalisé):\\ \\
-Les parties personnalisées sont constituées d'un seul niveau complètement modulable d'une durée maximum de 200 secondes. Durant cette partie, l'utilisateur fera face aux ennemis positionnés selon ses désirs et devra affronter un boss s'il en a décidé ainsi.\\ \\
+Les parties personnalisées sont constituées d'un seul niveau complètement modulable d'une durée maximum de 200 secondes. Durant cette partie, l'utilisateur fera face aux ennemis positionnés selon ses désirs et devra affronter un boss s'il en a décidé ainsi.\\
 
 - Entités à l’écran:\\ \\
-Parmi les entités apparaissant à l’écran et pouvant se déplacer, il y a les vaisseaux, les bonus, 
-les projectiles et les obstacles.\\ \\
+Les vaisseaux, les bonus, les projectiles et les obstacles
+sont toutes des entités apparaissant et pouvant se déplacer sur l’écran.\\
+
 \begin{itemize}
-    \item[$\bullet$ Ship:]Dans ce jeu, il existe 4 types de ships : les PlayerShip, les EnemyShip (type 1 et 2) et les Boss. Tous ces vaisseaux peuvent subir et infliger des dégâts. 
+    \item[$\bullet$ Ship:] Il existe 4 types de ships : les PlayerShip, les EnemyShip (type 1 et 2) et les Boss. Tous ces vaisseaux peuvent subir et infliger des dégâts. 
     \begin{itemize}
         \item Les PlayerShip sont les vaisseaux alliés, ce sont ceux que les joueurs contrôlent. Ils peuvent se déplacer dans toutes les directions (verticales, horizontales, diagonales).
         \item Les EnemyShip peuvent lâcher un bonus en se détruisant, la probabilité de lâcher ce bonus est déterminée par l’utilisateur avant de lancer la partie. Le premier type peut uniquement se déplacer de manière verticale, alors que le second uniquement de manière horizontale.
-        \item Le Boss est l’ennemi final à affronter pour finir les niveaux. Le premier boss est un vaisseau beaucoup plus volumineux et résistant que les EnemyShip. Il a la capacité de se déplacer horizontalement de gauche à droite et de droite à gauche, et également de tirer 2 projectiles à la fois. Le second détient les mêmes caractéristiques, tout en ayant la capacité de tirer 4 projectiles à la fois au lieu de 2.\\
+        \item Le Boss est l’ennemi final ̀à affronter pour finir les niveaux. Le premier boss est un vaisseau beaucoup plus volumineux et résistant que les EnemyShip. Il a la capacité de se déplacer horizontalement de gauche à droite et de droite à gauche. Il peut également tirer 2 projectiles à la fois. Le second Boss détient les mêmes caractéristiques, tout en ayant la capacité de tirer 4 projectiles à la fois au lieu de 2.\\
     \end{itemize}
 
     \item[$\bullet$ Projectiles:]Les projectiles sont créés lorsque les vaisseaux tirent. Ils peuvent sortir de l’écran, s’annuler en rencontrant d’autres projectiles ou causer des dégâts en atteignant leur cible.\\
 
-    \item[$\bullet$ Bonus:]Les bonus sont de plusieurs types et peuvent rapporter des améliorations d’armes et de santé au joueur qui réussit à l'attraper (voir Création de Partie).
+    \item[$\bullet$ Bonus:]Les bonus sont de plusieurs types et peuvent rapporter des améliorations d’armes et de santé au joueur qui réussit à l'attraper (voir point 2.3.1 -Bonus).
 \end{itemize}
 
 \subsubsection{Éditeur de niveau}
 
 Création d'un niveau : 
 
-l'éditeur de niveau est une option uniquement disponible dans la version gui du programme. Il permet aux utilisateurs de créer un niveau personnalisé.
+L'éditeur de niveau est une option uniquement disponible dans la version graphique du programme. Il permet aux utilisateurs de créer un niveau personnalisé.
 
-Le créateur pourra ajouter autant de vaisseaux ennemies qu'il désire et les customiser à sa convenance.
-En effet, il pourra décider de leurs moments d'apparition et choisir leurs types. Ce type aura un impact sur l'image du vaisseau et sur la direction de son mouvement (vertical ou horizontal). Il devra aussi décider du niveau de vie de l'ennemie, de la quantité de dégât que ce dernier pourra infliger à l'aide de ses projectiles ainsi que du bonus que ce vaisseau devra lâcher si la probabilité choisie le permet. Il est laissé libre choix à l'utilisateur de choisir la position d'apparition des vaisseaux avec un drag and drop directement sur l'écran de jeu. 
+Le créateur pourra ajouter autant de vaisseaux ennemis qu'il désire et les ajuster à sa convenance.
+En effet, il pourra décider de leur moment d'apparition et choisir leur type. Ce type aura un impact sur l'image du vaisseau et sur la direction de son mouvement (vertical ou horizontal). Il devra aussi décider du niveau de vie de l'ennemi, de la quantité de dégât que ce dernier pourra infliger à l'aide de ses projectiles ainsi que du bonus que ce vaisseau devra lâcher si la probabilité le permet. Il est laissé libre choix à l'utilisateur de choisir la position d'apparition des vaisseaux avec un "glisser-déposer" (drag and drop) directement sur l'écran de jeu. 
 
-Le créateur peut aussi mettre des obstacles customisables de la même manière que les ennemies hormis le choix du type et du bonus qui ne sont pas disponibles. 
+Le créateur peut aussi mettre des obstacles personnalisés de la même manière que les ennemis hormis le choix du type et du bonus qui ne sont pas disponibles. 
 
-L'utilisateur peut à sa convenance décider de la vitesse du jeu, activer ou non l'apparition d'un boss, choisir le niveau de vie ainsi que la quantité de dégâts des vaisseaux joueurs. 
+L'utilisateur peut en plus décider de la vitesse du jeu, activer ou non l'apparition d'un boss, choisir le niveau de vie ainsi que la quantité de dégâts des vaisseaux joueurs. 
 
 Jouer un niveau: 
 
-les utilisateurs pourront jouer à leur propre niveau en choisissant les paramètres usuels du lobby ainsi qu'au niveau des autres. Ils pourront interagir en votant pour les niveaux qu'ils ont aimés autant de fois qu'il le souhaite et permettre à ceux-ci de monter en haut du classement. 
+Les utilisateurs pourront jouer à leurs propres niveaux ou aux niveaux des autres après avoir choisi les paramètres usuels du lobby. Ils pourront interagir en votant pour les niveaux qu'ils ont aimé autant de fois qu'ils le souhaitent et permettre à ceux-ci de monter en haut du classement. 
 
 \newpage
 
@@ -297,28 +291,32 @@ les utilisateurs pourront jouer à leur propre niveau en choisissant les paramè
 \subsubsection{Serveur}
 Le serveur est la classe principale du système. Il va gérer la majorité des interactions du programme et va servir d'intermédiaire entre le client et toutes les fonctionnalités de l'application. Pour le bon fonctionnement du programme, cette classe devra toujours être active.\\
 
-- Communication client-serveur : \\
+- Communication client-serveur :
+
 Le programme client et le serveur communiquent entre eux à travers des tubes de communications privés et publics. Les messages envoyés entre eux sont codifiés et limités.
-Lorsqu'une session utilisateur est lancée, il notifie le serveur à travers un tube public en envoyant son identifiant (pid du processus). 
-Dés lors, le serveur lui crée des tubes privées pour conserver l'intégrité des données.\\
+Lorsqu'une session utilisateur est lancée, il notifie le serveur à travers un tube public en envoyant son identifiant (Process ID). 
+Dés lors, le serveur lui crée des tubes privés pour conserver l'intégrité des données.\\
 
-- Connexion : \\
-Lorsqu'un client souhaite se connecter ou s'inscrire, il envoie son pseudo et mot de passe au serveur. Ce dernier se charge de vérifier l'existence ou la disponibilité de ces informations dans la base de données et ainsi ouvrir une session utilisateur ou non. 
+- Connexion :
 
-- Interactions entre utilisateurs : \\
+Lorsqu'un client souhaite se connecter ou s'inscrire, il envoie son pseudo et mot de passe au serveur. Ce dernier se charge de vérifier l'existence ou la disponibilité de ces informations dans la base de données et ainsi ouvrir une session utilisateur ou non.\\
+
+- Interactions entre utilisateurs :
+
 Un client peut ajouter et supprimer des amis ainsi que voir le classement de tous les utilisateurs. 
 Ces actions sont rendues possibles grâce au serveur qui sert de lien entre tous les programmes clients. 
 En effet, ces derniers envoient les messages correspondants à leurs requêtes et le serveur se charge d'interroger la base de donnée et d'envoyer les réponses adéquates. \\
 
-- Jeu : \\
-Toutes les parties lancées par les utilisateurs sont gérées par le serveur. En effet, il a pour rôle de décider de toutes les actions indépendantes du client et d'appliquer les mouvements de celui-ci.
-Ce qui signifie que c'est lui qui invoque les ennemis, les obstacles et les bonus. C'est aussi au serveur de recevoir les coups des joueurs, de les appliquer et de vérifier les collisions.
-Dés lors, le seul rôle du programme utilisateur est d'écouter les instructions du serveur et de les appliquer. 
+- Jeu :
+
+Toutes les parties lancées par les utilisateurs sont gérées par le serveur. Ce qui signifie que c'est lui qui invoque les ennemis, les obstacles et les bonus. Le serveur reçoit également les mouvements des joueurs, les applique et vérifie les collisions.
+Dés lors, le seul rôle du programme utilisateur est d'attendre les instructions du serveur et de les appliquer. 
 
 Une fois qu'une partie est terminée, le serveur se charge de mettre à jour le score des joueurs. Le score final est commun et est la somme des scores de chaque joueur.
 
-- Déconnexion du jeu : \\
-Lorsqu'une session cliente est terminée, le serveur est mis au courant et se charge donc de supprimer les tubes de communications. S'il y a une partie en cours, elle est arrêtée. 
+- Déconnexion du jeu :
+
+Lorsqu'une session cliente est terminée, le serveur est mis au courant et se charge donc de supprimer les tubes de communications qui lui sont liés. S'il y a une partie en cours, elle est arrêtée. 
 Dans le cas où le serveur est arrêté, tous les programmes utilisateurs ainsi que les parties lancées sont stoppées et la base de données est sauvegardée. \\
 \begin{figure}
 \centering
@@ -344,25 +342,24 @@ Dans le cas où le serveur est arrêté, tous les programmes utilisateurs ainsi 
 
 \subsubsection{DataBase}
 
-La base de données a pour rôle de sauvegarder les informations relatives aux utilisateurs. \\
-Un certains nombre d'opérations lui sont applicable à travers le serveur. En effet, ce dernier permet le transfert d'informations entre les clients et la base de données. 
-Les informations contenues dans la base de données sont les pseudonymes, mots de passe et le meilleur score de chaque utilisateurs. Elle contient aussi les niveau crée par les utilisateurs et leur nombre de votes ainsi que la liste d'amis et de demandes d'amis pour chaque compte. 
+La base de données a pour rôle de sauvegarder les informations relatives aux utilisateurs. Un certains nombre d'opérations lui sont applicable à travers le serveur.
+Les informations contenues dans la base de données sont les pseudonymes, mots de passe et le meilleur score de chaque utilisateur. Au final, celle-ci contient les niveaux créés par les utilisateurs, le nombre de votes qui sont liés à ces niveaux ainsi que la liste d'amis et de demandes d'amis pour chaque compte. 
 
 \subsubsection{Client}
-La classe Client permet à l utilisateur de communiquer avec le serveur à travers diverses actions possibles affichées sur le menu.
-Toutes les fonctionnalités décrites dans la section 2.1 sont possibles. A savoir : 
+La classe Client envoie ses requêtes au serveur grâce aux menus. Toutes les fonctionnalités décrites dans la section 2.1 sont possibles. A savoir : 
+
 \begin{itemize}
     \item Se connecter
     \item S'inscrire
     \item Créer une partie
     \item Consulter le classement des joueurs
     \item Gérer ses amis
-    \item Consulter son profile
-    \item Crée un niveau personnalisé
+    \item Consulter son profil
+    \item Créer un niveau personnalisé
     \item Jouer à ses niveaux
-    \item Jouer au niveaux crée par les autres
-    \item Voter pour ses niveaux favoris
-    \item Consulter le classement des niveaux\\
+    \item Jouer aux niveaux créés par les autres joueurs
+    \item Voter plusieurs fois pour ses niveaux favoris
+    \item Consulter le classement des niveaux\\\\
 \end{itemize}
 Le rôle principal du client consiste en l'affichage du jeu pour l'utilisateur. Tout au long de la partie, il se chargera de l'aspect audiovisuel (musique, effets sonores, arrière-plan, etc). 
 
@@ -381,36 +378,36 @@ Le rôle principal du client consiste en l'affichage du jeu pour l'utilisateur. 
 
 \subsubsection{Gestion des comptes}
 Un utilisateur est représenté  par un objet AccountAndVectors
-qui contient sa liste d'amis, ses requêtes d'amis , les niveaux qu'il a crée et ses informations personnels (pseudo, mot de passe, score).
-
-Ces objets sont stockées dans la base de données et les différentes demandes d'accès à celle-ci sont traitées par le serveur.
+qui contient sa liste d'amis, ses demandes d'amis , les niveaux qu'il a créé et ses informations personnelles (pseudo, mot de passe, score). Tous ces éléments sont stockés dans la base de données.\\
 
 - Accès:
 
 Lors de la création d'un compte, la disponibilité du pseudo est vérifiée par la base de données. Si celui-ci n'est pas trouvé, un nouveau compte est bien créé et ajouté dans la base.
 
-Lors de la connexion, c'est encore le serveur, à travers la base de données qui vérifie que le pseudo et le mot de passe saisis correspondent à un compte existant.
+Lors de la connexion, c'est encore le serveur, à travers la base de données qui vérifie que le pseudo et le mot de passe saisis correspondent à un compte existant.\\
 
 - Contenu d'un compte:
 
-Chaque compte possède des informations sur l'utilisateur auquel il appartient, notamment ses identifiants (pseudo, mot de passe), son score (pour qu'il apparaisse dans le classement général des joueurs), une liste d'amis, une liste d'invitations qu'il peut consulter à tout moment ainsi qu'une liste de ses niveaux crées et leurs nombre de votes.
+Chaque compte possède des informations sur l'utilisateur auquel il appartient, notamment ses identifiants (pseudo, mot de passe), son score (pour qu'il apparaisse dans le classement général des joueurs), une liste d'amis, une liste d'invitations qu'il peut consulter à tout moment ainsi qu'une liste de ses niveaux créés et leurs nombre de votes.
 
 \subsubsection{Gestion d'une partie}
 
 Lorsque le joueur voudra lancer une partie,
-il aura la possibilité de choisir les paramètres de celle-ci comme expliqué plus haut (cf 2.1.3). Si le nombre de joueurs choisi est 2, l'hôte doit obligatoirement inviter un autre utilisateur à se connecter.
+il aura la possibilité de choisir les paramètres de celle-ci(cf 2.1.3). Si le nombre de joueurs choisi est 2, l'hôte doit obligatoirement inviter un autre utilisateur à se connecter.
 
 La partie ne peut pas commencer tant que le second joueur ne réussit pas à se connecter.
 \subsubsection{Gestion des amis}
 
-- Ajout: Lorsque l'utilisateur veut ajouter un ami, la requête est envoyée à la base de données via le serveur. Elle effectue des vérifications et envoie la demande, si elle est valide, à la personne concernée. Si la demande est acceptée, la liste d'amis des deux utilisateurs est mise à jour.
+- Ajout: 
+Lorsque l'utilisateur veut ajouter un ami, la requête est envoyée à la base de données via le serveur. Après les vérifications, si la demande est valide, elle est envoyée à la personne concernée. Si celle-ci est acceptée, la liste d'amis des deux utilisateurs est mise à jour.
 
-- Suppression: La base de données fait une recherche de l'ami à supprimer et l'efface de la liste d'amis de l'utilisateur. L'utilisateur sera également supprimé de la liste de son ancien ami.
+- Suppression: 
+La base de données fait une recherche de l'ami à supprimer et l'efface de la liste d'amis de l'utilisateur. L'utilisateur sera également supprimé de la liste de son ancien ami.
 
 \subsubsection{Classement}
 
 Après chaque partie, le serveur met à jour le score de chaque joueur si celui-ci est supérieur à son score actuel. 
-Ce qui permet de garder le classement tous le temps à jour. 
+Ce qui permet de garder le classement tout le temps à jour. 
 
 \begin{figure}
 \centering
