@@ -226,25 +226,14 @@ void MenuGui::connexion(bool sign_in){
     QWidget *centralWidget = new QWidget(this);
     set_background(centralWidget);
 
-    QLineEdit *pseudo_line = create_line(centralWidget,QRect(230, 270, 400, 45),false);
-    QLineEdit *pswd_line = create_line(centralWidget,QRect(230, 370, 400, 45),true);
+    QLineEdit *pseudo_line = create_line(centralWidget,QRect(230, 250, 400, 45),false);
+    QLineEdit *pswd_line = create_line(centralWidget,QRect(230, 350, 400, 45),true);
 
-    create_label(centralWidget, "Username : ", QRect(140, 270, 91, 45));
-    create_label(centralWidget, "Password : ", QRect(130, 370, 101, 45));
+    create_label(centralWidget, "Username : ", QRect(140, 250, 91, 45));
+    create_label(centralWidget, "Password : ", QRect(130, 350, 101, 45));
 
-    QWidget *horizontalLayoutWidget = new QWidget(centralWidget);
-    horizontalLayoutWidget->setGeometry(QRect(110, 440, 680, 200));
-    horizontalLayoutWidget->setAttribute(Qt::WA_TranslucentBackground);
-
-    QHBoxLayout *horizontalLayout =  new QHBoxLayout(horizontalLayoutWidget);
-    horizontalLayout->setSpacing(50);
-    horizontalLayout->setContentsMargins(11, 11, 11, 11);
-
-    QPushButton *ok_button =  create_button(horizontalLayoutWidget,"images/buttons/ok", 150,150 );
-    horizontalLayout->addWidget(ok_button);
-
-    QPushButton *cancel_button = create_button(horizontalLayoutWidget,"images/buttons/back", 150,150 );
-    horizontalLayout->addWidget(cancel_button);
+    QPushButton *ok_button =  create_button(centralWidget,"images/buttons/ok", QRect(25,455,320,110));
+    QPushButton *cancel_button = create_button(centralWidget,"images/buttons/back", QRect(375,450,380,120));
 
     if(sign_in)
         set_title(centralWidget, "images/titles/signIn");
@@ -260,7 +249,6 @@ void MenuGui::connexion(bool sign_in){
 
     this->setCentralWidget(centralWidget);
     this->show();
-
 }
 
 void MenuGui::main_m(){
@@ -375,9 +363,8 @@ void MenuGui::level_menu(){
     QPushButton * button[4]; 
     int create = 0, ranking=1, my_levels = 2, back=3;
     std::string path = "images/buttons/editor/";
-    std::string pathIcon[] = { path+"create_level", path+"level_ranking", path+"my_levels", path+"back"};
-    QRect rects[] = {QRect(30, 260, 180, 150), QRect(300, 260, 180, 150), QRect(560, 260, 180, 150), QRect(310, 460, 170,120)};
-   
+    std::string pathIcon[] = { path+"create_level", path+"level_ranking", path+"my_levels", "images/buttons/back2"};
+    QRect rects[] = {QRect(30, 260, 180, 150), QRect(300, 260, 180, 150), QRect(560, 260, 180, 150), QRect(260, 460, 260, 70)};
     for( int i = 0; i < 4; i++){
         button[i] = create_button(centralwidget, pathIcon[i], rects[i]);
     }
@@ -735,7 +722,7 @@ void MenuGui::lobby(std::string my_level, bool from_lead){
 
 void MenuGui::level_editor(Parsing::Level my_level){
 
-    this->setStyleSheet(QStringLiteral("background-color:white;"));
+    this->setStyleSheet(QStringLiteral("background-color:black;"));
     this->setFixedSize(1500,800);
 
     QWidget *centralwidget = new QWidget(this);
@@ -756,7 +743,7 @@ void MenuGui::level_editor(Parsing::Level my_level){
     lbl->setMovie(mv);
 
     QLabel *title_label = new QLabel(centralwidget);
-    title_label->setGeometry(QRect(400, 10, 621, 81));
+    title_label->setGeometry(QRect(400, 0, 621, 150));
     QPixmap pix_title("images/titles/level_lab");
     pix_title = pix_title.scaled(title_label->size(),Qt::KeepAspectRatio);
     title_label->setPixmap( pix_title);
@@ -1237,7 +1224,7 @@ void MenuGui::custom_player(Parsing::Level my_level){
     speed_label->setMinimumSize(QSize(100, 45));
     speed_label->setMaximumSize(QSize(100, 45));
     speed_label->setAlignment(Qt::AlignCenter);
-    std::string box_value[] = {"SLUG", "TURTLE", "HUMAN", "HORSE","CHEETAHS"};
+    std::string box_value[] = {"SLUG", "TURTLE", "HUMAN", "HORSE","CHEETAH"};
     for(auto val :box_value){
         speed_box->addItem(QString::fromStdString(val));
     }
