@@ -709,6 +709,7 @@ void MapHandler::playerInit(PlayerShip* p1,PlayerShip* p2) {
 }
 void MapHandler::updateBounds() {
     for( PlayerShip* p : player_ships_set){
+<<<<<<< HEAD
         p->setBounds({ { static_cast<uint_fast16_t>(p->getPos().x -1), p->getPos().y}, {3, 2}});
     }
     for(EnemyShip* e: enemy_ships_set){
@@ -716,6 +717,15 @@ void MapHandler::updateBounds() {
     }
     for(Boss* b: boss_set){
         b->setBounds({{static_cast<uint_fast16_t>(b->getPos().x), b->getPos().y},{18,6}});
+=======
+        p->setBounds({ { static_cast<int>(p->getPos().x -1), p->getPos().y}, {3, 2}});
+    }
+    for(EnemyShip* e: enemy_ships_set){
+        e->setBounds({{static_cast<int>(e->getPos().x-1), e->getPos().y},{3,1}});
+    }
+    for(Boss* b: boss_set){
+        b->setBounds({{static_cast<int>(b->getPos().x), b->getPos().y},{18,6}});
+>>>>>>> systeme
     }
 
 }

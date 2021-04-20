@@ -19,6 +19,7 @@ enum difficulty{easy, medium, hard};
 
 class MapObject{
 public:
+<<<<<<< HEAD
     MapObject(){
         hp = 500;
     }
@@ -33,6 +34,19 @@ public:
 
         std::cout << "JE suis le destructeur" <<std::endl;
     };
+=======
+    enum type{star,obstacle,playership,projectile,bonus,enemyship,boss};
+    MapObject(vec2i position,int health_points,type proje_t):typ(proje_t),pos(position),hp(health_points){};
+    MapObject(vec2i position,int health_points):typ(),pos(position),hp(health_points){};
+    MapObject(vec2i position):typ(),pos(position),hp(0){};
+    virtual void move();
+    virtual vec2i getPos() const;
+    void setPos(int x, int y){pos.x = x; pos.y = y;}
+    virtual void touched(int damage);
+    virtual void setHp(int h){hp =h;}
+    virtual int getHp(){return hp;}
+    virtual ~MapObject(){};
+>>>>>>> systeme
     type typ;
 
 protected:
@@ -43,19 +57,28 @@ protected:
 class Star: public MapObject{ //background
 public:
     Star()=default;
+<<<<<<< HEAD
     Star(int nx, int ny) { pos.x = nx; pos.y = ny;typ=star; }
+=======
+    Star(int nx, int ny):MapObject({nx,ny},0,star) {}
+>>>>>>> systeme
 };
 
 class Obstacle: public MapObject{
     int damage;
 public:
     Obstacle()=default;
+<<<<<<< HEAD
     Obstacle(int nx, int ny,int dam,int h) {pos.x = nx; pos.y = ny; damage=dam;typ=obstacle;hp=h;}
+=======
+    Obstacle(int nx, int ny,int dam,int h):MapObject({nx,ny},h,obstacle),damage(dam){};
+>>>>>>> systeme
     int get_damage() const {return damage;};
 };
 
 class Ship: public MapObject{
 protected:
+<<<<<<< HEAD
     int collisionDamage;
     int fireRate;
     char disp_char;
@@ -68,6 +91,17 @@ public:
     Ship(){};
     char getChar() const{return disp_char;}
     void setChar(char c){disp_char=c;}
+=======
+    int collisionDamage,fireRate;
+    char disp_char;
+    rect bounds;
+    int shootDamage,projectileHp;
+
+
+public:
+    Ship(int x ,int y,int health_p,int cd, int fr, char ch, rect b, int sd, int pHp):MapObject({x,y},health_p),collisionDamage(cd),fireRate(fr),disp_char(ch),bounds(b),shootDamage(sd),projectileHp(pHp){};
+    char getChar() const{return disp_char;}
+>>>>>>> systeme
     void setBounds(rect b){bounds = b;}
     rect getBounds(){return bounds;}
     void setDammage(int dam){collisionDamage=dam;} //change name
@@ -87,7 +121,11 @@ class Projectile: public MapObject{
 public:
     Projectile()=default;
     void move() override;
+<<<<<<< HEAD
     Projectile(int nx, int ny,int dam,bool ship_t, int h, int p) {pos.x = nx; pos.y = ny; damage=dam; shipType=ship_t;typ=projectile; hp = h; player = p;}
+=======
+    Projectile(int nx, int ny,int dam,bool ship_t, int h, int p):MapObject({nx,ny},h,projectile),damage(dam),shipType(ship_t),player(p) {};
+>>>>>>> systeme
     int getDamage() const{return damage;}
     bool getShipType() const{return shipType;}
     int getPlayer() const{return player;}
@@ -96,9 +134,15 @@ public:
 class Bonus: public MapObject{
     bonusType bonustype;
 public:
+<<<<<<< HEAD
     Bonus(){hp=20;};
     Bonus(int nx, int ny,bonusType bonus_t) :bonustype(bonus_t)  {pos.x = nx; pos.y = ny; hp=10;};
     bonusType const getBonusType() const {return bonustype;}
+=======
+    Bonus()=default;
+    Bonus(int nx, int ny,bonusType bonus_t) :MapObject({nx,ny},10),bonustype(bonus_t){};
+    bonusType getBonusType() const {return bonustype;}
+>>>>>>> systeme
 };
 
 class PlayerShip : public Ship{
@@ -111,7 +155,11 @@ class PlayerShip : public Ship{
 
 public:
     PlayerShip()=default;
+<<<<<<< HEAD
     PlayerShip(int x, int y, rect b, char c, int h, int nb, int dam, int s){pos.x = x; pos.y = y; bounds=b; hp=h; disp_char=c;isAlive=true; playerNb = nb; collisionDamage=dam; score = s;currentBonus=noBonus;shootDamage=10; projectileHp = 10;}
+=======
+    PlayerShip(int x, int y, rect b, char c, int h, int nb, int dam):Ship(x,y,h,dam,0,c,b,10,10),killTime(0),isAlive(true),playerNb(nb),score(0),currentBonus(noBonus){};
+>>>>>>> systeme
     int getKillTime() const{return killTime;}
     bool getIsAlive() const{return isAlive;}
     void setKillTime(int t){killTime=t;}
@@ -127,11 +175,18 @@ public:
 };
 
 class EnemyShip : public Ship{
+<<<<<<< HEAD
     double bonusDropProb;
     int shootTime;
 public:
     EnemyShip()=default;
     EnemyShip(int x, int y, rect b, char c,int h, int t, int shootDam){pos.x = x; pos.y = y; setBounds(b); setHp(h); setChar(c); setDammage(10); shootTime=t; shootDamage = shootDam; projectileHp = 10;}
+=======
+    int shootTime;
+public:
+    EnemyShip()=default;
+    EnemyShip(int x, int y, rect b, char c,int h, int t, int shootDam):Ship(x,y,h,10,0,c,b,shootDam,10),shootTime(t){};
+>>>>>>> systeme
     void setShootTime(int t){shootTime=t;}
     int getShootTime() const{return shootTime;}
 };
@@ -141,7 +196,11 @@ class Boss : public Ship{
     bool movingRight;
 public:
     Boss()= default;
+<<<<<<< HEAD
     Boss(int x, int y, rect b, char c,int h, int t,int shootDam) {pos.x = x; pos.y = y; bounds=b; hp=h; disp_char=c; collisionDamage=100; shootTime = t;shootDamage = shootDam; projectileHp = 30; movingRight=true;}
+=======
+    Boss(int x, int y, rect b, char c,int h, int t,int shootDam):Ship(x,y,h,100,0,c,b,shootDam,30),shootTime(t),movingRight(true) {}
+>>>>>>> systeme
     void move() override{
         if(movingRight)
             pos.x++;

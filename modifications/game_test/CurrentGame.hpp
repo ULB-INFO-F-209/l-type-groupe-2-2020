@@ -13,6 +13,10 @@
 #include "Interface_game.hpp"
 #include "InternGameObject.hpp"
 #include "GameConstante.hpp"
+<<<<<<< HEAD
+=======
+#include "settingServer.hpp"
+>>>>>>> systeme
 
 class CurrentGame {
 
@@ -21,6 +25,7 @@ class CurrentGame {
     bool twoPlayers;
     bool friendlyFire;
     int dropRate;
+<<<<<<< HEAD
     difficulty dif{};
 
     MapHandler map;
@@ -28,10 +33,20 @@ class CurrentGame {
     int tick=0;
     int finalScore1{};
     int finalScore2{};
+=======
+    difficulty dif;
+
+    MapHandler map;
+
+    int tick;
+    int finalScore1;
+    int finalScore2;
+>>>>>>> systeme
 
     PlayerShip* playership1;
     Player* player1;
 
+<<<<<<< HEAD
     PlayerShip* playership2 = nullptr;
     Player* player2 = nullptr;
     
@@ -40,6 +55,16 @@ class CurrentGame {
     int in_char = 0;
     bool exit_requested = false;
     bool game_over = false;
+=======
+    PlayerShip* playership2;
+    Player* player2;
+    
+    std::vector<Player*> listPlayer;
+
+    int in_char;
+    bool exit_requested;
+    bool game_over;
+>>>>>>> systeme
 
     // méthodes privées
     void execInput(int inChar, uint_fast16_t x1, uint_fast16_t y1, bool firstPlayer);
@@ -47,6 +72,7 @@ class CurrentGame {
     void saveScore();
 
 public:
+<<<<<<< HEAD
     CurrentGame()=default;
     CurrentGame(bool twoP, int dropR, difficulty d, bool ff):twoPlayers(twoP),dropRate(dropR),map(dropR,d){ dif=d; friendlyFire=ff;}
     CurrentGame(bool twoP, int dropR, difficulty d, bool ff, Interface_game* anInterface):twoPlayers(twoP),dropRate(dropR),map(dropR,d){ dif=d; friendlyFire=ff;
@@ -81,6 +107,12 @@ public:
         map.setBounds(game_area);
         
     }
+=======
+    CurrentGame()=delete;
+    CurrentGame(const CurrentGame&)=delete;
+    CurrentGame& operator=(const CurrentGame&)=delete;
+    CurrentGame(Game_settings game_sett);
+>>>>>>> systeme
     //void run_test(theSettings* setting_to_fill,char in_char);
     int getInput() const{return in_char;}
     void getSettings(settingServer* settings);
@@ -94,6 +126,10 @@ public:
     void set_client_tick(int t);
     
 
+<<<<<<< HEAD
+=======
+    ~CurrentGame(){delete player1;delete playership1; if(twoPlayers){delete playership2; delete player2;} }
+>>>>>>> systeme
     void run();
 };
 

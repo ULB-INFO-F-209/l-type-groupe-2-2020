@@ -4,8 +4,11 @@
 #include <vector>
 #include <iostream>
 
+<<<<<<< HEAD
 typedef struct settingServer;
 typedef struct theSettings;
+=======
+>>>>>>> systeme
 
 struct settingServer{
     MapHandler* object_map;
@@ -55,6 +58,7 @@ struct sizeArray{
 
 };
 
+<<<<<<< HEAD
 struct settingArray{
     sizeArray my_size;
     Boss boss_set[1];
@@ -116,6 +120,8 @@ struct settingArray{
     
 };
 
+=======
+>>>>>>> systeme
 struct Game_settings
 {
 	int nb_player = 1;

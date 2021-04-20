@@ -11,6 +11,22 @@
  */
 #include "CurrentGame.hpp"
 
+<<<<<<< HEAD
+=======
+CurrentGame::CurrentGame(Game_settings  game_sett): game_area( {0, 0}, {78, 16}),screen_area( {0, 0}, {80, 24}),
+                                        twoPlayers(game_sett.nb_player == 2? true:false),friendlyFire(game_sett.ally_shot),
+                                        dropRate(game_sett.drop_rate),dif(game_sett.diff),map(dropRate,dif),tick(0),finalScore1(0),
+                                        finalScore2(0), playership1(new PlayerShip(10, 5, { {9, 5 }, { 3, 2 } }, '0',100, 0,100)),
+                                        player1(new Player(game_sett.nb_lives)),
+                                        playership2(twoPlayers?new PlayerShip(50, 5, { { 49, 5 }, { 3, 2 } }, '1',100, 1,100):nullptr ),
+                                        player2(twoPlayers?new Player(game_sett.nb_lives): nullptr),
+                                        listPlayer(),in_char(),exit_requested(false),game_over(false) {
+        
+    map.playerInit(playership1,playership2);
+    map.setBounds(game_area);
+        
+}
+>>>>>>> systeme
 
 void CurrentGame::execInput(int inChar, uint_fast16_t x1, uint_fast16_t y1, bool firstPlayer){
     if(firstPlayer){
@@ -140,6 +156,7 @@ void CurrentGame::saveScore(){      //final score save
 }
 
 
+<<<<<<< HEAD
 void CurrentGame::run() {
 
     tick = 0;
@@ -256,6 +273,8 @@ void CurrentGame::run() {
 
 
 
+=======
+>>>>>>> systeme
 void CurrentGame::getSettings(settingServer* settings) {
     settings->object_map = &map;
     settings->object_playership1 = playership1;
@@ -455,25 +474,41 @@ void CurrentGame::spawnObstacle(int posx){
     
     map.spawnObstacle(posx);
 
+<<<<<<< HEAD
 };
+=======
+}
+>>>>>>> systeme
 
 void CurrentGame::spawnEnemy(int posx,int tick){
     
     map.spawnEnemy(posx,tick);
 
+<<<<<<< HEAD
 };
+=======
+}
+>>>>>>> systeme
 
 void CurrentGame::spawnBoss(int tick){
     
     map.spawnBoss(tick);
 
+<<<<<<< HEAD
 };
+=======
+}
+>>>>>>> systeme
 
 void CurrentGame::spawnBonus(int posx,int posy,int rand_int){
     
     map.spawnBonus_client(posx,posy,rand_int);
 
+<<<<<<< HEAD
 };
+=======
+}
+>>>>>>> systeme
 
 void CurrentGame::set_client_tick(int t){
 	tick = t;

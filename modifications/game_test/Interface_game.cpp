@@ -112,6 +112,7 @@ void Interface_game::display(settingServer* settings){
     }
     refresh_wnd();
 }
+<<<<<<< HEAD
 void Interface_game::display(settingArray *sett){
     werase(game_wnd); // attention ?
     if (sett->game_over){
@@ -131,6 +132,9 @@ void Interface_game::display(settingArray *sett){
     drawUI(sett->player_ships_set,sett->list_player,sett->score_j1,sett->score_j2 ,sett->tick, sett->two_players,sett->current_level,sett->my_size.player_ships_set);
     refresh_wnd();
 }
+=======
+
+>>>>>>> systeme
 void Interface_game::drawStar(MapHandler *m) {
     for(auto s : m->getStars()){
         mvwaddch(game_wnd, s->getPos().y, s->getPos().x, '.');
