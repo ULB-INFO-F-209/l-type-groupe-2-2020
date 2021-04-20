@@ -68,18 +68,18 @@ MapHandler.o: game_test/MapHandler.cpp game_test/MapHandler.hpp game_test/Rect.h
 Player.o: game_test/Player.cpp game_test/Player.hpp
 	g++ -g -c -o Player.o Player.cpp $(flag)
 
-compile: server client_gui
+compile: server client_gui client_terminal
 
 install:
 	echo "ecrire les commandes pour installer ncurses, sfml et qt5 -_- "
 
-run_server:	server
+run_server:	
 	./process_server
 
-run_client_terminal: client_terminal
+run_client_terminal: 
 	./process_client_terminal
 
-run_client_gui: client_gui
+run_client_gui: 
 	./process_client_gui
 
 clean:

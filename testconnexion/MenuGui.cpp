@@ -720,7 +720,7 @@ void MenuGui::lobby(std::string my_level, bool from_lead){
 }
 
 
-void MenuGui::level_editor(Parsing::Level my_level){
+void MenuGui::level_editor(Parsing::Level my_level,const int time){
 
     this->setStyleSheet(QStringLiteral("background-color:black;"));
     this->setFixedSize(1500,800);
@@ -773,29 +773,28 @@ void MenuGui::level_editor(Parsing::Level my_level){
     horizontalLayoutWidget->setGeometry(QRect(10, 649, 1231, 91));
     QHBoxLayout *horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
     horizontalLayout->setContentsMargins(0, 0, 0, 0);
-    QLabel *tick_label = new QLabel("Tick : ",horizontalLayoutWidget);
+    QLabel *tick_label = new QLabel("Time : ",horizontalLayoutWidget);
     tick_label->setMinimumSize(QSize(80, 0));
-    //tick_label->setFrameShape(QFrame::WinPanel);
-    //tick_label->setLineWidth(3);
+    
     tick_label->setTextFormat(Qt::RichText);
     tick_label->setAlignment(Qt::AlignCenter);
     tick_label->setStyleSheet("QLabel { background-color : black; color : white; }");
     tick_label->setAttribute(Qt::WA_TranslucentBackground);
     QSlider *tick_slider = new QSlider(horizontalLayoutWidget);
-    tick_slider->setMaximum(20);
-    tick_slider->setPageStep(1);
     tick_slider->setOrientation(Qt::Horizontal);
     tick_slider->setTickPosition(QSlider::TicksBothSides);
     tick_slider->setTickInterval(10);
     tick_slider->setMaximum(200);
     tick_slider->setSingleStep(1);
     tick_slider->setPageStep(1);
+    tick_slider->setValue(time);
     tick_slider->setStyleSheet("color: black; background-color: white");
     tick_slider->setAttribute(Qt::WA_TranslucentBackground);
     QLCDNumber *tick_lcd = new QLCDNumber(horizontalLayoutWidget);
     tick_lcd->setFrameShape(QFrame::WinPanel);
     tick_lcd->setFrameShadow(QFrame::Plain);
     tick_lcd->setLineWidth(3);
+    tick_lcd->display(time);
     tick_lcd->setDigitCount(4);
     tick_lcd->setStyleSheet("color: black; background-color: white");
 
@@ -820,12 +819,12 @@ void MenuGui::level_editor(Parsing::Level my_level){
         connect(e, &ClickableLabel::clicked, this,[this, my_level,i](){
             custom_enemy(my_level, i);});
 
-        connect(e, &ClickableLabel::changedPos, this,[this, my_level,i, game_zone](){
+        connect(e, &ClickableLabel::changedPos, this,[this, my_level,i, game_zone,tick_slider](){
             auto lev = my_level;
             lev.enemy_list[i].x = (game_zone->get_enemy(i))->posx();
             lev.enemy_list[i].y = (game_zone->get_enemy(i))->posy();
 
-            level_editor(lev);
+            level_editor(lev,tick_slider->value());
 
         });
     }
@@ -844,11 +843,11 @@ void MenuGui::level_editor(Parsing::Level my_level){
             custom_obstacle(my_level, i);
         });
 
-        connect(e, &ClickableLabel::changedPos, this,[this, my_level,i, game_zone](){
+        connect(e, &ClickableLabel::changedPos, this,[this, my_level,i, game_zone,tick_slider](){
             auto lev = my_level;
             lev.obs_list[i].x = (game_zone->get_obs(i))->posx();
             lev.obs_list[i].y = (game_zone->get_obs(i))->posy();
-            level_editor(lev);
+            level_editor(lev,tick_slider->value());
             
 
         });
@@ -958,9 +957,9 @@ void MenuGui::save_level(Parsing::Level my_level){
 }
 
 void MenuGui::custom_enemy(Parsing::Level my_level, int idx){
-	this->setStyleSheet(QStringLiteral("background-color:white;"));
     QDialog * Dialog = new QDialog(this);
     Dialog->resize(859, 665);
+	Dialog->setStyleSheet(QStringLiteral("background-color:white;"));
     Dialog->setModal(true);
 
     QLabel * title_label = new QLabel("CUSTOM ENEMY", Dialog);
@@ -989,28 +988,25 @@ void MenuGui::custom_enemy(Parsing::Level my_level, int idx){
         spin_box[i] = new QSpinBox(formLayoutWidget);
         spin_box[i]->setMinimumSize(QSize(100, 45));
         spin_box[i]->setMaximumSize(QSize(100, 45));
+        spin_box[i]->setMaximum(100);
         spin_box[i]->setValue(spin_value[i]);
         formLayout->setWidget(i, QFormLayout::FieldRole, spin_box[i]);
     }
-    spin_box[tick]->setMaximum(3000);
+    spin_box[tick]->setMaximum(200);
     spin_box[tick]->setSingleStep(1);
     spin_box[tick]->setValue(spin_value[tick]);
     //spin_box[tick]->findChild<QLineEdit*>()->setReadOnly(true);
 
     /*************BUTTON_ZONE********************/
-    QWidget *horizontalLayoutWidget = new QWidget(Dialog);
-    horizontalLayoutWidget->setGeometry(QRect(40, 540, 771, 80));
-    QHBoxLayout* horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
-    horizontalLayout->setContentsMargins(0, 0, 0, 0);
-
+    
     int ok = 0, del=1;
     std::string button_name[] = {"OK","DELETE"};
+    std::string button_image[] = {"images/custom/patrickdegeu","images/custom/bobdegeu"};
+    QRect button_zone[] = {QRect(270,470,100,100),QRect(470,470,100,100)};
     QPushButton * button[2];
     for (int i = 0; i < 2; ++i){
-        button[i] = new QPushButton(button_name[i].c_str(), horizontalLayoutWidget);
-        button[i]->setMinimumSize(QSize(100, 45));
-        button[i]->setMaximumSize(QSize(100, 45));
-        horizontalLayout->addWidget( button[i]);
+        button[i] = create_button(Dialog,button_image[i],button_zone[i]);
+        
     }
 
     /*************SKIN_ZONE********************/
@@ -1088,7 +1084,7 @@ void MenuGui::custom_enemy(Parsing::Level my_level, int idx){
         }
 
         Dialog->hide();
-        level_editor(copy_level);
+        level_editor(copy_level,spin_box[1]->value());
     });
     connect(button[del], &QPushButton::clicked, this, [this, my_level,idx, Dialog](){
         Dialog->hide();
@@ -1101,9 +1097,9 @@ void MenuGui::custom_enemy(Parsing::Level my_level, int idx){
 }
 
 void MenuGui::custom_obstacle(Parsing::Level my_level, int idx){
-	this->setStyleSheet(QStringLiteral("background-color:white;"));
     QDialog * Dialog = new QDialog(this);
     Dialog->resize(548, 480);
+	Dialog->setStyleSheet(QStringLiteral("background-color:white;"));
     Dialog->setModal(true);
 
     QLabel * title_label = new QLabel("CUSTOM OBSTACLE", Dialog);
@@ -1132,29 +1128,25 @@ void MenuGui::custom_obstacle(Parsing::Level my_level, int idx){
         spin_box[i] = new QSpinBox(formLayoutWidget);
         spin_box[i]->setMinimumSize(QSize(100, 45));
         spin_box[i]->setMaximumSize(QSize(100, 45));
+        spin_box[i]->setMaximum(100);
         spin_box[i]->setValue(spin_value[i]);
         formLayout->setWidget(i, QFormLayout::FieldRole, spin_box[i]);
     }
     spin_box[position]->setMaximum(X_MAX);
     spin_box[position]->setValue(spin_value[position]);
-    spin_box[tick]->setMaximum(3000);
+    spin_box[tick]->setMaximum(200);
     spin_box[tick]->setSingleStep(1);
     spin_box[tick]->setValue(spin_value[tick]);
 
     /*************BUTTON_ZONE********************/
-    QWidget *horizontalLayoutWidget = new QWidget(Dialog);
-    horizontalLayoutWidget->setGeometry(QRect(100, 360, 371, 50));
-    QHBoxLayout* horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
-    horizontalLayout->setContentsMargins(0, 0, 0, 0);
 
     int ok = 0, del=1;
     std::string button_name[] = {"OK","DELETE"};
+    std::string button_image[] = {"images/custom/patrickdegeu","images/custom/bobdegeu"};
+    QRect button_zone[] = {QRect(270,470,100,100),QRect(470,470,100,100)};
     QPushButton * button[2];
     for (int i = 0; i < 2; ++i){
-        button[i] = new QPushButton(button_name[i].c_str(), horizontalLayoutWidget);
-        button[i]->setMinimumSize(QSize(100, 45));
-        button[i]->setMaximumSize(QSize(100, 45));
-        horizontalLayout->addWidget( button[i]);
+        button[i] = create_button(Dialog,button_image[i],button_zone[i]);
     }
 
     /***************CONNECTION********************/
@@ -1166,7 +1158,7 @@ void MenuGui::custom_obstacle(Parsing::Level my_level, int idx){
         copy_level.obs_list[idx].damage = spin_box[3]->value();
 
         Dialog->hide();
-        level_editor(copy_level);
+        level_editor(copy_level,spin_box[2]->value());
     });
     connect(button[del], &QPushButton::clicked, this, [this, my_level,idx, Dialog](){
         Dialog->hide();
@@ -1253,13 +1245,13 @@ void MenuGui::custom_player(Parsing::Level my_level){
     horizontalLayout->setContentsMargins(0, 0, 0, 0);
 
     int ok = 0, cancel=1;
-    std::string button_name[] = {"OK","CANCEL"};
+    std::string button_name[] = {"OK","DELETE"};
+    std::string button_image[] = {"images/custom/MrKrabsdegeu","images/custom/planktondegeu"};
+    QRect button_zone[] = {QRect(150,350,75,75),QRect(350,350,75,75)};
     QPushButton * button[2];
     for (int i = 0; i < 2; ++i){
-        button[i] = new QPushButton(button_name[i].c_str(), horizontalLayoutWidget);
-        button[i]->setMinimumSize(QSize(100, 45));
-        button[i]->setMaximumSize(QSize(100, 45));
-        horizontalLayout->addWidget( button[i]);
+        button[i] = create_button(Dialog,button_image[i],button_zone[i]);
+        
     }
     /***************CONNECTION********************/
     connect(button[ok], &QPushButton::clicked, this, [this, my_level,Dialog, spin_box/*, skin_player1, skin_player2,*/, speed_box,boss_box](){

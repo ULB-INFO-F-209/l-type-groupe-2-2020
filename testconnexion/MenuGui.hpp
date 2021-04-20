@@ -90,7 +90,7 @@ private:
 	void main_m();
 	void print_friends();
 	void lobby(std::string my_level="0",bool from_lead=false);
-	void level_editor(Parsing::Level my_level);
+	void level_editor(Parsing::Level my_level,const int time=0);
 	void launch_game();
 	void set_background(QWidget *centralwidget);
 	void set_title(QWidget *parent, std::string image);
