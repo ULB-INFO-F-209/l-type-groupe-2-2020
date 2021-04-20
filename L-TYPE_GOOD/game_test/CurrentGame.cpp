@@ -243,19 +243,17 @@ std::string CurrentGame::run_server(int *move_to_exec){
     map.updateBounds();
 
 
-    if (map.getCurrentLevel() == lastLevel+1 && tickGameOver == -1) //Dernier lvl = x, si on est à x+1 -> on a gagné
-        tickGameOver = tick;
+    if (map.getCurrentLevel() == lastLevel+1) //Dernier lvl = x, si on est à x+1 -> on a gagné
+        game_over =true;
 
     if(twoPlayers){
-        if (player1->getnLives() < 1 && player2->getnLives() < 1 && tickGameOver == -1)
-            tickGameOver = tick;
+        if (player1->getnLives() < 1 && player2->getnLives() < 1)
+            game_over =true;
     }else{
-        if (player1->getnLives() < 1 && tickGameOver == -1)
-            tickGameOver = tick;
+        if (player1->getnLives() < 1)
+            game_over =true;
     }
 
-    if(tickGameOver != -1 && tick >= tickGameOver + 300)
-        game_over = true;
 
     heal();
 
