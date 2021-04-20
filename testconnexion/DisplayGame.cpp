@@ -63,6 +63,8 @@ void DisplayGame::parse_affichage(std::string instruction){
 		drawProjectile(x,y,true,false);
 	else if(objet=="PJ")		//projectile joueur
 		drawProjectile(x,y,false,true);
+	else if(objet=="PJ2")		//projectile joueur
+		drawProjectile(x,y,false,false);
 	else if(objet=="E"){			//Vaisseau ennemie
 		int explo;
 		idx = instruction.find(delimiteur_parametre);
@@ -300,12 +302,12 @@ void DisplayGame::drawPlayer(int player, int x , int y, int tick, bool isBlinkin
         int player_color;
 		char player_char;
         if (player==1){
-            player_color=2;
-			player_char = '1';
+            player_color=5;
+			player_char = '0';
         }
         else{
-			player_color=5;
-			player_char= '0';
+			player_color=2;
+			player_char= '1';
 		}
         wattron(game_wnd, COLOR_PAIR(player_color));
         mvwaddch(game_wnd, y, x, static_cast<chtype>(player_char));
