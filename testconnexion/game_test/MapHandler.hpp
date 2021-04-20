@@ -19,8 +19,7 @@ enum bonusType{damageUp, tripleShot, lifeSteal, minigun,noBonus};
 
 class MapObject{
 /**
- * Tous les objets sur la map  
- * 
+ * Classe représentant tous les objets de la map 
 */
 public:
     virtual void move();
@@ -38,7 +37,7 @@ protected:
     int hp=0;
 };
 
-class Star final : public MapObject{ //background
+class Star final : public MapObject{ // les étoiles qui défilent en arrière plan
 public:
     Star()=default;
     Star(uint_fast16_t nx, uint_fast16_t ny) { pos.x = nx; pos.y = ny;typ=star;}
@@ -46,7 +45,7 @@ public:
 };
 
 class Obstacle final: public MapObject{
-    int damage=0;
+    int damage=0;   // dégats qu'ils infligent au vaisseau qu'il touche
 public:
     Obstacle()=default;
     Obstacle(uint_fast16_t nx, uint_fast16_t ny,int dam,int h) {pos.x = nx; pos.y = ny; damage=dam;typ=obstacle;hp=h;}
@@ -69,8 +68,8 @@ public:
     void setChar(char c){disp_char=c;}
     void setBounds(rect b){bounds = b;}
     rect getBounds(){return bounds;}
-    void setDammage(int dam){collisionDamage=dam;} //change name
-    int getDammage() const{return collisionDamage;}   //change name
+    void setDammage(int dam){collisionDamage=dam;} 
+    int getDammage() const{return collisionDamage;}
     void setShootDamage(int s_dam){shootDamage=s_dam;}
     int getShootDamage() const{return shootDamage;}
     void setProjectileHp(int p_hp){projectileHp = p_hp;}
@@ -80,8 +79,8 @@ public:
 };
 
 class Projectile final: public MapObject{
-    int damage{};
-    bool shipType{}; // enlever TODO
+    int damage{};   // dégats que ses projetciles infligent
+    bool shipType{}; // permet de s'avoir s'il s'agit d'un vaisseau allié au ennemi
     int player{};   // 0 = enemy; 1 = player1; 2 = player2
 public:
     Projectile()=default;
@@ -104,9 +103,9 @@ public:
 };
 
 class PlayerShip final: public Ship{
-    int killTime{}; // sauvegarde du moment où Playership est mort (pour faire clignoter)
-    bool isAlive{};  
-    int playerNb{}; // 0, 1
+    int killTime{}; // sauvegarde du moment (tick) où Playership est mort (pour faire clignoter)
+    bool isAlive{};  // servira pour le clignotement du vaisseau
+    int playerNb{}; // 0 = premier joueur, 1 = deuxieme joueur
     int score{};
     bonusType currentBonus{};
 
@@ -130,7 +129,7 @@ public:
 
 class EnemyShip : public Ship{
 protected:
-    int shootTime{};
+    int shootTime{};    // permet de reguler la féquence de tir des ennemis
     bonusType bonus{};
 public:
     EnemyShip()=default;
@@ -145,19 +144,19 @@ class EnemyShip2 : public EnemyShip{
     public:
     EnemyShip2()=default;
     EnemyShip2(uint_fast16_t x, uint_fast16_t y, rect b, char c,int h, int t, int shootDam, bonusType bon=noBonus){pos.x = x; pos.y = y; setBounds(b); setHp(h); setChar(c); setDammage(10); shootTime=t; shootDamage = shootDam; projectileHp = 10; bonus=bon;}
-    void move() override {pos.x += 1;}
+    void move() override {pos.x += 1;}  // les EnemyShip2 se deplacent horizontalement
 };
 
 
 
 class Boss : public Ship{
-    int shootTime{};
-    bool movingRight{};
-    int bossType{};
+    int shootTime{};    // permet de réguler la fréquence de tir du boss
+    bool movingRight{}; // permet de decider si le boss va de droite à gauche ou inversement
+    int bossType{}; // 1 = boss du niveau 2, 2 = boss du niveau 4
 public:
     Boss()= default;
     Boss(uint_fast16_t x, uint_fast16_t y, rect b, char c,int h, int t,int shootDam, int typ) {pos.x = x; pos.y = y; bounds=b; hp=h; disp_char=c; collisionDamage=100; shootTime = t;shootDamage = shootDam; bossType = typ; projectileHp = 30; movingRight=true;}
-    void move() override{
+    void move() override{   // le fait bouger horizontalement dans les 2 directions
         if(movingRight)
             pos.x++;
         else pos.x--;
@@ -188,8 +187,9 @@ class MapHandler final{
     int enemyStartProjectileDamage = 10;
     int obstacleStartHp = 10;
     int obstacleStartDamage = 10;
-    bool customGame = false;
+    bool customGame = false;    // permet de lancer le jeu par defaut ou en personnalisé
     difficulty dif{};
+    int customMultiplier = 0;   // echelle pour mieux placer les mapObjets lors de la creation d'une custom game
 
     // Vecteur d'objets de la map
     std::vector<Boss*> boss_set;
@@ -213,7 +213,7 @@ public:
     void setChangingLevel(bool c){changingLevel = c;}
     void setCustomGame(bool c){customGame = c;}
     bool getCustomGame() const{return customGame;}
-    void erase(size_t, MapObject::type);
+    void erase(size_t, MapObject::type);    // efface un objet du vecteur le contenant 
     std::vector<Star*> getStars() const;
     std::vector<Obstacle*> getObstacles() const;
     std::vector<Projectile*> getProjectiles() const;
@@ -228,7 +228,7 @@ public:
     void setBossSpawned(bool b){bossSpawned=b;}
     int getEnemyCount() const{return enemyCount;}
     void setBounds(rect);
-    void spawnProjectile(int x, int y, int damage, bool type, int hp, int player);
+    void spawnProjectile(int x, int y, int damage, bool type, int hp, int player);  // fait apparaitre le projectile en fonction du vaisseau qui le tire
     rect field_bounds;
     void playerInit(PlayerShip* p1,PlayerShip* p2); // insertion des playership dans le vecteur
     void updateBounds(); // mise à jour de l'emplacement du rectangle du ship
@@ -237,10 +237,10 @@ public:
     int spawnBonuses(int x, int y, bonusType bonus);
     void changeLevel(); // changement des paramètres en fonction du niveau
     void update_server(MapObject::type typ,int i);
-    void bossShoot_server(int tick);
-    void enemyShoot_server(int tick); // tire automatique des ennemis
-    void checkCollision_server(int t, bool friendlyFire);
-    void add_object_server(MapObject::type type,int i);
+    void bossShoot_server(int tick);    // tir automatique du boss
+    void enemyShoot_server(int tick); // tir automatique des ennemis
+    void checkCollision_server(int t, bool friendlyFire);   // fonction qui s'occupe des collisions entre tous les objets de la map
+    void add_object_server(MapObject::type type,int i);     // ajoute un objet de type "tyoe" sur la map
     void add_object_server(MapObject::type typ,int t,std::vector<Enemy_template> *enemy_list,std::vector<Obstacle_template> *obs_list);
     void spawnObstacle(int posx);
     void spawnEnemy(int posx,int tick);

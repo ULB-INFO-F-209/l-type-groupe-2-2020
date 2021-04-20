@@ -1006,10 +1006,10 @@ void MenuGui::custom_enemy(Parsing::Level my_level, int idx){
         verticalLayout->addWidget(skin[i]);
     }
     QIcon icon;
-    icon.addFile(QString::fromUtf8("enemy.png"), QSize(), QIcon::Normal, QIcon::On);
+    icon.addFile(QString::fromUtf8("images/custom/enemy2"), QSize(), QIcon::Normal, QIcon::On);
     skin[0]->setIcon(icon);
     skin[0]->setIconSize(QSize(100, 100));
-    icon.addFile(QString::fromUtf8("enemy2.png"), QSize(), QIcon::Normal, QIcon::On);
+    icon.addFile(QString::fromUtf8("images/custom/enemy3"), QSize(), QIcon::Normal, QIcon::On);
     skin[1]->setIcon(icon);
     skin[1]->setIconSize(QSize(100, 100));
     /*************BONUS_ZONE********************/

@@ -311,7 +311,7 @@ void MenuTerminal::get_players(Game_settings*set){
 }
 
 void MenuTerminal::launch_game(){
-	DisplayGame display_game;
+	DisplayGame display_game{};
 	display_game.init();
     bool gameOn = true;
     int inp = -1;

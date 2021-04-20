@@ -1,8 +1,3 @@
-//TODO:
-// exlosion finale (2P)
-// print lifebar boss
-
-
 #include "DisplayGameGui.hpp"
 
 void DisplayGameGui::parse_instruction(std::string chaine_instruction){  // A_B_type_x_y&E_H2_valeur&...
@@ -14,7 +9,7 @@ void DisplayGameGui::parse_instruction(std::string chaine_instruction){  // A_B_
 		idx = instruction.find(delimiteur_parametre); 				//on va voir le premier param de l instruction
 		std::string type_instruction = instruction.substr(0,idx); 		//on recupère le premier param de l instruction
 		instruction = instruction.substr(idx+1,instruction.size()); //on met à jour l'instruction
-		if (type_instruction == "A") 		//Affichage (utiliser des thread?)
+		if (type_instruction == "A") 		//Affichage
 			parse_affichage(instruction);
 		else if (type_instruction == "E")	//Etat
 			parse_etat(instruction);
@@ -176,7 +171,7 @@ void DisplayGameGui::parse_affichage(std::string instruction){
 		int type = std::stoi(instruction.substr(0,idx));
 		drawBonus(type,x,y);
 	}
-	else if (objet=="L"){
+	else if (objet=="L"){     //level
 		idx = instruction.find(delimiteur_parametre);
 		int currentLevel = std::stoi(instruction.substr(0,idx));
 		drawNewLevel(x,y,currentLevel);
@@ -189,10 +184,10 @@ void DisplayGameGui::parse_etat(std::string instruction){
 	size_t idx;
 	int player,hp, life, score,level,bonustype;
 
-	idx = instruction.find(delimiteur_parametre); 				//on va voir le premier param de l instruction
-	player = std::stoi(instruction.substr(0,idx)); 		//on recupère le premier param de l instruction
+	idx = instruction.find(delimiteur_parametre); 				//on va voir le premier param de l'instruction
+	player = std::stoi(instruction.substr(0,idx)); 		//on recupère le premier param de l'instruction
 
-	instruction = instruction.substr(idx+1,instruction.size()); //nettoie instruction
+	instruction = instruction.substr(idx+1,instruction.size()); //on nettoie instruction
 	idx = instruction.find(delimiteur_parametre);
 	hp = std::stoi(instruction.substr(0,idx));
 
@@ -214,8 +209,10 @@ void DisplayGameGui::parse_etat(std::string instruction){
 
 	drawUi(player,hp, score, life,bonustype,level);
 }
-void DisplayGameGui::starHandler(){
 
+
+void DisplayGameGui::starHandler(){
+    //gère le défilement des étoiles en fond
     stars.push_back(new vec2i{static_cast<uint_fast16_t>(rand()) % window->getSize().x, 0});
     for(size_t i = 0; i < stars.size(); i++) {
             stars.at(i)->y += 20;
@@ -223,6 +220,8 @@ void DisplayGameGui::starHandler(){
                 stars.erase(stars.begin() + static_cast<std::vector<vec2i*>::difference_type>(i));
         }
 }
+
+
 void DisplayGameGui::drawStar() {
     for(auto s : stars){
 		sf::CircleShape shape(2.f);
@@ -233,6 +232,7 @@ void DisplayGameGui::drawStar() {
 
 }
 
+
 void DisplayGameGui::drawNewLevel(int tick,int levelTick,int currentLevel) {
     if(levelTick != 0 && tick <= levelTick + 600 && tick > levelTick+100){
 		guiText.setString("Level " + std::to_string(currentLevel));
@@ -242,90 +242,103 @@ void DisplayGameGui::drawNewLevel(int tick,int levelTick,int currentLevel) {
 		window->draw(guiText);
     }
 }
+
+
 void DisplayGameGui::initGraphics(){
 	window = new sf::RenderWindow(sf::VideoMode(1000, 480), "L-TYPE");
-/*
-	sf::Vector2f viewCenter(500, 240);
-	sf::Vector2f viewHalfSize(1000, 480);
-	sf::View mainView(viewCenter, viewHalfSize);
-	window->setView(mainView);
-	
-*/
 
 	window->setVerticalSyncEnabled(false);
-	if (!texture.loadFromFile("healthbar.png"))
+
+	// charge les fichiers images et sons
+	if (!texture.loadFromFile("imagesAndSounds/healthbar.png"))
 	{
-		// error...
+		std::cout<<"imagesAndSounds/healthbar.png is missing"<<std::endl;
 	}
 
-	if (!heart.loadFromFile("heart.png"))
+	if (!heart.loadFromFile("imagesAndSounds/heart.png"))
 	{
-		// error...
+		std::cout<<"imagesAndSounds/heart.png is missing"<<std::endl;
 	}
 
-	if (!font.loadFromFile("space_age.ttf"))
+	if (!font.loadFromFile("imagesAndSounds/space_age.ttf"))
 	{
-		// erreur...
+		std::cout<<"imagesAndSounds/space_age.ttf is missing"<<std::endl;
 	}
 
-	if (!asteroid.loadFromFile("asteroid.png"))
+	if (!asteroid.loadFromFile("imagesAndSounds/asteroid.png"))
 	{
-		// erreur...
+		std::cout<<"imagesAndSounds/asteroid.png is missing"<<std::endl;
 	}
 
-	if (!ship1.loadFromFile("player1.png"))
+	if (!ship1.loadFromFile("imagesAndSounds/player1.png"))
 	{
-		// erreur...
+		std::cout<<"imagesAndSounds/player1.png is missing"<<std::endl;
 	}
-	if (!ship2.loadFromFile("player2.png"))
+
+	if (!ship2.loadFromFile("imagesAndSounds/player2.png"))
 	{
-		// erreur...
-	}
-	if (!laser.loadFromFile("laser.png"))
+		std::cout<<"imagesAndSounds/player2.png is missing"<<std::endl;	}
+
+	if (!laser.loadFromFile("imagesAndSounds/laser.png"))
 	{
-		// erreur...
-	}
-	if (!laser1.loadFromFile("laser1.png"))
+		std::cout<<"imagesAndSounds/laser.png is missing"<<std::endl;	}
+
+	if (!laser1.loadFromFile("imagesAndSounds/laser1.png"))
 	{
-		// erreur...
-	}
-	if (!laser2.loadFromFile("laser2.png"))
+		std::cout<<"imagesAndSounds/laser1.png is missing"<<std::endl;	}
+
+	if (!laser2.loadFromFile("imagesAndSounds/laser2.png"))
 	{
-		// erreur...
-	}
-	if (!tripleshotTex.loadFromFile("tripleshot.png"))
+		std::cout<<"imagesAndSounds/laser2.png is missing"<<std::endl;	}
+
+	if (!tripleshotTex.loadFromFile("imagesAndSounds/tripleshot.png"))
 	{
-		// erreur...
-	}if (!damageupTex.loadFromFile("damageup.png"))
+		std::cout<<"imagesAndSounds/tripleshot.png is missing"<<std::endl;	}
+	
+	if (!damageupTex.loadFromFile("imagesAndSounds/damageup.png"))
 	{
-		// erreur...
-	}if (!lifestealTex.loadFromFile("lifesteal.png"))
+		std::cout<<"imagesAndSounds/damageup.png is missing"<<std::endl;	}
+	
+	if (!lifestealTex.loadFromFile("imagesAndSounds/lifesteal.png"))
 	{
-		// erreur...
-	}if (!minigunTex.loadFromFile("minigun.png"))
+		std::cout<<"imagesAndSounds/lifesteal.png is missing"<<std::endl;	}
+	
+	if (!minigunTex.loadFromFile("imagesAndSounds/minigun.png"))
 	{
-		// erreur...
-	}
-	if (!enemy.loadFromFile("enemy.png"))
+		std::cout<<"imagesAndSounds/minigun.png is missing"<<std::endl;	}
+	if (!enemy.loadFromFile("imagesAndSounds/enemy.png"))
 	{
-		// erreur...
-	}
-	if (!boss.loadFromFile("boss2.png"))
+		std::cout<<"imagesAndSounds/enemy.png is missing"<<std::endl;	}
+
+	if (!boss.loadFromFile("imagesAndSounds/boss2.png"))
 	{
-		// erreur...
-	}
-	if (!enemyH.loadFromFile("enemy2.png"))
+		std::cout<<"imagesAndSounds/boss2.png is missing"<<std::endl;	}
+
+	if (!enemyH.loadFromFile("imagesAndSounds/enemy2.png"))
 	{
-		// erreur...
-	}
-	if (!boss2.loadFromFile("boss.png"))
+		std::cout<<"imagesAndSounds/enemy2.png is missing"<<std::endl;	}
+
+	if (!boss2.loadFromFile("imagesAndSounds/boss.png"))
 	{
-		// erreur...
-	}
-	if (!explosionTex.loadFromFile("explosion_effect.png"))
+		std::cout<<"imagesAndSounds/boss.png is missing"<<std::endl;	}
+
+	if (!explosionTex.loadFromFile("imagesAndSounds/explosion_effect.png"))
 	{
-		// erreur...
-	}
+		std::cout<<"imagesAndSounds/boss2.png is missing"<<std::endl;	}
+	
+	if (!music.openFromFile("imagesAndSounds/song.ogg"))
+		{
+		std::cout<<"imagesAndSounds/song.ogg is missing"<<std::endl;
+		}
+	if (!buffer.loadFromFile("imagesAndSounds/laserSound.wav"))
+		{
+		std::cout<<"imagesAndSounds/laserSound.wav is missing"<<std::endl;
+		}
+	if (!buffer1.loadFromFile("imagesAndSounds/explosionSound.wav"))
+		{
+		std::cout<<"imagesAndSounds/explosionSound.wav is missing"<<std::endl;
+		}
+
 
 	heartSprite.setScale(sf::Vector2f(static_cast<float>(0.03),static_cast<float>(0.03)));
 	heartSprite.setTexture(heart);
@@ -393,21 +406,8 @@ void DisplayGameGui::initGraphics(){
 
 	explosionSprite2.setTexture(explosionTex);
 	explosionSprite2.setTextureRect(rectSourceSprite2);
-	
-	
-	if (!music.openFromFile("song.ogg"))
-		{
-			std::cout<<"PAS DE SON"<<std::endl;
-		}
-	if (!buffer.loadFromFile("laserSound.wav"))
-		{
-			std::cout<<"PAS DE LASER"<<std::endl;
-		}
-	if (!buffer1.loadFromFile("explosionSound.wav"))
-		{
-			std::cout<<"PAS D'EXPLOSION"<<std::endl;
-		}
 
+	//sound effects
 	laserSound.setBuffer(buffer);
 	explosionSound.setBuffer(buffer1);
 	//music.setVolume (100.0f);
@@ -419,7 +419,6 @@ void DisplayGameGui::initGraphics(){
 	bossText.setString("BOSS");
 	bossText.setPosition(sf::Vector2f(472,425));
 	bossText.setCharacterSize(20);
-	//bossText.setColor(sf::Color::White);
 
 	bossLifeBar.setSize(sf::Vector2f(200, 10));
 	bossLifeBar.setFillColor(sf::Color::Red);
@@ -430,10 +429,6 @@ void DisplayGameGui::initGraphics(){
 void DisplayGameGui::drawObstacle(int x, int y) {
 	
 	asteroidSprite.setPosition(sf::Vector2f(static_cast<float>((x+1)*12.5-4.5),static_cast<float>(y*20)));
-	//sf::RectangleShape asteroidShape(sf::Vector2f(12.5*1.5,20*1.5));
-	//asteroidShape.setFillColor(sf::Color(102,51,0));
-	//asteroidShape.setPosition(sf::Vector2f((x+1)*12.5-3,y*20));
-
 	if(y*20 < 350)
 		window->draw(asteroidSprite);
 
@@ -447,72 +442,49 @@ void DisplayGameGui::drawEnemy(int x, int y, bool isBlinking, int type) {
 
 		}
 		else{
-			enemySprite.setColor(sf::Color::White); //default color
+			enemySprite.setColor(sf::Color::White);
 		}
 		
-		//sf::RectangleShape enemyShape(sf::Vector2f(12.5*3,20));
-		//enemyShape.setFillColor(sf::Color::Red);
-		//enemyShape.setPosition(sf::Vector2f(x*12.5,5 + y*20));
 		enemySprite.setPosition(sf::Vector2f(static_cast<float>(x*12.5+ 60),static_cast<float>(5 + y*20 + 60)));
 		if(y*20 < 350){
-			//window->draw(enemyShape);
 			window->draw(enemySprite);
 		}
 	}
 	else{
 		if(isBlinking){
-
 			enemyHSprite.setColor(sf::Color::Red);
-
 		}
 		else{
-			enemyHSprite.setColor(sf::Color::White); //default color
+			enemyHSprite.setColor(sf::Color::White);
 		}
 		
-		//sf::RectangleShape enemyShape(sf::Vector2f(12.5*3,20));
-		//enemyShape.setFillColor(sf::Color::Red);
-		//enemyShape.setPosition(sf::Vector2f(x*12.5,5 + y*20));
 		enemyHSprite.setPosition(sf::Vector2f(static_cast<float>(x*12.5+ 60), static_cast<float>(5 + y*20 + 60)));
 		if(y*20 < 350){
-			//window->draw(enemyShape);
 			window->draw(enemyHSprite);
 		}
 	}
-
 }
+
+
 void DisplayGameGui::drawProjectile(int x, int y, bool enemy, bool player1){
-	//sf::RectangleShape projectileShape(sf::Vector2f(12.5,20));
-
-	//projectileShape.setPosition(sf::Vector2f((x+1)*12.5,5 + y*20));
-
-
 	if(enemy){
-		//projectileShape.setFillColor(sf::Color::Red);
 		laserSprite.setPosition(sf::Vector2f(static_cast<float>((x+1)*12.5+1), static_cast<float>(y*20+5)));
 		window->draw(laserSprite);
-
 	}
 	else if (player1) {
-		//projectileShape.setFillColor(sf::Color::Blue);
-
 		laser1Sprite.setPosition(sf::Vector2f(static_cast<float>((x+1)*12.5+1), static_cast<float>(y*20+5)));
 		window->draw(laser1Sprite);
-
 	}
 	else{
-		//projectileShape.setFillColor(sf::Color::Green);
 		laser2Sprite.setPosition(sf::Vector2f(static_cast<float>((x+1)*12.5+1),static_cast<float>(y*20+5)));
 		window->draw(laser2Sprite);
 
 	}
-	//window->draw(projectileShape);
 
 }
 void DisplayGameGui::drawPlayer(int player, int x , int y, int tick, bool isBlinking){
 
-		
         if(isBlinking){
-            // show player looses a life
 			
 			if(player==1){
 				
@@ -521,7 +493,6 @@ void DisplayGameGui::drawPlayer(int player, int x , int y, int tick, bool isBlin
 						rectSourceSprite1.left=0;
 						rectSourceSprite1.top=0;
 						exploded1=true;
-
 					}
 					if (rectSourceSprite1.left==1792){
 						rectSourceSprite1.left=0;
@@ -541,12 +512,8 @@ void DisplayGameGui::drawPlayer(int player, int x , int y, int tick, bool isBlin
 						explosionSound.play();
 						soundExploded1=true;
 					}
-					window->draw(explosionSprite1);
-					
-						
-				}
-				
-					
+					window->draw(explosionSprite1);			
+				}		
 			}
 			else{
 				if(clock2.getElapsedTime().asSeconds() > 0.025f && !exploded2){
@@ -575,8 +542,6 @@ void DisplayGameGui::drawPlayer(int player, int x , int y, int tick, bool isBlin
 						soundExploded2=true;
 					}
 					window->draw(explosionSprite2);
-					
-
 				}
 			}
 
@@ -591,17 +556,10 @@ void DisplayGameGui::drawPlayer(int player, int x , int y, int tick, bool isBlin
 				exploded2=false;
 				explo2PosSaved=false;
 				soundExploded2=false;
-
-
 			} 
-
 		}		
 
-		//sf::RectangleShape playerShipShape(sf::Vector2f(12.5*3,20*2));
-		//playerShipShape.setPosition(sf::Vector2f(x*12.5,5 + y*20));
-        //window->draw(playerShipShape);
 		if (player==1 && !isBlinking){
-            //playerShipShape.setFillColor(sf::Color::Blue);
 			ship1Sprite.setPosition(sf::Vector2f(static_cast<float>(x*12.5-36.5),static_cast<float>(5 + y*20-55)));
 			window->draw(ship1Sprite);
         }
@@ -611,7 +569,6 @@ void DisplayGameGui::drawPlayer(int player, int x , int y, int tick, bool isBlin
 		}
 
         else if (player==2 && !isBlinking){
-			//playerShipShape.setFillColor(sf::Color::Green);
 			ship2Sprite.setPosition(sf::Vector2f(static_cast<float>(x*12.5-36.5),static_cast<float>(5 + y*20-55)));
 			window->draw(ship2Sprite);
 		}
@@ -619,17 +576,10 @@ void DisplayGameGui::drawPlayer(int player, int x , int y, int tick, bool isBlin
 			ship2Sprite.setPosition(sf::Vector2f(static_cast<float>(x*12.5-36.5),static_cast<float>(5 + y*20-55)));
 			window->draw(ship2Sprite);
 		}
-
-
-
-
 }
 void DisplayGameGui::drawBonus(int type, int x, int y){
-	// sf::RectangleShape bonusShape(sf::Vector2f(12.5,20));
-	// bonusShape.setFillColor(sf::Color::Yellow);
-	// bonusShape.setPosition(sf::Vector2f((x+1)*12.5,5 + y*20));
+
 	if(y*20 < 350){
-		// window->draw(bonusShape);
 		if(type==lifeSteal){
 			lifestealSprite.setPosition(sf::Vector2f(static_cast<float>((x+1)*12.5-11),static_cast<float>(y*20-15)));
 			window->draw(lifestealSprite);
@@ -650,41 +600,26 @@ void DisplayGameGui::drawBonus(int type, int x, int y){
 }
 
 void DisplayGameGui::drawBoss(int x, int y, int type, int bossHp){
-		//sf::RectangleShape bossShape(sf::Vector2f(12.5*18,20*6));
-		//bossShape.setFillColor(sf::Color::Red);
-		//bossShape.setPosition(sf::Vector2f(x*12.5+7,5 + y*20));
+
 		if(type == 1){
 			bossSprite.setPosition(sf::Vector2f(static_cast<float>(x*12.5+7 +340),static_cast<float>(5 + y*20 + 260)));
-			//window->draw(bossShape);
 			window->draw(bossSprite);
 
-			//maxHp de boss1 = 5000
 			bossLifeBar.setSize(sf::Vector2f(200.f/5000.f*static_cast<float>(bossHp), static_cast<float>(10)));
 		}else{
 			boss2Sprite.setPosition(sf::Vector2f(static_cast<float>(x*12.5+7 +340),static_cast<float>(5 + y*20 + 260)));
-			//window->draw(bossShape);
 			window->draw(boss2Sprite);
 
-			//maxHp de boss1 = 10000
 			bossLifeBar.setSize(sf::Vector2f(200.f/10000.f*static_cast<float>(bossHp), static_cast<float>(10)));
 		}
-		//bossText.setString(std::to_string(bossHp)); //Debug: voir les hp du boss
 		window->draw(bossText);
 		
 		
 		window->draw(bossLifeBar);
 }
 void DisplayGameGui::drawUi(int player, int hp, int score, int lives, int bonusType, int level){
-		
-		/*
-		sf::RectangleShape cadre(sf::Vector2f(990, 470));
-		cadre.setFillColor(sf::Color::Transparent);
-		cadre.setOutlineThickness(2);
-		cadre.setOutlineColor(sf::Color::Magenta);
-		cadre.setPosition(sf::Vector2f(5, 5));
-		window->draw(cadre);
-		*/
-		window->draw(line);
+
+	window->draw(line);
 		
 
 	if(player == 0){ 
@@ -693,24 +628,28 @@ void DisplayGameGui::drawUi(int player, int hp, int score, int lives, int bonusT
 		window->draw(health_bar);
 		sf::IntRect rect (0,0,200+((static_cast<int>(texture.getSize().x)-200)/100)*hp,static_cast<int>(texture.getSize().y)); //200=0
 		health_bar.setTextureRect(rect);
+
 		//score
 		guiText.setString("Score: "+std::to_string(score));
 		guiText.setCharacterSize(20);
 		guiText.setFillColor(sf::Color::White);
 		guiText.setPosition(sf::Vector2f(13,440));
 		window->draw(guiText);
+
 		//life
 		guiText.setString(std::to_string(hp)+"%");
 		guiText.setCharacterSize(18); // exprimée en pixels, pas en points !
 		guiText.setFillColor(sf::Color::White);
 		guiText.setPosition(sf::Vector2f(83,386));
 		window->draw(guiText);
+
 		//n lives
 		guiText.setString("P1");
 		guiText.setCharacterSize(19); // exprimée en pixels, pas en points !
 		guiText.setFillColor(sf::Color::White);
 		guiText.setPosition(sf::Vector2f(15,387));
 		window->draw(guiText);
+
 		//Bonus
 		if (bonusType == minigun)
 			guiText.setString("  B"+std::to_string(player+1)+":M");
@@ -722,10 +661,12 @@ void DisplayGameGui::drawUi(int player, int hp, int score, int lives, int bonusT
 			guiText.setString("  B"+std::to_string(player+1)+":L");
 		else if (bonusType == noBonus)
 			guiText.setString("  B"+std::to_string(player+1)+": ");
+
 		guiText.setCharacterSize(20); // exprimée en pixels, pas en points !
 		guiText.setFillColor(sf::Color::White);
 		guiText.setPosition(sf::Vector2f(100,418));
 		window->draw(guiText);
+
 		// hearts
 		if (lives>=1)
 		{
@@ -742,13 +683,11 @@ void DisplayGameGui::drawUi(int player, int hp, int score, int lives, int bonusT
 				}
 			}
 		}
-
-
-
 	
 	}
     if(player == 1){
 		twoPlayer=true;
+		
 		//healthbar
 		health_bar2.setPosition(sf::Vector2f(460+325,380));
 		window->draw(health_bar2);
@@ -761,18 +700,21 @@ void DisplayGameGui::drawUi(int player, int hp, int score, int lives, int bonusT
 		guiText.setFillColor(sf::Color::White);
 		guiText.setPosition(sf::Vector2f(470+325,440));
 		window->draw(guiText);
+
 		//life
 		guiText.setString(std::to_string(hp)+"%");
 		guiText.setCharacterSize(18); // exprimée en pixels, pas en points !
 		guiText.setFillColor(sf::Color::White);
 		guiText.setPosition(sf::Vector2f(546+325,386));
 		window->draw(guiText);
+
 		//n lives
 		guiText.setString("P2");
 		guiText.setCharacterSize(18); // exprimée en pixels, pas en points !
 		guiText.setFillColor(sf::Color::White);
 		guiText.setPosition(sf::Vector2f(468+325,387));
 		window->draw(guiText);
+
 		//Bonus
 		if (bonusType == minigun)
 			guiText.setString("  B"+std::to_string(player+1)+":M");
@@ -784,10 +726,12 @@ void DisplayGameGui::drawUi(int player, int hp, int score, int lives, int bonusT
 			guiText.setString("  B"+std::to_string(player+1)+":L");
 		else if (bonusType == noBonus)
 			guiText.setString("  B"+std::to_string(player+1)+": ");
+
 		guiText.setCharacterSize(20); // exprimée en pixels, pas en points !
 		guiText.setFillColor(sf::Color::White);
 		guiText.setPosition(sf::Vector2f(557+325,418));
 		window->draw(guiText);
+
 		// hearts
 		if (lives>=1)
 		{
@@ -825,17 +769,12 @@ void DisplayGameGui::drawEndGame(std::string score){
 	guiText.setPosition(sf::Vector2f(35*12.5, 8*20));
 	window->draw(guiText);
 
-
-
 	guiText.setString("SCORE : "+score);
 	guiText.setPosition(sf::Vector2f(35*12.5, 9*20));
 	window->draw(guiText);
-
 
 	guiText.setString("press p to quit");
 	guiText.setFillColor(sf::Color::White);
 	guiText.setPosition(sf::Vector2f(32*12.5, 12*20));
 	window->draw(guiText);
-
-	
 }

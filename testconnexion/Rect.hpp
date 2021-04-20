@@ -8,7 +8,7 @@ class rect {
     vec2i offset;
     vec2i bounds;
 public:
-    rect(vec2i o, vec2i b):offset(o),bounds(b){};
+    rect(vec2i o, vec2i b)noexcept:offset(o),bounds(b){};
     rect()=default;
 
     uint_fast16_t top() { return offset.y; }
