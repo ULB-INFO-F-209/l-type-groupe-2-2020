@@ -75,13 +75,13 @@ install:
 	sudo apt-get install libsfml-dev
 	sudo apt-get install qt5-default
 
-run_server:	
+run_server:	server
 	./process_server
 
-run_client_terminal: 
+run_client_terminal: client_terminal
 	./process_client_terminal
 
-run_client_gui: 
+run_client_gui: client_gui
 	./process_client_gui
 
 clean:

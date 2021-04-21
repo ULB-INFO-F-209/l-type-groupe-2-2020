@@ -294,7 +294,7 @@ void MenuGui::print_profile(){
     font2.setFamily(QStringLiteral("aakar"));
     font2.setPointSize(16);
 
-    QLabel *pseudo_label = create_label(centralWidget, pseudo, QRect(250, 250, 71, 21));
+    QLabel *pseudo_label = create_label(centralWidget, pseudo, QRect(250, 250, 150, 21));
     pseudo_label->setFont(font2);
     pseudo_label->setStyleSheet("QLabel { background-color : black; color : white; }");
 
@@ -993,10 +993,10 @@ void MenuGui::custom_enemy(Parsing::Level my_level, int idx){
         verticalLayout->addWidget(skin[i]);
     }
     QIcon icon;
-    icon.addFile(QString::fromUtf8("images/custom/enemy2"), QSize(), QIcon::Normal, QIcon::On);
+    icon.addFile(QString::fromUtf8("images/custom/enemy3"), QSize(), QIcon::Normal, QIcon::On);
     skin[0]->setIcon(icon);
     skin[0]->setIconSize(QSize(100, 100));
-    icon.addFile(QString::fromUtf8("images/custom/enemy3"), QSize(), QIcon::Normal, QIcon::On);
+    icon.addFile(QString::fromUtf8("images/custom/enemy2"), QSize(), QIcon::Normal, QIcon::On);
     skin[1]->setIcon(icon);
     skin[1]->setIconSize(QSize(100, 100));
     /*************BONUS_ZONE********************/
