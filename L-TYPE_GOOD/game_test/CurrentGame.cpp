@@ -314,10 +314,13 @@ std::string CurrentGame::run_server(int *move_to_exec,std::vector<Parsing::Enemy
     if(boss && map.getEnemyCount() == int(enemy_list.size()) && map.getEnemy().size() == 0 && !map.getBossSpawned() && map.getEnemy2().size()==0){
         map.add_object_server(MapObject::boss, tick, &enemy_list, &obs_list);
         map.setBossSpawned(true);
+        boss = false;
     }
-    if(map.getEnemyCount() == int(enemy_list.size()) && map.getEnemy().size() == 0 && !boss && map.getEnemy2().size()==0){
+    if(map.getEnemyCount() == int(enemy_list.size()) && map.getEnemy().size() == 0 && map.getBoss().empty() && !boss && map.getEnemy2().size()==0){
         game_over = true;
     }
+    std::cout << " boss spawned = " << map.getBossSpawned() <<std::endl;
+    std::cout << " boss empty = " << map.getBoss().empty() <<std::endl;
     if(map.getBossSpawned() && map.getBoss().empty())
         game_over=true;
 

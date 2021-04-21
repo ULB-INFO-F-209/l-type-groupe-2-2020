@@ -674,7 +674,7 @@ void MapHandler::checkCollision_server(int t, bool friendlyFire) {  // s'occupe 
             levelTick = t;
             enemyCount = 0;
             currentLevel++;
-            bossSpawned = false;
+            bossSpawned = customGame? true: false;
             changingLevel=true;
         
         }
