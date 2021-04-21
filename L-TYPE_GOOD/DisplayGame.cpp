@@ -436,6 +436,7 @@ void DisplayGame::drawUi(int player, int hp, int score, int lives, int bonusType
     }
     
     //level
+	if (level < 5) // level 5 = jeu fini
     mvwprintw(main_wnd,20,33," LEVEL : %i", level);
 }
 

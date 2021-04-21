@@ -752,13 +752,13 @@ void DisplayGameGui::drawUi(int player, int hp, int score, int lives, int bonusT
     }
 
     //level
-	guiText.setString("Level "+std::to_string(level));
-	guiText.setCharacterSize(20);
-	guiText.setFillColor(sf::Color::White);
-	guiText.setPosition(sf::Vector2f(450,380));
-	window->draw(guiText);
-
-
+	if (level < 5) {
+		guiText.setString("Level "+std::to_string(level));
+		guiText.setCharacterSize(20);
+		guiText.setFillColor(sf::Color::White);
+		guiText.setPosition(sf::Vector2f(450,380));
+		window->draw(guiText);
+	}
 }
 
 
