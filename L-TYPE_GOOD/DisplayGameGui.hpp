@@ -2,8 +2,8 @@
 #define DisplayGameGUI_HPP
 #include <vector>
 #include <string>
-#include "game_test/Rect.hpp"
-#include "game_test/MapHandler.hpp"
+#include "game/Rect.hpp"
+#include "game/MapHandler.hpp"
 #include <unistd.h>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>

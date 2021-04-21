@@ -19,7 +19,7 @@
 
 #include "Client.hpp"
 #include "screen.hpp"
-#include "game_test/parsing.hpp"
+#include "game/parsing.hpp"
 #include "Frame.hpp"
 
 

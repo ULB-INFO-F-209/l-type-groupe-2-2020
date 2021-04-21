@@ -5,7 +5,7 @@
 #include <cstring>
 #include <vector>
 #include <ncurses.h>
-#include "game_test/parsing.hpp"
+#include "game/parsing.hpp"
 #include "screen.hpp"
 
 using Parsing::Game_settings;

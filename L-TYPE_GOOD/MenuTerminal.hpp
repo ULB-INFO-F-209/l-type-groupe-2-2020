@@ -22,7 +22,7 @@
 #include <vector>
 #include "Client.hpp"
 #include "Interface.hpp"
-#include "game_test/parsing.hpp"
+#include "game/parsing.hpp"
 #include "DisplayGame.hpp"
 #include "SFML/Graphics.hpp"
 

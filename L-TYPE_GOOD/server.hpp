@@ -2,10 +2,10 @@
 #define SERVER_HPP
 
 
-#include "game_test/database/database.hpp" 
+#include "game/database/database.hpp" 
 #include "Constante.hpp"
-#include "game_test/CurrentGame.hpp"
-#include "game_test/parsing.hpp"
+#include "game/CurrentGame.hpp"
+#include "game/parsing.hpp"
 #include "DisplayGame.hpp"
 #include "DisplayGameGui.hpp"
 

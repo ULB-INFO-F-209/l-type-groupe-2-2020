@@ -17,7 +17,7 @@
 #include <thread>
 
 #include "Constante.hpp"
-#include "game_test/MapHandler.hpp"
+#include "game/MapHandler.hpp"
 
 class Client{
     //state

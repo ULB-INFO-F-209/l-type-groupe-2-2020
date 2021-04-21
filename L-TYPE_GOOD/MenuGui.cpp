@@ -42,7 +42,6 @@ void MenuGui::home(){
 }
 
 QLabel * MenuGui::print_error(QWidget *parent, int error, QRect pos){
-    std::cout << " ERROR "<<error<<std::endl;
     QLabel *error_label; 
     switch(error){
         case LEN_ERROR:
@@ -642,7 +641,6 @@ void MenuGui::lobby(std::string my_level, bool from_lead){
         strcpy(setting.difficulty_str, difficulty.c_str());
 
         setting.diff = !strcmp(setting.difficulty_str,"easy")? easy: !strcmp(setting.difficulty_str,"medium")? medium :hard;
-        std::cout << "la diff : " << setting.difficulty_str << std::endl;
         setting.drop_rate =  droprate_spin->value();
         setting.nb_lives = lives_spin->value();
         setting.ally_shot = ally_combo->currentIndex() == 0? 1:0;
@@ -689,7 +687,6 @@ void MenuGui::lobby(std::string my_level, bool from_lead){
         this->hide();
         launch_game();
         this->show();
-        std::cout << "i'm back bg"<<std::endl;
        
     });
     
@@ -1259,7 +1256,6 @@ void MenuGui::view_level(bool mine){
         if(idx.column()==3){ //run
             int i = idx.row();
             std::string level = _client.getLevel(creator_list[i].name, std::string(creator_list[i].pseudo));
-            std::cout << "level to play : "<< level<<std::endl;
             lobby(level, mine);
         } else if(idx.column()==4) { //like
             int i = idx.row();

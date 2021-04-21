@@ -3,8 +3,8 @@
 #include <ncurses.h>
 #include <vector>
 #include <string>
-#include "game_test/Rect.hpp"
-#include "game_test/MapHandler.hpp"
+#include "game/Rect.hpp"
+#include "game/MapHandler.hpp"
 #include <unistd.h>
 
 class DisplayGame

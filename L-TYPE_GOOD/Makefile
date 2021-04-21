@@ -46,26 +46,26 @@ Label.cpp: Label.hpp
 label.o: Label.cpp
 	g++ Label.cpp -c $(qt_flag) $(qt_exec_flag) -o label.o
 
-database.o: game_test/database/database.hpp game_test/database/database.cpp
-	g++  -c game_test/database/database.cpp $(flag) -o database.o
+database.o: game/database/database.hpp game/database/database.cpp
+	g++  -c game/database/database.cpp $(flag) -o database.o
 
-account.o: game_test/database/account.hpp game_test/database/account.cpp
-	g++  -c game_test/database/account.cpp $(flag) -o account.o
+account.o: game/database/account.hpp game/database/account.cpp
+	g++  -c game/database/account.cpp $(flag) -o account.o
 
-accountandvectors.o:  game_test/database/accountandvectors.hpp  game_test/database/accountandvectors.cpp
-	g++  -c  game_test/database/accountandvectors.cpp $(flag) -o accountandvectors.o
+accountandvectors.o:  game/database/accountandvectors.hpp  game/database/accountandvectors.cpp
+	g++  -c  game/database/accountandvectors.cpp $(flag) -o accountandvectors.o
 
-parsing.o: game_test/parsing.hpp game_test/parsing.cpp
-	g++  -c game_test/parsing.cpp $(flag) -o parsing.o
+parsing.o: game/parsing.hpp game/parsing.cpp
+	g++  -c game/parsing.cpp $(flag) -o parsing.o
 
 
-CurrentGame.o: game_test/CurrentGame.cpp  game_test/MapHandler.hpp game_test/Player.hpp game_test/CurrentGame.hpp
-	g++ -g -c -o CurrentGame.o game_test/CurrentGame.cpp $(flag)
+CurrentGame.o: game/CurrentGame.cpp  game/MapHandler.hpp game/Player.hpp game/CurrentGame.hpp
+	g++ -g -c -o CurrentGame.o game/CurrentGame.cpp $(flag)
 
-MapHandler.o: game_test/MapHandler.cpp game_test/MapHandler.hpp game_test/Rect.hpp game_test/InternGameObject.hpp game_test/Player.hpp
-	g++ -g -c -o MapHandler.o game_test/MapHandler.cpp $(flag)
+MapHandler.o: game/MapHandler.cpp game/MapHandler.hpp game/Rect.hpp game/InternGameObject.hpp game/Player.hpp
+	g++ -g -c -o MapHandler.o game/MapHandler.cpp $(flag)
 
-Player.o: game_test/Player.cpp game_test/Player.hpp
+Player.o: game/Player.cpp game/Player.hpp
 	g++ -g -c -o Player.o Player.cpp $(flag)
 
 compile: server client_gui client_terminal
