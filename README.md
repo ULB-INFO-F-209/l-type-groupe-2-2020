@@ -6,7 +6,7 @@
 * Clone the repo 
 
 ## Compilation 
-1.```make clean```
+1. ```make clean```
 2. ```make run_server```
 3. ``` make run_client_gui ``` or ``` make run_client_terminal ```
 
